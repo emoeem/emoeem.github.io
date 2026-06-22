@@ -1,1 +1,12 @@
-/* Here is your custom css styles. */
+/* 手机端顶部标题溢出修复 */
+@media only screen and (max-width: 601px) {
+    header .brand-logo {
+        max-width: 62%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    header .brand-logo .logo-span {
+        font-size: 1.2rem;
+    }
+}
