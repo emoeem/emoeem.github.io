@@ -10,7 +10,22 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-06-22T03:17:14.977Z</updated>
+  <updated>2026-06-22T12:08:38.458Z</updated>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="代码开发" scheme="https://emoeem.github.io/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/"/>
+    <id>https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/</id>
+    <link href="https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/"/>
+    <published>2026-06-22T12:08:28.000Z</published>
+    <summary>
+      <![CDATA[<h2 id="通用参数-common-params"><a href="#通用参数-common-params" class="headerlink" title="通用参数 (common params)"></a>通用参数 (common]]>
+    </summary>
+    <title>llama-cli 参数配置指南</title>
+    <updated>2026-06-22T12:08:38.458Z</updated>
+  </entry>
   <entry>
     <author>
       <name>emoeem</name>
