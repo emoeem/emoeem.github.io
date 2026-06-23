@@ -10,7 +10,26 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-06-22T12:08:38.458Z</updated>
+  <updated>2026-06-23T14:31:57.763Z</updated>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="代码" scheme="https://emoeem.github.io/tags/%E4%BB%A3%E7%A0%81/"/>
+    <id>https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</id>
+    <link href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/"/>
+    <published>2026-06-23T14:31:49.000Z</published>
+    <summary>
+      <![CDATA[<blockquote>
+<p>基于 Fish Shell + Starship + Atuin + Zoxide + fzf 的现代化终端配置，<br>涵盖所有快捷键、无感集成函数、工具链及安装命令。</p>
+</blockquote>
+<hr>
+<h2]]>
+    </summary>
+    <title>CachyOS Fish 终端完全配置指南</title>
+    <updated>2026-06-23T14:31:57.763Z</updated>
+  </entry>
   <entry>
     <author>
       <name>emoeem</name>

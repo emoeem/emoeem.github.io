@@ -1,0 +1,2497 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="CachyOS Fish 终端完全配置指南, hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
+    <meta name="description" content="
+基于 Fish Shell + Starship + Atuin + Zoxide + fzf 的现代化终端配置，涵盖所有快捷键、无感集成函数、工具链及安装命令。
+
+
+📋 配置总览
+
+
+工具
+作用
+状态
+
+
+
+Fish
+Shell 环境">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>CachyOS Fish 终端完全配置指南 | emoeem</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    
+
+
+    <!-- bg-cover style     -->
+
+
+
+<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+<link rel="stylesheet" type="text/css" href="/css/matery.css">
+<link rel="stylesheet" type="text/css" href="/css/my.css">
+<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
+
+
+
+
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+    <link rel="stylesheet" href="/css/post.css">
+
+
+
+
+    
+        <link rel="stylesheet" type="text/css" href="/css/reward.css">
+    
+
+
+
+    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+
+<meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">emoeem</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+  <li>
+    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()" title="深色/浅色模式" >
+      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">emoeem</div>
+        <div class="logo-desc">
+            
+            全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客
+            
+        </div>
+    </div>
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/emoeem/emoeem.github.io" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/emoeem/emoeem.github.io" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">CachyOS Fish 终端完全配置指南</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E4%BB%A3%E7%A0%81/">
+                                <span class="chip bg-color">代码</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                技术
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-06-23
+                </div>
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    4.4k
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    19 分
+                </div>
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <blockquote>
+<p>基于 Fish Shell + Starship + Atuin + Zoxide + fzf 的现代化终端配置，<br>涵盖所有快捷键、无感集成函数、工具链及安装命令。</p>
+</blockquote>
+<hr>
+<h2 id="📋-配置总览"><a href="#📋-配置总览" class="headerlink" title="📋 配置总览"></a>📋 配置总览</h2><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Fish</strong></td>
+<td>Shell 环境</td>
+<td>✅ 核心</td>
+</tr>
+<tr>
+<td><strong>Starship</strong></td>
+<td>智能提示符（Git/时间/错误码）</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>Atuin</strong></td>
+<td>加密历史同步与搜索</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>Zoxide</strong></td>
+<td>智能目录跳转（记忆访问记录）</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>fzf</strong></td>
+<td>模糊查找（文件/历史/目录/进程）</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>eza</strong></td>
+<td><code>ls</code> 现代化替代（彩色、图标、树状）</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>bat</strong></td>
+<td><code>cat</code> 增强版（语法高亮、行号）</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>fastfetch</strong></td>
+<td>终端系统信息展示</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>direnv</strong></td>
+<td>目录级环境变量自动加载</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>pay-respects</strong></td>
+<td>命令纠错（<code>f</code> 键自动修正）</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>git-delta</strong></td>
+<td><code>git diff</code> 美化（语法高亮、并排对比）</td>
+<td>✅ 已配置</td>
+</tr>
+<tr>
+<td><strong>done</strong></td>
+<td>长时间命令完成后桌面通知</td>
+<td>✅ 已启用</td>
+</tr>
+<tr>
+<td><strong>tldr</strong></td>
+<td><code>man</code> 速查替代</td>
+<td>✅ 已集成</td>
+</tr>
+<tr>
+<td><strong>xh</strong></td>
+<td>现代化 HTTP 客户端</td>
+<td>✅ 已集成</td>
+</tr>
+<tr>
+<td><strong>jless</strong></td>
+<td>JSON 交互式查看器</td>
+<td>✅ 已集成</td>
+</tr>
+<tr>
+<td><strong>glow</strong></td>
+<td>Markdown 终端渲染器</td>
+<td>✅ 已集成</td>
+</tr>
+<tr>
+<td><strong>bottom</strong></td>
+<td>系统监控器（<code>htop</code> 替代）</td>
+<td>✅ 已集成</td>
+</tr>
+<tr>
+<td><strong>procs</strong></td>
+<td>现代化进程查看</td>
+<td>✅ 已集成</td>
+</tr>
+<tr>
+<td><strong>sd</strong></td>
+<td>现代化 <code>sed</code></td>
+<td>✅ 推荐</td>
+</tr>
+<tr>
+<td><strong>dust</strong></td>
+<td>图形化 <code>du</code></td>
+<td>✅ 推荐</td>
+</tr>
+<tr>
+<td><strong>tokei</strong></td>
+<td>代码统计</td>
+<td>✅ 推荐</td>
+</tr>
+<tr>
+<td><strong>onefetch</strong></td>
+<td>Git 仓库信息展示</td>
+<td>✅ 推荐</td>
+</tr>
+<tr>
+<td><strong>dog</strong></td>
+<td>现代化 <code>dig</code></td>
+<td>✅ 推荐</td>
+</tr>
+<tr>
+<td><strong>gping</strong></td>
+<td>图形化 <code>ping</code></td>
+<td>✅ 推荐</td>
+</tr>
+<tr>
+<td><strong>ouch</strong></td>
+<td>万能压缩解压</td>
+<td>✅ 推荐</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-一键安装命令"><a href="#🚀-一键安装命令" class="headerlink" title="🚀 一键安装命令"></a>🚀 一键安装命令</h2><h3 id="核心依赖（Arch-CachyOS）"><a href="#核心依赖（Arch-CachyOS）" class="headerlink" title="核心依赖（Arch / CachyOS）"></a>核心依赖（Arch / CachyOS）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 基础工具链</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> fish starship atuin zoxide fzf fd eza bat fastfetch direnv pay-respects git-delta
+
+<span class="token comment"># 系统监控与网络</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> bottom procs dog gping
+
+<span class="token comment"># 数据处理与查看</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> tldr jless glow sd dust tokei onefetch
+
+<span class="token comment"># HTTP 客户端</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> xh
+
+<span class="token comment"># AUR 工具</span>
+paru <span class="token parameter variable">-S</span> ouch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="可选增强"><a href="#可选增强" class="headerlink" title="可选增强"></a>可选增强</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 文件操作增强</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> xcp
+
+<span class="token comment"># 终端图片查看</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> viu
+
+<span class="token comment"># 跨设备传输</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> croc
+
+<span class="token comment"># 十六进制查看</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> hexyl
+
+<span class="token comment"># 列提取工具</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> choose<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Git-Delta-配置（执行一次永久生效）"><a href="#Git-Delta-配置（执行一次永久生效）" class="headerlink" title="Git Delta 配置（执行一次永久生效）"></a>Git Delta 配置（执行一次永久生效）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> config <span class="token parameter variable">--global</span> core.pager delta
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> interactive.diffFilter <span class="token string">"delta --color-only"</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.line-numbers <span class="token boolean">true</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.side-by-side <span class="token boolean">true</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.syntax-theme Dracula<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="🎨-主题配置"><a href="#🎨-主题配置" class="headerlink" title="🎨 主题配置"></a>🎨 主题配置</h2><h3 id="Dracula-主题（bat-delta）"><a href="#Dracula-主题（bat-delta）" class="headerlink" title="Dracula 主题（bat / delta）"></a>Dracula 主题（bat / delta）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 确认 bat 支持 Dracula</span>
+bat --list-themes <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-i</span> dracula
+
+<span class="token comment"># 如果未显示，手动安装：</span>
+<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>bat --config-dir<span class="token variable">)</span></span>/themes"</span>
+<span class="token function">curl</span> <span class="token parameter variable">-fsSL</span> https://raw.githubusercontent.com/dracula/sublime/master/Dracula.tmTheme <span class="token punctuation">\</span>
+  <span class="token parameter variable">-o</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>bat --config-dir<span class="token variable">)</span></span>/themes/Dracula.tmTheme"</span>
+bat cache <span class="token parameter variable">--build</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>在 <code>config.fish</code> 中设置：</p>
+<pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -gx BAT_THEME "Dracula"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h2 id="⌨️-快捷键完全指南"><a href="#⌨️-快捷键完全指南" class="headerlink" title="⌨️ 快捷键完全指南"></a>⌨️ 快捷键完全指南</h2><h3 id="Fish-原生编辑"><a href="#Fish-原生编辑" class="headerlink" title="Fish 原生编辑"></a>Fish 原生编辑</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Ctrl + A</code></td>
+<td>光标移到行首</td>
+<td>同 Emacs</td>
+</tr>
+<tr>
+<td><code>Ctrl + E</code></td>
+<td>光标移到行尾</td>
+<td>同 Emacs</td>
+</tr>
+<tr>
+<td><code>Ctrl + W</code></td>
+<td>删除前一个单词</td>
+<td>比 Backspace 快</td>
+</tr>
+<tr>
+<td><code>Alt + D</code></td>
+<td>删除后一个单词</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Ctrl + U</code></td>
+<td>删除整行</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Ctrl + K</code></td>
+<td>删除光标到行尾</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Ctrl + Y</code></td>
+<td>粘贴刚才删除的内容</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Ctrl + L</code></td>
+<td>清屏（保留当前输入）</td>
+<td>比 <code>clear</code> 优雅</td>
+</tr>
+<tr>
+<td><code>Ctrl + C</code></td>
+<td>取消当前输入</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Ctrl + D</code></td>
+<td>退出 Fish / 关闭终端</td>
+<td>输入为空时</td>
+</tr>
+</tbody></table>
+<h3 id="自动补全与建议"><a href="#自动补全与建议" class="headerlink" title="自动补全与建议"></a>自动补全与建议</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>→</code></td>
+<td>接受右侧灰色建议</td>
+<td>Fish 自动显示灰色建议，按右方向键直接补全</td>
+</tr>
+<tr>
+<td><code>Alt + →</code></td>
+<td>接受建议的一个单词</td>
+<td>只补全到下一个空格</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>触发补全菜单</td>
+<td>按多次循环选择</td>
+</tr>
+<tr>
+<td><code>Shift + Tab</code></td>
+<td>fzf 模糊补全</td>
+<td>候选很多时，用 fzf 过滤选择</td>
+</tr>
+<tr>
+<td><code>Ctrl + F</code></td>
+<td>接受建议并执行</td>
+<td>相当于 <code>→</code> + <code>Enter</code></td>
+</tr>
+</tbody></table>
+<h3 id="历史命令"><a href="#历史命令" class="headerlink" title="历史命令"></a>历史命令</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>↑</code></td>
+<td>搜索以当前输入开头的历史</td>
+<td>输入 <code>git</code> 后按 <code>↑</code>，只显示 git 相关历史</td>
+</tr>
+<tr>
+<td><code>↓</code></td>
+<td>反向搜索历史</td>
+<td></td>
+</tr>
+<tr>
+<td><code>Alt + ↑</code></td>
+<td>从历史中提取参数</td>
+<td>快速复用之前命令的参数</td>
+</tr>
+</tbody></table>
+<h3 id="Bang-Bang-扩展"><a href="#Bang-Bang-扩展" class="headerlink" title="Bang-Bang 扩展"></a>Bang-Bang 扩展</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>!</code></td>
+<td>插入上一条完整命令</td>
+<td>输入 <code>!</code> 自动展开为 <code>sudo pacman -Syu</code></td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>插入上条命令的最后一个参数</td>
+<td>输入 <code>cd $</code> 自动展开为 <code>cd /usr/share</code></td>
+</tr>
+</tbody></table>
+<h3 id="fzf-快捷键"><a href="#fzf-快捷键" class="headerlink" title="fzf 快捷键"></a>fzf 快捷键</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Ctrl + T</code></td>
+<td>当前目录下模糊搜索文件</td>
+<td><code>vim &lt;Ctrl+T&gt;</code> → 搜索文件 → 回车自动填入路径</td>
+</tr>
+<tr>
+<td><code>Alt + C</code></td>
+<td>模糊搜索目录并 <code>cd</code> 进入</td>
+<td><code>Alt + C</code> → 输入 <code>proj</code> → 选中 <code>~/projects/webapp</code> → 自动 cd</td>
+</tr>
+<tr>
+<td><code>Ctrl + R</code></td>
+<td>Atuin 历史搜索（覆盖原生）</td>
+<td>输入关键词模糊搜索历史命令</td>
+</tr>
+</tbody></table>
+<h3 id="fzf-界面内操作"><a href="#fzf-界面内操作" class="headerlink" title="fzf 界面内操作"></a>fzf 界面内操作</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>↑ / ↓</code></td>
+<td>上下选择候选</td>
+</tr>
+<tr>
+<td><code>Ctrl + N / P</code></td>
+<td>下/上选择（同 Vim）</td>
+</tr>
+<tr>
+<td><code>Ctrl + J / K</code></td>
+<td>下/上选择（同 Vim）</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>多选标记</td>
+</tr>
+<tr>
+<td><code>Ctrl + A</code></td>
+<td>全选</td>
+</tr>
+<tr>
+<td><code>Ctrl + D</code></td>
+<td>取消选择</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>确认选择</td>
+</tr>
+<tr>
+<td><code>Ctrl + G / Esc</code></td>
+<td>取消退出</td>
+</tr>
+<tr>
+<td><code>Ctrl + /</code></td>
+<td>切换预览窗口位置</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td>查看所有快捷键帮助</td>
+</tr>
+</tbody></table>
+<h3 id="Atuin-界面操作"><a href="#Atuin-界面操作" class="headerlink" title="Atuin 界面操作"></a>Atuin 界面操作</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>↑ / ↓</code></td>
+<td>选择历史命令</td>
+</tr>
+<tr>
+<td><code>Ctrl + R</code></td>
+<td>切换过滤模式（全局 / 当前目录 / 当前会话）</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>选中命令但不执行（可编辑后执行）</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>选中并执行</td>
+</tr>
+<tr>
+<td><code>Ctrl + D</code></td>
+<td>删除选中的历史记录</td>
+</tr>
+<tr>
+<td><code>Ctrl + G / Esc</code></td>
+<td>退出</td>
+</tr>
+<tr>
+<td>直接输入</td>
+<td>实时模糊搜索历史</td>
+</tr>
+</tbody></table>
+<h3 id="pay-respects-纠错"><a href="#pay-respects-纠错" class="headerlink" title="pay-respects 纠错"></a>pay-respects 纠错</h3><table>
+<thead>
+<tr>
+<th>触发方式</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>f</code> + <code>Enter</code></td>
+<td>修正并执行上一条错误命令</td>
+<td><code>git sttaus</code> → 报错 → <code>f</code> → 自动执行 <code>git status</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="📝-Abbreviation（abbr）速查表"><a href="#📝-Abbreviation（abbr）速查表" class="headerlink" title="📝 Abbreviation（abbr）速查表"></a>📝 Abbreviation（abbr）速查表</h2><blockquote>
+<p>输入缩写后按 <code>Space</code> 或 <code>Enter</code> 自动展开为完整命令。</p>
+</blockquote>
+<h3 id="Git-工作流"><a href="#Git-工作流" class="headerlink" title="Git 工作流"></a>Git 工作流</h3><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>展开为</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gs</code></td>
+<td><code>git status</code></td>
+<td>查看工作区状态</td>
+</tr>
+<tr>
+<td><code>ga</code></td>
+<td><code>git add</code></td>
+<td>添加文件</td>
+</tr>
+<tr>
+<td><code>gaa</code></td>
+<td><code>git add --all</code></td>
+<td>添加所有修改</td>
+</tr>
+<tr>
+<td><code>gc</code></td>
+<td><code>git commit</code></td>
+<td>打开编辑器写提交信息</td>
+</tr>
+<tr>
+<td><code>gcm</code></td>
+<td><code>git commit -m</code></td>
+<td>直接写提交信息：<code>gcm "fix bug"</code></td>
+</tr>
+<tr>
+<td><code>gca</code></td>
+<td><code>git commit --amend</code></td>
+<td>修改上次提交</td>
+</tr>
+<tr>
+<td><code>gp</code></td>
+<td><code>git push</code></td>
+<td>推送</td>
+</tr>
+<tr>
+<td><code>gpf</code></td>
+<td><code>git push --force-with-lease</code></td>
+<td>安全强制推送</td>
+</tr>
+<tr>
+<td><code>gpl</code></td>
+<td><code>git pull</code></td>
+<td>拉取</td>
+</tr>
+<tr>
+<td><code>gcb</code></td>
+<td><code>git checkout -b</code></td>
+<td>创建并切换分支：<code>gcb feature</code></td>
+</tr>
+<tr>
+<td><code>gb</code></td>
+<td><code>git branch</code></td>
+<td>查看分支</td>
+</tr>
+<tr>
+<td><code>gd</code></td>
+<td><code>git diff</code></td>
+<td>查看修改（带 delta 美化）</td>
+</tr>
+<tr>
+<td><code>gds</code></td>
+<td><code>git diff --staged</code></td>
+<td>查看暂存区修改</td>
+</tr>
+<tr>
+<td><code>gl</code></td>
+<td><code>git log --oneline --graph -15</code></td>
+<td>简洁图形化日志</td>
+</tr>
+<tr>
+<td><code>grh</code></td>
+<td><code>git reset --hard</code></td>
+<td>硬重置</td>
+</tr>
+<tr>
+<td><code>grs</code></td>
+<td><code>git restore --staged</code></td>
+<td>取消暂存</td>
+</tr>
+</tbody></table>
+<h3 id="目录导航"><a href="#目录导航" class="headerlink" title="目录导航"></a>目录导航</h3><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>展开为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>..</code></td>
+<td><code>cd ..</code></td>
+</tr>
+<tr>
+<td><code>...</code></td>
+<td><code>cd ../..</code></td>
+</tr>
+<tr>
+<td><code>....</code></td>
+<td><code>cd ../../..</code></td>
+</tr>
+<tr>
+<td><code>.....</code></td>
+<td><code>cd ../../../..</code></td>
+</tr>
+</tbody></table>
+<h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>展开为</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>update</code></td>
+<td><code>sudo pacman -Syu</code></td>
+<td>系统更新</td>
+</tr>
+<tr>
+<td><code>cleanup</code></td>
+<td><code>sudo pacman -Rns (pacman -Qtdq)</code></td>
+<td>清理孤儿包</td>
+</tr>
+<tr>
+<td><code>mirror</code></td>
+<td><code>sudo cachyos-rate-mirrors</code></td>
+<td>刷新镜像源</td>
+</tr>
+<tr>
+<td><code>jctl</code></td>
+<td><code>journalctl -p 3 -xb</code></td>
+<td>查看错误日志</td>
+</tr>
+<tr>
+<td><code>fixpacman</code></td>
+<td><code>sudo rm /var/lib/pacman/db.lck</code></td>
+<td>修复 pacman 锁</td>
+</tr>
+<tr>
+<td><code>grubup</code></td>
+<td><code>sudo grub-mkconfig -o /boot/grub/grub.cfg</code></td>
+<td>更新 GRUB</td>
+</tr>
+<tr>
+<td><code>please</code></td>
+<td><code>sudo</code></td>
+<td>礼貌提权：<code>please pacman -S neovim</code></td>
+</tr>
+<tr>
+<td><code>hw</code></td>
+<td><code>hwinfo --short</code></td>
+<td>查看硬件信息</td>
+</tr>
+<tr>
+<td><code>mkdirp</code></td>
+<td><code>mkdir -p</code></td>
+<td>递归创建目录</td>
+</tr>
+</tbody></table>
+<h3 id="压缩解压"><a href="#压缩解压" class="headerlink" title="压缩解压"></a>压缩解压</h3><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>展开为</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tarnow</code></td>
+<td><code>tar -acf</code></td>
+<td><code>tarnow backup.tar.gz file1 file2</code></td>
+</tr>
+<tr>
+<td><code>untar</code></td>
+<td><code>tar -zxvf</code></td>
+<td><code>untar backup.tar.gz</code></td>
+</tr>
+</tbody></table>
+<h3 id="HTTP-请求（xh）"><a href="#HTTP-请求（xh）" class="headerlink" title="HTTP 请求（xh）"></a>HTTP 请求（xh）</h3><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>展开为</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>req</code></td>
+<td><code>xh</code></td>
+<td><code>req api.example.com</code></td>
+</tr>
+<tr>
+<td><code>get</code></td>
+<td><code>xh GET</code></td>
+<td><code>get api.github.com/users/octocat</code></td>
+</tr>
+<tr>
+<td><code>post</code></td>
+<td><code>xh POST</code></td>
+<td><code>post api.example.com/users name=john</code></td>
+</tr>
+<tr>
+<td><code>put</code></td>
+<td><code>xh PUT</code></td>
+<td><code>put api.example.com/users/1 name=jane</code></td>
+</tr>
+<tr>
+<td><code>del</code></td>
+<td><code>xh DELETE</code></td>
+<td><code>del api.example.com/users/1</code></td>
+</tr>
+<tr>
+<td><code>patch</code></td>
+<td><code>xh PATCH</code></td>
+<td><code>patch api.example.com/users/1 age=25</code></td>
+</tr>
+</tbody></table>
+<h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><table>
+<thead>
+<tr>
+<th>输入</th>
+<th>展开为</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>top</code></td>
+<td><code>btm</code></td>
+<td>系统监控器</td>
+</tr>
+<tr>
+<td><code>top-basic</code></td>
+<td><code>btm --basic</code></td>
+<td>简化模式</td>
+</tr>
+<tr>
+<td><code>pst</code></td>
+<td><code>procs --tree</code></td>
+<td>进程树状视图</td>
+</tr>
+<tr>
+<td><code>psw</code></td>
+<td><code>procs --watch</code></td>
+<td>实时刷新进程</td>
+</tr>
+<tr>
+<td><code>loc</code></td>
+<td><code>tokei</code></td>
+<td>代码统计</td>
+</tr>
+<tr>
+<td><code>repo</code></td>
+<td><code>onefetch</code></td>
+<td>Git 仓库信息</td>
+</tr>
+<tr>
+<td><code>compress</code></td>
+<td><code>ouch compress</code></td>
+<td>万能压缩</td>
+</tr>
+<tr>
+<td><code>extract</code></td>
+<td><code>ouch decompress</code></td>
+<td>万能解压</td>
+</tr>
+<tr>
+<td><code>compress-list</code></td>
+<td><code>ouch list</code></td>
+<td>预览压缩包内容</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>💡 <strong>abbr 的优势</strong>：展开后的完整命令会写入历史记录，换机器后 <code>↑</code> 回放也能直接执行。</p>
+</blockquote>
+<hr>
+<h2 id="🔄-Alias（CachyOS-预设）"><a href="#🔄-Alias（CachyOS-预设）" class="headerlink" title="🔄 Alias（CachyOS 预设）"></a>🔄 Alias（CachyOS 预设）</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>实际执行</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ls</code></td>
+<td><code>eza -al --color=always --group-directories-first --icons</code></td>
+<td>详细列表，带图标</td>
+</tr>
+<tr>
+<td><code>la</code></td>
+<td><code>eza -a --color=always --group-directories-first --icons</code></td>
+<td>所有文件（含隐藏）</td>
+</tr>
+<tr>
+<td><code>ll</code></td>
+<td><code>eza -l --color=always --group-directories-first --icons</code></td>
+<td>长格式</td>
+</tr>
+<tr>
+<td><code>lt</code></td>
+<td><code>eza -aT --color=always --group-directories-first --icons</code></td>
+<td>树状结构</td>
+</tr>
+<tr>
+<td><code>l.</code></td>
+<td>`eza -a</td>
+<td>grep -e ‘^.‘`</td>
+</tr>
+<tr>
+<td><code>psmem</code></td>
+<td>`ps auxf</td>
+<td>sort -nr -k 4`</td>
+</tr>
+<tr>
+<td><code>psmem10</code></td>
+<td>`ps auxf</td>
+<td>sort -nr -k 4</td>
+</tr>
+<tr>
+<td><code>big</code></td>
+<td>`expac -H M ‘%m\t%n’</td>
+<td>sort -h</td>
+</tr>
+<tr>
+<td><code>gitpkg</code></td>
+<td>`pacman -Q</td>
+<td>grep -i “-git”</td>
+</tr>
+<tr>
+<td><code>rip</code></td>
+<td>`expac –timefmt=’%Y-%m-%d %T’ ‘%l\t%n %v’</td>
+<td>sort</td>
+</tr>
+<tr>
+<td><code>wget</code></td>
+<td><code>wget -c</code></td>
+<td>断点续传</td>
+</tr>
+<tr>
+<td><code>dir</code> / <code>vdir</code></td>
+<td>带 <code>--color=auto</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>grep</code> / <code>fgrep</code> / <code>egrep</code></td>
+<td>带 <code>--color=auto</code></td>
+<td></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🧠-无感集成函数详解"><a href="#🧠-无感集成函数详解" class="headerlink" title="🧠 无感集成函数详解"></a>🧠 无感集成函数详解</h2><blockquote>
+<p><strong>核心设计</strong>：用函数覆盖常用命令，<strong>不带参数时自动弹出 fzf，带参数时直接执行原功能</strong>。<br>你不需要记任何快捷键，像平常一样输入命令即可。</p>
+</blockquote>
+<h3 id="文件编辑：v-e"><a href="#文件编辑：v-e" class="headerlink" title="文件编辑：v / e"></a>文件编辑：<code>v</code> / <code>e</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function v -d "用 fzf 选文件并编辑"
+    if count $argv &gt;/dev/null
+        $EDITOR $argv        # 有参数 → 直接打开
+    else if type -q fzf
+        set file (fzf --preview 'bat --color=always --line-range :500 {}' --preview-window right:50% --prompt "Edit&gt; ")
+        if test -n "$file"
+            $EDITOR "$file"   # 无参数 → fzf 选文件 → 打开
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>v</code></td>
+<td>弹出 fzf 选文件 → 选中后用 <code>$EDITOR</code> 打开</td>
+</tr>
+<tr>
+<td><code>v ~/.config/fish/config.fish</code></td>
+<td>直接 <code>nvim ~/.config/fish/config.fish</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="目录跳转：c-fcd"><a href="#目录跳转：c-fcd" class="headerlink" title="目录跳转：c / fcd"></a>目录跳转：<code>c</code> / <code>fcd</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function c -d "用 fzf 选目录并 cd"
+    if count $argv &gt;/dev/null
+        cd $argv              # 有参数 → 直接 cd
+    else if type -q fzf; and type -q fd
+        set dir (fd --type d --hidden --follow --exclude .git | fzf --preview 'eza -T --level=2 --color=always {} | head -200' --preview-window right:50% --prompt "Cd&gt; ")
+        if test -n "$dir"
+            cd "$dir"          # 无参数 → fzf 选目录 → cd
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>c</code></td>
+<td>弹出 fzf 选目录 → 选中后自动 <code>cd</code></td>
+</tr>
+<tr>
+<td><code>c ~/Downloads</code></td>
+<td>直接 <code>cd ~/Downloads</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="进程管理：k-fkill"><a href="#进程管理：k-fkill" class="headerlink" title="进程管理：k / fkill"></a>进程管理：<code>k</code> / <code>fkill</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function k -d "用 fzf 选进程并 kill"
+    if count $argv &gt;/dev/null
+        kill $argv            # 有参数 → 直接 kill
+    else if type -q fzf
+        set pid (ps aux | sed 1d | fzf --multi --header "[Ctrl+A 全选 | Tab 多选 | Enter 确认]" --prompt "Kill&gt; " | awk '{print $2}')
+        if test -n "$pid"
+            kill $pid          # 无参数 → fzf 选进程 → kill
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>k</code></td>
+<td>弹出 fzf 进程列表（支持 Tab 多选）→ 选中后 <code>kill</code></td>
+</tr>
+<tr>
+<td><code>k 12345</code></td>
+<td>直接 <code>kill 12345</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="SSH-连接：s-fssh"><a href="#SSH-连接：s-fssh" class="headerlink" title="SSH 连接：s / fssh"></a>SSH 连接：<code>s</code> / <code>fssh</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function s -d "用 fzf 选 SSH 主机并连接"
+    if count $argv &gt;/dev/null
+        ssh $argv             # 有参数 → 直接 ssh
+    else if type -q fzf
+        set hosts (cat ~/.ssh/known_hosts 2&gt;/dev/null | awk '{print $1}' | sed 's/\[//g; s/\]//g; s/:.*//g' | sort -u)
+        set config_hosts (awk '/^Host / &amp;&amp; !/\*/ {print $2}' ~/.ssh/config 2&gt;/dev/null)
+        set all_hosts (echo $hosts $config_hosts | tr ' ' '\n' | sort -u | string collect)
+        set target (echo $all_hosts | fzf --prompt "SSH&gt; ")
+        if test -n "$target"
+            ssh "$target"      # 无参数 → fzf 选主机 → ssh
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>s</code></td>
+<td>从 <code>known_hosts</code> 和 <code>~/.ssh/config</code> 中选主机 → 连接</td>
+</tr>
+<tr>
+<td><code>s user@192.168.1.1</code></td>
+<td>直接 <code>ssh user@192.168.1.1</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="Git-分支切换：gco"><a href="#Git-分支切换：gco" class="headerlink" title="Git 分支切换：gco"></a>Git 分支切换：<code>gco</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function gco -d "用 fzf 选 Git 分支并 checkout"
+    if count $argv &gt;/dev/null
+        git checkout $argv    # 有参数 → 直接 checkout
+    else if type -q fzf
+        set branch (git branch -a --format='%(refname:short)' 2&gt;/dev/null | fzf --prompt "Checkout&gt; " --preview 'git log --oneline --color=always {1} | head -20' --preview-window right:50%)
+        if test -n "$branch"
+            git checkout "$branch"  # 无参数 → fzf 选分支 → checkout
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gco</code></td>
+<td>弹出所有分支（含远程），右侧预览最近 20 条提交 → 选中后 checkout</td>
+</tr>
+<tr>
+<td><code>gco main</code></td>
+<td>直接 <code>git checkout main</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="Git-查看提交：gsh"><a href="#Git-查看提交：gsh" class="headerlink" title="Git 查看提交：gsh"></a>Git 查看提交：<code>gsh</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function gsh -d "用 fzf 浏览 Git 提交并 show"
+    if count $argv &gt;/dev/null
+        git show $argv        # 有参数 → 直接 show
+    else if type -q fzf
+        set commit (git log --oneline --all --color=always | fzf --ansi --prompt "Show&gt; " --preview 'git show --color=always {1} | delta' --preview-window right:60% | awk '{print $1}')
+        if test -n "$commit"
+            git show "$commit"  # 无参数 → fzf 选提交 → show（带 delta 美化）
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gsh</code></td>
+<td>弹出提交历史，右侧 delta 美化 diff → 选中后 show</td>
+</tr>
+<tr>
+<td><code>gsh HEAD~3</code></td>
+<td>直接 <code>git show HEAD~3</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="Pacman-包管理：pac-pacr"><a href="#Pacman-包管理：pac-pacr" class="headerlink" title="Pacman 包管理：pac / pacr"></a>Pacman 包管理：<code>pac</code> / <code>pacr</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function pac -d "用 fzf 搜索包并安装"
+    if count $argv &gt;/dev/null
+        sudo pacman -S $argv  # 有参数 → 直接安装
+    else
+        set pkg (pacman -Slq 2&gt;/dev/null | fzf --multi --prompt "Install&gt; " --preview 'pacman -Si {1} 2&gt;/dev/null | head -30' --preview-window right:50%)
+        if test -n "$pkg"
+            sudo pacman -S $pkg  # 无参数 → fzf 搜仓库包 → 安装
+        end
+    end
+end
+
+function pacr -d "用 fzf 搜索已安装包并卸载"
+    if count $argv &gt;/dev/null
+        sudo pacman -Rns $argv  # 有参数 → 直接卸载
+    else
+        set pkg (pacman -Qq 2&gt;/dev/null | fzf --multi --prompt "Remove&gt; " --preview 'pacman -Qi {1} 2&gt;/dev/null | head -30' --preview-window right:50%)
+        if test -n "$pkg"
+            sudo pacman -Rns $pkg  # 无参数 → fzf 搜已装包 → 卸载
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pac</code></td>
+<td>弹出 fzf 搜索所有仓库包，右侧预览包信息 → 选中后 <code>sudo pacman -S</code></td>
+</tr>
+<tr>
+<td><code>pac neovim</code></td>
+<td>直接 <code>sudo pacman -S neovim</code>，不弹 fzf</td>
+</tr>
+<tr>
+<td><code>pacr</code></td>
+<td>弹出已安装包列表，右侧预览 → 选中后 <code>sudo pacman -Rns</code></td>
+</tr>
+<tr>
+<td><code>pacr firefox</code></td>
+<td>直接 <code>sudo pacman -Rns firefox</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="环境变量查看：envf"><a href="#环境变量查看：envf" class="headerlink" title="环境变量查看：envf"></a>环境变量查看：<code>envf</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function envf -d "用 fzf 搜索环境变量"
+    if type -q fzf
+        set var (env | fzf --prompt "Env&gt; " --preview 'echo $ {1}' | cut -d= -f1)
+        if test -n "$var"
+            echo "$$var = "$$var
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>envf</code></td>
+<td>弹出 fzf 搜索所有环境变量 → 选中后显示变量名和值</td>
+</tr>
+</tbody></table>
+<h3 id="历史命令直接执行：fh"><a href="#历史命令直接执行：fh" class="headerlink" title="历史命令直接执行：fh"></a>历史命令直接执行：<code>fh</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function fh -d "用 fzf 搜索历史并执行"
+    if type -q fzf
+        set cmd (history | fzf --tac --prompt "History&gt; " --preview 'echo {}' --preview-window down:3)
+        if test -n "$cmd"
+            eval $cmd  # 无参数 → fzf 搜历史 → 直接执行（不编辑）
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>fh</code></td>
+<td>弹出 fzf 搜索历史 → 选中后直接执行（与 Atuin 的 <code>Ctrl+R</code> 互补：Atuin 插入命令，fh 直接执行）</td>
+</tr>
+</tbody></table>
+<h3 id="JSON-查看：jl"><a href="#JSON-查看：jl" class="headerlink" title="JSON 查看：jl"></a>JSON 查看：<code>jl</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function jl -d "用 jless 查看 JSON，无参数时 fzf 选择"
+    if count $argv &gt;/dev/null
+        jless $argv           # 有参数 → 直接打开
+    else if type -q fzf; and type -q fd
+        set file (fd --type f --extension json --hidden --follow --exclude .git | fzf --prompt "JSON&gt; " --preview 'bat --language json --color=always --line-range :50 {}' --preview-window right:50%)
+        if test -n "$file"
+            jless "$file"      # 无参数 → fzf 选 JSON 文件 → jless 打开
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>jl</code></td>
+<td>弹出 fzf 搜索所有 JSON 文件 → 选中后 jless 交互式查看（支持折叠、搜索）</td>
+</tr>
+<tr>
+<td><code>jl data.json</code></td>
+<td>直接 <code>jless data.json</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="Markdown-查看：md"><a href="#Markdown-查看：md" class="headerlink" title="Markdown 查看：md"></a>Markdown 查看：<code>md</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function md -d "用 glow 查看 Markdown，无参数时 fzf 选择"
+    if count $argv &gt;/dev/null
+        glow $argv            # 有参数 → 直接打开
+    else if type -q fzf; and type -q fd
+        set file (fd --type f --extension md --hidden --follow --exclude .git | fzf --prompt "Markdown&gt; " --preview 'bat --language markdown --color=always --line-range :30 {}' --preview-window right:50%)
+        if test -n "$file"
+            glow "$file"       # 无参数 → fzf 选 MD 文件 → glow 渲染
+        end
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>md</code></td>
+<td>弹出 fzf 搜索所有 Markdown 文件 → 选中后 glow 漂亮渲染</td>
+</tr>
+<tr>
+<td><code>md README.md</code></td>
+<td>直接 <code>glow README.md</code>，不弹 fzf</td>
+</tr>
+</tbody></table>
+<h3 id="tldr-覆盖-man"><a href="#tldr-覆盖-man" class="headerlink" title="tldr 覆盖 man"></a>tldr 覆盖 <code>man</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function man -d "优先 tldr，fallback 到系统 man"
+    if count $argv &gt;/dev/null
+        if test (count $argv) -eq 1
+            if tldr $argv[1] &gt;/dev/null 2&gt;&amp;1
+                tldr $argv[1]   # 单参数 → 先尝试 tldr 速查表
+                return 0
+            end
+        end
+        command man $argv       # 多参数或 tldr 没有 → 回退系统 man
+    else
+        command man
+    end
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>用法</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>man tar</code></td>
+<td>先显示 tldr 速查表（常用示例），没有才显示传统 man</td>
+</tr>
+<tr>
+<td><code>man 3 printf</code></td>
+<td>多参数直接走系统 man，不受影响</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🏗️-其他智能工具"><a href="#🏗️-其他智能工具" class="headerlink" title="🏗️ 其他智能工具"></a>🏗️ 其他智能工具</h2><h3 id="Zoxide（智能-cd）"><a href="#Zoxide（智能-cd）" class="headerlink" title="Zoxide（智能 cd）"></a>Zoxide（智能 cd）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">z down        <span class="token comment"># 跳转到 ~/Downloads</span>
+z pro web     <span class="token comment"># 跳转到 ~/projects/webapp</span>
+zi            <span class="token comment"># 交互式选择（调用 fzf 选历史目录）</span>
+z -           <span class="token comment"># 跳转到上一个目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="direnv（目录环境自动加载）"><a href="#direnv（目录环境自动加载）" class="headerlink" title="direnv（目录环境自动加载）"></a>direnv（目录环境自动加载）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在项目根目录创建 .envrc</span>
+<span class="token builtin class-name">cd</span> ~/projects/myapp
+<span class="token builtin class-name">echo</span> <span class="token string">'source venv/bin/activate'</span> <span class="token operator">&gt;</span> .envrc
+<span class="token builtin class-name">echo</span> <span class="token string">'export API_KEY="sk-xxx"'</span> <span class="token operator">&gt;&gt;</span> .envrc
+
+<span class="token comment"># 授权（安全机制，防止恶意脚本）</span>
+direnv allow
+
+<span class="token comment"># 以后自动生效</span>
+<span class="token builtin class-name">cd</span> ~/projects/myapp     <span class="token comment"># 自动激活虚拟环境，API_KEY 可用</span>
+<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>                   <span class="token comment"># 自动退出虚拟环境，API_KEY 消失</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="yazi（文件管理器）"><a href="#yazi（文件管理器）" class="headerlink" title="yazi（文件管理器）"></a>yazi（文件管理器）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">yy            <span class="token comment"># 启动 yazi，按 q 退出后自动 cd 到当前所在目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="done（桌面通知）"><a href="#done（桌面通知）" class="headerlink" title="done（桌面通知）"></a>done（桌面通知）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span> -j<span class="token variable"><span class="token variable">$(</span>nproc<span class="token variable">)</span></span>  <span class="token comment"># 编译大项目，完成后桌面弹出通知：「✅ make 已完成（耗时 2:34）」</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h2 id="🎨-美化效果一览"><a href="#🎨-美化效果一览" class="headerlink" title="🎨 美化效果一览"></a>🎨 美化效果一览</h2><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ls</code> / <code>la</code> / <code>ll</code></td>
+<td><code>eza</code> 彩色图标列表</td>
+</tr>
+<tr>
+<td><code>cat</code></td>
+<td><code>bat</code> 语法高亮 + 行号 + Dracula 主题</td>
+</tr>
+<tr>
+<td><code>man xxx</code></td>
+<td><code>bat</code> 渲染的彩色 man 页面</td>
+</tr>
+<tr>
+<td><code>git diff</code></td>
+<td><code>delta</code> 并排对比 + 语法高亮 + Dracula 主题</td>
+</tr>
+<tr>
+<td>长命令完成</td>
+<td><code>done</code> 桌面通知</td>
+</tr>
+<tr>
+<td><code>man tar</code></td>
+<td><code>tldr</code> 速查表（常用示例）</td>
+</tr>
+<tr>
+<td><code>md README.md</code></td>
+<td><code>glow</code> 漂亮渲染 Markdown</td>
+</tr>
+<tr>
+<td><code>jl data.json</code></td>
+<td><code>jless</code> 交互式折叠查看 JSON</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="🚀-一日典型工作流"><a href="#🚀-一日典型工作流" class="headerlink" title="🚀 一日典型工作流"></a>🚀 一日典型工作流</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 打开终端，自动显示 fastfetch 系统信息</span>
+
+<span class="token comment"># 2. 进入项目目录（zoxide 自动补全）</span>
+z pro web          <span class="token comment"># 跳转到 ~/projects/webapp</span>
+
+<span class="token comment"># 3. 环境自动加载（direnv）</span>
+<span class="token comment"># 虚拟环境已激活，环境变量已设置</span>
+
+<span class="token comment"># 4. 查看 Git 状态</span>
+gs                 <span class="token comment"># 展开为 git status</span>
+
+<span class="token comment"># 5. 查看修改（delta 美化）</span>
+gd                 <span class="token comment"># 展开为 git diff</span>
+
+<span class="token comment"># 6. 添加文件并提交</span>
+gaa                <span class="token comment"># git add --all</span>
+gcm <span class="token string">"fix: login"</span>   <span class="token comment"># git commit -m "fix: login"</span>
+gp                 <span class="token comment"># git push</span>
+
+<span class="token comment"># 7. 切换分支（无感集成）</span>
+gco                <span class="token comment"># fzf 选分支 → 自动 checkout</span>
+
+<span class="token comment"># 8. 查看某次提交</span>
+gsh                <span class="token comment"># fzf 选提交 → 自动 show（带 delta 美化）</span>
+
+<span class="token comment"># 9. 编辑文件（无感集成）</span>
+<span class="token function">v</span>                  <span class="token comment"># fzf 选文件 → 自动 nvim 打开</span>
+
+<span class="token comment"># 10. 进入另一个目录（无感集成）</span>
+c                  <span class="token comment"># fzf 选目录 → 自动 cd</span>
+
+<span class="token comment"># 11. 安装新包（无感集成）</span>
+pac                <span class="token comment"># fzf 搜包 → 自动 sudo pacman -S</span>
+
+<span class="token comment"># 12. 长时间编译，切出去等通知</span>
+<span class="token function">make</span> -j<span class="token variable"><span class="token variable">$(</span>nproc<span class="token variable">)</span></span>
+<span class="token comment"># ... 桌面通知弹出 ...</span>
+
+<span class="token comment"># 13. 打错命令快速修正</span>
+<span class="token function">sudo</span> paman <span class="token parameter variable">-S</span> neovim    <span class="token comment"># 报错</span>
+f                       <span class="token comment"># 自动修正为 sudo pacman -S neovim</span>
+
+<span class="token comment"># 14. 查找之前用过的命令</span>
+Ctrl + R              <span class="token comment"># Atuin 搜索历史</span>
+<span class="token comment"># 输入 "docker" → 找到之前复杂的 docker run 命令</span>
+
+<span class="token comment"># 15. 查看系统状态</span>
+<span class="token function">top</span>                   <span class="token comment"># 展开为 btm，美观的系统监控</span>
+
+<span class="token comment"># 16. 测试 API</span>
+get api.github.com/users/octocat   <span class="token comment"># 展开为 xh GET ...</span>
+
+<span class="token comment"># 17. 查看 Markdown 文档</span>
+md                    <span class="token comment"># fzf 选 MD 文件 → glow 渲染</span>
+
+<span class="token comment"># 18. 查看 JSON 数据</span>
+jl                    <span class="token comment"># fzf 选 JSON 文件 → jless 交互查看</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="⚙️-配置调优建议"><a href="#⚙️-配置调优建议" class="headerlink" title="⚙️ 配置调优建议"></a>⚙️ 配置调优建议</h2><h3 id="1-禁用-fish-greeting（不显示-fastfetch）"><a href="#1-禁用-fish-greeting（不显示-fastfetch）" class="headerlink" title="1. 禁用 fish_greeting（不显示 fastfetch）"></a>1. 禁用 fish_greeting（不显示 fastfetch）</h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function fish_greeting
+    # 空函数 = 不显示任何内容
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="2-修改-pay-respects-触发词为-fuck"><a href="#2-修改-pay-respects-触发词为-fuck" class="headerlink" title="2. 修改 pay-respects 触发词为 fuck"></a>2. 修改 pay-respects 触发词为 <code>fuck</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -gx PAY_RESPECTS_ALIAS "fuck"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="3-调整-done-通知阈值"><a href="#3-调整-done-通知阈值" class="headerlink" title="3. 调整 done 通知阈值"></a>3. 调整 done 通知阈值</h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -U __done_min_cmd_duration 5000    # 改为 5 秒
+set -U __done_notification_urgency_level normal<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="4-调整-fzf-预览窗口宽度"><a href="#4-调整-fzf-预览窗口宽度" class="headerlink" title="4. 调整 fzf 预览窗口宽度"></a>4. 调整 fzf 预览窗口宽度</h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -gx FZF_CTRL_T_OPTS "--preview 'bat --color=always --line-range :500 {}' --preview-window right:40%"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="5-Starship-性能排查"><a href="#5-Starship-性能排查" class="headerlink" title="5. Starship 性能排查"></a>5. Starship 性能排查</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">starship timings    <span class="token comment"># 查看哪些模块耗时最长</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h2 id="🆘-故障排查"><a href="#🆘-故障排查" class="headerlink" title="🆘 故障排查"></a>🆘 故障排查</h2><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>原因</th>
+<th>解决</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Ctrl+T</code> 没反应</td>
+<td>fzf 未安装或未绑定</td>
+<td><code>sudo pacman -S fzf &amp;&amp; source ~/.config/fish/config.fish</code></td>
+</tr>
+<tr>
+<td><code>f</code> 没反应</td>
+<td>pay-respects 未安装</td>
+<td><code>paru -S pay-respects</code></td>
+</tr>
+<tr>
+<td><code>z</code> 命令找不到</td>
+<td>zoxide 未初始化</td>
+<td>检查 `zoxide init fish</td>
+</tr>
+<tr>
+<td><code>yy</code> 报错</td>
+<td>yazi 未安装</td>
+<td><code>sudo pacman -S yazi</code></td>
+</tr>
+<tr>
+<td><code>direnv</code> 提示未允许</td>
+<td>安全机制</td>
+<td>在项目目录执行 <code>direnv allow</code></td>
+</tr>
+<tr>
+<td><code>git diff</code> 没有颜色</td>
+<td>delta 未配置</td>
+<td>执行 git config 命令（见上文）</td>
+</tr>
+<tr>
+<td><code>man</code> 页面没有颜色</td>
+<td>bat 未安装</td>
+<td><code>sudo pacman -S bat</code></td>
+</tr>
+<tr>
+<td>abbr 不展开</td>
+<td>输入后没有按 Space</td>
+<td>abbr 需要按 Space 或 Enter 触发</td>
+</tr>
+<tr>
+<td>Atuin 搜索为空</td>
+<td>数据库未初始化</td>
+<td>执行 <code>atuin import auto</code> 导入历史</td>
+</tr>
+<tr>
+<td><code>gco</code> 弹出 fzf 失败</td>
+<td>之前 <code>gco</code> 是 abbr</td>
+<td>删除 <code>abbr -a -- gco 'git checkout'</code> 这一行</td>
+</tr>
+<tr>
+<td><code>v</code>/<code>c</code>/<code>k</code> 报错</td>
+<td>fzf 或 fd 未安装</td>
+<td><code>sudo pacman -S fzf fd</code></td>
+</tr>
+</tbody></table>
+<hr>
+<blockquote>
+<p>📌 <strong>核心哲学</strong>：减少记忆负担，增加上下文感知 —— 工具记住你访问过的目录、执行过的命令、项目环境，你只需要模糊输入，让机器去匹配。</p>
+</blockquote>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">emoeem</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/">https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">emoeem</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E4%BB%A3%E7%A0%81/">
+                                    <span class="chip bg-color">代码</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="CachyOS Fish 终端完全配置指南">
+                        
+                        <span class="card-title">CachyOS Fish 终端完全配置指南</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-23
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E4%BB%A3%E7%A0%81/">
+                        <span class="chip bg-color">代码</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/custom_0.jpg" class="responsive-img" alt="llama-cli 参数配置指南">
+                        
+                        <span class="card-title">llama-cli 参数配置指南</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/">
+                        <span class="chip bg-color">代码开发</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+
+    <div class="container row center-align"
+         style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2019-2026</span>
+            
+            <a href="/about" target="_blank">emoeem</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            
+            <br>
+            
+                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                        class="white-color">10k</span>
+            
+            
+            
+                
+            
+            
+                <span id="busuanzi_container_site_pv">
+                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
+                    <span id="busuanzi_value_site_pv" class="white-color"></span>
+            </span>
+            
+            
+                <span id="busuanzi_container_site_uv">
+                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
+                    <span id="busuanzi_value_site_uv" class="white-color"></span>
+            </span>
+            
+            <br>
+
+            <!-- 运行天数提醒. -->
+            
+                <span id="sitetime"> Loading ...</span>
+                <script>
+                    var calcSiteTime = function () {
+                        var seconds = 1000;
+                        var minutes = seconds * 60;
+                        var hours = minutes * 60;
+                        var days = hours * 24;
+                        var years = days * 365;
+                        var today = new Date();
+                        var startYear = "2019";
+                        var startMonth = "6";
+                        var startDate = "28";
+                        var startHour = "0";
+                        var startMinute = "0";
+                        var startSecond = "0";
+                        var todayYear = today.getFullYear();
+                        var todayMonth = today.getMonth() + 1;
+                        var todayDate = today.getDate();
+                        var todayHour = today.getHours();
+                        var todayMinute = today.getMinutes();
+                        var todaySecond = today.getSeconds();
+                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                        var diff = t2 - t1;
+                        var diffYears = Math.floor(diff / years);
+                        var diffDays = Math.floor((diff / days) - diffYears * 365);
+
+                        // 区分是否有年份.
+                        var language = 'zh-CN';
+                        if (startYear === String(todayYear)) {
+                            document.getElementById("year").innerHTML = todayYear;
+                            var daysTip = 'This site has been running for ' + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                daysTip = '本站已运行 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                daysTip = '本站已運行 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = daysTip;
+                        } else {
+                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
+                                + diffDays + ' days';
+                            if (language === 'zh-CN') {
+                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            } else if (language === 'zh-HK') {
+                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
+                            }
+                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
+                        }
+                    }
+
+                    calcSiteTime();
+                </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/emoeem" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="https://space.bilibili.com/474821319" class="tooltipped" target="_blank" data-tooltip="关注我的B站: https://space.bilibili.com/474821319" data-position="top" data-delay="50">
+        <i class="fab fa-bilibili"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 白天和黑夜主题 -->
+<div class="stars-con">
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>  
+</div>
+
+<script>
+    function switchNightMode() {
+        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
+        setTimeout(function () {
+            $('body').hasClass('DarkMode') 
+            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
+            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
+            
+            setTimeout(function () {
+            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
+                $(this).remove()
+            })
+            }, 2e3)
+        })
+    }
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    
+
+    
+    
+    
+
+    <!-- 雪花特效 -->
+    
+
+    <!-- 鼠标星星特效 -->
+    
+
+     
+        <script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+        <script src="/libs/others/TencentCaptcha.js"></script>
+        <button id="TencentCaptcha" data-appid="xxxxxxxxxx" data-cbfn="callback" type="button" hidden></button>
+    
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    <!--腾讯兔小巢-->
+    
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
