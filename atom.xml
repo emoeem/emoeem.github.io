@@ -10,7 +10,22 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-06-24T09:51:21.953Z</updated>
+  <updated>2026-06-24T15:20:19.293Z</updated>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
+    <id>https://emoeem.github.io/2026/06/24/yazi-pei-zhi/</id>
+    <link href="https://emoeem.github.io/2026/06/24/yazi-pei-zhi/"/>
+    <published>2026-06-24T15:19:29.000Z</published>
+    <summary>
+      <![CDATA[<h2 id="关于-Yazi"><a href="#关于-Yazi" class="headerlink" title="关于 Yazi"></a>关于 Yazi</h2><p>Yazi 是一个用 Rust 编写的终端文件管理器，支持异步]]>
+    </summary>
+    <title>yazi配置</title>
+    <updated>2026-06-24T15:20:19.293Z</updated>
+  </entry>
   <entry>
     <author>
       <name>emoeem</name>
