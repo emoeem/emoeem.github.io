@@ -411,14 +411,14 @@ Gi">
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    5.3k
+                    10.6k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    20 分
+                    41 分
                 </div>
                 
 
@@ -1502,6 +1502,1072 @@ write-filename-in-watch-later-config
 <li>​<code>fonts/</code>：更换 OSD/字幕字体</li>
 </ul>
 <p>祝你观影愉快！🎬</p>
+<h1 id="mpv"><a href="#mpv" class="headerlink" title="mpv"></a>mpv</h1><h1 id="MPV-播放器配置完全指南-1"><a href="#MPV-播放器配置完全指南-1" class="headerlink" title="MPV 播放器配置完全指南"></a>MPV 播放器配置完全指南</h1><p><strong>基于配置文件</strong>：<br><strong>适用版本</strong>：（部分选项需 gpu-next）<br><strong>文档目的</strong>：详解每个文件、选项与快捷键的作用，说明为何如此配置，并提供画质、功能、交互方面的全貌。</p>
+<hr>
+<h2 id="📁-目录结构速览-1"><a href="#📁-目录结构速览-1" class="headerlink" title="📁 目录结构速览"></a>📁 目录结构速览</h2><table>
+<thead>
+<tr>
+<th>路径</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>.git</code></td>
+<td>Git 版本控制，轻松回滚、同步配置</td>
+</tr>
+<tr>
+<td>​<code>.gitignore</code></td>
+<td>忽略规则，排除缓存、临时文件</td>
+</tr>
+<tr>
+<td>​<code>mpv.conf</code> (50 KB)</td>
+<td>主配置，控制视频/音频输出、渲染、字幕、OSD、着色器等核心功能</td>
+</tr>
+<tr>
+<td>​<code>input.conf</code> (55 KB)</td>
+<td>键盘/鼠标/多媒体键绑定，uosc 右键菜单项目定义</td>
+</tr>
+<tr>
+<td>​<code>inputevent_key.conf</code> (2.6 KB)</td>
+<td>底层按键事件映射，用于非标准键盘或多语言布局适配</td>
+</tr>
+<tr>
+<td>​<code>menu.conf</code> (152 B)</td>
+<td>原生右键菜单的自定义项</td>
+</tr>
+<tr>
+<td>​<code>profiles.conf</code> (2.8 KB)</td>
+<td>条件配置，根据文件属性自动切换参数组（如 HDR、低清增强）</td>
+</tr>
+<tr>
+<td>​<code>scripts/</code></td>
+<td>Lua/JavaScript 脚本，扩展功能（自动加载、历史、播放列表、弹幕、AI字幕等）</td>
+</tr>
+<tr>
+<td>​<code>script-modules/</code></td>
+<td>共享库，供多个脚本调用</td>
+</tr>
+<tr>
+<td>​<code>script-opts/</code></td>
+<td>各脚本的自定义选项文件</td>
+</tr>
+<tr>
+<td>​<code>shaders/</code></td>
+<td>GLSL 着色器文件，用于超分、降噪、锐化、色度升频、HDR 修复等后处理</td>
+</tr>
+<tr>
+<td>​<code>fonts/</code></td>
+<td>自定义字体（包含霞鹜文楷屏幕版、多种 emoji 回退），用于 OSD 和字幕</td>
+</tr>
+<tr>
+<td>​<code>icc/</code></td>
+<td>ICC 色彩管理文件（标准色域等）</td>
+</tr>
+<tr>
+<td>​<code>osc-style/</code></td>
+<td>uosc 等第三方 OSC 的样式文件</td>
+</tr>
+<tr>
+<td>​<code>vs/</code></td>
+<td>VapourSynth 脚本（高级帧处理，需额外环境）</td>
+</tr>
+<tr>
+<td>​<code>cache/</code></td>
+<td>着色器编译缓存、ICC LUT 缓存、watch_later 进度保存等</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="⚙️-mpv-conf-完整解析-1"><a href="#⚙️-mpv-conf-完整解析-1" class="headerlink" title="⚙️ mpv.conf 完整解析"></a>⚙️ <code>mpv.conf</code> 完整解析</h2><h3 id="🔹-基础设置-1"><a href="#🔹-基础设置-1" class="headerlink" title="🔹 基础设置"></a>🔹 基础设置</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">vo</span><span class="token punctuation">=</span><span class="token value attr-value">gpu-next</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用新一代 GPU 视频输出驱动，支持 HDR 动态色调映射、Vulkan 渲染、更现代的缩放器着色器。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">gpu-context</span><span class="token punctuation">=</span><span class="token value attr-value">waylandvk</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>指定图形上下文为 Wayland + Vulkan（Linux 环境）。若使用 X11 可改为 <code>x11vk</code>。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">hwdec</span><span class="token punctuation">=</span><span class="token value attr-value">auto-safe</span>
+<span class="token key attr-name">hwdec-codecs</span><span class="token punctuation">=</span><span class="token value attr-value">all</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>启用硬件解码（自动选择安全模式）。<code>all</code> 表示对所有支持的编码尝试硬解，减轻 CPU 负担。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">title</span><span class="token punctuation">=</span><span class="token value attr-value">${?pause==yes:⏸}${?mute==yes:🔇}${?ontop==yes:📌}${?demuxer-via-network==yes:${media-title}}${?demuxer-via-network==no:${filename}}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>自定义窗口标题：显示暂停图标、静音图标、置顶图标，并根据是否为网络流显示媒体标题或文件名。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osc</span><span class="token punctuation">=</span><span class="token value attr-value">no</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>禁用内置 OSC，为使用第三方 OSC（如 uosc）腾出干净界面。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">input-ime</span><span class="token punctuation">=</span><span class="token value attr-value">no</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>只在需要文本输入时才激活输入法，避免阻碍快捷键。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">idle</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>播放完毕后保持 mpv 运行，方便继续操作（与 <code>keep-open</code> 组合）。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">ontop<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>窗口始终置顶显示。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">hr-seek</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span>
+<span class="token key attr-name">hr-seek-framedrop</span><span class="token punctuation">=</span><span class="token value attr-value">no</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>精准跳转（非关键帧），跳转时不丢帧以保证音频同步。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">save-position-on-quit</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span>
+write-filename-in-watch-later-config
+<span class="token key attr-name">watch-later-dir</span><span class="token punctuation">=</span><span class="token value attr-value">"~~/cache/watch_later"</span>
+<span class="token key attr-name">watch-later-options</span><span class="token punctuation">=</span><span class="token value attr-value">start,vid,aid,sid</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>退出时保存播放进度（记住音轨、字幕轨、视频轨），避免保存音量、速度等干扰性设置。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">resume-playback-check-mtime</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>检查文件修改时间，防止不同内容但同名文件的进度错误恢复。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">save-watch-history</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span>
+<span class="token key attr-name">watch-history-path</span><span class="token punctuation">=</span><span class="token value attr-value">~~/files/watch_history.jsonl</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>保持观看历史，供 <code>simplehistory</code> 脚本使用。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">reset-on-next-file</span><span class="token punctuation">=</span><span class="token value attr-value">vid,aid,sid,...（详细列表）</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>切换到下一文件时，只重置视频/音频/字幕轨道和画面参数，保留速度等其他设定。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">input-ipc-server</span><span class="token punctuation">=</span><span class="token value attr-value">/tmp/mpvsocket</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>开启 IPC 服务，允许外部程序（如 SVP Manager、浏览器扩展）控制 mpv。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">directory-mode</span><span class="token punctuation">=</span><span class="token value attr-value">ignore</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>打开文件夹时只加载文件夹内的文件，不递归子目录。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">metadata-codepage</span><span class="token punctuation">=</span><span class="token value attr-value">auto</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>自动检测非 UTF-8 元数据的编码。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">msg-level</span><span class="token punctuation">=</span><span class="token value attr-value">all=info,auto_profiles=warn</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>控制台日志级别：一般信息显示 info，自动配置组脚本仅显示警告。</p>
+<hr>
+<h3 id="🔹-OSD（屏幕显示）-1"><a href="#🔹-OSD（屏幕显示）-1" class="headerlink" title="🔹 OSD（屏幕显示）"></a>🔹 OSD（屏幕显示）</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">no-osd-bar<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>关闭默认的 OSD 进度条，由 uosc 提供更美观的界面。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-on-seek</span><span class="token punctuation">=</span><span class="token value attr-value">msg-bar</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>跳转时显示时间信息 + 进度条。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-bar-w</span><span class="token punctuation">=</span><span class="token value attr-value">100</span>
+<span class="token key attr-name">osd-bar-h</span><span class="token punctuation">=</span><span class="token value attr-value">2</span>
+<span class="token key attr-name">osd-bar-align-y</span><span class="token punctuation">=</span><span class="token value attr-value">-1</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>调整内置进度条的尺寸和位置（主要用于 msg-bar 中的条）。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-fonts-dir</span><span class="token punctuation">=</span><span class="token value attr-value">"~~/fonts"</span>
+<span class="token key attr-name">osd-font</span><span class="token punctuation">=</span><span class="token value attr-value">"LXGW WenKai Screen;Noto Color Emoji"</span>
+<span class="token key attr-name">osd-font-size</span><span class="token punctuation">=</span><span class="token value attr-value">24</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>指定 OSD 字体目录，使用霞鹜文楷屏幕阅读版，回退 emoji 字体，字体大小调小至 24（默认 38）。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-color</span><span class="token punctuation">=</span><span class="token value attr-value">"#FFFFFF"</span>
+<span class="token key attr-name">osd-outline-size</span><span class="token punctuation">=</span><span class="token value attr-value">1.0</span>
+<span class="token key attr-name">osd-outline-color</span><span class="token punctuation">=</span><span class="token value attr-value">"#1C1B1F"</span>
+<span class="token key attr-name">osd-shadow-offset</span><span class="token punctuation">=</span><span class="token value attr-value">0</span>
+<span class="token key attr-name">osd-back-color</span><span class="token punctuation">=</span><span class="token value attr-value">"#1C1B1F"</span>
+<span class="token key attr-name">osd-border-style</span><span class="token punctuation">=</span><span class="token value attr-value">outline-and-shadow</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>精细控制 OSD 文字的描边、阴影与背景，使其在任何画面上清晰可见。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-playlist-entry</span><span class="token punctuation">=</span><span class="token value attr-value">filename</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>播放列表显示文件名而非标题。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-playing-msg</span><span class="token punctuation">=</span><span class="token value attr-value">"${filename}"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>开始播放时显示文件名。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-fractions</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>时间显示精确到毫秒（例如 01:23.456），方便对帧。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">osd-duration</span><span class="token punctuation">=</span><span class="token value attr-value">2000</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>OSD 信息显示 2 秒后自动消失。</p>
+<hr>
+<h3 id="🔹-视频-1"><a href="#🔹-视频-1" class="headerlink" title="🔹 视频"></a>🔹 视频</h3><h4 id="ICC-色彩管理-1"><a href="#ICC-色彩管理-1" class="headerlink" title="ICC 色彩管理"></a>ICC 色彩管理</h4><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties">icc-profile-auto<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>自动加载系统显示器 ICC 配置文件，实现精准色彩。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">icc-intent</span><span class="token punctuation">=</span><span class="token value attr-value">0</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用感知度（perceptual）映射意图，色彩过渡自然。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">icc-force-contrast</span><span class="token punctuation">=</span><span class="token value attr-value">1000</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>提升 ICC 读取到的对比度，避免暗部发灰。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">icc-cache-dir</span><span class="token punctuation">=</span><span class="token value attr-value">"~~/cache/icc_cache"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>缓存 ICC 转换的 3D LUT 以加速启动。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">use-embedded-icc-profile</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用图像/视频文件中内嵌的 ICC 配置，保证色彩准确。</p>
+<h4 id="HDR-相关-1"><a href="#HDR-相关-1" class="headerlink" title="HDR 相关"></a>HDR 相关</h4><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">inverse-tone-mapping</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在 HDR 显示器上允许 SDR→HDR 反向映射，提升普通视频在宽色域屏上的观感。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">hdr-contrast-recovery</span><span class="token punctuation">=</span><span class="token value attr-value">0.30</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>HDR 色调映射后恢复对比度，强度 0.3（与 gpu-hq 一致），避免画面过灰。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">hdr-compute-peak</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>动态逐帧计算峰值亮度，实现场景自适应色调映射（较老显卡可能不支持）。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">target-colorspace-hint</span><span class="token punctuation">=</span><span class="token value attr-value">auto</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>自动通知显示器切换色彩空间（如 HDR 直通时），需要驱动支持。</p>
+<hr>
+<h3 id="🔹-音频-1"><a href="#🔹-音频-1" class="headerlink" title="🔹 音频"></a>🔹 音频</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">audio-device</span><span class="token punctuation">=</span><span class="token value attr-value">auto</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用系统默认音频输出设备。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">audio-channels</span><span class="token punctuation">=</span><span class="token value attr-value">auto</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>音频声道布局自动选择。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">ao</span><span class="token punctuation">=</span><span class="token value attr-value">pipewire</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在 Linux 下使用 PipeWire 音频后端（低延迟、现代化）。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">audio-format</span><span class="token punctuation">=</span><span class="token value attr-value">float</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用 32 位浮点处理音频，保留动态范围。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">replaygain</span><span class="token punctuation">=</span><span class="token value attr-value">album</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>根据文件元数据自动调整专辑增益，避免不同曲目音量跳跃。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">gapless-audio</span><span class="token punctuation">=</span><span class="token value attr-value">no</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>不一致文件间禁用无缝播放，防止采样率变化引起问题。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">audio-file-auto</span><span class="token punctuation">=</span><span class="token value attr-value">fuzzy</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>自动加载文件名包含视频名称的外部音轨。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">audio-file-paths</span><span class="token punctuation">=</span><span class="token value attr-value">audio</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在 <code>audio</code> 子目录中搜索外挂音轨。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">alang</span><span class="token punctuation">=</span><span class="token value attr-value">japanese,jpn,jap,ja,jp,english,eng,en</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>首选日语，其次英语音轨。</p>
+<hr>
+<h3 id="🔹-字幕-1"><a href="#🔹-字幕-1" class="headerlink" title="🔹 字幕"></a>🔹 字幕</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">sub-codepage</span><span class="token punctuation">=</span><span class="token value attr-value">gb18030</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>非 UTF-8 字幕优先尝试 GB18030 编码，适配中文字幕。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">sub-auto</span><span class="token punctuation">=</span><span class="token value attr-value">fuzzy</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>模糊匹配外部字幕文件。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">sub-file-paths</span><span class="token punctuation">=</span><span class="token value attr-value">sub:subs:subtitles:字幕</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>在视频所在目录的 <code>sub</code>​、<code>subs</code>​、<code>subtitles</code>​、<code>字幕</code> 文件夹中搜索外挂字幕。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">slang</span><span class="token punctuation">=</span><span class="token value attr-value">chs,sc,zh-Hans,zh-CN,cht,tc,zh-Hant,zh-HK,zh-TW,chi,zho,zh</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>优先简体中文，其次繁体中文。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">sub-fonts-dir</span><span class="token punctuation">=</span><span class="token value attr-value">"~~/fonts"</span>
+<span class="token key attr-name">sub-font</span><span class="token punctuation">=</span><span class="token value attr-value">"LXGW WenKai Screen;Noto Color Emoji"</span>
+<span class="token key attr-name">sub-font-size</span><span class="token punctuation">=</span><span class="token value attr-value">34</span>
+<span class="token key attr-name">sub-bold</span><span class="token punctuation">=</span><span class="token value attr-value">no</span>
+<span class="token key attr-name">sub-color</span><span class="token punctuation">=</span><span class="token value attr-value">"#FFFFFF"</span>
+<span class="token key attr-name">sub-outline-size</span><span class="token punctuation">=</span><span class="token value attr-value">0.5</span>
+<span class="token key attr-name">sub-outline-color</span><span class="token punctuation">=</span><span class="token value attr-value">"#000000"</span>
+<span class="token key attr-name">sub-shadow-offset</span><span class="token punctuation">=</span><span class="token value attr-value">0.5</span>
+<span class="token key attr-name">sub-back-color</span><span class="token punctuation">=</span><span class="token value attr-value">"#000000"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>设定字幕字体为霞鹜文楷，白色文字加黑色描边和轻微阴影，字体大小 34，清晰美观。</p>
+<hr>
+<h3 id="🔹-截图-1"><a href="#🔹-截图-1" class="headerlink" title="🔹 截图"></a>🔹 截图</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">screenshot-format</span><span class="token punctuation">=</span><span class="token value attr-value">webp</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>截图保存为 WebP，体积小质量高。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">screenshot-webp-quality</span><span class="token punctuation">=</span><span class="token value attr-value">85</span>
+<span class="token key attr-name">screenshot-webp-compression</span><span class="token punctuation">=</span><span class="token value attr-value">6</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>WebP 有损质量 85，压缩等级 6（平衡速度与大小）。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">screenshot-tag-colorspace</span><span class="token punctuation">=</span><span class="token value attr-value">no</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>不嵌入色彩空间标签，避免某些软件显示异常。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">screenshot-template</span><span class="token punctuation">=</span><span class="token value attr-value">"~~/files/screen/%{media-title}-%P-%n"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>截图保存在 mpv 配置的 <code>files/screen/</code> 下，文件名包含媒体标题、截图参数和序号。</p>
+<hr>
+<h3 id="🔹-脚本、滤镜、着色器-1"><a href="#🔹-脚本、滤镜、着色器-1" class="headerlink" title="🔹 脚本、滤镜、着色器"></a>🔹 脚本、滤镜、着色器</h3><pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">gpu-shader-cache-dir</span><span class="token punctuation">=</span><span class="token value attr-value">"~~/cache/shaders_cache"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>缓存编译好的 GPU 着色器，加快后续启动速度。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">ytdl</span><span class="token punctuation">=</span><span class="token value attr-value">yes</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>启用 yt-dlp 多媒体网址解析。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">ytdl-format</span><span class="token punctuation">=</span><span class="token value attr-value">bestvideo[height&lt;=?2160][vcodec!=?vp9.2][vcodec!=?vp9]+bestaudio/best</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>优先下载最佳 4K 及以下视频，避免 VP9 配置文件 2，回归最佳组合。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">ytdl-raw-options-append</span><span class="token punctuation">=</span><span class="token value attr-value">cookies-from-browser=Firefox</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>使用 Firefox 的 cookies，下载需要登录的视频。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token key attr-name">input-default-bindings</span><span class="token punctuation">=</span><span class="token value attr-value">no</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>完全禁用 mpv 默认键位，避免与脚本冲突，所有快捷键由 <code>input.conf</code> 定义。</p>
+<pre class="line-numbers language-properties" data-language="properties"><code class="language-properties"><span class="token comment"># 着色器示例均被注释，实际通过 profile 按需启用</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h3 id="🔹-启用的常规配置组（profile）-1"><a href="#🔹-启用的常规配置组（profile）-1" class="headerlink" title="🔹 启用的常规配置组（profile）"></a>🔹 启用的常规配置组（profile）</h3><p>在 <code>mpv.conf</code>​ 中通过 <code>profile=xxx</code> 激活的硬编码配置组：</p>
+<table>
+<thead>
+<tr>
+<th>启用配置组</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>profile=Target</code></td>
+<td>使用目标颜色空间（而非 ICC），执行色彩管理但不用 ICC 配置文件。</td>
+</tr>
+<tr>
+<td>​<code>profile=Dither</code></td>
+<td>使用 <strong>fruit</strong> 抖动算法，以较低性能消耗近似误差扩散效果，平滑色带。</td>
+</tr>
+<tr>
+<td>​<code>profile=Tscale</code></td>
+<td>开启帧率补偿（<code>interpolation</code>​ + <code>tscale=oversample</code>），让视频平滑匹配显示器刷新率。</td>
+</tr>
+<tr>
+<td>​<code>profile=HQ</code></td>
+<td>高质量缩放算法组合（<code>ewa_lanczossharp</code>​、<code>catmull_rom</code> 等），开启非线性上采样，仅放大时用高质量缩放。</td>
+</tr>
+<tr>
+<td>​<code>profile=DeBand-low</code></td>
+<td>轻度去色带（迭代1次，阈值48），几乎无性能损失即可移除大部分色带。</td>
+</tr>
+<tr>
+<td>​<code>profile=HDR2SDR</code></td>
+<td>HDR→SDR 色调映射参数组（动态峰值、色域映射等）。</td>
+</tr>
+<tr>
+<td>​<code>profile=FSRCNNX</code></td>
+<td>加载 FSRCNNX 超分辨率着色器（适高清内容）+ 自适应锐化，放大到 2x 以上自动触发。</td>
+</tr>
+</tbody></table>
+<p>这些配置组的详细参数见下文对应的 <code>[xxx]</code> 块。</p>
+<hr>
+<h3 id="🔹-配置组详细解释-1"><a href="#🔹-配置组详细解释-1" class="headerlink" title="🔹 配置组详细解释"></a>🔹 配置组详细解释</h3><h4 id="ICC-​-ICC-1"><a href="#ICC-​-ICC-1" class="headerlink" title="[ICC]​ / [ICC+]"></a><code>[ICC]</code>​ / <code>[ICC+]</code></h4><ul>
+<li>​<code>ICC</code> 使用系统 ICC，自动检测。</li>
+<li>​<code>ICC+</code>​ 使用配置文件夹下 <code>icc/ITU-RBT709ReferenceDisplay.icc</code> 的标准 sRGB 文件，关闭强制对比度。</li>
+</ul>
+<h4 id="Target-1"><a href="#Target-1" class="headerlink" title="[Target]"></a><code>[Target]</code></h4><ul>
+<li>非 ICC 色彩管理，根据视频原色域自动匹配目标基色和传输特性。</li>
+<li>注释掉的 <code>target-peak=203</code>（SDR 白点 203 nits）未启用。</li>
+</ul>
+<h4 id="Dither-​-Dither-1"><a href="#Dither-​-Dither-1" class="headerlink" title="[Dither]​ / [Dither+]"></a><code>[Dither]</code>​ / <code>[Dither+]</code></h4><ul>
+<li>​<code>Dither</code>​：<code>dither=fruit</code> + 种子数 6，高性能抖动。</li>
+<li>​<code>Dither+</code>​：<code>error-diffusion=floyd-steinberg</code>，最高质量误差扩散抖动，但性能消耗较大。</li>
+</ul>
+<h4 id="Tscale-​-Tscale-1"><a href="#Tscale-​-Tscale-1" class="headerlink" title="[Tscale]​ / [Tscale+]"></a><code>[Tscale]</code>​ / <code>[Tscale+]</code></h4><ul>
+<li>开启 <code>video-sync=display-resample</code>​ 和 <code>interpolation</code>，实现补帧/平滑运动。</li>
+<li>​<code>tscale=oversample</code>：简单覆盖采样，无模糊。</li>
+<li>​<code>[Tscale+]</code>​ 使用 <code>tscale=sphinx</code>​ + <code>tscale-blur=0.65</code>，更平滑但轻微模糊。</li>
+</ul>
+<h4 id="HQ-1"><a href="#HQ-1" class="headerlink" title="[HQ]"></a><code>[HQ]</code></h4><ul>
+<li>​<code>scale=ewa_lanczossharp</code>：亮度放大使用 Jinc 加锐化。</li>
+<li>​<code>cscale=bilinear</code>：色度升频故意用低端算法？实际因后面会通过着色器（如 KrigBilateral）覆盖，所以这里设置为轻量占位。</li>
+<li>​<code>dscale=catmull_rom</code>：缩小用双三次，保持锐度。</li>
+<li>​<code>linear-upscaling=no</code>：在线性光下上采样（默认值）。</li>
+<li>​<code>sigmoid-upscaling=yes</code>：在 sigmoidal 光中进行放大，减少振铃并保持亮度。</li>
+<li>​<code>correct-downscaling=yes</code>：伽马校正缩小，防止暗部失真。</li>
+<li>​<code>linear-downscaling=no</code>：不在线性光缩小，避免某些问题。</li>
+<li>​<code>deband=no</code>：禁用固定去色带（依赖动态配置组加载）。</li>
+</ul>
+<h4 id="DeBand-low-medium-high-1"><a href="#DeBand-low-medium-high-1" class="headerlink" title="[DeBand-low/medium/high]"></a><code>[DeBand-low/medium/high]</code></h4><ul>
+<li>迭代次数、阈值、范围、噪点颗粒逐渐增加，去除色带的强度递增。目前启用 low。</li>
+</ul>
+<h4 id="HDR2SDR-1"><a href="#HDR2SDR-1" class="headerlink" title="[HDR2SDR]"></a><code>[HDR2SDR]</code></h4><ul>
+<li>​<code>tone-mapping=auto</code>：自动选择最佳色调映射曲线。</li>
+<li>​<code>gamut-mapping-mode=auto</code>：自动色域映射。</li>
+<li>​<code>hdr-contrast-recovery=0.30</code>：增强对比度。</li>
+<li>​<code>hdr-compute-peak=auto</code>：动态峰值亮度。</li>
+<li>​<code>hdr-peak-percentile=99.995</code>：取最高 0.005% 像素的峰值，避免过曝。</li>
+<li>​<code>hdr-peak-decay-rate=100</code>：场景切换时峰值变化的衰减速率。</li>
+<li>​<code>hdr-scene-threshold-low/high</code>：场景检测阈值。</li>
+<li>​<code>allow-delayed-peak-detect=no</code>：立即检测峰值，避免延迟闪烁。</li>
+</ul>
+<h4 id="SDR2HDR-（未启用，备用）-1"><a href="#SDR2HDR-（未启用，备用）-1" class="headerlink" title="[SDR2HDR]（未启用，备用）"></a><code>[SDR2HDR]</code>（未启用，备用）</h4><p>用于强制将 SDR 映射为 HDR，但日常不建议开启。</p>
+<h4 id="着色器配置组（-FSRCNNX-等）-1"><a href="#着色器配置组（-FSRCNNX-等）-1" class="headerlink" title="着色器配置组（[FSRCNNX] 等）"></a>着色器配置组（<code>[FSRCNNX]</code> 等）</h4><ul>
+<li>​<code>FSRCNNX</code>：加载 FSRCNNX 2x 放大 + 自适应锐化。</li>
+<li>​<code>FSRCNNX+</code>：先用 NNEDI3 32 放大，再用 FSRCNNX 1x 去伪影，适合低分辨率。</li>
+<li>​<code>NNEDI3</code>：使用 NNEDI3 32 神经元放大，加 luma 自适应锐化。</li>
+<li>​<code>NNEDI3+</code>：64 神经元，质量更高但性能开销翻倍。</li>
+<li>​<code>ravu-zoom</code>：轻量放大到目标分辨率 + 自适应锐化。</li>
+<li>​<code>Ani4K</code>：动画专用，超高画质但极耗性能。</li>
+<li>​<code>AniSD</code>：动画低清专用。</li>
+<li>​<code>Anime4K</code>：包含 KrigBilateral 色度升频 + Anime4K 抗锯齿 + 高光钳位，通用动画。</li>
+<li>​<code>SSIM</code>：性能友好，使用 SSimSuperRes 修正放大、SSimDownscaler 优化缩小。</li>
+</ul>
+<h4 id="条件配置组-profile-cond-1"><a href="#条件配置组-profile-cond-1" class="headerlink" title="条件配置组 [profile-cond]"></a>条件配置组 <code>[profile-cond]</code></h4><p>根据实时属性自动切换参数，无需手动干预：</p>
+<ul>
+<li>​ <strong>​<code>[SD]</code>​</strong> ​：视频高度或宽度 ≤720 时，自动应用 <code>FSRCNNX+</code> 着色器组。</li>
+<li>​ <strong>​<code>[Deband]</code>​</strong> ​：平均每像素位深 &lt;24 时（例如 8-bit 或低码率），自动开启 <code>deband=yes</code>。</li>
+<li>​ <strong>​<code>[hdr-2390]</code>​</strong> ​：色调映射曲线选 <code>bt.2390</code> 且 VO 为 gpu-next 时，将映射参数设为 2.0（更亮）。</li>
+<li>​ <strong>​<code>[peak-percentile]</code>​</strong> ：HDR 画面平均 PQ-Y &lt; 0.21 时，将峰值百分位数降至 99.8（避免整体偏暗）。</li>
+<li>​ <strong>​<code>[SDR-gamut]</code>​</strong> ​：SDR 视频色域非 BT.709 且伽马为 BT.1886 时，色域映射模式设为 <code>clip</code>（防止过饱和）。</li>
+<li>​ <strong>​<code>[SDR-target]</code>​</strong> ：播放 SDR 内容时，禁止自动输出色彩空间提示（避免显示器误切 HDR）。</li>
+<li>​ <strong>​<code>[HDR]</code>​</strong> ：识别到 HDR 视频时，设定目标峰值自动、开启色彩空间提示、参考白 100nit、不混合字幕渲染（防止过亮）、禁用去色带、清空滤镜。</li>
+<li>​ <strong>​<code>[HDR-PASS]</code>​</strong> ：当视频和显示器都支持 HDR 时，直通原始信号：关闭 ICC、关闭反向映射、使用自动峰值和对比度。</li>
+<li>​ <strong>​<code>[video-sync]</code>​</strong> ​：速度调整超过 ±4% 时（比如慢放），切换到 <code>display-tempo</code>（变速不变调）以保证音高。</li>
+<li>​ <strong>​<code>[fps-fix]</code>​</strong> ​：估计帧率 &gt;47 或显示器刷新率 &gt;120 时，改用 <code>video-sync=audio</code> 避免性能浪费或掉帧。</li>
+<li>​ <strong>​<code>[8k-fix]</code>​</strong> ：分辨率超过 7k 宽度或 3k 高度时，强制硬解 + 音频同步模式，缓解 8K 解码压力。</li>
+<li>​ <strong>​<code>[pgs-fix]</code>​</strong> ：视频宽高比 &gt;16:9 时，将图像型字幕拉伸至屏幕，解决部分电影 PGS 字幕偏移。</li>
+<li>​ <strong>​<code>[pause]</code>​</strong> ：暂停时自动取消置顶。</li>
+<li>​ <strong>​<code>[maximized]</code>​</strong> ：窗口最大化且非图片时，禁用自动窗口大小调整。</li>
+<li>​ <strong>​<code>[minimized]</code>​</strong> ：最小化时自动暂停播放。</li>
+<li>​ <strong>​<code>[end]</code>​</strong> ：播放全部结束（空闲）后，退出全屏和最大化。</li>
+<li>​ <strong>​<code>[media-title]</code>​</strong> ：网络流或磁链等特殊协议下，窗口标题改为显示媒体标题，且播放列表显示标题。</li>
+</ul>
+<p>这些条件配置让你的 mpv 在不同内容上“自动优化”，即开即用。</p>
+<hr>
+<h2 id="⌨️-input-conf-快捷键与菜单详解-1"><a href="#⌨️-input-conf-快捷键与菜单详解-1" class="headerlink" title="⌨️ input.conf 快捷键与菜单详解"></a>⌨️ <code>input.conf</code> 快捷键与菜单详解</h2><p>该文件定义了 <strong>uosc 右键菜单的结构</strong> 和 <strong>所有键盘、鼠标快捷键</strong>。大量使用 <code>script-message</code> 调用第三方脚本功能。按菜单分组解读：</p>
+<h3 id="📂-打开-1"><a href="#📂-打开-1" class="headerlink" title="📂 打开"></a>📂 打开</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>o</code></td>
+<td>打开 uosc 文件浏览器</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+o</code></td>
+<td>打开原生系统对话框导入文件</td>
+</tr>
+<tr>
+<td>​<code>Tab</code></td>
+<td>打开 OSD 文件浏览器（file_browser 脚本）</td>
+</tr>
+<tr>
+<td>```</td>
+<td>打开播放历史菜单（simplehistory）</td>
+</tr>
+<tr>
+<td>​<code>Alt+l</code></td>
+<td>切换隐身模式（不记录历史）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+L</code></td>
+<td>播放最后关闭的文件</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+l</code></td>
+<td>恢复最后播放进度（resume）</td>
+</tr>
+<tr>
+<td>​<code>n</code></td>
+<td>打开书签菜单</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+n</code></td>
+<td>添加当前进度书签</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+N</code></td>
+<td>添加当前文件书签</td>
+</tr>
+<tr>
+<td>​<code>Alt+C</code></td>
+<td>打开剪贴板菜单</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+c</code></td>
+<td>复制文件路径及进度</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+c</code></td>
+<td>仅复制文件路径</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+v</code></td>
+<td>跳转到剪贴板内容（跨设备续播）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+v</code></td>
+<td>将剪贴板路径添加到播放列表</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+F</code></td>
+<td>切换 ytdl 视频格式选择菜单</td>
+</tr>
+<tr>
+<td>​<code>Alt+F</code></td>
+<td>切换 ytdl 音频格式选择菜单</td>
+</tr>
+</tbody></table>
+<h3 id="⚙️-文件-1"><a href="#⚙️-文件-1" class="headerlink" title="⚙️ 文件"></a>⚙️ 文件</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>Shift+F11</code></td>
+<td>停止播放</td>
+</tr>
+<tr>
+<td>​<code>Alt+t</code></td>
+<td>切换窗口置顶</td>
+</tr>
+<tr>
+<td>​<code>Alt+b</code></td>
+<td>最大化/恢复窗口</td>
+</tr>
+<tr>
+<td>​<code>Enter</code></td>
+<td>全屏切换</td>
+</tr>
+<tr>
+<td>​<code>i</code></td>
+<td>临时显示统计信息</td>
+</tr>
+<tr>
+<td>​<code>I</code></td>
+<td>常驻显示统计信息</td>
+</tr>
+<tr>
+<td>​<code>l</code></td>
+<td>设置/清除片段循环（A-B 复读）</td>
+</tr>
+<tr>
+<td>​<code>L</code></td>
+<td>循环播放开关（无限/单次）</td>
+</tr>
+<tr>
+<td>​<code>n</code></td>
+<td>乱序播放列表</td>
+</tr>
+<tr>
+<td>​<code>[</code>​ <code>]</code></td>
+<td>减速/加速 0.1 倍</td>
+</tr>
+<tr>
+<td>​<code>{</code>​ <code>}</code></td>
+<td>半速/2倍速</td>
+</tr>
+<tr>
+<td>​<code>Backspace</code></td>
+<td>重置速度</td>
+</tr>
+<tr>
+<td>​<code>Alt+o</code></td>
+<td>在文件管理器中定位当前文件</td>
+</tr>
+<tr>
+<td>​<code>Delete</code></td>
+<td>删除当前播放文件（需确认）</td>
+</tr>
+</tbody></table>
+<h3 id="🧭-导航-1"><a href="#🧭-导航-1" class="headerlink" title="🧭 导航"></a>🧭 导航</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>O</code></td>
+<td>开关 OSD 时间轴显示</td>
+</tr>
+<tr>
+<td>​<code>F4</code></td>
+<td>OSD 综合交互菜单</td>
+</tr>
+<tr>
+<td>​<code>F5</code></td>
+<td>播放列表</td>
+</tr>
+<tr>
+<td>​<code>F6</code></td>
+<td>音频设备列表</td>
+</tr>
+<tr>
+<td>​<code>F7</code></td>
+<td>章节列表</td>
+</tr>
+<tr>
+<td>​<code>F8</code></td>
+<td>轨道列表</td>
+</tr>
+<tr>
+<td>​<code>F9</code></td>
+<td>视频轨列表</td>
+</tr>
+<tr>
+<td>​<code>F10</code></td>
+<td>音频轨列表</td>
+</tr>
+<tr>
+<td>​<code>F11</code></td>
+<td>字幕轨列表</td>
+</tr>
+<tr>
+<td>​<code>Alt+c/e/r/w/g</code></td>
+<td>章节制作（标记/编辑/删除/导出 chp/ogm）</td>
+</tr>
+<tr>
+<td>​<code>&lt;</code>​ <code>&gt;</code></td>
+<td>上一个/下一个文件</td>
+</tr>
+<tr>
+<td>​<code>PageDown/Up</code></td>
+<td>前/后章节</td>
+</tr>
+<tr>
+<td>​<code>F3</code></td>
+<td>跳到下一个静音位置（chapterskip）</td>
+</tr>
+<tr>
+<td>​<code>Alt+q</code></td>
+<td>章节跳过模式切换</td>
+</tr>
+<tr>
+<td>​<code>Alt+n</code></td>
+<td>标记片头片尾</td>
+</tr>
+<tr>
+<td>​<code>,</code>​ <code>.</code></td>
+<td>逐帧后退/前进</td>
+</tr>
+<tr>
+<td>​<code>→</code>​ / <code>←</code></td>
+<td>前进60秒/后退30秒</td>
+</tr>
+<tr>
+<td>​<code>↑</code>​ / <code>↓</code></td>
+<td>音量 ±5</td>
+</tr>
+<tr>
+<td>​<code>Shift+→/←</code></td>
+<td>精确1秒进退</td>
+</tr>
+<tr>
+<td>​<code>Shift+↑/↓</code></td>
+<td>精确80秒进退</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+z/x</code></td>
+<td>撤销/重做跳转</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+z</code></td>
+<td>循环跳转</td>
+</tr>
+</tbody></table>
+<h3 id="🖼️-画面-1"><a href="#🖼️-画面-1" class="headerlink" title="🖼️ 画面"></a>🖼️ 画面</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>A</code></td>
+<td>循环切换宽高比（16:9 → 4:3 → 2.35:1 → 原始）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+←/→</code></td>
+<td>左/右旋转视频</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+-/=</code></td>
+<td>窗口缩放</td>
+</tr>
+<tr>
+<td>​<code>Alt+-/=</code></td>
+<td>画面缩放（不改变窗口）</td>
+</tr>
+<tr>
+<td>​<code>Alt+方向键</code></td>
+<td>画面平移</td>
+</tr>
+<tr>
+<td>​<code>Alt+p</code></td>
+<td>裁切填充（pan-scan）开关</td>
+</tr>
+<tr>
+<td>​<code>Alt+Backspace</code></td>
+<td>重置所有画面变换</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+I</code></td>
+<td>自动 ICC 开关</td>
+</tr>
+<tr>
+<td>​<code>1~8，-</code>​ <code>=</code></td>
+<td>调整对比度、亮度、伽马、饱和度、色相</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Backspace</code></td>
+<td>重置调色</td>
+</tr>
+<tr>
+<td>​<code>D</code></td>
+<td>去色带开关</td>
+</tr>
+<tr>
+<td>​<code>Alt+z/x</code></td>
+<td>增减色带强度</td>
+</tr>
+<tr>
+<td>​<code>h</code></td>
+<td>循环 HDR 映射曲线</td>
+</tr>
+<tr>
+<td>​<code>Alt+h</code></td>
+<td>动态峰值映射开关</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+h</code></td>
+<td>HDR 直通模式切换</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+t</code></td>
+<td>切换显示器传输特性（auto/pq/gamma2.2）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+T</code></td>
+<td>切换映射目标峰值（100/203）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+g</code></td>
+<td>色域映射模式循环</td>
+</tr>
+</tbody></table>
+<h3 id="🎞️-视频-1"><a href="#🎞️-视频-1" class="headerlink" title="🎞️ 视频"></a>🎞️ 视频</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>Alt+i</code></td>
+<td>补帧/平滑运动开关</td>
+</tr>
+<tr>
+<td>​<code>C</code></td>
+<td>动态裁切黑边</td>
+</tr>
+<tr>
+<td>​<code>d</code></td>
+<td>去交错开关</td>
+</tr>
+<tr>
+<td>​<code>s</code></td>
+<td>截图（同源尺寸，含字幕，无OSD）</td>
+</tr>
+<tr>
+<td>​<code>S</code></td>
+<td>截图（同源尺寸，无字幕）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+s</code></td>
+<td>截图（实际窗口尺寸，含OSD）</td>
+</tr>
+<tr>
+<td>​<code>Alt+s</code></td>
+<td>连续截图（含字幕）</td>
+</tr>
+<tr>
+<td>​<code>Alt+S</code></td>
+<td>连续截图（无字幕）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+S</code></td>
+<td>连续截图（窗口尺寸）</td>
+</tr>
+<tr>
+<td>​<code>c</code>​ / <code>a</code>​ / <code>Ctrl+C</code></td>
+<td>视频片段标记与清除（slicing）</td>
+</tr>
+<tr>
+<td>​<code>w</code>​ / <code>W</code>​ / <code>Ctrl+w</code>​ / <code>Ctrl+W</code></td>
+<td>动图制作（开始/结束/导出）</td>
+</tr>
+</tbody></table>
+<h3 id="🔊-音频-1"><a href="#🔊-音频-1" class="headerlink" title="🔊 音频"></a>🔊 音频</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>y</code></td>
+<td>切换音轨</td>
+</tr>
+<tr>
+<td>​<code>m</code></td>
+<td>静音开关</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+,</code>​ / <code>Ctrl+.</code></td>
+<td>音频延迟增减 0.1 秒</td>
+</tr>
+<tr>
+<td>​<code>;</code></td>
+<td>重置音频延迟</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+y</code></td>
+<td>音频独占模式开关</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Y</code></td>
+<td>音频同步模式（丢帧）开关</td>
+</tr>
+<tr>
+<td>​<code>Alt+y</code></td>
+<td>循环音频声道布局</td>
+</tr>
+<tr>
+<td>​<code>F2</code></td>
+<td>循环音频滤镜（动态归一化/响度均衡/关闭）</td>
+</tr>
+<tr>
+<td>​<code>Alt+`` </code></td>
+<td>清空音频滤镜</td>
+</tr>
+</tbody></table>
+<h3 id="💬-字幕-1"><a href="#💬-字幕-1" class="headerlink" title="💬 字幕"></a>💬 字幕</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>j</code>​ / <code>k</code></td>
+<td>切换字幕/次字幕轨</td>
+</tr>
+<tr>
+<td>​<code>v</code>​ / <code>Alt+V</code></td>
+<td>字幕/次字幕可见性</td>
+</tr>
+<tr>
+<td>​<code>u</code></td>
+<td>切换 ASS 样式覆盖</td>
+</tr>
+<tr>
+<td>​<code>F</code></td>
+<td>快速切换字幕字体（中/日/韩/宋体）</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+r</code></td>
+<td>重新加载当前字幕</td>
+</tr>
+<tr>
+<td>​<code>r</code>​ / <code>t</code></td>
+<td>字幕位置上下移动</td>
+</tr>
+<tr>
+<td>​<code>R</code>​ / <code>T</code></td>
+<td>次字幕位置上下移动</td>
+</tr>
+<tr>
+<td>​<code>z</code>​ / <code>x</code></td>
+<td>字幕延迟增减 0.1 秒</td>
+</tr>
+<tr>
+<td>​<code>Z</code>​ / <code>X</code></td>
+<td>次字幕延迟增减</td>
+</tr>
+<tr>
+<td>​<code>Alt+j</code>​ / <code>Alt+k</code></td>
+<td>字幕字号缩放</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+j</code>​ / <code>Ctrl+k</code></td>
+<td>跳转上/下一条字幕</td>
+</tr>
+<tr>
+<td>​<code>Shift+Backspace</code></td>
+<td>重置字幕位置/大小/延迟</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+f</code></td>
+<td>打开字幕下载器 (sub-assrt)</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+m</code></td>
+<td>字幕同步菜单 (autosubsync)</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+M</code></td>
+<td>字幕内容菜单 (select)</td>
+</tr>
+<tr>
+<td>​<code>Alt+m</code></td>
+<td>导出内封字幕</td>
+</tr>
+<tr>
+<td>​<code>Alt+f</code></td>
+<td>生成 AI 字幕 (fast-whisper)</td>
+</tr>
+<tr>
+<td>​<code>K</code>​ / <code>J</code>​ / <code>V</code>​ / <code>H</code>​ / <code>P</code>​ / <code>p</code></td>
+<td>各种字幕兼容性开关（时序修复、颜色转换、黑边输出等）</td>
+</tr>
+</tbody></table>
+<h3 id="🎨-视频滤镜-1"><a href="#🎨-视频滤镜-1" class="headerlink" title="🎨 视频滤镜"></a>🎨 视频滤镜</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>Ctrl+`` </code></td>
+<td>清空所有滤镜</td>
+</tr>
+<tr>
+<td>​<code>Alt+v</code></td>
+<td>去块效应滤镜开关</td>
+</tr>
+<tr>
+<td>​<code>!</code></td>
+<td>限制动态范围（TV→PC）</td>
+</tr>
+<tr>
+<td>​<code>@</code></td>
+<td>垂直翻转</td>
+</tr>
+<tr>
+<td>​<code>#</code></td>
+<td>水平翻转</td>
+</tr>
+<tr>
+<td>​<code>$</code></td>
+<td>旋转 180°</td>
+</tr>
+<tr>
+<td>​<code>%</code></td>
+<td>伽马 2.2 修正</td>
+</tr>
+<tr>
+<td>​<code>^</code></td>
+<td>强制帧率 59.94</td>
+</tr>
+<tr>
+<td>​<code>*</code></td>
+<td>填充 16:9 黑边居中</td>
+</tr>
+<tr>
+<td>​<code>&amp;</code></td>
+<td>色温修正 6500K</td>
+</tr>
+</tbody></table>
+<h3 id="✨-着色器快捷开关-1"><a href="#✨-着色器快捷开关-1" class="headerlink" title="✨ 着色器快捷开关"></a>✨ 着色器快捷开关</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>着色器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>Ctrl+0</code></td>
+<td>清空所有着色器</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+1</code></td>
+<td>KrigBilateral 色度升频</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+2</code></td>
+<td>SSimSuperRes 超分修正</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+3</code></td>
+<td>SSimDownscaler 降采样修正</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+4</code></td>
+<td>IGV 自适应锐化</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+5</code></td>
+<td>FSRCNNX 放大</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+6</code></td>
+<td>FSRCNNX 去伪影</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+7</code></td>
+<td>NNEDI3 32n 放大</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+8</code></td>
+<td>Ravu Zoom 放大</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+9</code></td>
+<td>Anime4K 抗锯齿</td>
+</tr>
+</tbody></table>
+<p>这些可以让你在播放时动态切换画质增强组合，无需重启。</p>
+<h3 id="🧰-工具-1"><a href="#🧰-工具-1" class="headerlink" title="🧰 工具"></a>🧰 工具</h3><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>​<code>Ctrl+p</code></td>
+<td>命令面板</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+t</code></td>
+<td>复制当前时间戳</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+s</code></td>
+<td>复制当前字幕内容</td>
+</tr>
+<tr>
+<td>​<code>M</code></td>
+<td>一键更新脚本和着色器</td>
+</tr>
+<tr>
+<td>​<code>Alt+d</code>​ / <code>Alt+D</code></td>
+<td>trakt 搜索/开关同步</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+d</code>​ / <code>Ctrl+D</code></td>
+<td>弹幕开关/弹幕菜单</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+d/a</code></td>
+<td>弹幕延迟 ±1 秒</td>
+</tr>
+<tr>
+<td>​<code>_</code></td>
+<td>保存弹幕</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+b</code></td>
+<td>SponsorBlock 开关</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+i</code></td>
+<td>播放信息面板开关</td>
+</tr>
+<tr>
+<td>​<code>Ctrl+Alt+s</code></td>
+<td>截图至剪贴板</td>
+</tr>
+</tbody></table>
+<h3 id="🖱️-鼠标-多媒体键-1"><a href="#🖱️-鼠标-多媒体键-1" class="headerlink" title="🖱️ 鼠标 &amp; 多媒体键"></a>🖱️ 鼠标 &amp; 多媒体键</h3><ul>
+<li>鼠标左键 → 暂停/播放</li>
+<li>鼠标右键 → 打开 uosc 模糊菜单</li>
+<li>滚轮 → 音量 ±10</li>
+<li>多媒体键 (PLAY, PAUSE, STOP 等) 完全映射到对应操作</li>
+<li>​<code>ESC</code> → 退出全屏和最大化</li>
+<li>​<code>9</code>​ / <code>0</code> → 微调音量</li>
+</ul>
+<p>所有快捷键都标注了 <code>#menu:</code> 注释，自动生成 uosc 右键菜单，直观易用。</p>
+<hr>
+<h2 id="📦-着色器文件简介-1"><a href="#📦-着色器文件简介-1" class="headerlink" title="📦 着色器文件简介"></a>📦 着色器文件简介</h2><p>你的 <code>shaders/</code> 目录包含了多种社区精品着色器：</p>
+<ul>
+<li><strong>IGV 系列</strong>：KrigBilateral（色度升频）、SSimSuperRes（超分修正）、SSimDownscaler（降采样优化）、adaptive-sharpen（自适应锐化）。</li>
+<li><strong>FSRCNNX</strong>：基于卷积神经网络的超分辨率放大，有 2x 版本和去伪影版本。</li>
+<li><strong>NNEDI3</strong>：最高质量的插值放大算法，从 32 到 128 神经元，消耗递增。</li>
+<li><strong>Ravu</strong>：另一种放大算法，zoom 变体直接放大到目标分辨率。</li>
+<li><strong>Anime4K</strong>：专为动漫设计的降噪、抗锯齿、去模糊、锐化着色器。</li>
+<li><strong>Ani4K</strong>：Ani4Kv2 及 AniSD，更现代的动漫专用 CNN 着色器，效果惊艳。</li>
+</ul>
+<p>通过配置组或快捷键随时调用，不同内容搭配不同组合，获得最佳视觉体验。</p>
+<hr>
+<h2 id="🔚-总结-1"><a href="#🔚-总结-1" class="headerlink" title="🔚 总结"></a>🔚 总结</h2><p>这套 mpv 配置几乎涵盖了从播放基础、画质增强、音频处理、字幕便利性到自动化条件触发的各个方面。它以 <strong>gpu-next + Vulkan</strong> 为核心，追求色彩准确、画质极致、操作高效。大量的脚本集成（uosc、历史、弹幕、AI 字幕、youtube-dl 等）让 mpv 不仅是播放器，更是一个媒体中心。</p>
+<p>若需进一步调整，可参考以下文件：</p>
+<ul>
+<li>​<code>profiles.conf</code>：调整条件触发阈值</li>
+<li>​<code>script-opts/</code>：定制各脚本行为</li>
+<li>​<code>fonts/</code>：更换 OSD/字幕字体</li>
+</ul>
+<p>祝你观影愉快！🎬</p>
 
                 
             </div>
@@ -2191,7 +3257,7 @@ write-filename-in-watch-later-config
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">18.4k</span>
+                        class="white-color">23.6k</span>
             
             
             
