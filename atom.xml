@@ -10,13 +10,28 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-06-23T14:39:54.504Z</updated>
+  <updated>2026-06-24T09:51:21.953Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
     </author>
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="代码开发" scheme="https://emoeem.github.io/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/"/>
+    <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
+    <id>https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</id>
+    <link href="https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/"/>
+    <published>2026-06-24T09:51:05.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="MPV-播放器配置完全指南"><a href="#MPV-播放器配置完全指南" class="headerlink" title="MPV 播放器配置完全指南"></a>MPV]]>
+    </summary>
+    <title>mpv配置讲解</title>
+    <updated>2026-06-24T09:51:21.953Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
     <id>https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/"/>
     <published>2026-06-23T14:31:49.000Z</published>
@@ -28,7 +43,7 @@
 <h2]]>
     </summary>
     <title>CachyOS Fish 终端完全配置指南</title>
-    <updated>2026-06-23T14:39:54.504Z</updated>
+    <updated>2026-06-24T09:51:05.319Z</updated>
   </entry>
   <entry>
     <author>
