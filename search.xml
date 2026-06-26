@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>2026-06-26 日记</title>
+      <link href="/2026/06/26/2026-06-26/"/>
+      <url>/2026/06/26/2026-06-26/</url>
+      
+        <content type="html"><![CDATA[<h2 id="一、面试反思"><a href="#一、面试反思" class="headerlink" title="一、面试反思"></a>一、面试反思</h2><p>今天参加了之前几次面谈的测试，对方问了我不少问题，暴露出了很多问题：</p><ul><li><strong>定位模糊</strong>：我甚至没有确定好自己在技术方面的定位是什么，无法明确自己的方向。</li><li><strong>广而不精</strong>：什么都懂一点，但只懂一点，太抽象了。</li><li><strong>基础薄弱</strong>：对方问到的很多问题，我完全不清楚，只是大概能明白；很多基础的东西都不懂。</li><li><strong>专业不足</strong>：专业知识积累不够，很多地方存在明显短板。</li></ul><p>总之，需要积累和学习的地方还有很多。</p><hr><h3 id="二、后续方向"><a href="#二、后续方向" class="headerlink" title="二、后续方向"></a>二、后续方向</h3><p>目前来看，似乎只有原本计划的<strong>第三条路</strong>可以走了，其他的道路感觉都不太可行。继续等待也不太现实，没有那么多时间可以浪费。</p><p>现在的核心思路是：<strong>慢慢积累，逐步完善一个属于自己的项目</strong>，看看效果如何。</p><hr><h3 id="三、具体计划"><a href="#三、具体计划" class="headerlink" title="三、具体计划"></a>三、具体计划</h3><p>目前的想法是<strong>重写一款类似</strong> <strong><a href="https://lxmusic.toside.cn/">洛雪音乐助手</a></strong> <strong>的软件</strong>。</p><p><strong>选择重写的原因：</strong></p><ul><li>不用自己从头思考业务逻辑，更适合目前的我。</li><li>主要挑战在于<strong>框架迁移</strong>，而非功能设计。</li></ul><p><strong>技术栈：</strong></p><ul><li>使用 <strong>Flutter</strong> 进行重写。</li><li>需要学习 <strong>Dart</strong> 和 <strong>Flutter</strong> 框架。</li></ul><hr><h3 id="四、对自己的要求"><a href="#四、对自己的要求" class="headerlink" title="四、对自己的要求"></a>四、对自己的要求</h3><ol><li><strong>学习更深入</strong>：这次学习过程中要更仔细、更深入，不能浮于表面。</li><li><strong>关注前沿</strong>：对技术前沿要有更多了解和关注。</li></ol><hr><p><em>暂时先这样，一步一步来吧。</em></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 随笔 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 日记 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>yazi配置</title>
       <link href="/2026/06/24/yazi-pei-zhi/"/>
       <url>/2026/06/24/yazi-pei-zhi/</url>
