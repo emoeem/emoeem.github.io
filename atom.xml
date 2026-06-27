@@ -10,7 +10,22 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-06-26T14:58:37.856Z</updated>
+  <updated>2026-06-27T01:56:14.341Z</updated>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="代码开发" scheme="https://emoeem.github.io/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/"/>
+    <id>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</id>
+    <link href="https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/"/>
+    <published>2026-06-27T01:56:08.000Z</published>
+    <summary>
+      <![CDATA[<h2 id="whisper-cli-是什么"><a href="#whisper-cli-是什么" class="headerlink" title="whisper-cli 是什么"></a>whisper-cli]]>
+    </summary>
+    <title>whisper-cli 参数配置指南</title>
+    <updated>2026-06-27T01:56:14.341Z</updated>
+  </entry>
   <entry>
     <author>
       <name>emoeem</name>
