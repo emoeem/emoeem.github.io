@@ -1389,13 +1389,13 @@ whisper-cli <span class="token parameter variable">-f</span> audio.mp3 <span cla
     </div>
 </div>
 
-<script src="/libs/twikoo/twikoo.all.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/twikoo@1.7.13/dist/twikoo.all.min.js"></script>
 <script>
     twikoo.init({
         envId: 'https://blog-comments-nine-eta.vercel.app',
         el: '#tcomments',
         region: '',
-        path: ''
+        path: 'window.location.pathname'
     }).then(function () {
         var tkInputs = document.querySelector('#twikoo').getElementsByTagName('input');
         for (var tkInputsIndex = 0; tkInputsIndex < tkInputs.length; tkInputsIndex++) {
