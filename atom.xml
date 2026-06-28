@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-06-27T14:59:41.811Z</updated>
+  <updated>2026-06-28T07:03:49.829Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
@@ -19,13 +19,13 @@
     <category term="日记" scheme="https://emoeem.github.io/tags/%E6%97%A5%E8%AE%B0/"/>
     <id>https://emoeem.github.io/2026/06/27/2026-06-27-ri-ji/</id>
     <link href="https://emoeem.github.io/2026/06/27/2026-06-27-ri-ji/"/>
-    <published>2026-06-27T14:59:28.000Z</published>
+    <published>2026-06-27T22:59:28.000Z</published>
     <summary>
       <![CDATA[<p>今天实在没什么事情发生，感觉自己的这一天<strong>毫无意义</strong>，或者说——找不到前进的方向。</p>
 <h2 id="迷茫"><a href="#迷茫" class="headerlink"]]>
     </summary>
     <title>2026-06-27 日记</title>
-    <updated>2026-06-27T14:59:41.811Z</updated>
+    <updated>2026-06-28T07:03:49.829Z</updated>
   </entry>
   <entry>
     <author>
@@ -35,12 +35,12 @@
     <category term="代码开发" scheme="https://emoeem.github.io/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/"/>
     <id>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/"/>
-    <published>2026-06-27T01:56:08.000Z</published>
+    <published>2026-06-27T09:56:08.000Z</published>
     <summary>
       <![CDATA[<h2 id="whisper-cli-是什么"><a href="#whisper-cli-是什么" class="headerlink" title="whisper-cli 是什么"></a>whisper-cli]]>
     </summary>
     <title>whisper-cli 参数配置指南</title>
-    <updated>2026-06-27T01:56:14.341Z</updated>
+    <updated>2026-06-28T07:03:49.829Z</updated>
   </entry>
   <entry>
     <author>
@@ -50,12 +50,12 @@
     <category term="日记" scheme="https://emoeem.github.io/tags/%E6%97%A5%E8%AE%B0/"/>
     <id>https://emoeem.github.io/2026/06/26/2026-06-26/</id>
     <link href="https://emoeem.github.io/2026/06/26/2026-06-26/"/>
-    <published>2026-06-26T14:58:29.000Z</published>
+    <published>2026-06-26T22:58:29.000Z</published>
     <summary>
       <![CDATA[<h2 id="一、面试反思"><a href="#一、面试反思" class="headerlink"]]>
     </summary>
     <title>2026-06-26 日记</title>
-    <updated>2026-06-26T14:58:37.856Z</updated>
+    <updated>2026-06-28T07:03:49.829Z</updated>
   </entry>
   <entry>
     <author>
@@ -65,12 +65,12 @@
     <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
     <id>https://emoeem.github.io/2026/06/24/yazi-pei-zhi/</id>
     <link href="https://emoeem.github.io/2026/06/24/yazi-pei-zhi/"/>
-    <published>2026-06-24T15:19:29.000Z</published>
+    <published>2026-06-24T23:19:29.000Z</published>
     <summary>
       <![CDATA[<h2 id="关于-Yazi"><a href="#关于-Yazi" class="headerlink" title="关于 Yazi"></a>关于 Yazi</h2><p>Yazi 是一个用 Rust 编写的终端文件管理器，支持异步]]>
     </summary>
     <title>yazi配置</title>
-    <updated>2026-06-24T15:20:19.293Z</updated>
+    <updated>2026-06-28T07:03:49.830Z</updated>
   </entry>
   <entry>
     <author>
@@ -80,12 +80,12 @@
     <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
     <id>https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</id>
     <link href="https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/"/>
-    <published>2026-06-24T09:51:05.000Z</published>
+    <published>2026-06-24T17:51:05.000Z</published>
     <summary>
       <![CDATA[<h1 id="MPV-播放器配置完全指南"><a href="#MPV-播放器配置完全指南" class="headerlink" title="MPV 播放器配置完全指南"></a>MPV]]>
     </summary>
     <title>mpv配置讲解</title>
-    <updated>2026-06-26T14:17:13.979Z</updated>
+    <updated>2026-06-28T07:03:49.829Z</updated>
   </entry>
   <entry>
     <author>
@@ -95,7 +95,7 @@
     <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
     <id>https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/"/>
-    <published>2026-06-23T14:31:49.000Z</published>
+    <published>2026-06-23T22:31:49.000Z</published>
     <summary>
       <![CDATA[<blockquote>
 <p>基于 Fish Shell + Starship + Atuin + Zoxide + fzf 的现代化终端配置，<br>涵盖所有快捷键、无感集成函数、工具链及安装命令。</p>
@@ -104,7 +104,7 @@
 <h2]]>
     </summary>
     <title>CachyOS Fish 终端完全配置指南</title>
-    <updated>2026-06-24T09:51:05.319Z</updated>
+    <updated>2026-06-28T07:03:49.829Z</updated>
   </entry>
   <entry>
     <author>
@@ -114,12 +114,12 @@
     <category term="代码开发" scheme="https://emoeem.github.io/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/"/>
     <id>https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/"/>
-    <published>2026-06-22T12:08:28.000Z</published>
+    <published>2026-06-22T20:08:28.000Z</published>
     <summary>
       <![CDATA[<h2 id="通用参数-common-params"><a href="#通用参数-common-params" class="headerlink" title="通用参数 (common params)"></a>通用参数 (common]]>
     </summary>
     <title>llama-cli 参数配置指南</title>
-    <updated>2026-06-22T12:08:38.458Z</updated>
+    <updated>2026-06-28T07:03:49.829Z</updated>
   </entry>
   <entry>
     <author>
@@ -129,7 +129,7 @@
     <category term="日记" scheme="https://emoeem.github.io/tags/%E6%97%A5%E8%AE%B0/"/>
     <id>https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/</id>
     <link href="https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/"/>
-    <published>2026-06-22T03:16:26.000Z</published>
+    <published>2026-06-22T11:16:26.000Z</published>
     <summary>
       <![CDATA[<p>有时候我会想，人是不是都会这样。</p>
 <p>明明知道结果不会好，还是会忍不住伸手。</p>
@@ -137,19 +137,6 @@
 <p>后来才发现，有些人不是等你救，而是根本]]>
     </summary>
     <title>感性的人，总会在废墟里捡别人不要的东西</title>
-    <updated>2026-06-22T03:17:14.977Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <id>https://emoeem.github.io/2026/06/22/hello-world/</id>
-    <link href="https://emoeem.github.io/2026/06/22/hello-world/"/>
-    <published>2026-06-22T01:12:03.924Z</published>
-    <summary>
-      <![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a>]]>
-    </summary>
-    <title>Hello World</title>
-    <updated>2026-06-22T01:12:03.924Z</updated>
+    <updated>2026-06-28T07:03:49.830Z</updated>
   </entry>
 </feed>
