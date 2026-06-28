@@ -9,10 +9,13 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #333; }
-    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
     header { background: #2d3436; color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
     header h1 { font-size: 1.2rem; }
-    header a { color: #dfe6e9; font-size: 0.85rem; }
+    header a { color: #dfe6e9; font-size: 0.85rem; text-decoration: none; }
+    .layout { display: flex; gap: 16px; align-items: flex-start; }
+    .sidebar { width: 280px; flex-shrink: 0; }
+    .main { flex: 1; min-width: 0; }
     .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 16px; }
     .card h2 { font-size: 1rem; margin-bottom: 12px; color: #2d3436; }
     input, textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
@@ -22,7 +25,10 @@
     label { font-size: 0.8rem; font-weight: 600; color: #636e72; display: block; margin-bottom: 4px; }
     button { background: #6c5ce7; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 0.95rem; cursor: pointer; font-weight: 500; }
     button:hover { background: #5b4cdb; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    button.danger { background: #e74c3c; }
+    button.danger:hover { background: #c0392b; }
+    button.secondary { background: #636e72; }
+    button.secondary:hover { background: #555; }
     .msg { padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem; display: none; }
     .msg.success { background: #d4edda; color: #155724; display: block; }
     .msg.error { background: #fce4e4; color: #c0392b; display: block; }
@@ -35,13 +41,22 @@
     .token-hint a { color: #6c5ce7; }
     .EasyMDEContainer .editor-toolbar { border-radius: 6px 6px 0 0; }
     .EasyMDEContainer .CodeMirror { border-radius: 0 0 6px 6px; }
-    small a { color: #6c5ce7; }
     .CodeMirror { height: 400px; background: #fff !important; color: #333 !important; font-size: 14px; }
     .CodeMirror-gutters { background: #f7f7f7 !important; border-right: 1px solid #ddd !important; }
     .EasyMDEContainer { border: 1px solid #ddd; border-radius: 6px; }
     .editor-toolbar { border-bottom: 1px solid #ddd !important; background: #fafafa !important; }
     .editor-toolbar button { color: #333 !important; }
     .editor-toolbar button:hover { background: #e8e8e8 !important; }
+    .post-item { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .post-item:hover { background: #f8f8ff; }
+    .post-item.active { background: #e8e8ff; }
+    .post-item .title { font-size: 0.9rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+    .post-item .meta { font-size: 0.75rem; color: #999; flex-shrink: 0; margin-left: 8px; }
+    .post-item .del-btn { background: none; border: none; color: #ccc; cursor: pointer; padding: 2px 6px; font-size: 0.8rem; }
+    .post-item .del-btn:hover { color: #e74c3c; }
+    .search-box { margin-bottom: 10px; }
+    small a { color: #6c5ce7; text-decoration: none; }
+    @media (max-width: 768px) { .layout { flex-direction: column; } .sidebar { width: 100%; } }
   </style>
 </head>
 <body>
@@ -54,7 +69,7 @@
     <div id="msg"></div>
 
     <div class="card" id="tokenCard">
-      <h2>🔑 GitHub Token（首次设置后自动保存）</h2>
+      <h2>🔑 GitHub Token</h2>
       <p class="token-hint">
         1. 打开 <a href="https://github.com/settings/tokens/new?scopes=repo&description=blog-editor" target="_blank">GitHub Token 创建页面</a><br>
         2. Expiration 选 <b>No expiration</b>，点 Generate token<br>
@@ -66,29 +81,50 @@
       </div>
     </div>
 
-    <div class="card" id="editorCard" style="display:none">
-      <h2>✍️ 写文章</h2>
-      <div class="row">
-        <div style="flex:2"><label>标题</label><input type="text" id="title" placeholder="文章标题"></div>
-        <div style="flex:1"><label>分类</label><input type="text" id="category" placeholder="如：技术、随笔" list="catList"><datalist id="catList"></datalist></div>
-      </div>
-      <div class="row">
-        <div>
-          <label>标签（点击选择已有，或输入新标签回车添加）</label>
-          <input type="text" id="tagInput" placeholder="搜索或输入新标签">
-          <div class="tag-list" id="tagList"></div>
+    <div id="workspace" style="display:none">
+      <div class="layout">
+        <div class="sidebar">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+              <h2 style="margin:0">📄 文章列表</h2>
+              <button onclick="newPost()" style="padding:6px 14px; font-size:0.8rem">+ 新建</button>
+            </div>
+            <input type="text" class="search-box" id="postSearch" placeholder="搜索文章..." oninput="renderPostList()">
+            <div id="postList" style="max-height:60vh; overflow-y:auto"></div>
+          </div>
         </div>
-      </div>
-      <div class="row">
-        <div><label>封面图（可选）</label><input type="text" id="coverImg" placeholder="/medias/featureimages/0.jpg"></div>
-        <div><label>摘要（可选）</label><input type="text" id="summary" placeholder="自定义摘要，留空则自动截取"></div>
-      </div>
-      <label style="margin-bottom:4px">正文</label>
-      <textarea id="editor"></textarea>
-      <div style="margin-top:12px; display:flex; gap:8px; align-items:center">
-        <button onclick="publish()">发布文章</button>
-        <button onclick="saveDraft()" style="background:#636e72">保存草稿</button>
-        <small><a href="/" target="_blank">预览博客</a></small>
+
+        <div class="main">
+          <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
+              <h2 style="margin:0" id="editorTitle">✍️ 写文章</h2>
+              <div id="editActions" style="display:none">
+                <button class="danger" onclick="deletePost()" style="padding:6px 14px; font-size:0.8rem">🗑 删除</button>
+              </div>
+            </div>
+            <div class="row">
+              <div style="flex:2"><label>标题</label><input type="text" id="title" placeholder="文章标题"></div>
+              <div style="flex:1"><label>分类</label><input type="text" id="category" placeholder="如：技术、随笔" list="catList"><datalist id="catList"></datalist></div>
+            </div>
+            <div class="row">
+              <div>
+                <label>标签（点击选择已有，或输入新标签回车添加）</label>
+                <input type="text" id="tagInput" placeholder="搜索或输入新标签">
+                <div class="tag-list" id="tagList"></div>
+              </div>
+            </div>
+            <div class="row">
+              <div><label>封面图（可选）</label><input type="text" id="coverImg" placeholder="/medias/featureimages/0.jpg"></div>
+              <div><label>摘要（可选）</label><input type="text" id="summary" placeholder="自定义摘要，留空则自动截取"></div>
+            </div>
+            <label style="margin-bottom:4px">正文</label>
+            <textarea id="editor"></textarea>
+            <div style="margin-top:12px; display:flex; gap:8px">
+              <button onclick="publish()">发布文章</button>
+              <button class="secondary" onclick="newPost()">清空重写</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -103,6 +139,9 @@
     let easyMDE = null;
     let allTags = [];
     let selectedTags = [];
+    let allPosts = [];
+    let currentSlug = null;
+    let currentSha = null;
 
     function showMsg(text, type) {
       const el = document.getElementById('msg');
@@ -114,21 +153,21 @@
     if (token) {
       document.getElementById('tokenInput').value = token;
       document.getElementById('tokenCard').style.display = 'none';
-      document.getElementById('editorCard').style.display = 'block';
+      document.getElementById('workspace').style.display = 'block';
       initEditor();
-      loadTaxonomies();
+      loadPosts();
     }
 
     function saveToken() {
       token = document.getElementById('tokenInput').value.trim();
       if (!token) return showMsg('请输入 Token', 'error');
-      if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) return showMsg('Token 格式不正确，应以 ghp_ 或 github_pat_ 开头', 'error');
+      if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) return showMsg('Token 格式不正确', 'error');
       localStorage.setItem(STORAGE_KEY, token);
       document.getElementById('tokenCard').style.display = 'none';
-      document.getElementById('editorCard').style.display = 'block';
+      document.getElementById('workspace').style.display = 'block';
       showMsg('Token 已保存', 'success');
       initEditor();
-      loadTaxonomies();
+      loadPosts();
     }
 
     function initEditor() {
@@ -144,13 +183,9 @@
     }
 
     async function api(path, method, body) {
-      const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
+      const res = await fetch('https://api.github.com/repos/' + REPO + '/' + path, {
         method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          Accept: 'application/vnd.github.v3+json',
-        },
+        headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', Accept: 'application/vnd.github.v3+json' },
         body: body ? JSON.stringify(body) : undefined,
       });
       if (!res.ok) {
@@ -160,29 +195,51 @@
       return res.json();
     }
 
-    async function loadTaxonomies() {
+    function parseFrontMatter(text) {
+      var result = { title: '', date: '', categories: '', tags: [], img: '', summary: '', body: '' };
+      var m = text.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)/);
+      if (!m) { result.body = text; return result; }
+      var fm = m[1];
+      result.body = m[2];
+      var t = fm.match(/^title:\s*(.+)/m);
+      if (t) result.title = t[1].trim();
+      var d = fm.match(/^date:\s*(.+)/m);
+      if (d) result.date = d[1].trim();
+      var c = fm.match(/^categories:\s*(.+)/m);
+      if (c) result.categories = c[1].trim();
+      var img = fm.match(/^img:\s*(.+)/m);
+      if (img) result.img = img[1].trim();
+      var s = fm.match(/^summary:\s*(.+)/m);
+      if (s) result.summary = s[1].trim();
+      var tagSec = fm.match(/^tags:\s*\n((?:\s*-\s*.+\n?)*)/m);
+      if (tagSec) {
+        var lines = tagSec[1].match(/- (.+)/g);
+        if (lines) result.tags = lines.map(function(l) { return l.replace('- ', '').trim(); });
+      }
+      return result;
+    }
+
+    async function loadPosts() {
       try {
-        // Get existing posts to extract tags and categories
-        const files = await api('contents/source/_posts', 'GET');
+        var files = await api('contents/source/_posts', 'GET');
+        allPosts = [];
         var tags = {};
         var cats = {};
         for (var i = 0; i < files.length; i++) {
           if (!files[i].name.endsWith('.md')) continue;
           try {
-            var content = await api('contents/source/_posts/' + files[i].name, 'GET');
-            var text = decodeURIComponent(escape(atob(content.content)));
-            var tagMatch = text.match(/tags:\s*\n((?:\s*-\s+.+\n?)*)/);
-            var catMatch = text.match(/categories:\s*(.+)/);
-            if (tagMatch) {
-              var tagLines = tagMatch[1].match(/- (.+)/g);
-              if (tagLines) tagLines.forEach(function(t) { var tn = t.replace('- ', '').trim(); if (tn) tags[tn] = (tags[tn]||0)+1; });
-            }
-            if (catMatch) {
-              var c = catMatch[1].trim();
-              if (c) cats[c] = (cats[c]||0)+1;
-            }
+            var resp = await api('contents/source/_posts/' + files[i].name, 'GET');
+            var text = decodeURIComponent(escape(atob(resp.content)));
+            var fm = parseFrontMatter(text);
+            fm._slug = files[i].name.replace('.md', '');
+            fm._sha = resp.sha;
+            fm._path = 'source/_posts/' + files[i].name;
+            allPosts.push(fm);
+            if (fm.categories) cats[fm.categories] = (cats[fm.categories]||0)+1;
+            fm.tags.forEach(function(t) { if (t) tags[t] = (tags[t]||0)+1; });
           } catch(e) {}
         }
+        allPosts.sort(function(a, b) { return (b.date||'') > (a.date||'') ? 1 : -1; });
         allTags = Object.keys(tags).sort();
         var catList = document.getElementById('catList');
         catList.innerHTML = '';
@@ -192,7 +249,26 @@
           catList.appendChild(opt);
         });
         renderTagChips();
-      } catch(e) { console.error('加载标签失败:', e); }
+        renderPostList();
+      } catch(e) { showMsg('加载文章失败: ' + e.message, 'error'); }
+    }
+
+    function renderPostList() {
+      var el = document.getElementById('postList');
+      var search = (document.getElementById('postSearch').value || '').toLowerCase();
+      var filtered = allPosts.filter(function(p) {
+        return !search || (p.title||'').toLowerCase().includes(search) || (p._slug||'').toLowerCase().includes(search);
+      });
+      var html = '';
+      filtered.forEach(function(p) {
+        var isActive = currentSlug === p._slug;
+        html += '<div class="post-item' + (isActive ? ' active' : '') + '" onclick="editPost(\'' + p._slug.replace(/'/g, "\\'") + '\')">';
+        html += '<span class="title">' + (p.title || p._slug) + '</span>';
+        html += '<span class="meta">' + (p.date||'').substring(0,10) + '</span>';
+        html += '</div>';
+      });
+      if (!filtered.length) html = '<div style="padding:10px; color:#999; font-size:0.85rem">暂无文章</div>';
+      el.innerHTML = html;
     }
 
     function renderTagChips() {
@@ -209,11 +285,7 @@
       if (e.key === 'Enter') {
         e.preventDefault();
         var val = this.value.trim();
-        if (val && !selectedTags.includes(val)) {
-          selectedTags.push(val);
-          if (!allTags.includes(val)) allTags.push(val);
-          renderTagChips();
-        }
+        if (val && !selectedTags.includes(val)) { selectedTags.push(val); if (!allTags.includes(val)) allTags.push(val); renderTagChips(); }
         this.value = '';
       }
     });
@@ -225,8 +297,51 @@
       renderTagChips();
     }
 
-    function buildFrontMatter(title, cat, tags, img, summary) {
-      var date = new Date().toISOString().replace('T',' ').substring(0,19);
+    function newPost() {
+      currentSlug = null;
+      currentSha = null;
+      document.getElementById('title').value = '';
+      document.getElementById('category').value = '';
+      document.getElementById('coverImg').value = '';
+      document.getElementById('summary').value = '';
+      selectedTags = [];
+      easyMDE.value('');
+      document.getElementById('editorTitle').textContent = '✍️ 写文章';
+      document.getElementById('editActions').style.display = 'none';
+      renderTagChips();
+      renderPostList();
+    }
+
+    function editPost(slug) {
+      var post = allPosts.find(function(p) { return p._slug === slug; });
+      if (!post) return;
+      currentSlug = post._slug;
+      currentSha = post._sha;
+      document.getElementById('title').value = post.title || '';
+      document.getElementById('category').value = post.categories || '';
+      document.getElementById('coverImg').value = post.img || '';
+      document.getElementById('summary').value = post.summary || '';
+      selectedTags = post.tags.slice();
+      easyMDE.value(post.body || '');
+      document.getElementById('editorTitle').textContent = '✍️ 编辑: ' + (post.title || slug);
+      document.getElementById('editActions').style.display = 'block';
+      renderTagChips();
+      renderPostList();
+    }
+
+    async function deletePost() {
+      if (!currentSlug) return;
+      if (!confirm('确定删除文章「' + (document.getElementById('title').value || currentSlug) + '」？此操作不可恢复。')) return;
+      try {
+        await api('contents/source/_posts/' + currentSlug + '.md', 'DELETE', { message: '删除: ' + currentSlug, sha: currentSha, branch: BRANCH });
+        showMsg('文章已删除', 'success');
+        newPost();
+        loadPosts();
+      } catch(e) { showMsg('删除失败: ' + e.message, 'error'); }
+    }
+
+    function buildFrontMatter(title, cat, tags, img, summary, existingDate) {
+      var date = existingDate || new Date().toISOString().replace('T',' ').substring(0,19);
       var fm = '---\ntitle: ' + title + '\ndate: ' + date + '\n';
       if (cat) fm += 'categories: ' + cat + '\n';
       if (tags && tags.length) { fm += 'tags:\n'; tags.forEach(function(t) { fm += '  - ' + t + '\n'; }); }
@@ -240,21 +355,26 @@
       return text.replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '') || 'untitled';
     }
 
-    async function savePost(title, content) {
-      var slug = slugify(title);
-      var path = 'source/_posts/' + slug + '.md';
-      var existing = null;
-      try { existing = await api('contents/' + path, 'GET'); } catch(e) {}
+    async function savePost(title, content, slug, sha) {
+      var targetSlug = slug || slugify(title);
+      var path = 'source/_posts/' + targetSlug + '.md';
+
+      // If slug changed (title changed), delete old file
+      if (slug && slug !== targetSlug) {
+        await api('contents/source/_posts/' + slug + '.md', 'DELETE', { message: '重命名: ' + slug + ' → ' + targetSlug, sha: sha, branch: BRANCH });
+        sha = null;
+      }
 
       var body = {
-        message: (existing ? '更新' : '新增') + ': ' + title,
+        message: (sha ? '更新' : '新增') + ': ' + title,
         content: btoa(unescape(encodeURIComponent(content))),
         branch: BRANCH,
       };
-      if (existing) body.sha = existing.sha;
+      if (sha && slug === targetSlug) body.sha = sha;
 
       await api('contents/' + path, 'PUT', body);
-      showMsg('文章已提交！GitHub Pages 将在 1-2 分钟内自动部署。', 'success');
+      showMsg('文章已提交！1-2 分钟后更新到博客。', 'success');
+      return targetSlug;
     }
 
     async function publish() {
@@ -268,37 +388,24 @@
       if (!body) return showMsg('请输入正文', 'error');
 
       try {
-        var content = buildFrontMatter(title, cat, selectedTags, img, summary) + body;
-        await savePost(title, content);
-        document.getElementById('title').value = '';
-        document.getElementById('category').value = '';
-        document.getElementById('coverImg').value = '';
-        document.getElementById('summary').value = '';
-        selectedTags = [];
-        renderTagChips();
-        easyMDE.value('');
-        loadTaxonomies();
-      } catch(e) {
-        showMsg('发布失败: ' + e.message, 'error');
-      }
+        var existingDate = null;
+        if (currentSlug) {
+          var oldPost = allPosts.find(function(p) { return p._slug === currentSlug; });
+          if (oldPost) existingDate = oldPost.date;
+        }
+        var content = buildFrontMatter(title, cat, selectedTags, img, summary, existingDate);
+        var newSlug = await savePost(title, content + body, currentSlug, currentSha);
+        currentSlug = newSlug;
+        loadPosts();
+      } catch(e) { showMsg('发布失败: ' + e.message, 'error'); }
     }
 
-    async function saveDraft() {
-      var title = document.getElementById('title').value.trim() || '草稿';
-      var cat = document.getElementById('category').value.trim();
-      var img = document.getElementById('coverImg').value.trim();
-      var summary = document.getElementById('summary').value.trim();
-      var body = easyMDE.value();
-
-      try {
-        var content = buildFrontMatter(title, cat, selectedTags, img, summary) + (body || '草稿内容...');
-        // Save to drafts folder
-        if (!title || title === '草稿') title = 'draft-' + new Date().toISOString().substring(0,10);
-        await savePost(title, content);
-      } catch(e) {
-        showMsg('保存失败: ' + e.message, 'error');
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        publish();
       }
-    }
+    });
   </script>
 </body>
 </html>
