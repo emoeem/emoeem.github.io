@@ -1,11 +1,297 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>emoeem 博客管理</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #333; }
+    .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+    header { background: #2d3436; color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { font-size: 1.2rem; }
+    header a { color: #dfe6e9; font-size: 0.85rem; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 16px; }
+    .card h2 { font-size: 1rem; margin-bottom: 12px; color: #2d3436; }
+    input, textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: #6c5ce7; }
+    .row { display: flex; gap: 12px; margin-bottom: 12px; }
+    .row > div { flex: 1; }
+    label { font-size: 0.8rem; font-weight: 600; color: #636e72; display: block; margin-bottom: 4px; }
+    button { background: #6c5ce7; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 0.95rem; cursor: pointer; font-weight: 500; }
+    button:hover { background: #5b4cdb; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .msg { padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem; display: none; }
+    .msg.success { background: #d4edda; color: #155724; display: block; }
+    .msg.error { background: #fce4e4; color: #c0392b; display: block; }
+    .msg.info { background: #dbeafe; color: #1e40af; display: block; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .tag-chip { background: #e8e8ff; color: #4a3fcf; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; border: none; }
+    .tag-chip:hover { background: #d0d0ff; }
+    .tag-chip.active { background: #6c5ce7; color: #fff; }
+    .token-hint { font-size: 0.8rem; color: #636e72; }
+    .token-hint a { color: #6c5ce7; }
+    .EasyMDEContainer .editor-toolbar { border-radius: 6px 6px 0 0; }
+    .EasyMDEContainer .CodeMirror { border-radius: 0 0 6px 6px; }
+    small a { color: #6c5ce7; }
+  </style>
 </head>
 <body>
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+  <header>
+    <h1>📝 emoeem 博客管理</h1>
+    <a href="/">← 返回博客</a>
+  </header>
+
+  <div class="container">
+    <div id="msg"></div>
+
+    <div class="card" id="tokenCard">
+      <h2>🔑 GitHub Token（首次设置后自动保存）</h2>
+      <p class="token-hint">
+        1. 打开 <a href="https://github.com/settings/tokens/new?scopes=repo&description=blog-editor" target="_blank">GitHub Token 创建页面</a><br>
+        2. Expiration 选 <b>No expiration</b>，点 Generate token<br>
+        3. 复制生成的 token 粘贴到下面
+      </p>
+      <div class="row" style="margin-top:10px">
+        <div style="flex:3"><input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"></div>
+        <div style="flex:0"><button onclick="saveToken()">保存</button></div>
+      </div>
+    </div>
+
+    <div class="card" id="editorCard" style="display:none">
+      <h2>✍️ 写文章</h2>
+      <div class="row">
+        <div style="flex:2"><label>标题</label><input type="text" id="title" placeholder="文章标题"></div>
+        <div style="flex:1"><label>分类</label><input type="text" id="category" placeholder="如：技术、随笔" list="catList"><datalist id="catList"></datalist></div>
+      </div>
+      <div class="row">
+        <div>
+          <label>标签（点击选择已有，或输入新标签回车添加）</label>
+          <input type="text" id="tagInput" placeholder="搜索或输入新标签">
+          <div class="tag-list" id="tagList"></div>
+        </div>
+      </div>
+      <div class="row">
+        <div><label>封面图（可选）</label><input type="text" id="coverImg" placeholder="/medias/featureimages/0.jpg"></div>
+        <div><label>摘要（可选）</label><input type="text" id="summary" placeholder="自定义摘要，留空则自动截取"></div>
+      </div>
+      <label style="margin-bottom:4px">正文</label>
+      <textarea id="editor"></textarea>
+      <div style="margin-top:12px; display:flex; gap:8px; align-items:center">
+        <button onclick="publish()">发布文章</button>
+        <button onclick="saveDraft()" style="background:#636e72">保存草稿</button>
+        <small><a href="/" target="_blank">预览博客</a></small>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
+  <script>
+    const STORAGE_KEY = 'blog_gh_token';
+    const REPO = 'emoeem/blog-source';
+    const BRANCH = 'main';
+
+    let token = localStorage.getItem(STORAGE_KEY) || '';
+    let easyMDE = null;
+    let allTags = [];
+    let selectedTags = [];
+
+    function showMsg(text, type) {
+      const el = document.getElementById('msg');
+      el.textContent = text;
+      el.className = 'msg ' + type;
+      setTimeout(function() { el.className = 'msg'; }, 5000);
+    }
+
+    if (token) {
+      document.getElementById('tokenInput').value = token;
+      document.getElementById('tokenCard').style.display = 'none';
+      document.getElementById('editorCard').style.display = 'block';
+      initEditor();
+      loadTaxonomies();
+    }
+
+    function saveToken() {
+      token = document.getElementById('tokenInput').value.trim();
+      if (!token) return showMsg('请输入 Token', 'error');
+      if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) return showMsg('Token 格式不正确，应以 ghp_ 或 github_pat_ 开头', 'error');
+      localStorage.setItem(STORAGE_KEY, token);
+      document.getElementById('tokenCard').style.display = 'none';
+      document.getElementById('editorCard').style.display = 'block';
+      showMsg('Token 已保存', 'success');
+      initEditor();
+      loadTaxonomies();
+    }
+
+    function initEditor() {
+      if (easyMDE) return;
+      easyMDE = new EasyMDE({
+        element: document.getElementById('editor'),
+        spellChecker: false,
+        placeholder: '开始写 Markdown...',
+        toolbar: ['heading-2','heading-3','bold','italic','|','quote','unordered-list','ordered-list','|','link','image','code','table','horizontal-rule','|','preview','side-by-side','fullscreen','|','guide'],
+        status: ['lines','words','cursor'],
+        minHeight: '400px',
+      });
+    }
+
+    async function api(path, method, body) {
+      const res = await fetch(`https://api.github.com/repos/${REPO}/${path}`, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          Accept: 'application/vnd.github.v3+json',
+        },
+        body: body ? JSON.stringify(body) : undefined,
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(function() { return {}; });
+        throw new Error(err.message || res.statusText);
+      }
+      return res.json();
+    }
+
+    async function loadTaxonomies() {
+      try {
+        // Get existing posts to extract tags and categories
+        const files = await api('contents/source/_posts', 'GET');
+        var tags = {};
+        var cats = {};
+        for (var i = 0; i < files.length; i++) {
+          if (!files[i].name.endsWith('.md')) continue;
+          try {
+            var content = await api('contents/source/_posts/' + files[i].name, 'GET');
+            var text = atob(content.content);
+            var tagMatch = text.match(/tags:\s*\n((?:\s*-\s+.+\n?)*)/);
+            var catMatch = text.match(/categories:\s*(.+)/);
+            if (tagMatch) {
+              var tagLines = tagMatch[1].match(/- (.+)/g);
+              if (tagLines) tagLines.forEach(function(t) { var tn = t.replace('- ', '').trim(); if (tn) tags[tn] = (tags[tn]||0)+1; });
+            }
+            if (catMatch) {
+              var c = catMatch[1].trim();
+              if (c) cats[c] = (cats[c]||0)+1;
+            }
+          } catch(e) {}
+        }
+        allTags = Object.keys(tags).sort();
+        var catList = document.getElementById('catList');
+        catList.innerHTML = '';
+        Object.keys(cats).sort().forEach(function(c) {
+          var opt = document.createElement('option');
+          opt.value = c;
+          catList.appendChild(opt);
+        });
+        renderTagChips();
+      } catch(e) { console.error('加载标签失败:', e); }
+    }
+
+    function renderTagChips() {
+      var el = document.getElementById('tagList');
+      var html = '';
+      allTags.forEach(function(t) {
+        var active = selectedTags.includes(t) ? ' active' : '';
+        html += '<button class="tag-chip' + active + '" onclick="toggleTag(\'' + t.replace(/'/g, "\\'") + '\')">' + t + '</button>';
+      });
+      el.innerHTML = html;
+    }
+
+    document.getElementById('tagInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var val = this.value.trim();
+        if (val && !selectedTags.includes(val)) {
+          selectedTags.push(val);
+          if (!allTags.includes(val)) allTags.push(val);
+          renderTagChips();
+        }
+        this.value = '';
+      }
+    });
+
+    function toggleTag(tag) {
+      var i = selectedTags.indexOf(tag);
+      if (i > -1) selectedTags.splice(i, 1);
+      else selectedTags.push(tag);
+      renderTagChips();
+    }
+
+    function buildFrontMatter(title, cat, tags, img, summary) {
+      var date = new Date().toISOString().replace('T',' ').substring(0,19);
+      var fm = '---\ntitle: ' + title + '\ndate: ' + date + '\n';
+      if (cat) fm += 'categories: ' + cat + '\n';
+      if (tags && tags.length) { fm += 'tags:\n'; tags.forEach(function(t) { fm += '  - ' + t + '\n'; }); }
+      if (img) fm += 'img: ' + img + '\n';
+      if (summary) fm += 'summary: ' + summary + '\n';
+      fm += '---\n\n';
+      return fm;
+    }
+
+    function slugify(text) {
+      return text.replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '') || 'untitled';
+    }
+
+    async function savePost(title, content) {
+      var slug = slugify(title);
+      var path = 'source/_posts/' + slug + '.md';
+      var existing = null;
+      try { existing = await api('contents/' + path, 'GET'); } catch(e) {}
+
+      var body = {
+        message: (existing ? '更新' : '新增') + ': ' + title,
+        content: btoa(unescape(encodeURIComponent(content))),
+        branch: BRANCH,
+      };
+      if (existing) body.sha = existing.sha;
+
+      await api('contents/' + path, 'PUT', body);
+      showMsg('文章已提交！GitHub Pages 将在 1-2 分钟内自动部署。', 'success');
+    }
+
+    async function publish() {
+      var title = document.getElementById('title').value.trim();
+      var cat = document.getElementById('category').value.trim();
+      var img = document.getElementById('coverImg').value.trim();
+      var summary = document.getElementById('summary').value.trim();
+      var body = easyMDE.value();
+
+      if (!title) return showMsg('请输入标题', 'error');
+      if (!body) return showMsg('请输入正文', 'error');
+
+      try {
+        var content = buildFrontMatter(title, cat, selectedTags, img, summary) + body;
+        await savePost(title, content);
+        document.getElementById('title').value = '';
+        document.getElementById('category').value = '';
+        document.getElementById('coverImg').value = '';
+        document.getElementById('summary').value = '';
+        selectedTags = [];
+        renderTagChips();
+        easyMDE.value('');
+        loadTaxonomies();
+      } catch(e) {
+        showMsg('发布失败: ' + e.message, 'error');
+      }
+    }
+
+    async function saveDraft() {
+      var title = document.getElementById('title').value.trim() || '草稿';
+      var cat = document.getElementById('category').value.trim();
+      var img = document.getElementById('coverImg').value.trim();
+      var summary = document.getElementById('summary').value.trim();
+      var body = easyMDE.value();
+
+      try {
+        var content = buildFrontMatter(title, cat, selectedTags, img, summary) + (body || '草稿内容...');
+        // Save to drafts folder
+        if (!title || title === '草稿') title = 'draft-' + new Date().toISOString().substring(0,10);
+        await savePost(title, content);
+      } catch(e) {
+        showMsg('保存失败: ' + e.message, 'error');
+      }
+    }
+  </script>
 </body>
 </html>
