@@ -4,6 +4,19 @@
   
     
     <entry>
+      <title>test</title>
+      <link href="/2026/06/28/test/"/>
+      <url>/2026/06/28/test/</url>
+      
+        <content type="html"><![CDATA[<p>这两款你都查到了，我直接说中文支持的情况：</p><hr><h3 id="G4Music-gapless"><a href="#G4Music-gapless" class="headerlink" title="G4Music (gapless)"></a>G4Music (gapless)</h3><p><strong>中文支持</strong>：<strong>基本不支持</strong>或<strong>很不完善</strong>。</p><ul><li>它是较新的轻量项目，主要面向英文用户</li><li>界面文字极少（设计极简），但没有完整的中文翻译</li><li>如果你系统 locale 是 <code>zh_CN.UTF-8</code>，它大概率显示英文</li></ul><h3 id="Lollypop"><a href="#Lollypop" class="headerlink" title="Lollypop"></a>Lollypop</h3><p><strong>中文支持</strong>：<strong>有繁体中文</strong>，简体中文取决于版本。</p><ul><li>启动时可以试试 <code>LANG=zh_TW.UTF-8 lollypop</code> 看繁体效果</li><li>简体中文可能部分缺失或显示英文</li></ul><hr><h2 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h2><table><thead><tr><th>需求</th><th>gapless</th><th>lollypop</th><th>Quod Libet</th></tr></thead><tbody><tr><td><strong>GTK</strong></td><td>✅ GTK4</td><td>✅ GTK3</td><td>✅ GTK3</td></tr><tr><td><strong>中文界面</strong></td><td>❌ 基本无</td><td>⚠️ 繁体有，简体不全</td><td>✅ <strong>完善</strong></td></tr><tr><td><strong>功能强大</strong></td><td>⚠️ 轻量，功能偏少</td><td>✅ 全面</td><td>✅ <strong>最全面</strong></td></tr></tbody></table><hr><p>如果你<strong>必须</strong>中文界面且功能强大，这两款都不是最佳匹配。<strong>Quod Libet</strong> 才是 GTK 阵营里唯一同时满足”中文完善 + 功能极强”的。</p><p>但如果你愿意先用英文界面，或者 Lollypop 的繁体你能接受，那：</p><ul><li><strong>想极简轻快</strong> → 装 <code>gapless</code>（archlinuxcn 已经有了）</li><li><strong>想要功能全面 + 现代界面</strong> → 装 <code>lollypop</code></li></ul><p>你确定中文是硬性要求吗？如果是，我建议直接 <code>sudo pacman -S quodlibet</code>。</p>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>2026-06-27 日记</title>
       <link href="/2026/06/27/2026-06-27-ri-ji/"/>
       <url>/2026/06/27/2026-06-27-ri-ji/</url>
