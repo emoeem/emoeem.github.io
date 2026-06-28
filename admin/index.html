@@ -7,62 +7,92 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <style>
+    :root {
+      --bg: #f5f5f5; --card-bg: #fff; --text: #333; --text2: #636e72; --border: #ddd;
+      --input-bg: #fff; --input-border: #ddd; --hover: #f8f8ff; --active: #e8e8ff;
+      --cm-bg: #fff; --cm-text: #333; --cm-gutter: #f7f7f7;
+      --tb-bg: #fafafa; --tb-text: #333;
+    }
+    body.dark {
+      --bg: #1a1a2e; --card-bg: #16213e; --text: #e0e0e0; --text2: #a0a0a0; --border: #2a2a4a;
+      --input-bg: #0f3460; --input-border: #2a2a4a; --hover: #1a1a3e; --active: #1a2744;
+      --cm-bg: #16213e; --cm-text: #e0e0e0; --cm-gutter: #1a1a2e;
+      --tb-bg: #16213e; --tb-text: #a0a0a0;
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #333; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
     .container { max-width: 1100px; margin: 0 auto; padding: 20px; }
     header { background: #2d3436; color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; }
     header h1 { font-size: 1.2rem; }
-    header a { color: #dfe6e9; font-size: 0.85rem; text-decoration: none; }
+    header a, header button { color: #dfe6e9; font-size: 0.85rem; text-decoration: none; background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+    header button:hover, header a:hover { background: #636e72; color: #fff; }
     .layout { display: flex; gap: 16px; align-items: flex-start; }
     .sidebar { width: 280px; flex-shrink: 0; }
     .main { flex: 1; min-width: 0; }
-    .card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); padding: 20px; margin-bottom: 16px; }
-    .card h2 { font-size: 1rem; margin-bottom: 12px; color: #2d3436; }
-    input, textarea, select { width: 100%; padding: 10px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 0.95rem; font-family: inherit; }
+    .card { background: var(--card-bg); border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.15); padding: 20px; margin-bottom: 16px; transition: background .3s; }
+    .card h2 { font-size: 1rem; margin-bottom: 12px; color: var(--text); }
+    input, textarea, select { width: 100%; padding: 10px 12px; border: 1px solid var(--input-border); border-radius: 6px; font-size: 0.95rem; font-family: inherit; background: var(--input-bg); color: var(--text); }
     input:focus, textarea:focus, select:focus { outline: none; border-color: #6c5ce7; }
     .row { display: flex; gap: 12px; margin-bottom: 12px; }
     .row > div { flex: 1; }
-    label { font-size: 0.8rem; font-weight: 600; color: #636e72; display: block; margin-bottom: 4px; }
+    label { font-size: 0.8rem; font-weight: 600; color: var(--text2); display: block; margin-bottom: 4px; }
     button { background: #6c5ce7; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; font-size: 0.95rem; cursor: pointer; font-weight: 500; }
     button:hover { background: #5b4cdb; }
     button.danger { background: #e74c3c; }
     button.danger:hover { background: #c0392b; }
-    button.secondary { background: #636e72; }
+    button.secondary { background: #636e72; color: #fff; }
     button.secondary:hover { background: #555; }
     .msg { padding: 10px 14px; border-radius: 6px; margin-bottom: 12px; font-size: 0.9rem; display: none; }
     .msg.success { background: #d4edda; color: #155724; display: block; }
     .msg.error { background: #fce4e4; color: #c0392b; display: block; }
     .msg.info { background: #dbeafe; color: #1e40af; display: block; }
     .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
-    .tag-chip { background: #e8e8ff; color: #4a3fcf; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; border: none; }
+    .tag-chip { background: var(--active); color: #6c5ce7; padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; border: none; }
     .tag-chip:hover { background: #d0d0ff; }
     .tag-chip.active { background: #6c5ce7; color: #fff; }
-    .token-hint { font-size: 0.8rem; color: #636e72; }
+    .token-hint { font-size: 0.8rem; color: var(--text2); }
     .token-hint a { color: #6c5ce7; }
     .EasyMDEContainer .editor-toolbar { border-radius: 6px 6px 0 0; }
     .EasyMDEContainer .CodeMirror { border-radius: 0 0 6px 6px; }
-    .CodeMirror { height: 400px; background: #fff !important; color: #333 !important; font-size: 14px; }
-    .CodeMirror-gutters { background: #f7f7f7 !important; border-right: 1px solid #ddd !important; }
-    .EasyMDEContainer { border: 1px solid #ddd; border-radius: 6px; }
-    .editor-toolbar { border-bottom: 1px solid #ddd !important; background: #fafafa !important; }
-    .editor-toolbar button { color: #333 !important; }
-    .editor-toolbar button:hover { background: #e8e8e8 !important; }
-    .post-item { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-    .post-item:hover { background: #f8f8ff; }
-    .post-item.active { background: #e8e8ff; }
+    .CodeMirror { height: 400px; background: var(--cm-bg) !important; color: var(--cm-text) !important; font-size: 14px; transition: background .3s, color .3s; }
+    .CodeMirror-gutters { background: var(--cm-gutter) !important; border-right: 1px solid var(--border) !important; transition: background .3s; }
+    .EasyMDEContainer { border: 1px solid var(--border); border-radius: 6px; }
+    .editor-toolbar { border-bottom: 1px solid var(--border) !important; background: var(--tb-bg) !important; padding: 0 6px !important; transition: background .3s; }
+    .editor-toolbar button { color: var(--tb-text) !important; }
+    .editor-toolbar button:hover { background: rgba(108,92,231,0.1) !important; }
+    .editor-toolbar button.active { background: rgba(108,92,231,0.2) !important; color: #6c5ce7 !important; }
+    .editor-preview, .editor-preview-side { background: var(--card-bg) !important; color: var(--text) !important; padding: 20px !important; }
+    .editor-preview h1, .editor-preview h2, .editor-preview h3, .editor-preview h4 { border-bottom: 1px solid var(--border); padding-bottom: 0.3em; margin-top: 1em; margin-bottom: 0.5em; }
+    .editor-preview h1 { font-size: 1.8em; }
+    .editor-preview h2 { font-size: 1.5em; }
+    .editor-preview h3 { font-size: 1.25em; }
+    .editor-preview code { background: rgba(108,92,231,0.1); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+    .editor-preview pre { background: #1e1e2e; color: #cdd6f4; padding: 16px; border-radius: 6px; overflow-x: auto; }
+    .editor-preview pre code { background: none; padding: 0; color: inherit; }
+    .editor-preview blockquote { border-left: 4px solid #6c5ce7; padding: 0 1em; color: var(--text2); margin: 1em 0; }
+    .editor-preview table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    .editor-preview th, .editor-preview td { border: 1px solid var(--border); padding: 8px 12px; text-align: left; }
+    .editor-preview th { background: var(--cm-gutter); }
+    .editor-preview a { color: #6c5ce7; }
+    .editor-preview img { max-width: 100%; }
+    .editor-preview-side { border-left: 1px solid var(--border) !important; }
+    .post-item { padding: 10px 12px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .post-item:hover { background: var(--hover); }
+    .post-item.active { background: var(--active); }
     .post-item .title { font-size: 0.9rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
-    .post-item .meta { font-size: 0.75rem; color: #999; flex-shrink: 0; margin-left: 8px; }
-    .post-item .del-btn { background: none; border: none; color: #ccc; cursor: pointer; padding: 2px 6px; font-size: 0.8rem; }
-    .post-item .del-btn:hover { color: #e74c3c; }
+    .post-item .meta { font-size: 0.75rem; color: var(--text2); flex-shrink: 0; margin-left: 8px; }
     .search-box { margin-bottom: 10px; }
     small a { color: #6c5ce7; text-decoration: none; }
     @media (max-width: 768px) { .layout { flex-direction: column; } .sidebar { width: 100%; } }
   </style>
 </head>
-<body>
+<body class="dark">
   <header>
     <h1>📝 emoeem 博客管理</h1>
-    <a href="/">← 返回博客</a>
+    <div style="display:flex; gap:12px; align-items:center">
+      <button onclick="toggleDark()" style="font-size:1rem" title="切换主题">🌓</button>
+      <a href="/">← 返回博客</a>
+    </div>
   </header>
 
   <div class="container">
@@ -145,6 +175,18 @@
     let currentSlug = null;
     let currentSha = null;
 
+    // Dark mode
+    if (localStorage.getItem('admin_dark') === 'false') {
+      document.body.classList.remove('dark');
+    } else {
+      localStorage.setItem('admin_dark', 'true');
+    }
+
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('admin_dark', document.body.classList.contains('dark') ? 'true' : 'false');
+    }
+
     function showMsg(text, type) {
       const el = document.getElementById('msg');
       el.textContent = text;
@@ -180,7 +222,7 @@
         placeholder: '开始写 Markdown...',
         toolbar: ['heading-2','heading-3','bold','italic','|','quote','unordered-list','ordered-list','|','link','image','code','table','horizontal-rule','|','preview','side-by-side','fullscreen','|','guide'],
         status: ['lines','words','cursor'],
-        minHeight: '400px',
+        minHeight: '420px',
       });
     }
 
@@ -235,7 +277,6 @@
             var fm = parseFrontMatter(text);
             fm._slug = files[i].name.replace('.md', '');
             fm._sha = resp.sha;
-            fm._path = 'source/_posts/' + files[i].name;
             allPosts.push(fm);
             if (fm.categories) cats[fm.categories] = (cats[fm.categories]||0)+1;
             fm.tags.forEach(function(t) { if (t) tags[t] = (tags[t]||0)+1; });
@@ -269,7 +310,7 @@
         html += '<span class="meta">' + (p.date||'').substring(0,10) + '</span>';
         html += '</div>';
       });
-      if (!filtered.length) html = '<div style="padding:10px; color:#999; font-size:0.85rem">暂无文章</div>';
+      if (!filtered.length) html = '<div style="padding:10px; color:var(--text2); font-size:0.85rem">暂无文章</div>';
       el.innerHTML = html;
     }
 
@@ -300,8 +341,7 @@
     }
 
     function newPost() {
-      currentSlug = null;
-      currentSha = null;
+      currentSlug = null; currentSha = null;
       document.getElementById('title').value = '';
       document.getElementById('category').value = '';
       document.getElementById('coverImg').value = '';
@@ -317,8 +357,7 @@
     function editPost(slug) {
       var post = allPosts.find(function(p) { return p._slug === slug; });
       if (!post) return;
-      currentSlug = post._slug;
-      currentSha = post._sha;
+      currentSlug = post._slug; currentSha = post._sha;
       document.getElementById('title').value = post.title || '';
       document.getElementById('category').value = post.categories || '';
       document.getElementById('coverImg').value = post.img || '';
@@ -333,7 +372,7 @@
 
     async function deletePost() {
       if (!currentSlug) return;
-      if (!confirm('确定删除文章「' + (document.getElementById('title').value || currentSlug) + '」？此操作不可恢复。')) return;
+      if (!confirm('确定删除文章「' + (document.getElementById('title').value || currentSlug) + '」？')) return;
       try {
         await api('contents/source/_posts/' + currentSlug + '.md', 'DELETE', { message: '删除: ' + currentSlug, sha: currentSha, branch: BRANCH });
         showMsg('文章已删除', 'success');
@@ -360,20 +399,16 @@
     async function savePost(title, content, slug, sha) {
       var targetSlug = slug || slugify(title);
       var path = 'source/_posts/' + targetSlug + '.md';
-
-      // If slug changed (title changed), delete old file
       if (slug && slug !== targetSlug) {
-        await api('contents/source/_posts/' + slug + '.md', 'DELETE', { message: '重命名: ' + slug + ' → ' + targetSlug, sha: sha, branch: BRANCH });
+        await api('contents/source/_posts/' + slug + '.md', 'DELETE', { message: '重命名: ' + slug, sha: sha, branch: BRANCH });
         sha = null;
       }
-
       var body = {
         message: (sha ? '更新' : '新增') + ': ' + title,
         content: btoa(unescape(encodeURIComponent(content))),
         branch: BRANCH,
       };
       if (sha && slug === targetSlug) body.sha = sha;
-
       await api('contents/' + path, 'PUT', body);
       showMsg('文章已提交！1-2 分钟后更新到博客。', 'success');
       return targetSlug;
@@ -385,10 +420,8 @@
       var img = document.getElementById('coverImg').value.trim();
       var summary = document.getElementById('summary').value.trim();
       var body = easyMDE.value();
-
       if (!title) return showMsg('请输入标题', 'error');
       if (!body) return showMsg('请输入正文', 'error');
-
       try {
         var existingDate = null;
         if (currentSlug) {
@@ -403,10 +436,7 @@
     }
 
     document.addEventListener('keydown', function(e) {
-      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        publish();
-      }
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); publish(); }
     });
   </script>
 </body>
