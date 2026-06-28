@@ -163,7 +163,7 @@
           if (!files[i].name.endsWith('.md')) continue;
           try {
             var content = await api('contents/source/_posts/' + files[i].name, 'GET');
-            var text = atob(content.content);
+            var text = decodeURIComponent(escape(atob(content.content)));
             var tagMatch = text.match(/tags:\s*\n((?:\s*-\s+.+\n?)*)/);
             var catMatch = text.match(/categories:\s*(.+)/);
             if (tagMatch) {
