@@ -4,12 +4,8 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="4.1 什么是所有权, hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
-    <meta name="description" content="一、所有权是什么？所有权是 Rust 管理内存的一套编译时规则，它让 Rust 无需 GC 也能保证内存安全，且不损失性能。核心只有三条：
-
-Rust 中每个值都有且只有一个所有者（owner）。
-同一时刻，值只能有一个所有者。
-当所有者离">
+    <meta name="keywords" content="4.3 slice类型, hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
+    <meta name="description" content="Slice 类型 总结切片（slice）  是 Rust 提供的一种特殊引用，它让你可以安全地引用集合（如字符串、数组）中的一段连续元素，而不需要拥有这些数据的所有权。slice 的引入，漂亮地解决了“用单独的索引表示子序列”带来的数据不同">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -21,7 +17,7 @@ Rust 中每个值都有且只有一个所有者（owner）。
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>4.1 什么是所有权 | emoeem</title>
+    <title>4.3 slice类型 | emoeem</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -341,12 +337,12 @@ Rust 中每个值都有且只有一个所有者（owner）。
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/15.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">4.1 什么是所有权</h1>
+                    <h1 class="description center-align post-title">4.3 slice类型</h1>
                 </div>
             </div>
         </div>
@@ -405,7 +401,7 @@ Rust 中每个值都有且只有一个所有者（owner）。
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    899
+                    967
                 </div>
                 
 
@@ -435,93 +431,84 @@ Rust 中每个值都有且只有一个所有者（owner）。
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="一、所有权是什么？"><a href="#一、所有权是什么？" class="headerlink" title="一、所有权是什么？"></a>一、所有权是什么？</h2><p>所有权是 Rust 管理内存的一套<strong>编译时规则</strong>，它让 Rust 无需 GC 也能保证内存安全，且不损失性能。核心只有三条：</p>
-<ol>
-<li>Rust 中每个值都有且只有一个<strong>所有者</strong>（owner）。</li>
-<li>同一时刻，值只能有一个所有者。</li>
-<li>当所有者离开作用域，值会被自动丢弃（调用 <code>drop</code> 释放内存）。</li>
-</ol>
+                <h2 id="Slice-类型-总结"><a href="#Slice-类型-总结" class="headerlink" title="Slice 类型 总结"></a>Slice 类型 总结</h2><p><strong>切片（slice）</strong>  是 Rust 提供的一种特殊引用，它让你可以安全地引用集合（如字符串、数组）中的一段连续元素，而不需要拥有这些数据的所有权。slice 的引入，漂亮地解决了“用单独的索引表示子序列”带来的数据不同步问题。</p>
 <hr>
-<h2 id="二、栈与堆的区分"><a href="#二、栈与堆的区分" class="headerlink" title="二、栈与堆的区分"></a>二、栈与堆的区分</h2><ul>
-<li><strong>栈</strong>：存放编译时大小固定的数据（整数、浮点、<code>bool</code>、<code>char</code> 等），复制快，离开作用域时直接弹出。</li>
-<li><strong>堆</strong>：存放编译时大小未知或可变的数据（如 <code>String</code>），需要分配器动态分配，访问需通过指针，稍慢。</li>
+<h3 id="1-没有-slice-的痛点：索引与数据脱钩"><a href="#1-没有-slice-的痛点：索引与数据脱钩" class="headerlink" title="1. 没有 slice 的痛点：索引与数据脱钩"></a>1. 没有 slice 的痛点：索引与数据脱钩</h3><p>如果写一个 <code>first_word</code> 函数，返回字符串中第一个单词结尾的<strong>索引</strong>：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">first_word</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token keyword">usize</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 查找空格，返回索引，或整个长度</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>你会得到一个 <code>usize</code>，但这个数字和原字符串没有任何绑定关系。之后原字符串被清空或修改，索引依然存在，使用它就会产生逻辑错误，而编译器却无法察觉：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> <span class="token keyword">mut</span> s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> word <span class="token operator">=</span> <span class="token function">first_word</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 5</span>
+s<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                 <span class="token comment">// s 变为 ""</span>
+<span class="token comment">// word 仍然是 5，但已毫无意义 —— 编译器不报错！</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这种“飘忽不定的索引”极易滋生 bug。</p>
+<hr>
+<h3 id="2-字符串-slice：-str"><a href="#2-字符串-slice：-str" class="headerlink" title="2. 字符串 slice：&amp;str"></a>2. 字符串 slice：<code>&amp;str</code></h3><p>字符串 slice 是 <code>String</code> 中一部分的引用，写法是 <code>&amp;s[开始..结束]</code>：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> hello <span class="token operator">=</span> <span class="token operator">&amp;</span>s<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">..</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>   <span class="token comment">// "hello"</span>
+<span class="token keyword">let</span> world <span class="token operator">=</span> <span class="token operator">&amp;</span>s<span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">..</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// "world"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>slice 内部存的是<strong>指向原数据起始位置的指针</strong>和<strong>长度</strong>，并不拥有数据。</li>
+<li>类型写作 <code>&amp;str</code>（读作 “string slice”）。</li>
 </ul>
-<p>所有权主要管理的是<strong>堆上的数据</strong>。</p>
-<hr>
-<h2 id="三、移动（move）与拷贝（copy）"><a href="#三、移动（move）与拷贝（copy）" class="headerlink" title="三、移动（move）与拷贝（copy）"></a>三、移动（move）与拷贝（copy）</h2><h3 id="1-移动：String-的赋值"><a href="#1-移动：String-的赋值" class="headerlink" title="1. 移动：String 的赋值"></a>1. 移动：<code>String</code> 的赋值</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> s1 <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> s2 <span class="token operator">=</span> s1<span class="token punctuation">;</span>            <span class="token comment">// s1 的所有权移动到 s2</span>
-<span class="token comment">// println!("{s1}");   // 编译错误：s1 已经无效</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p><code>s1</code> 的栈数据（指针、长度、容量）被浅拷贝到 <code>s2</code>，但堆上的字符串没有复制。为避免 <code>s1</code> 和 <code>s2</code> 同时释放同一堆内存，Rust 使 <code>s1</code> 失效。这叫做<strong>移动</strong>。</p>
-<h3 id="2-拷贝：Copy-类型"><a href="#2-拷贝：Copy-类型" class="headerlink" title="2. 拷贝：Copy 类型"></a>2. 拷贝：<code>Copy</code> 类型</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> y <span class="token operator">=</span> x<span class="token punctuation">;</span>   <span class="token comment">// x 的完整值被复制给 y，x 仍然有效</span>
-<span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"x = {x}, y = {y}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 正常</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p><code>i32</code> 等实现了 <code>Copy</code> trait 的类型，赋值时直接复制栈上全部内容，成本极低，所以原变量仍有效。</p>
-<p>常见 <code>Copy</code> 类型：整数、浮点、<code>bool</code>、<code>char</code>，以及元素全为 <code>Copy</code> 的元组。</p>
-<h3 id="3-克隆：显式深拷贝"><a href="#3-克隆：显式深拷贝" class="headerlink" title="3. 克隆：显式深拷贝"></a>3. 克隆：显式深拷贝</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> s1 <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> s2 <span class="token operator">=</span> s1<span class="token punctuation">.</span><span class="token function">clone</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// 堆上的 "hello" 也被完整复制一份</span>
-<span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"s1 = {s1}, s2 = {s2}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 两者都有效</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p><code>clone()</code> 会复制堆数据，成本较高，需要显式调用。</p>
-<hr>
-<h2 id="四、变量重新赋值：旧值立即释放"><a href="#四、变量重新赋值：旧值立即释放" class="headerlink" title="四、变量重新赋值：旧值立即释放"></a>四、变量重新赋值：旧值立即释放</h2><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> <span class="token keyword">mut</span> s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"ahoy"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// 旧的 "hello" 立刻被 drop，内存释放</span>
-<span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"{s}, world!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// "ahoy, world!"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<p>当给已有变量赋值新值时，旧值自动被 <code>drop</code>，不会内存泄漏。</p>
-<hr>
-<h2 id="五、所有权与函数"><a href="#五、所有权与函数" class="headerlink" title="五、所有权与函数"></a>五、所有权与函数</h2><h3 id="1-传参：移动或复制"><a href="#1-传参：移动或复制" class="headerlink" title="1. 传参：移动或复制"></a>1. 传参：移动或复制</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">takes_ownership</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// s 的所有权移入函数，此后 s 无效</span>
-
-    <span class="token keyword">let</span> x <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
-    <span class="token function">makes_copy</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>           <span class="token comment">// x 是 Copy 类型，只是复制传参，x 仍有效</span>
-    <span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"{x}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>         <span class="token comment">// 正常</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">fn</span> <span class="token function-definition function">takes_ownership</span><span class="token punctuation">(</span>some_string<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"{some_string}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span> <span class="token comment">// some_string 离开作用域，drop 被调用</span>
-
-<span class="token keyword">fn</span> <span class="token function-definition function">makes_copy</span><span class="token punctuation">(</span>some_integer<span class="token punctuation">:</span> <span class="token keyword">i32</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"{some_integer}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-返回值：转移所有权出函数"><a href="#2-返回值：转移所有权出函数" class="headerlink" title="2. 返回值：转移所有权出函数"></a>2. 返回值：转移所有权出函数</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> s1 <span class="token operator">=</span> <span class="token function">gives_ownership</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment">// 所有权从函数移到 s1</span>
-    <span class="token keyword">let</span> s2 <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> s3 <span class="token operator">=</span> <span class="token function">takes_and_gives_back</span><span class="token punctuation">(</span>s2<span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">// s2 移入，再移出给 s3</span>
-<span class="token punctuation">}</span> <span class="token comment">// s1、s3 离开作用域，被释放；s2 已被移走，无事发生</span>
-
-<span class="token keyword">fn</span> <span class="token function-definition function">gives_ownership</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token class-name">String</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> some_string <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"yours"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    some_string
-<span class="token punctuation">}</span>
-
-<span class="token keyword">fn</span> <span class="token function-definition function">takes_and_gives_back</span><span class="token punctuation">(</span>a_string<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token class-name">String</span> <span class="token punctuation">{</span>
-    a_string
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="3-不方便时：用元组把所有权还回去"><a href="#3-不方便时：用元组把所有权还回去" class="headerlink" title="3. 不方便时：用元组把所有权还回去"></a>3. 不方便时：用元组把所有权还回去</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> s1 <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">let</span> <span class="token punctuation">(</span>s2<span class="token punctuation">,</span> len<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">calculate_length</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"The length of '{s2}' is {len}."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">fn</span> <span class="token function-definition function">calculate_length</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token class-name">String</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">,</span> <span class="token keyword">usize</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> length <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">len</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">(</span>s<span class="token punctuation">,</span> length<span class="token punctuation">)</span>  <span class="token comment">// 把原字符串和长度一起返回</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>但这样很啰嗦。于是 Rust 提供了<strong>引用（references）</strong> ，允许不获取所有权就使用值，下一章会讲到。</p>
-<hr>
-<h2 id="六、核心设计哲学"><a href="#六、核心设计哲学" class="headerlink" title="六、核心设计哲学"></a>六、核心设计哲学</h2><ul>
-<li>Rust <strong>绝不自动进行深拷贝</strong>，所有自动复制都是低开销的（要么栈数据移动，要么 Copy 类型的位拷贝）。</li>
-<li><strong>RAII</strong>：资源获取即初始化，变量离开作用域时自动释放资源，避免忘记释放或重复释放。</li>
-<li>所有权机制在编译期消除内存错误，运行时不引入任何额外开销。</li>
+<p>省略写法：</p>
+<ul>
+<li><code>&amp;s[0..2]</code> 可简写为 <code>&amp;s[..2]</code> （从头开始）</li>
+<li><code>&amp;s[3..len]</code> 简写为 <code>&amp;s[3..]</code> （到末尾）</li>
+<li><code>&amp;s[..]</code> 是整个字符串的 slice</li>
 </ul>
-<p>掌握了这些，你就理解了 Rust 管理内存的根本方式。一切后续的引用、借用、生命周期都建立在所有权之上。</p>
+<hr>
+<h3 id="3-用-slice-重写-first-word-——-数据与引用绑定"><a href="#3-用-slice-重写-first-word-——-数据与引用绑定" class="headerlink" title="3. 用 slice 重写 first_word —— 数据与引用绑定"></a>3. 用 slice 重写 <code>first_word</code> —— 数据与引用绑定</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">first_word</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token class-name">String</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token operator">&amp;</span><span class="token keyword">str</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> bytes <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">as_bytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token punctuation">,</span> <span class="token operator">&amp;</span>item<span class="token punctuation">)</span> <span class="token keyword">in</span> bytes<span class="token punctuation">.</span><span class="token function">iter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">enumerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> item <span class="token operator">==</span> <span class="token char">b' '</span> <span class="token punctuation">{</span>
+            <span class="token keyword">return</span> <span class="token operator">&amp;</span>s<span class="token punctuation">[</span><span class="token punctuation">..</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token comment">// 返回开头到空格前的 slice</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token operator">&amp;</span>s<span class="token punctuation">[</span><span class="token punctuation">..</span><span class="token punctuation">]</span>                     <span class="token comment">// 整个字符串</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>现在返回的 slice 和原始 <code>String</code> 是<strong>绑定</strong>在一起的。如果有人在持有 slice 时尝试修改原字符串，Rust 的借用规则会在<strong>编译时</strong>直接阻止：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> <span class="token keyword">mut</span> s <span class="token operator">=</span> <span class="token class-name">String</span><span class="token punctuation">::</span><span class="token function">from</span><span class="token punctuation">(</span><span class="token string">"hello world"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> word <span class="token operator">=</span> <span class="token function">first_word</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+s<span class="token punctuation">.</span><span class="token function">clear</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                         <span class="token comment">// 编译错误！</span>
+<span class="token macro property">println!</span><span class="token punctuation">(</span><span class="token string">"the first word is: {word}"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>错误信息：<code>cannot borrow s as mutable because it is also borrowed as immutable</code>。编译器确保 <code>word</code> 这个不可变引用存在时，不能对 <code>s</code> 进行可变借用。这样，“清空字符串导致索引失效”这类 bug 在编译期就被彻底消灭了。</p>
+<hr>
+<h3 id="4-字符串字面值就是-slice"><a href="#4-字符串字面值就是-slice" class="headerlink" title="4. 字符串字面值就是 slice"></a>4. 字符串字面值就是 slice</h3><pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">"Hello, world!"</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这里的 <code>s</code> 类型正是 <code>&amp;str</code>——它是指向二进制文件中硬编码数据的 slice。所以字符串字面值天然不可变，它本身就是一种不可变引用。</p>
+<hr>
+<h3 id="5-更通用的函数签名：-str-作为参数"><a href="#5-更通用的函数签名：-str-作为参数" class="headerlink" title="5. 更通用的函数签名：&amp;str 作为参数"></a>5. 更通用的函数签名：<code>&amp;str</code> 作为参数</h3><p>有经验的 Rustacean 会这样写：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">fn</span> <span class="token function-definition function">first_word</span><span class="token punctuation">(</span>s<span class="token punctuation">:</span> <span class="token operator">&amp;</span><span class="token keyword">str</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token operator">&amp;</span><span class="token keyword">str</span> <span class="token punctuation">{</span> <span class="token punctuation">...</span> <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>这比 <code>&amp;String</code> 更灵活，因为：</p>
+<ul>
+<li>可以直接接收字符串字面值</li>
+<li>可以接收 <code>&amp;String</code>（Rust 会自动通过 <strong>Deref 强制转换</strong>将其变为 <code>&amp;str</code>）</li>
+<li>可以接收字符串的一部分 slice</li>
+</ul>
+<p>无论传入什么形式的字符串数据，都能正常工作，API 通用且零成本。</p>
+<hr>
+<h3 id="6-其他类型的-slice"><a href="#6-其他类型的-slice" class="headerlink" title="6. 其他类型的 slice"></a>6. 其他类型的 slice</h3><p>数组也可以取 slice：</p>
+<pre class="line-numbers language-rust" data-language="rust"><code class="language-rust"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> slice <span class="token operator">=</span> <span class="token operator">&amp;</span>a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">..</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>   <span class="token comment">// 类型 &amp;[i32]</span>
+<span class="token macro property">assert_eq!</span><span class="token punctuation">(</span>slice<span class="token punctuation">,</span> <span class="token operator">&amp;</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>和字符串 slice 一样，存的是第一个元素的指针和长度。所有集合类型（如 <code>Vec&lt;T&gt;</code>）都支持这类 slice。</p>
+<hr>
+<h3 id="核心结论"><a href="#核心结论" class="headerlink" title="核心结论"></a>核心结论</h3><ul>
+<li><strong>slice 是一种引用</strong>，让你借用集合的一部分，而不用获取所有权。</li>
+<li>它让子序列的引用和原数据<strong>在编译时保持强绑定</strong>，杜绝了“索引与数据脱节”的错误。</li>
+<li>字符串字面值本质就是 <code>&amp;str</code>。</li>
+<li>参数用 <code>&amp;str</code> 比 <code>&amp;String</code> 更通用、更符合 Rust 惯例。</li>
+<li>所有权、借用、slice 三者协同，使得 Rust 能在编译期就保证内存安全，且没有任何运行时开销。</li>
+</ul>
 
                 
             </div>
@@ -548,7 +535,7 @@ s <span class="token operator">=</span> <span class="token class-name">String</s
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://emoeem.github.io/2026/07/16/4-1-shi-me-shi-suo-you-quan/">https://emoeem.github.io/2026/07/16/4-1-shi-me-shi-suo-you-quan/</a>
+                    <a href="https://emoeem.github.io/2026/07/16/4-3-slice-lei-xing/">https://emoeem.github.io/2026/07/16/4-3-slice-lei-xing/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -934,9 +921,52 @@ s <span class="token operator">=</span> <span class="token class-name">String</s
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/07/16/4-3-slice-lei-xing/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="4.3 slice类型">
+                        
+                        <span class="card-title">4.3 slice类型</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-16
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2026/07/16/4-2-yin-yong-he-jie-yong/">
                     <div class="card-image">
@@ -954,9 +984,9 @@ s <span class="token operator">=</span> <span class="token class-name">String</s
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2026-07-16
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-16
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -968,55 +998,6 @@ s <span class="token operator">=</span> <span class="token class-name">String</s
                             
                         </span>
                     </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="为什么越来越多毕业生，被“培训”卡在第一步？">
-                        
-                        <span class="card-title">为什么越来越多毕业生，被“培训”卡在第一步？</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-02
-                            </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-bookmark fa-fw icon-category"></i>
-                            
-                            <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
-                                    随笔
-                                </a>
-                            
-                            
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/%E6%97%A5%E8%AE%B0/">
-                        <span class="chip bg-color">日记</span>
-                    </a>
-                    
                 </div>
                 
             </div>
