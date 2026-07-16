@@ -10,7 +10,21 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-07-16T07:00:14.345Z</updated>
+  <updated>2026-07-16T07:01:34.084Z</updated>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <id>https://emoeem.github.io/2026/07/16/4-2-yin-yong-he-jie-yong/</id>
+    <link href="https://emoeem.github.io/2026/07/16/4-2-yin-yong-he-jie-yong/"/>
+    <published>2026-07-16T07:01:21.000Z</published>
+    <summary>
+      <![CDATA[<h2 id="引用与借用-总结"><a href="#引用与借用-总结" class="headerlink" title="引用与借用 总结"></a>引用与借用]]>
+    </summary>
+    <title>4.2 引用和借用</title>
+    <updated>2026-07-16T07:01:34.084Z</updated>
+  </entry>
   <entry>
     <author>
       <name>emoeem</name>
@@ -23,7 +37,7 @@
       <![CDATA[<h2 id="一、所有权是什么？"><a href="#一、所有权是什么？" class="headerlink" title="一、所有权是什么？"></a>一、所有权是什么？</h2><p>所有权是 Rust]]>
     </summary>
     <title>4.1 什么是所有权</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -38,7 +52,7 @@
       <![CDATA[<h2 id="一、你以为你输在“能力”，其实你输在“入场资格”"><a href="#一、你以为你输在“能力”，其实你输在“入场资格”" class="headerlink"]]>
     </summary>
     <title>为什么越来越多毕业生，被“培训”卡在第一步？</title>
-    <updated>2026-07-16T07:00:14.346Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -54,7 +68,7 @@
 <h2 id="迷茫"><a href="#迷茫" class="headerlink"]]>
     </summary>
     <title>2026-06-27 日记</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -69,7 +83,7 @@
       <![CDATA[<h2 id="whisper-cli-是什么"><a href="#whisper-cli-是什么" class="headerlink" title="whisper-cli 是什么"></a>whisper-cli]]>
     </summary>
     <title>whisper-cli 参数配置指南</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -84,7 +98,7 @@
       <![CDATA[<h2 id="一、面试反思"><a href="#一、面试反思" class="headerlink"]]>
     </summary>
     <title>2026-06-26 日记</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -99,7 +113,7 @@
       <![CDATA[<h2 id="关于-Yazi"><a href="#关于-Yazi" class="headerlink" title="关于 Yazi"></a>关于 Yazi</h2><p>Yazi 是一个用 Rust 编写的终端文件管理器，支持异步]]>
     </summary>
     <title>yazi配置</title>
-    <updated>2026-07-16T07:00:14.346Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -114,7 +128,7 @@
       <![CDATA[<h1 id="MPV-播放器配置完全指南"><a href="#MPV-播放器配置完全指南" class="headerlink" title="MPV 播放器配置完全指南"></a>MPV]]>
     </summary>
     <title>mpv配置讲解</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -133,7 +147,7 @@
 <h2]]>
     </summary>
     <title>CachyOS Fish 终端完全配置指南</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -148,7 +162,7 @@
       <![CDATA[<h2 id="通用参数-common-params"><a href="#通用参数-common-params" class="headerlink" title="通用参数 (common params)"></a>通用参数 (common]]>
     </summary>
     <title>llama-cli 参数配置指南</title>
-    <updated>2026-07-16T07:00:14.345Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
   <entry>
     <author>
@@ -166,6 +180,6 @@
 <p>后来才发现，有些人不是等你救，而是根本]]>
     </summary>
     <title>感性的人，总会在废墟里捡别人不要的东西</title>
-    <updated>2026-07-16T07:00:14.346Z</updated>
+    <updated>2026-07-16T07:01:34.084Z</updated>
   </entry>
 </feed>
