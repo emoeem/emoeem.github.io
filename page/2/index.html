@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="标签, hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
+    <meta name="keywords" content="hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
     <meta name="description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -17,7 +17,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>标签 | emoeem</title>
+    <title>emoeem</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -43,10 +43,6 @@
 
 
 
-
-    
-        <link rel="stylesheet" type="text/css" href="/css/reward.css">
-    
 
 
 
@@ -333,6 +329,7 @@
 
 </header>
 
+    
     <div class="bg-cover pd-header about-cover">
     <div class="container">
     <div class="row">
@@ -392,86 +389,99 @@
     </div>
 </div>
 
+
 <main class="content">
 
     
 
-<div id="tags" class="container chip-container">
-    <div class="card">
-        <div class="card-content">
-            <div class="tag-title center-align">
-                <i class="fas fa-tags"></i>&nbsp;&nbsp;文章标签
+    
+
+    <!-- 所有文章卡片 -->
+    <article id="articles" class="container articles">
+        <div class="row article-row">
+            
+             <!-- 隐藏某个文章 -->
+            <div class="article col s12 m6 l4" data-aos="zoom-in">
+                <div class="card">
+                    <a href="/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/">
+                        <div class="card-image">
+                            
+                            
+                            <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="感性的人，总会在废墟里捡别人不要的东西">
+                            
+                            <span class="card-title">感性的人，总会在废墟里捡别人不要的东西</span>
+                        </div>
+                    </a>
+
+                    <div class="card-content article-content">
+                        <div class="summary block-with-text">
+                            
+                                有时候我会想，人是不是都会这样。
+明明知道结果不会好，还是会忍不住伸手。
+别人不回消息，会继续发；别人冷淡，会想着是不是自己再解释一点就好了；别人陷进泥里，哪怕自己根本没能力，也想试着拉一下。
+后来才发现，有些人不是等你救，而是根本不需要你
+                            
+                        </div>
+                        <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-22
+                            </span>
+                            <span class="publish-author">
+                                
+                                <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                
+                                <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
+                                    随笔
+                                </a>
+                                
+                                
+                            </span>
+                        </div>
+                    </div>
+
+                    
+                    <div class="card-action article-tags">
+                        
+                        <a href="/tags/%E6%97%A5%E8%AE%B0/">
+                            <span class="chip bg-color">日记</span>
+                        </a>
+                        
+                    </div>
+                    
+                </div>
             </div>
-            <div class="tag-chips">
-                
-                
-                <a href="/tags/%E6%97%A5%E8%AE%B0/" title="日记: 4">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="日记" style="background-color: #F9EBEA;">日记
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/rust%E5%AD%A6%E4%B9%A0/" title="rust学习: 3">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="rust学习" style="background-color: #F5EEF8;">rust学习
-                        <span class="tag-length">3</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/" title="配置优化: 4">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="配置优化" style="background-color: #D5F5E3;">配置优化
-                        <span class="tag-length">4</span>
-                    </span>
-                </a>
-                
-                
-                <a href="/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/" title="代码开发: 2">
-                    <span class="chip center-align waves-effect waves-light
-                             chip-default "
-                            data-tagname="代码开发" style="background-color: #E8F8F5;">代码开发
-                        <span class="tag-length">2</span>
-                    </span>
-                </a>
-                
-            </div>
+              <!-- 隐藏某个文章 -->
+            
+        </div>
+    </article>
+
+</main>
+
+
+<div class="container paging">
+    <div class="row">
+        <div class="col s6 m4 l4">
+            
+            <a href="/"
+               class="left btn-floating btn-large waves-effect waves-light bg-color">
+                <i class="fas fa-angle-left"></i>
+            </a>
+            
+        </div>
+        <div class="page-info col m4 l4 hide-on-small-only">
+            <div class="center-align b-text-gray">2 / 2</div>
+        </div>
+        <div class="col s6 m4 l4">
+            
+            <a class="right btn-floating btn-large disabled">
+                <i class="fas fa-angle-right"></i>
+            </a>
+            
         </div>
     </div>
 </div>
 
-    
-    <link rel="stylesheet" type="text/css" href="/libs/jqcloud/jqcloud.css">
-<style type="text/css">
-    #tag-wordcloud {
-        width: 100%;
-        height: 300px;
-    }
-</style>
 
-<div class="container" data-aos="fade-up">
-    <div class="card">
-        <div id="tag-wordcloud" class="card-content"></div>
-    </div>
-</div>
-
-<script type="text/javascript" src="/libs/jqcloud/jqcloud-1.0.4.min.js"></script>
-<script type="text/javascript">
-    
-
-    $('#tag-wordcloud').jQCloud([{"text":"日记","weight":4,"link":"/tags/日记/"},{"text":"rust学习","weight":3,"link":"/tags/rust学习/"},{"text":"配置优化","weight":4,"link":"/tags/配置优化/"},{"text":"代码开发","weight":2,"link":"/tags/代码开发/"}], {
-        autoResize: true
-    });
-</script>
-
-    
-
-</main>
 
 
     <footer class="page-footer bg-color">
