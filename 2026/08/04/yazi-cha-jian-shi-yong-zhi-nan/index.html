@@ -4,8 +4,20 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="contact, hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
-    <meta name="description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
+    <meta name="keywords" content="Yazi 插件使用指南, hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
+    <meta name="description" content="Yazi 插件使用指南本文档记录当前 Yazi 插件配置、快捷键、依赖和维护注意事项。
+更新时间：2026-08-04适用版本：Yazi 26.5.6
+本次新增插件
+
+
+插件
+功能
+快捷键
+
+
+
+git.yazi
+在文件列表中显示 Git ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -17,7 +29,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>contact | emoeem</title>
+    <title>Yazi 插件使用指南 | emoeem</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     
 
@@ -333,113 +345,423 @@
 
 </header>
 
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
-<link rel="stylesheet" type="text/css" href="/css/barrager.css">
-<script src="/libs/valine/av-min.js"></script>
-<script src="/libs/jquery/jquery.min.js"></script>
-<script type="text/javascript" src="/js/jquery.barrager.js"></script>
+    
 
-<div class="bg-cover pd-header about-cover">
-    <div class="container">
-    <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                代码与生活，技术与思考
-                
-            </div>
 
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="/libs/typed/typed.js"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "代码改变世界",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                                "Talk is cheap. Show me the code.",
-                            
-                        ],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Yazi 插件使用指南</h1>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
-<script>
-    // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-</script>
-<script>
+
+
+<main class="post-container content">
+
     
-      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * 39) + '.jpg';
-    
-    $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
+    <div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
+                                <span class="chip bg-color">配置优化</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                技术
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
 
-</script>
-
-
-    </div>
-</div>
-
-<style>
-    #send{
-        margin-bottom: 10px;
-        width: 49%;
-        background-color: #0ba360;
-    }
-    #clear{
-        margin-bottom: 10px;
-        width: 49%;
-        background-color: #e7c65c;
-    }
-    p{
-        text-align: center;
-    }
-</style>
-<main class="content">
-    <div id="contact" class="container chip-container">
-        <div class="card">
-            <div class="card-content">
-                <div class="tag-title center-align">
-                    <i class="fas fa-comments"></i>&nbsp;&nbsp;留言板
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2026-08-04
                 </div>
                 
+
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
+                    2026-08-04
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
+                    938
+                </div>
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
+                    3 分
+                </div>
+                
+
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>阅读次数:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
             </div>
-            <!--valine评论弹幕-->
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.min.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Yazi-插件使用指南"><a href="#Yazi-插件使用指南" class="headerlink" title="Yazi 插件使用指南"></a>Yazi 插件使用指南</h1><p>本文档记录当前 Yazi 插件配置、快捷键、依赖和维护注意事项。</p>
+<p>更新时间：2026-08-04<br>适用版本：Yazi 26.5.6</p>
+<h2 id="本次新增插件"><a href="#本次新增插件" class="headerlink" title="本次新增插件"></a>本次新增插件</h2><table>
+<thead>
+<tr>
+<th>插件</th>
+<th>功能</th>
+<th>快捷键</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>git.yazi</code></td>
+<td>在文件列表中显示 Git 状态标记</td>
+<td>自动生效</td>
+</tr>
+<tr>
+<td><code>smart-filter.yazi</code></td>
+<td>连续过滤，自动进入唯一目录</td>
+<td><code>f</code></td>
+</tr>
+<tr>
+<td><code>lazygit.yazi</code></td>
+<td>在当前 Git 仓库打开 Lazygit</td>
+<td><code>g l</code></td>
+</tr>
+<tr>
+<td><code>pref-by-location.yazi</code></td>
+<td>按目录保存排序、行模式和隐藏文件设置</td>
+<td>自动保存</td>
+</tr>
+<tr>
+<td><code>projects.yazi</code></td>
+<td>保存和恢复多个标签页组成的项目工作区</td>
+<td><code>P</code> 前缀</td>
+</tr>
+<tr>
+<td><code>what-size.yazi</code></td>
+<td>计算选中项或当前目录的总大小</td>
+<td><code>m d</code> / <code>m D</code></td>
+</tr>
+</tbody></table>
+<h2 id="智能过滤"><a href="#智能过滤" class="headerlink" title="智能过滤"></a>智能过滤</h2><p>按 <code>f</code> 打开居中的智能过滤输入框。</p>
+<ul>
+<li>输入时实时过滤。</li>
+<li>只剩一个目录时自动进入。</li>
+<li>按回车打开唯一文件或进入目录。</li>
+<li>在插入模式下先按一次 <code>Esc</code> 返回普通输入模式，再按一次关闭过滤。</li>
+</ul>
+<p>当前保留了本地定制：过滤输入框显示在屏幕中央。</p>
+<h2 id="Git-与-Lazygit"><a href="#Git-与-Lazygit" class="headerlink" title="Git 与 Lazygit"></a>Git 与 Lazygit</h2><p><code>git.yazi</code> 会自动检查当前 Git 仓库，并在文件列表中显示：</p>
+<ul>
+<li>修改文件</li>
+<li>新增文件</li>
+<li>未跟踪文件</li>
+<li>删除文件</li>
+<li>冲突文件</li>
+<li>被忽略文件</li>
+</ul>
+<p>在 Git 仓库中按 <code>g l</code> 打开 Lazygit。系统已经安装 <code>git</code> 和 <code>lazygit</code>，<br>不需要额外依赖。</p>
+<h2 id="目录偏好"><a href="#目录偏好" class="headerlink" title="目录偏好"></a>目录偏好</h2><p>修改以下设置后，<code>pref-by-location</code> 会自动保存当前目录的偏好：</p>
+<ul>
+<li><code>.</code>：显示或隐藏点文件</li>
+<li><code>m s</code>：显示大小</li>
+<li><code>m p</code>：显示权限</li>
+<li><code>m b</code>：显示创建时间</li>
+<li><code>m m</code>：显示修改时间</li>
+<li><code>m o</code>：显示所有者</li>
+<li><code>m n</code>：不显示附加信息</li>
+<li><code>,</code> 开头的全部排序快捷键</li>
+</ul>
+<p>管理快捷键：</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>, t</code></td>
+<td>启用或停用目录偏好自动保存</td>
+</tr>
+<tr>
+<td><code>, R</code></td>
+<td>删除当前目录的自定义偏好，恢复全局设置</td>
+</tr>
+</tbody></table>
+<p>偏好保存在：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">~/.config/yazi/pref-by-location<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="项目工作区"><a href="#项目工作区" class="headerlink" title="项目工作区"></a>项目工作区</h2><p>项目工作区会保存当前打开的全部标签页、标签页目录、活动标签页和标签页名称。</p>
+<table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>P s</code></td>
+<td>选择槽位并保存当前工作区</td>
+</tr>
+<tr>
+<td><code>P l</code></td>
+<td>加载已保存的工作区</td>
+</tr>
+<tr>
+<td><code>P P</code></td>
+<td>加载最近保存或加载的工作区</td>
+</tr>
+<tr>
+<td><code>P d</code></td>
+<td>删除一个工作区</td>
+</tr>
+<tr>
+<td><code>P D</code></td>
+<td>删除全部工作区</td>
+</tr>
+</tbody></table>
+<p>保存时先选择一个数字或字母槽位，再输入项目名称。</p>
+<p>当前插件版本要求初始化时显式传入空配置：</p>
+<pre class="line-numbers language-lua" data-language="lua"><code class="language-lua"><span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"projects"</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>本地还优化了空槽位菜单说明，使其显示<br><code>Save project to slot X</code>，而不是含糊的 <code>callback</code>。</p>
+<h2 id="目录大小"><a href="#目录大小" class="headerlink" title="目录大小"></a>目录大小</h2><table>
+<thead>
+<tr>
+<th>快捷键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>m d</code></td>
+<td>计算选中项的总大小；没有选择时计算当前目录</td>
+</tr>
+<tr>
+<td><code>m D</code></td>
+<td>计算大小并复制结果到系统剪贴板</td>
+</tr>
+</tbody></table>
+<p>结果会同时显示在通知和状态栏中。大型目录需要等待 Yazi 完成递归计算。</p>
+<h2 id="插件维护"><a href="#插件维护" class="headerlink" title="插件维护"></a>插件维护</h2><p>查看当前安装的插件：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ya pkg list<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>升级插件：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">ya pkg upgrade<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><code>smart-filter.yazi</code> 和 <code>projects.yazi</code> 包含本地体验优化。升级时如果 Yazi<br>提示插件内容被修改，请先检查差异，不要直接使用 <code>--discard</code>，否则会丢失：</p>
+<ul>
+<li>smart-filter 的居中输入框</li>
+<li>projects 的项目槽位菜单说明</li>
+</ul>
+<p>检查配置是否能正常加载：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">yazi <span class="token parameter variable">--debug</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h2 id="尚未安装"><a href="#尚未安装" class="headerlink" title="尚未安装"></a>尚未安装</h2><p>当前快捷键文件中仍然存在以下插件入口，但插件尚未安装：</p>
+<table>
+<thead>
+<tr>
+<th>插件</th>
+<th>现有快捷键</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>whoosh.yazi</code></td>
+<td><code>[</code>、<code>]</code>、<code>}</code> 等书签键</td>
+<td>未安装</td>
+</tr>
+<tr>
+<td><code>recycle-bin.yazi</code></td>
+<td><code>R b</code></td>
+<td>未安装，系统也没有 <code>trash-cli</code></td>
+</tr>
+</tbody></table>
+<p>使用这些快捷键前，需要先安装对应插件和依赖；否则 Yazi 会提示找不到插件。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">emoeem</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://emoeem.github.io/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/">https://emoeem.github.io/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">emoeem</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
+                                    <span class="chip bg-color">配置优化</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
             
         </div>
+    </div>
 
-        <!--其他评论card-->
-        <div class="card">
-            
+    
 
-            
+    
 
-            
+    
 
-            
+    
 
-            
+    
 
-            
-                <style>
+    
+
+    
+
+    
+        <style>
     .twikoo-card {
         margin: 1.5rem auto;
     }
@@ -710,13 +1032,265 @@
     });
 </script>
 
-            
+    
 
-            
+    
 
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Yazi 插件使用指南">
+                        
+                        <span class="card-title">Yazi 插件使用指南</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-08-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
+                        <span class="chip bg-color">配置优化</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/146170421_p0.jpg" class="responsive-img" alt="linux的fish配置和脚本">
+                        
+                        <span class="card-title">linux的fish配置和脚本</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-19
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
+                                    技术
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
+                        <span class="chip bg-color">配置优化</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE' || selection.getRangeAt(0).commonAncestorContainer.nodeName === 'CODE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + '来源: emoeem<br />'
+            + '文章作者: emoeem<br />'
+            + '文章链接: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+
+  <!-- 是否加载使用自带的 prismjs. -->
+  <script type="text/javascript" src="/libs/prism/prism.min.js"></script>
+
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
         </div>
     </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
 </main>
+
+
 
 
     <footer class="page-footer bg-color">
