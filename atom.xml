@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-08-16T07:44:29.872Z</updated>
+  <updated>2026-08-16T08:39:31.442Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
@@ -25,7 +25,7 @@
 <p>基于 lazy.nvim]]>
     </summary>
     <title>nvim配置</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -37,10 +37,10 @@
     <link href="https://emoeem.github.io/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/"/>
     <published>2026-08-04T09:06:12.000Z</published>
     <summary>
-      <![CDATA[<h1 id="Yazi-插件使用指南"><a href="#Yazi-插件使用指南" class="headerlink" title="Yazi 插件使用指南"></a>Yazi 插件使用指南</h1><p>本文档记录当前 Yazi]]>
+      <![CDATA[<h1 id="🦆-Yazi-配置"><a href="#🦆-Yazi-配置" class="headerlink" title="🦆 Yazi 配置"></a>🦆 Yazi 配置</h1><p><a]]>
     </summary>
-    <title>Yazi 插件使用指南</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <title>Yazi 配置</title>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -55,7 +55,7 @@
       <![CDATA[<h1 id="Fish-fzf-FFmpeg-工具套件使用与优化说明"><a href="#Fish-fzf-FFmpeg-工具套件使用与优化说明" class="headerlink" title="Fish + fzf + FFmpeg]]>
     </summary>
     <title>linux的fish配置和脚本</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -70,7 +70,7 @@
       <![CDATA[<h2 id="Slice-类型-总结"><a href="#Slice-类型-总结" class="headerlink" title="Slice 类型 总结"></a>Slice 类型 总结</h2><p><strong>切片（slice）</strong>  是]]>
     </summary>
     <title>4.3 slice类型</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -85,7 +85,7 @@
       <![CDATA[<h2 id="引用与借用-总结"><a href="#引用与借用-总结" class="headerlink" title="引用与借用 总结"></a>引用与借用]]>
     </summary>
     <title>4.2 引用和借用</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -100,7 +100,7 @@
       <![CDATA[<h2 id="一、所有权是什么？"><a href="#一、所有权是什么？" class="headerlink" title="一、所有权是什么？"></a>一、所有权是什么？</h2><p>所有权是 Rust]]>
     </summary>
     <title>4.1 什么是所有权</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -115,7 +115,7 @@
       <![CDATA[<h2 id="一、你以为你输在“能力”，其实你输在“入场资格”"><a href="#一、你以为你输在“能力”，其实你输在“入场资格”" class="headerlink"]]>
     </summary>
     <title>为什么越来越多毕业生，被“培训”卡在第一步？</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -131,7 +131,7 @@
 <h2 id="迷茫"><a href="#迷茫" class="headerlink"]]>
     </summary>
     <title>2026-06-27 日记</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -146,7 +146,7 @@
       <![CDATA[<h2 id="whisper-cli-是什么"><a href="#whisper-cli-是什么" class="headerlink" title="whisper-cli 是什么"></a>whisper-cli]]>
     </summary>
     <title>whisper-cli 参数配置指南</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -161,7 +161,7 @@
       <![CDATA[<h2 id="一、面试反思"><a href="#一、面试反思" class="headerlink"]]>
     </summary>
     <title>2026-06-26 日记</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -177,7 +177,7 @@
 <p>Yazi v26.5.6 · 主题: Dracula ·]]>
     </summary>
     <title>yazi配置</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -192,7 +192,7 @@
       <![CDATA[<h1 id="mpv-配置"><a href="#mpv-配置" class="headerlink" title="mpv 配置"></a>mpv 配置</h1><p>这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland]]>
     </summary>
     <title>mpv配置</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -211,7 +211,7 @@
 <h2]]>
     </summary>
     <title>CachyOS Fish 终端完全配置指南</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -226,7 +226,7 @@
       <![CDATA[<h2 id="通用参数-common-params"><a href="#通用参数-common-params" class="headerlink" title="通用参数 (common params)"></a>通用参数 (common]]>
     </summary>
     <title>llama-cli 参数配置指南</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
   <entry>
     <author>
@@ -244,6 +244,6 @@
 <p>后来才发现，有些人不是等你救，而是根本]]>
     </summary>
     <title>感性的人，总会在废墟里捡别人不要的东西</title>
-    <updated>2026-08-16T07:44:29.872Z</updated>
+    <updated>2026-08-16T08:39:31.442Z</updated>
   </entry>
 </feed>
