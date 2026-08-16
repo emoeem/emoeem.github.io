@@ -85,25 +85,29 @@
     small a { color: #6c5ce7; text-decoration: none; }
     @media (max-width: 768px) { .layout { flex-direction: column; } .sidebar { width: 100%; } }
   </style>
+  <link rel="stylesheet" href="./admin.css">
 </head>
 <body class="dark">
-  <header>
-    <h1>📝 emoeem 博客管理</h1>
+  <header class="admin-header">
+    <div>
+      <p class="eyebrow">个人写作空间</p>
+      <h1>emoeem 博客管理</h1>
+    </div>
     <div style="display:flex; gap:12px; align-items:center">
-      <button onclick="toggleDark()" style="font-size:1rem" title="切换主题">🌓</button>
+      <button onclick="toggleDark()" class="icon-button" title="切换主题" aria-label="切换主题">◐</button>
+      <button onclick="clearToken()" class="header-action" title="清除本机凭据">退出</button>
       <a href="/">← 返回博客</a>
     </div>
   </header>
 
   <div class="container">
-    <div id="msg"></div>
+    <div id="msg" role="status" aria-live="polite"></div>
 
     <div class="card" id="tokenCard">
-      <h2>🔑 GitHub Token</h2>
+      <h2>连接 GitHub</h2>
       <p class="token-hint">
-        1. 打开 <a href="https://github.com/settings/tokens/new?scopes=repo&description=blog-editor" target="_blank">GitHub Token 创建页面</a><br>
-        2. Expiration 选 <b>No expiration</b>，点 Generate token<br>
-        3. 复制生成的 token 粘贴到下面
+        使用只授权 <code>emoeem/blog-source</code> Contents 读写权限的 Fine-grained Token，并设置有效期。<br>
+        Token 仅保存在当前浏览器；完成写作后可点击右上角“退出”清除。
       </p>
       <div class="row" style="margin-top:10px">
         <div style="flex:3"><input type="password" id="tokenInput" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"></div>
@@ -116,7 +120,7 @@
         <div class="sidebar">
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
-              <h2 style="margin:0">📄 文章列表</h2>
+              <h2 style="margin:0">文章</h2>
               <button onclick="newPost()" style="padding:6px 14px; font-size:0.8rem">+ 新建</button>
             </div>
             <input type="text" class="search-box" id="postSearch" placeholder="搜索文章..." oninput="renderPostList()">
@@ -127,7 +131,10 @@
         <div class="main">
           <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px">
-              <h2 style="margin:0" id="editorTitle">✍️ 写文章</h2>
+              <div>
+                <h2 style="margin:0" id="editorTitle">写文章</h2>
+                <span id="saveState" class="save-state" role="status">尚未保存</span>
+              </div>
               <div id="editActions" style="display:none">
                 <button class="danger" onclick="deletePost()" style="padding:6px 14px; font-size:0.8rem">🗑 删除</button>
               </div>
@@ -149,8 +156,9 @@
             </div>
             <label style="margin-bottom:4px">正文</label>
             <textarea id="editor"></textarea>
-            <div style="margin-top:12px; display:flex; gap:8px">
+            <div class="editor-actions" style="margin-top:12px; display:flex; gap:8px">
               <button onclick="publish()">发布文章</button>
+              <button class="secondary" onclick="saveLocalDraft(true)">保存草稿</button>
               <button class="secondary" onclick="newPost()">清空重写</button>
               <button class="secondary" onclick="easyMDE.togglePreview()">👁 预览</button>
               <button class="secondary" onclick="easyMDE.toggleSideBySide()">◧ 分栏</button>
@@ -164,6 +172,7 @@
   <script src="https://cdn.jsdelivr.net/npm/easymde@2.18.0/dist/easymde.min.js"></script>
   <script>
     const STORAGE_KEY = 'blog_gh_token';
+    const DRAFT_STORAGE_KEY = 'blog_editor_draft';
     const REPO = 'emoeem/blog-source';
     const BRANCH = 'main';
 
@@ -174,6 +183,7 @@
     let allPosts = [];
     let currentSlug = null;
     let currentSha = null;
+    let autoSaveTimer = null;
 
     // Dark mode
     if (localStorage.getItem('admin_dark') === 'false') {
@@ -185,6 +195,12 @@
     function toggleDark() {
       document.body.classList.toggle('dark');
       localStorage.setItem('admin_dark', document.body.classList.contains('dark') ? 'true' : 'false');
+    }
+
+    function clearToken() {
+      localStorage.removeItem(STORAGE_KEY);
+      token = '';
+      location.reload();
     }
 
     function showMsg(text, type) {
@@ -224,6 +240,54 @@
         status: ['lines','words','cursor'],
         minHeight: '420px',
       });
+      easyMDE.codemirror.on('change', scheduleAutoSave);
+      restoreLocalDraft();
+    }
+
+    function getDraftData() {
+      return {
+        title: document.getElementById('title').value,
+        category: document.getElementById('category').value,
+        tags: selectedTags,
+        coverImg: document.getElementById('coverImg').value,
+        summary: document.getElementById('summary').value,
+        body: easyMDE ? easyMDE.value() : '',
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function updateSaveState(text) {
+      document.getElementById('saveState').textContent = text;
+    }
+
+    function saveLocalDraft(showMessage) {
+      if (!easyMDE) return;
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(getDraftData()));
+      updateSaveState('本地草稿已保存');
+      if (showMessage) showMsg('草稿已保存在此浏览器', 'success');
+    }
+
+    function scheduleAutoSave() {
+      updateSaveState('正在保存草稿…');
+      clearTimeout(autoSaveTimer);
+      autoSaveTimer = setTimeout(function() { saveLocalDraft(false); }, 900);
+    }
+
+    function restoreLocalDraft() {
+      var rawDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (!rawDraft) return;
+      try {
+        var draft = JSON.parse(rawDraft);
+        document.getElementById('title').value = draft.title || '';
+        document.getElementById('category').value = draft.category || '';
+        document.getElementById('coverImg').value = draft.coverImg || '';
+        document.getElementById('summary').value = draft.summary || '';
+        selectedTags = Array.isArray(draft.tags) ? draft.tags : [];
+        easyMDE.value(draft.body || '');
+        updateSaveState('已恢复本地草稿');
+      } catch (error) {
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+      }
     }
 
     async function api(path, method, body) {
@@ -342,6 +406,7 @@
 
     function newPost() {
       currentSlug = null; currentSha = null;
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
       document.getElementById('title').value = '';
       document.getElementById('category').value = '';
       document.getElementById('coverImg').value = '';
@@ -350,6 +415,7 @@
       easyMDE.value('');
       document.getElementById('editorTitle').textContent = '✍️ 写文章';
       document.getElementById('editActions').style.display = 'none';
+      updateSaveState('尚未保存');
       renderTagChips();
       renderPostList();
     }
@@ -366,6 +432,7 @@
       easyMDE.value(post.body || '');
       document.getElementById('editorTitle').textContent = '✍️ 编辑: ' + (post.title || slug);
       document.getElementById('editActions').style.display = 'block';
+      updateSaveState('已加载文章');
       renderTagChips();
       renderPostList();
     }
@@ -431,12 +498,22 @@
         var content = buildFrontMatter(title, cat, selectedTags, img, summary, existingDate);
         var newSlug = await savePost(title, content + body, currentSlug, currentSha);
         currentSlug = newSlug;
+        localStorage.removeItem(DRAFT_STORAGE_KEY);
+        updateSaveState('已发布');
         loadPosts();
       } catch(e) { showMsg('发布失败: ' + e.message, 'error'); }
     }
 
     document.addEventListener('keydown', function(e) {
       if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); publish(); }
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        document.getElementById('postSearch').focus();
+      }
+    });
+
+    ['title', 'category', 'tagInput', 'coverImg', 'summary'].forEach(function(id) {
+      document.getElementById(id).addEventListener('input', scheduleAutoSave);
     });
   </script>
 </body>
