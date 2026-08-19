@@ -67,7 +67,7 @@
 
     <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
     
-    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"mpv配置","description":"mpv 配置这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland 桌面，使用gpu-next + Vulkan 输出，并围绕高质量视频、HDR/SDR 色彩处理、字幕、播放列表、历史记录和 uosc 操作界面进行定制。\n","datePublished":"2026-06-24","dateModified":"2026-08-18","author":{"@type":"Person","name":"emoeem"},"mainEntityOfPage":"https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/","image":"https://emoeem.github.io/medias/logo.png"}</script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"mpv配置","description":"mpv 配置这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland 桌面，使用gpu-next + Vulkan 输出，并围绕高质量视频、HDR/SDR 色彩处理、字幕、播放列表、历史记录和 uosc 操作界面进行定制。\n","datePublished":"2026-06-24","dateModified":"2026-08-19","author":{"@type":"Person","name":"emoeem"},"mainEntityOfPage":"https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/","image":"https://emoeem.github.io/medias/logo.png"}</script>
     
 
 <meta name="generator" content="Hexo 8.1.2">
@@ -418,14 +418,14 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2026-08-18
+                    2026-08-19
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    6.6k
+                    6.7k
                 </div>
                 
 
@@ -664,7 +664,8 @@ screenshot-tag-colorspace=yes<span aria-hidden="true" class="line-numbers-rows">
 <li>默认优先选择 2160p 以下视频并排除 VP9.2。</li>
 <li>通过 <code>cookies-from-browser=Firefox</code> 读取 Firefox cookies。</li>
 <li><code>script-opts/quality-menu.conf</code> 与 <code>quality-menu.lua</code> 提供视频 / 音频格式菜单。</li>
-<li><code>profiles.conf</code> 中的 <code>网络流</code> 和 <code>直播</code> 分别面向高缓存和低延迟场景。</li>
+<li><code>profiles.conf</code> 中的 <code>网络流</code> 会在 <code>demuxer-via-network=yes</code> 时自动启用：<br>预读目标为 30 秒，前向缓存上限为 256 MiB，回退缓存上限为 32 MiB。</li>
+<li><code>直播</code> 是需要手动应用的低缓存、低延迟场景配置，不会被普通网络视频自动触发。</li>
 </ul>
 <h3 id="输入策略"><a href="#输入策略" class="headerlink" title="输入策略"></a>输入策略</h3><p><code>input-default-bindings=no</code> 会关闭 mpv 默认键位和脚本默认键位注册方案，<br>主要行为统一由 <code>input.conf</code> 显式定义。这样可以减少不同脚本之间的快捷键冲突，<br>也便于通过 uosc 菜单找到对应操作。</p>
 <h2 id="画质与色彩-profile"><a href="#画质与色彩-profile" class="headerlink" title="画质与色彩 profile"></a>画质与色彩 profile</h2><h3 id="当前默认启用"><a href="#当前默认启用" class="headerlink" title="当前默认启用"></a>当前默认启用</h3><p><code>mpv.conf</code> 当前启用以下 profile：</p>
@@ -770,7 +771,7 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <td>适合 4K 或希望控制开销的场景</td>
 </tr>
 </tbody></table>
-<h3 id="profiles-conf-场景模式"><a href="#profiles-conf-场景模式" class="headerlink" title="profiles.conf 场景模式"></a><code>profiles.conf</code> 场景模式</h3><p>这些 profile 不会自动启用，需要在启动参数或配置中使用<br><code>--profile=&lt;名称&gt;</code>，也可以通过快捷键动态应用部分着色器 profile。</p>
+<h3 id="profiles-conf-场景模式"><a href="#profiles-conf-场景模式" class="headerlink" title="profiles.conf 场景模式"></a><code>profiles.conf</code> 场景模式</h3><p>除 <code>网络流</code> 会按网络媒体属性自动触发外，其余场景 profile 需要在启动参数或配置中<br>使用 <code>--profile=&lt;名称&gt;</code>；也可以通过快捷键动态应用部分着色器 profile。</p>
 <table>
 <thead>
 <tr>
@@ -796,11 +797,11 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 </tr>
 <tr>
 <td><code>网络流</code></td>
-<td>网络缓存、超时和 1080p 以内的 ytdl 格式</td>
+<td>网络媒体自动触发，使用 30 秒预读、256 MiB 前向缓存和网络超时设置</td>
 </tr>
 <tr>
-<td><code>HDR</code></td>
-<td>HDR 目标峰值、色域映射和 PixelClipper</td>
+<td><code>HDR画质</code></td>
+<td>手动 HDR 画质预设：目标峰值、色域映射和 PixelClipper</td>
 </tr>
 <tr>
 <td><code>截图</code></td>
@@ -1064,6 +1065,10 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <td>自动保存状态</td>
 </tr>
 <tr>
+<td><code>episode-preferences.lua</code></td>
+<td>在同一连续剧内临时保持音轨、字幕位置和播放倍速</td>
+</tr>
+<tr>
 <td><code>persist_properties.lua</code></td>
 <td>跨文件持久化指定属性</td>
 </tr>
@@ -1224,6 +1229,7 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <li><code>MIX_UAI_*</code>：AI 画质增强。</li>
 </ul>
 <h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>快捷键定义在 <code>input.conf</code>。下表只记录当前启用的绑定；以大写字母书写的键名<br>表示需要按住 <code>Shift</code>，例如 <code>A</code> 与 <code>a</code> 是两个不同绑定。uosc 菜单中的项目<br>也来自 <code>input.conf</code> 行尾的 <code>#menu:</code> 注释。</p>
+<p>为避免被 niri 的全局绑定截获，mpv 不直接使用 <code>F2</code>、<code>F7</code>–<code>F11</code> 和<br><code>CTRL+LEFT</code> / <code>CTRL+RIGHT</code>；对应功能使用下表中的带修饰键组合。</p>
 <h3 id="打开、历史、书签与剪贴板"><a href="#打开、历史、书签与剪贴板" class="headerlink" title="打开、历史、书签与剪贴板"></a>打开、历史、书签与剪贴板</h3><table>
 <thead>
 <tr>
@@ -1404,23 +1410,23 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <td>打开音频设备列表</td>
 </tr>
 <tr>
-<td><code>F7</code></td>
+<td><code>CTRL+F7</code></td>
 <td>打开章节列表</td>
 </tr>
 <tr>
-<td><code>F8</code></td>
+<td><code>CTRL+F8</code></td>
 <td>打开轨道列表</td>
 </tr>
 <tr>
-<td><code>F9</code></td>
+<td><code>CTRL+F9</code></td>
 <td>打开视频轨列表</td>
 </tr>
 <tr>
-<td><code>F10</code></td>
+<td><code>CTRL+F10</code></td>
 <td>打开音频轨列表</td>
 </tr>
 <tr>
-<td><code>F11</code></td>
+<td><code>CTRL+F11</code></td>
 <td>打开字幕轨列表</td>
 </tr>
 <tr>
@@ -1500,7 +1506,7 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <td>循环切换 16:9、4:3、2.35:1 和默认宽高比</td>
 </tr>
 <tr>
-<td><code>CTRL+LEFT</code> / <code>CTRL+RIGHT</code></td>
+<td><code>ALT+SHIFT+LEFT</code> / <code>ALT+SHIFT+RIGHT</code></td>
 <td>左旋转 / 右旋转视频</td>
 </tr>
 <tr>
@@ -1700,7 +1706,7 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
 <td>循环切换 7.1、5.1、立体声和自动声道模式</td>
 </tr>
 <tr>
-<td><code>F2</code></td>
+<td><code>CTRL+F2</code></td>
 <td>循环切换动态范围 / 响度滤镜</td>
 </tr>
 <tr>
@@ -2908,7 +2914,7 @@ profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><
             <br>
             
                 &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">35.9k</span>
+                        class="white-color">36.1k</span>
             
             
             
