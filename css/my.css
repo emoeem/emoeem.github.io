@@ -363,3 +363,60 @@ body.DarkMode #articleContent img {
         animation: none !important;
     }
 }
+
+/* 细节美化 */
+::selection {
+    background: rgba(15, 157, 88, 0.25);
+}
+
+/* 文章内图片统一圆角与阴影 */
+#articleContent img {
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* 引用块更有层次 */
+#articleContent blockquote {
+    border-left: 4px solid #0f9d58;
+    background: rgba(15, 157, 88, 0.06);
+    border-radius: 0 8px 8px 0;
+    padding: 0.6em 1.2em;
+}
+
+#articleContent blockquote p {
+    line-height: 1.85;
+}
+
+/* 行内代码配色微调 */
+#articleContent p code,
+#articleContent li code {
+    background: rgba(15, 157, 88, 0.1);
+    color: #0b7a44;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+body.DarkMode #articleContent p code,
+body.DarkMode #articleContent li code {
+    background: rgba(102, 187, 106, 0.16);
+    color: #81c784;
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.32);
+}
+
+body.DarkMode ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.22);
+}
