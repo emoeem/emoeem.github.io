@@ -1,1579 +1,304 @@
-<!DOCTYPE HTML>
-<html lang="zh-CN">
+<!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>emoeem - 代码与生活，技术与思考</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="emoeem">
+<meta property="og:url" content="https://emoeem.github.io/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/avatar.jpg">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://emoeem.github.io/img/avatar.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "emoeem",
+  "alternateName": [
+    "代码与生活，技术与思考",
+    "emoeem.github.io"
+  ],
+  "url": "https://emoeem.github.io/"
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
 
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
 
-<head>
-    <meta charset="utf-8">
-    <meta name="keywords" content="hexo, blog, 技术博客, 前端, 后端, 全栈, 开源">
-    <meta name="description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
-    <link rel="canonical" href="https://emoeem.github.io/">
-    <meta property="og:site_name" content="emoeem">
-    <meta property="og:title" content="emoeem">
-    <meta property="og:description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://emoeem.github.io/">
-    <meta property="og:image" content="https://emoeem.github.io/medias/logo.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="emoeem">
-    <meta name="twitter:description" content="全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客">
-    <meta name="twitter:image" content="https://emoeem.github.io/medias/logo.png">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <meta name="renderer" content="webkit|ie-stand|ie-comp">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="format-detection" content="telephone=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="referrer" content="no-referrer-when-downgrade">
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
 
+        try {
+          const data = JSON.parse(itemStr)
 
-    <title>emoeem</title>
-    <link rel="icon" type="image/png" href="/favicon.png">
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
     
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
 
-
-    <!-- index cover -->
-    <!-- <link rel="stylesheet preload" type="text/css" href="/css/indexcover.css"> -->
-    <style>
-        .carousel-control {
-            width: 45px;
-            height: 45px;
-            line-height: 55px;
-            border-radius: 45px;
-            background: transparent;
-            cursor: pointer;
-            z-index: 100;
-        }
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
         
-        #prev-cover {
-            position: absolute;
-            top: 48%;
-            left: 8px;
-        }
-        
-        #next-cover {
-            position: absolute;
-            top: 48%;
-            right: 8px;;
-        }
-        
-        #prev-cover i {
-            margin-right: 3px;
-        }
-        
-        #next-cover i {
-            margin-left: 3px;
-        }
-        
-        .carousel-control:hover {
-            background-color: rgba(0, 0, 0, .4);
-        }
-        
-        .carousel-control i {
-            color: #fff;
-            font-size: 2.4rem;
-        }
-    </style>
-
-
-
-<link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
-<link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
-<link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
-<link rel="stylesheet" type="text/css" href="/css/matery.css">
-<link rel="stylesheet" type="text/css" href="/css/my.css">
-<link rel="stylesheet" type="text/css" href="/css/dark.css" media="none" onload="if(media!='all')media='all'">
-<link rel="stylesheet" type="text/css" href="/css/mocha.css">
-
-
-
-
-    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
-    <link rel="stylesheet" href="/css/post.css">
-
-
-
-
-
-
-    <script src="/libs/jquery/jquery-3.6.0.min.js"></script>
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
     
-
-<meta name="generator" content="Hexo 8.1.2">
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: emoeem","link":"链接: ","source":"来源: emoeem","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: '[object Object]',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: true,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'emoeem',
+  isHighlightShrink: true,
+  isToc: false,
+  pageType: 'home'
+}</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css"><meta name="generator" content="Hexo 8.1.2">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
-</head>
-
-
-<body>
-    <header class="navbar-fixed">
-    <nav id="headNav" class="bg-color nav-transparent">
-        <div id="navContainer" class="nav-wrapper container">
-            <div class="brand-logo">
-                <a href="/" class="waves-effect waves-light">
-                    
-                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
-                    
-                    <span class="logo-span">emoeem</span>
-                </a>
-            </div>
-            
-
-<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"
-   aria-label="打开导航菜单"><i class="fas fa-bars" aria-hidden="true"></i></a>
-<ul class="right nav-menu">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories"><i class="fa-fw fas fa-bookmark"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/contact"><i class="fa-fw fas fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/img/cover.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/logo.png" alt="Logo"><span class="site-name">emoeem</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/tags"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories"><i class="fa-fw fas fa-bookmark"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/archives"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/about"><i class="fa-fw fas fa-user"></i><span> 关于</span></a></div><div class="menus_item"><a class="site-page" href="/contact"><i class="fa-fw fas fa-comments"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/friends"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">emoeem</h1><div id="site-subtitle"><span id="subtitle"></span></div><div id="site_social_icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:emoeem@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置">nvim配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-17T02:18:34.000Z" title="发表于 2026-08-17 02:18:34">2026-08-17</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></span></div><div class="content">Neovim 配置详解 基于 lazy.nvim 的模块化配置，适用于 Neovim &gt;= 0.11（当前环境 0.12.x）。配置根目录：~/.config/nvim  目录结构~/.config/nvim/ ├── init.lua                  # 入口：加载 options → keymaps → lazy ├── lazy-lock.json            # 插件版本锁 ├── README.md                 # 安装说明 ├── NVIM_CONFIG.md            # 本文档 └── lua/     ├── config/     │   ├── options.lua       # 编辑器基础选项     │   ├── keymaps.lua       # 全局键位 + LSP/cmp/gitsigns 共享函数     │   └── lazy.lua          # lazy.nvim 初始化与全局配置     └── plugins/              # 每个插件一...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置">Yazi 配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-04T09:06:12.000Z" title="发表于 2026-08-04 09:06:12">2026-08-04</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></span></div><div class="content">🦆 Yazi 配置 个人 Yazi 文件管理器配置，基于 Vim 风格键位，针对 Linux（Wayland）优化。 📸 预览 Dracula 主题 + 全边框 + Starship 状态栏，三栏布局（父目录 : 文件列表 : 预览）  🚀 快速开始# 1. 克隆本仓库 git clone https://github.com/emoeem/yazi.git ~/.config/yazi  # 2. 安装依赖（通过 ya 包管理器） cd ~/.config/yazi &amp;&amp; ya pkg install  # 3. 外部工具依赖 # - fd / fzf / zoxide / ripgrep : 搜索与跳转 # - transmission-cli             : 种子文件预览（torrent-preview） # - pandoc                        : 文件格式转换（pandoc 插件） # - ffmpeg                        : 媒体处理工具箱（ff-tools） # - lazygit...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本">linux的fish配置和脚本</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-19T13:01:52.000Z" title="发表于 2026-07-19 13:01:52">2026-07-19</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></span></div><div class="content">Fish Shell 配置使用说明 适用环境：CachyOS (Arch Linux) · Fish 4.8 · Niri 平铺窗口管理器   目录 文件结构概览 核心工具链 快捷键速查 缩写（abbr）完整列表 CachyOS 预设别名（alias）完整列表 自定义函数 fzf 媒体工具箱 环境变量与秘密管理 可选增强与启用方法 常见问题   1. 文件结构概览~/.config/fish/ ├── config.fish              ← 主配置文件（你日常编辑的入口） ├── secrets.fish             ← 敏感变量（API Key 等，不要提交到 Git） ├── fish_variables           ← Fish 全局变量持久化存储（自动管理，一般不需要手动编辑） ├── config.fish.bak          ← 旧版配置备份（可忽略） ├── conf.d/                  ← Fish 启动时自动 source 的补充配置 │   └── (已清空，迁移文件已删除) ├── completi...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/07/16/4-3-slice-lei-xing/" title="4.3 slice类型">4.3 slice类型</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-16T07:02:55.000Z" title="发表于 2026-07-16 07:02:55">2026-07-16</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/rust%E5%AD%A6%E4%B9%A0/">rust学习</a></span></div><div class="content">Slice 类型 总结切片（slice）  是 Rust 提供的一种特殊引用，它让你可以安全地引用集合（如字符串、数组）中的一段连续元素，而不需要拥有这些数据的所有权。slice 的引入，漂亮地解决了“用单独的索引表示子序列”带来的数据不同步问题。  1. 没有 slice 的痛点：索引与数据脱钩如果写一个 first_word 函数，返回字符串中第一个单词结尾的索引： fn first_word(s: &amp;String) -&gt; usize {     // 查找空格，返回索引，或整个长度 }  你会得到一个 usize，但这个数字和原字符串没有任何绑定关系。之后原字符串被清空或修改，索引依然存在，使用它就会产生逻辑错误，而编译器却无法察觉： let mut s = String::from("hello world"); let word = first_word(&amp;s); // 5 s.clear();                 // s 变为 "" // word 仍然是 5，但已毫无意义 —— 编译器不报错！  这种“飘忽不定的索引”极易滋生 b...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/07/16/4-2-yin-yong-he-jie-yong/" title="4.2 引用和借用">4.2 引用和借用</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-16T07:01:21.000Z" title="发表于 2026-07-16 07:01:21">2026-07-16</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/rust%E5%AD%A6%E4%B9%A0/">rust学习</a></span></div><div class="content">引用与借用 总结引用（reference）让你可以在不获取所有权的情况下使用一个值，这种行为称为借用（borrowing）。通过引用，我们不需要为了使用一个值而把所有权传来传去。  1. 不可变引用（&amp;T）fn main() {     let s1 = String::from("hello");     let len = calculate_length(&amp;s1);       // 传入引用，不转移所有权     println!("The length of '{s1}' is {len}."); // s1 仍然可用 }  fn calculate_length(s: &amp;String) -&gt; usize { // 参数是 &amp;String     s.len() }   // s 离开作用域，但不会释放任何东西，因为它不拥有数据   &amp;s1 创建一个指向 s1 的引用，并不拥有它。 引用离开作用域时不会调用 drop，值依然归原变量所有。 这样就避免了那种“为了看一眼长度而不得不把值传进函数再传出来”的啰嗦写法。   2. ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/07/16/4-1-shi-me-shi-suo-you-quan/" title="4.1 什么是所有权">4.1 什么是所有权</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-16T07:00:02.000Z" title="发表于 2026-07-16 07:00:02">2026-07-16</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/rust%E5%AD%A6%E4%B9%A0/">rust学习</a></span></div><div class="content">一、所有权是什么？所有权是 Rust 管理内存的一套编译时规则，它让 Rust 无需 GC 也能保证内存安全，且不损失性能。核心只有三条：  Rust 中每个值都有且只有一个所有者（owner）。 同一时刻，值只能有一个所有者。 当所有者离开作用域，值会被自动丢弃（调用 drop 释放内存）。   二、栈与堆的区分 栈：存放编译时大小固定的数据（整数、浮点、bool、char 等），复制快，离开作用域时直接弹出。 堆：存放编译时大小未知或可变的数据（如 String），需要分配器动态分配，访问需通过指针，稍慢。  所有权主要管理的是堆上的数据。  三、移动（move）与拷贝（copy）1. 移动：String 的赋值let s1 = String::from("hello"); let s2 = s1;            // s1 的所有权移动到 s2 // println!("{s1}");   // 编译错误：s1 已经无效  s1 的栈数据（指针、长度、容量）被浅拷贝到 s2，但堆上的字符串没有复制。为避免 s1 和 s2 同时释放同一堆内存，Rust 使 s1 失效...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/" title="为什么越来越多毕业生，被“培训”卡在第一步？">为什么越来越多毕业生，被“培训”卡在第一步？</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-02T13:31:56.000Z" title="发表于 2026-07-02 13:31:56">2026-07-02</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%97%A5%E8%AE%B0/">日记</a></span></div><div class="content">一、你以为你输在“能力”，其实你输在“入场资格”很多刚毕业的计算机学生，都会遇到一个很熟悉的场景： 投简历 → 被问项目经验 → 说不出来 → 被拒绝 → 推荐“培训班” 然后对方会告诉你一句非常“标准化”的话：  “你基础还可以，但缺项目经验，我们帮你补齐。”  听起来很合理。 但问题是—— 你明明刚毕业，为什么“经验”成了入场券？  二、一个残酷现实：企业不再“培养新人”，只想“直接用人”十年前的逻辑是：  公司招人 = 培养 + 使用  今天的逻辑变成：  公司招人 = 直接产出价值  于是招聘标准发生了微妙但致命的变化：  不再问你“学过什么” 而是问你“做过什么能上线的东西” 不再接受“课程项目” 而是默认你应该已经“参与过真实业务”  换句话说：  学校不再被视为“准备阶段”，而是被当成“已经结束的阶段”。   三、最荒诞的一幕：你还没进入职场，就被要求“像个职场人”一个典型计算机应届生的真实状态是（"这不就是证明你的价值吗？别人不会，你会。你自己不提前努力，不提前规划，没有能力，为什么怪企业？" ）：  写过课程作业 做过实验项目 会一点语言基础 能写简单代码  但...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/06/27/2026-06-27-ri-ji/" title="2026-06-27 日记">2026-06-27 日记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-27T22:59:28.000Z" title="发表于 2026-06-27 22:59:28">2026-06-27</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%97%A5%E8%AE%B0/">日记</a></span></div><div class="content">今天实在没什么事情发生，感觉自己的这一天毫无意义，或者说——找不到前进的方向。 迷茫现在最大的问题，就是对未来的迷茫。  不知道自己的路在何处。 不知道自己要去往哪里。 找不到方向，找不到一个明确的方向。  眼下最迫切、最一定要完成的事，就是找到一个目标——一个我可以选择、同时也适合我的目标。 社会的真相现在想想，社会和学校的区别真的很大。很多时候，人们都是在保护之下，没有真正见识过外界的困难，看不清楚前方的道路，看不明白未来的方向。 这是对的吗？还是错的？ 我不知道。 或许这就是人生从一个无知，变得懵懂，再到看破，最后释怀。 或许，这才是人生吧。 </div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/" title="whisper-cli 参数配置指南">whisper-cli 参数配置指南</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-27T09:56:08.000Z" title="发表于 2026-06-27 09:56:08">2026-06-27</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/">代码开发</a></span></div><div class="content">whisper-cli 是什么whisper-cli 是 Whisper 语音识别模型的命令行工具版本，具体来说它是基于 C++ 重写的实现（源自 ggerganov/whisper.cpp 项目），不是 OpenAI 官方的 Python 版本。  1. Whisper 是什么Whisper 是 OpenAI 在 2022 年开源的自动语音识别（ASR）系统，能把人类语音转换成文字。它的特点是：  多语言支持：能识别 99 种语言 鲁棒性强：对口音、背景噪音、专业术语的识别效果很好 能翻译：可以把其他语言翻译成英语文字 开源免费：模型权重和代码都公开   2. whisper-cli 与原版 Whisper 的区别    原版 Whisper whisper-cli (whisper.cpp)    开发方 OpenAI 官方 社区开源项目（ggerganov）   语言 Python C++   依赖 需要 Python、PyTorch、大量依赖库 几乎零依赖，单个可执行文件   性能 较重，适合服务器/工作站 极轻量，可在笔记本、甚至树莓派上运行   硬件支持 主要支持 C...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/06/26/2026-06-26/" title="2026-06-26 日记">2026-06-26 日记</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-26T22:58:29.000Z" title="发表于 2026-06-26 22:58:29">2026-06-26</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E9%9A%8F%E7%AC%94/">随笔</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%97%A5%E8%AE%B0/">日记</a></span></div><div class="content">一、面试反思今天参加了之前几次面谈的测试，对方问了我不少问题，暴露出了很多问题：  定位模糊：我甚至没有确定好自己在技术方面的定位是什么，无法明确自己的方向。 广而不精：什么都懂一点，但只懂一点，太抽象了。 基础薄弱：对方问到的很多问题，我完全不清楚，只是大概能明白；很多基础的东西都不懂。 专业不足：专业知识积累不够，很多地方存在明显短板。  总之，需要积累和学习的地方还有很多。  二、后续方向目前来看，似乎只有原本计划的第三条路可以走了，其他的道路感觉都不太可行。继续等待也不太现实，没有那么多时间可以浪费。 现在的核心思路是：慢慢积累，逐步完善一个属于自己的项目，看看效果如何。  三、具体计划目前的想法是重写一款类似 洛雪音乐助手 的软件。 选择重写的原因：  不用自己从头思考业务逻辑，更适合目前的我。 主要挑战在于框架迁移，而非功能设计。  技术栈：  使用 Flutter 进行重写。 需要学习 Dart 和 Flutter 框架。   四、对自己的要求 学习更深入：这次学习过程中要更仔细、更深入，不能浮于表面。 关注前沿：对技术前沿要有更多了解和关注。   暂时先这样，一步...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/06/24/yazi-pei-zhi/" title="yazi配置">yazi配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-24T23:19:29.000Z" title="发表于 2026-06-24 23:19:29">2026-06-24</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></span></div><div class="content">Yazi 配置说明 Yazi v26.5.6 · 主题: Dracula · 插件增强: augment-command  新增插件的用法、快捷键和维护说明见 PLUGIN-GUIDE.md。  目录 全局设置 插件清单 快捷键总表 目录跳转 面板布局 光标移动 目录导航 文件操作 复制路径与重命名 搜索与过滤 标签页管理 选择与视觉模式 预览控制 FFmpeg 媒体工具 任务与帮助 设备挂载 书签管理 回收站管理   子模式键位 任务管理器 聚焦模式 输入模式（Vim 风格）     全局设置# yazi.toml  [mgr] ratio = [1, 2, 5]              # 父目录:当前目录:预览 比例 sort_by = "extension"          # 按扩展名分组排序 sort_sensitive = true          # 区分大小写 sort_reverse = false           # 正序 sort_dir_first = true          # 目录优先 show_hidden = true       ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2026/06/24/mpv-pei-zhi-jiang-jie/" title="mpv配置">mpv配置</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-06-24T17:51:05.000Z" title="发表于 2026-06-24 17:51:05">2026-06-24</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-10T04:17:09.871Z" title="更新于 2026-09-10 04:17:09">2026-09-10</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></span></div><div class="content">mpv 配置这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland 桌面，使用gpu-next + Vulkan 输出，并围绕高质量视频、HDR/SDR 色彩处理、字幕、播放列表、历史记录和 uosc 操作界面进行定制。 当前配置的核心原则：  以 mpv.conf、input.conf 和 script-opts/ 为主要配置入口。 禁用 mpv 默认键位，使用仓库内可审计的自定义键位。 使用定制版 uosc，不直接用上游文件覆盖本地改动。 使用 profile 组织画质、色彩、HDR、着色器和场景模式。 运行时数据、缓存和第三方更新器的 Git 镜像不提交到仓库。   文档以当前工作区中的实际文件为准。修改配置后，快捷键和参数说明应再次以input.conf、mpv.conf 与 script-opts/ 为最终依据。  目录 快速开始 目录结构 配置特点 画质与色彩 profile uosc 界面 脚本功能 快捷键 第三方更新器 依赖与注意事项  快速开始依赖建议使用带有以下能力的完整 mpv 构建：  gpu-next Vulkan / Wayland ...</div></div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">emoeem</div><div class="author-info-description">全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:emoeem@example.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置">nvim配置</a><time datetime="2026-08-17T02:18:34.000Z" title="发表于 2026-08-17 02:18:34">2026-08-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置">Yazi 配置</a><time datetime="2026-08-04T09:06:12.000Z" title="发表于 2026-08-04 09:06:12">2026-08-04</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本">linux的fish配置和脚本</a><time datetime="2026-07-19T13:01:52.000Z" title="发表于 2026-07-19 13:01:52">2026-07-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/16/4-3-slice-lei-xing/" title="4.3 slice类型">4.3 slice类型</a><time datetime="2026-07-16T07:02:55.000Z" title="发表于 2026-07-16 07:02:55">2026-07-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2026/07/16/4-2-yin-yong-he-jie-yong/" title="4.2 引用和借用">4.2 引用和借用</a><time datetime="2026-07-16T07:01:21.000Z" title="发表于 2026-07-16 07:01:21">2026-07-16</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">11</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E9%9A%8F%E7%AC%94/"><span class="card-category-list-name">随笔</span><span class="card-category-list-count">4</span></a></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/" style="font-size: 1.5em; color: #99a9bf">配置优化</a> <a href="/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/" style="font-size: 1.1em; color: #999">代码开发</a> <a href="/tags/%E6%97%A5%E8%AE%B0/" style="font-size: 1.37em; color: #99a4b2">日记</a> <a href="/tags/rust%E5%AD%A6%E4%B9%A0/" style="font-size: 1.23em; color: #999ea6">rust学习</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div>
   
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/" class="waves-effect waves-light nav-current" aria-current="page">
+    <ul class="card-archive-list">
       
-      <i class="fas fa-home" style="zoom: 0.6;"></i>
-      
-      <span>首页</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/tags" class="waves-effect waves-light">
-      
-      <i class="fas fa-tags" style="zoom: 0.6;"></i>
-      
-      <span>标签</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/categories" class="waves-effect waves-light">
-      
-      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
-      
-      <span>分类</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/archives" class="waves-effect waves-light">
-      
-      <i class="fas fa-archive" style="zoom: 0.6;"></i>
-      
-      <span>归档</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/about" class="waves-effect waves-light">
-      
-      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
-      
-      <span>关于</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/contact" class="waves-effect waves-light">
-      
-      <i class="fas fa-comments" style="zoom: 0.6;"></i>
-      
-      <span>留言板</span>
-    </a>
-    
-  </li>
-  
-  <li class="hide-on-med-and-down nav-item">
-    
-    <a href="/friends" class="waves-effect waves-light">
-      
-      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
-      
-      <span>友情链接</span>
-    </a>
-    
-  </li>
-  
-  <li>
-    <a href="#searchModal" class="modal-trigger waves-effect waves-light" aria-label="搜索文章">
-      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-  <li>
-    <a href="javascript:;" class="waves-effect waves-light" onclick="switchNightMode()"
-       title="深色/浅色模式" aria-label="切换深色模式">
-      <i id="sum-moon-icon" class="fas fa-sun" style="zoom: 0.85;"></i>
-    </a>
-  </li>
-</ul>
-
-
-<div id="mobile-nav" class="side-nav sidenav">
-
-    <div class="mobile-head bg-color">
-        
-        <img src="/medias/logo.png" class="logo-img circle responsive-img">
-        
-        <div class="logo-name">emoeem</div>
-        <div class="logo-desc">
-            
-            全栈开发者 | 开源爱好者 | 记录技术成长与生活点滴的个人博客
-            
-        </div>
-    </div>
-
-    <ul class="menu-list mobile-menu-list">
-        
-        <li class="m-nav-item">
-	  
-		<a href="/" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-home"></i>
-			
-			首页
-		</a>
-          
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/08/">
+            <span class="card-archive-list-date">
+              八月 2026
+            </span>
+            <span class="card-archive-list-count">2</span>
+          </a>
         </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/tags" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-tags"></i>
-			
-			标签
-		</a>
-          
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/07/">
+            <span class="card-archive-list-date">
+              七月 2026
+            </span>
+            <span class="card-archive-list-count">5</span>
+          </a>
         </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/categories" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-bookmark"></i>
-			
-			分类
-		</a>
-          
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/06/">
+            <span class="card-archive-list-date">
+              六月 2026
+            </span>
+            <span class="card-archive-list-count">8</span>
+          </a>
         </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/archives" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-archive"></i>
-			
-			归档
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/about" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-user-circle"></i>
-			
-			关于
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/contact" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-comments"></i>
-			
-			留言板
-		</a>
-          
-        </li>
-        
-        <li class="m-nav-item">
-	  
-		<a href="/friends" class="waves-effect waves-light">
-			
-			    <i class="fa-fw fas fa-address-book"></i>
-			
-			友情链接
-		</a>
-          
-        </li>
-        
-        
-        <li><div class="divider"></div></li>
-        <li>
-            <a href="https://github.com/emoeem/blog-source" class="waves-effect waves-light" target="_blank">
-                <i class="fab fa-github-square fa-fw"></i>Fork Me
-            </a>
-        </li>
-        
+      
     </ul>
-</div>
-
-
-        </div>
-
-        
-            <style>
-    .nav-transparent .github-corner {
-        display: none !important;
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">15</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">36.1k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-09-10T04:17:26.125Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><script src="/js/tw_cn.js?v=5.7.0"></script><script src="/"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>window.typedJSFn = {
+  init: str => {
+    window.typed = new Typed('#subtitle', Object.assign({
+      strings: str,
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: true,
+      backSpeed: 50,
+    }, {"loop":true,"startDelay":300,"typeSpeed":100,"backSpeed":50}))
+  },
+  run: subtitleType => {
+    if (true) {
+      if (typeof Typed === 'function') {
+        subtitleType()
+      } else {
+        btf.getScript('https://cdn.jsdelivr.net/npm/typed.js@3.0.0/dist/typed.umd.min.js').then(subtitleType)
+      }
+    } else {
+      subtitleType()
     }
+  },
+  processSubtitle: (content, extraContents = []) => {
+    if (true) {
+      const sub = ["从来没有真正的绝境, 只有心灵的迷途","代码改变世界","Never really desperate, only the lost of the soul","Talk is cheap. Show me the code."].slice()
 
-    .github-corner {
-        position: absolute;
-        z-index: 10;
-        top: 0;
-        right: 0;
-        border: 0;
-        transform: scale(1.1);
+      if (extraContents.length > 0) {
+        sub.unshift(...extraContents)
+      }
+
+      if (typeof content === 'string') {
+        sub.unshift(content)
+      } else if (Array.isArray(content)) {
+        sub.unshift(...content)
+      }
+
+      sub.length > 0 && typedJSFn.init(sub)
+    } else {
+      document.getElementById('subtitle').textContent = typeof content === 'string' ? content :
+        (Array.isArray(content) && content.length > 0 ? content[0] : '')
     }
-
-    .github-corner svg {
-        color: #0f9d58;
-        fill: #fff;
-        height: 64px;
-        width: 64px;
-    }
-
-    .github-corner:hover .octo-arm {
-        animation: a 0.56s ease-in-out;
-    }
-
-    .github-corner .octo-arm {
-        animation: none;
-    }
-
-    @keyframes a {
-        0%,
-        to {
-            transform: rotate(0);
-        }
-        20%,
-        60% {
-            transform: rotate(-25deg);
-        }
-        40%,
-        80% {
-            transform: rotate(10deg);
-        }
-    }
-</style>
-
-<a href="https://github.com/emoeem/blog-source" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
-   data-tooltip="Fork Me" data-position="left" data-delay="50">
-    <svg viewBox="0 0 250 250" aria-hidden="true">
-        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
-              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
-        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
-              fill="currentColor" class="octo-body"></path>
-    </svg>
-</a>
-        
-    </nav>
-
-</header>
-
-    
-
-
-<div class="carousel carousel-slider center index-cover" data-indicators="true" style="margin-top: -64px;">
-    
-
-    <div class="carousel-item  white-text bg-cover about-cover">
-        <div class="container">
-            <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                代码与生活，技术与思考
-                
-            </div>
-
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="/libs/typed/typed.js"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: [ 
-                            
-                                "从来没有真正的绝境, 只有心灵的迷途",
-                            
-                                "代码改变世界",
-                            
-                                "Never really desperate, only the lost of the soul",
-                            
-                                "Talk is cheap. Show me the code.",
-                            
-                        ],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<script>
-    // 每天切换 banner 图.  Switch banner image every day.
-    var bannerUrl = "/medias/banner/" + new Date().getDay() + '.jpg';
-    $('.bg-cover').css('background-image', 'url(' + bannerUrl + ')');
-</script>
-<script>
-    
-      var bannerUrl = "/medias/featureimages/" + Math.floor(Math.random() * 39) + '.jpg';
-    
-    $('.bg-cover.about-cover').css('background-image', 'url(' + bannerUrl + ')');
-
-</script>
-
-
-
-            <div class="cover-btns">
-                <a href="#indexCard" class="waves-effect waves-light btn">
-                    <i class="fa fa-angle-double-down"></i>开始阅读
-                </a>
-
-                
-                    <a href="https://github.com/emoeem" class="waves-effect waves-light btn" target="_blank">
-                        <i class="fab fa-github-alt"></i>My GitHub
-                    </a>
-                
-            </div>
-            <div class="cover-social-link">
-    <a href="https://github.com/emoeem" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <a href="https://space.bilibili.com/474821319" class="tooltipped" target="_blank" data-tooltip="关注我的B站: https://space.bilibili.com/474821319" data-position="top" data-delay="50">
-        <i class="fab fa-bilibili"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
-
-</div>
-        </div>
-    </div>
-
-    
-</div>
-
-<script>
-    $(function () {
-        let coverSlider = $('.carousel');
-
-        //用户触摸轮播自动 restartPlay 是否生效
-        let initUserPressedOrDraggedActive = false
-
-        //用户触摸轮播自动 restartPlay
-        function initUserPressedOrDragged(instance) {
-            setInterval(() => {
-                if (instance.pressed || instance.dragged) {
-                    // console.log('initUserPressedOrDragged: ',instance.pressed,instance.dragged)
-                    restartPlay()
-                }
-            }, 1000)
-        }
-
-        coverSlider.carousel({
-            duration: Number('120'),
-            fullWidth: true,
-            indicators: 'false' === 'true',
-            onCycleTo() {
-                if (!initUserPressedOrDraggedActive) {
-                    // console.log('initUserPressedOrDraggedActive')
-                    initUserPressedOrDragged(this)
-                    initUserPressedOrDraggedActive = true
-                }
-            },
-        })
-
-        let carouselIntervalId;
-        
-
-        function restartPlay() {
-            
-        };
-
-        
-    });
-</script>
-
-
-
-<main class="content">
-
-    
-    <div id="indexCard" class="index-card">
-        <div class="container ">
-            <div class="card">
-                <div class="card-content">
-                    
-                        <div class="dream">
-    
-    <div class="title center-align">
-        <i class="far fa-lightbulb"></i>&nbsp;&nbsp;我的梦想
-    </div>
-    
-    <div class="row">
-        <div class="col l8 offset-l2 m10 offset-m1 s10 offset-s1 center-align text">
-            用代码构建世界，用文字记录成长。Stay hungry, stay foolish.
-        </div>
-    </div>
-</div>
-
-                    
-
-                    
-                        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
-<style>
-    .aplayer .aplayer-lrc p {
-        
-        display: none;
-        
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 16px !important;
-    }
-
-    .aplayer .aplayer-lrc p.aplayer-lrc-current {
-        
-        display: none;
-        
-        font-size: 15px;
-        color: #42b983;
-    }
-
-    
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
-        left: -66px !important;
-    }
-
-    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
-        left: 0px !important;
-    }
-
-    
-</style>
-<div class="music-player">
-    
-        <div class="title center-align">
-            <i class="fas fa-music"></i>&nbsp;&nbsp;听听音乐
-        </div>
-    
-    <div class="row">
-        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
-                   server="netease"
-                   type="playlist"
-                   id="503838841"
-                   fixed='false'
-                   autoplay='false'
-                   theme='#42b983'
-                   loop='all'
-                   order='random'
-                   preload='auto'
-                   volume='0.7'
-                   list-folded='true'
-        >
-        </meting-js>
-    </div>
-</div>
-
-<script src="/libs/aplayer/APlayer.min.js"></script>
-<script src="/libs/aplayer/Meting.min.js"></script>
-
-                        
-
-                    
-
-                    
-                    <div id="recommend-sections" class="recommend">
-                        
-
-
-
-                    </div>
-                    
-                </div>
-            </div>
-        </div>
-    </div>
-    
-
-    
-
-    <!-- 所有文章卡片 -->
-    <article id="articles" class="container articles">
-        <div class="row article-row">
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/08/17/nvim-pei-zhi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="nvim配置">
-                            
-                            <span class="card-title">nvim配置</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Neovim 配置详解
-基于 lazy.nvim 的模块化配置，适用于 Neovim &gt;= 0.11（当前环境 0.12.x）。配置根目录：~/.config/nvim
-
-目录结构~/.config/nvim/
-├── init.lu
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-08-17
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">配置优化</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/custom_3.jpg" class="responsive-img" alt="Yazi 配置">
-                            
-                            <span class="card-title">Yazi 配置</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                🦆 Yazi 配置
-个人 Yazi 文件管理器配置，基于 Vim 风格键位，针对 Linux（Wayland）优化。
-📸 预览
-Dracula 主题 + 全边框 + Starship 状态栏，三栏布局（父目录 : 文件列表 : 预览）
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-08-04
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">配置优化</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/146170421_p0.jpg" class="responsive-img" alt="linux的fish配置和脚本">
-                            
-                            <span class="card-title">linux的fish配置和脚本</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Fish Shell 配置使用说明
-适用环境：CachyOS (Arch Linux) · Fish 4.8 · Niri 平铺窗口管理器
-
-
-目录
-文件结构概览
-核心工具链
-快捷键速查
-缩写（abbr）完整列表
-CachyOS 预设别名（
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-19
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">配置优化</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/07/16/4-3-slice-lei-xing/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="4.3 slice类型">
-                            
-                            <span class="card-title">4.3 slice类型</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Slice 类型 总结切片（slice）  是 Rust 提供的一种特殊引用，它让你可以安全地引用集合（如字符串、数组）中的一段连续元素，而不需要拥有这些数据的所有权。slice 的引入，漂亮地解决了“用单独的索引表示子序列”带来的数据不同
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/rust%E5%AD%A6%E4%B9%A0/">
-                            <span class="chip bg-color">rust学习</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/07/16/4-2-yin-yong-he-jie-yong/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="4.2 引用和借用">
-                            
-                            <span class="card-title">4.2 引用和借用</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                引用与借用 总结引用（reference）让你可以在不获取所有权的情况下使用一个值，这种行为称为借用（borrowing）。通过引用，我们不需要为了使用一个值而把所有权传来传去。
-
-1. 不可变引用（&amp;T）fn main() {
- 
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/rust%E5%AD%A6%E4%B9%A0/">
-                            <span class="chip bg-color">rust学习</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/07/16/4-1-shi-me-shi-suo-you-quan/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="4.1 什么是所有权">
-                            
-                            <span class="card-title">4.1 什么是所有权</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                一、所有权是什么？所有权是 Rust 管理内存的一套编译时规则，它让 Rust 无需 GC 也能保证内存安全，且不损失性能。核心只有三条：
-
-Rust 中每个值都有且只有一个所有者（owner）。
-同一时刻，值只能有一个所有者。
-当所有者离
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-16
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/rust%E5%AD%A6%E4%B9%A0/">
-                            <span class="chip bg-color">rust学习</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="为什么越来越多毕业生，被“培训”卡在第一步？">
-                            
-                            <span class="card-title">为什么越来越多毕业生，被“培训”卡在第一步？</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                一、你以为你输在“能力”，其实你输在“入场资格”很多刚毕业的计算机学生，都会遇到一个很熟悉的场景：
-投简历 → 被问项目经验 → 说不出来 → 被拒绝 → 推荐“培训班”
-然后对方会告诉你一句非常“标准化”的话：
-
-“你基础还可以，但缺项目
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-07-02
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
-                                    随笔
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%97%A5%E8%AE%B0/">
-                            <span class="chip bg-color">日记</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/06/27/2026-06-27-ri-ji/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/127246755_p0.jpg" class="responsive-img" alt="2026-06-27 日记">
-                            
-                            <span class="card-title">2026-06-27 日记</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                今天实在没什么事情发生，感觉自己的这一天毫无意义，或者说——找不到前进的方向。
-迷茫现在最大的问题，就是对未来的迷茫。
-
-不知道自己的路在何处。
-不知道自己要去往哪里。
-找不到方向，找不到一个明确的方向。
-
-眼下最迫切、最一定要完成的事，就
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
-                                    随笔
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%97%A5%E8%AE%B0/">
-                            <span class="chip bg-color">日记</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="whisper-cli 参数配置指南">
-                            
-                            <span class="card-title">whisper-cli 参数配置指南</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                whisper-cli 是什么whisper-cli 是 Whisper 语音识别模型的命令行工具版本，具体来说它是基于 C++ 重写的实现（源自 ggerganov/whisper.cpp 项目），不是 OpenAI 官方的 Python
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-27
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E4%BB%A3%E7%A0%81%E5%BC%80%E5%8F%91/">
-                            <span class="chip bg-color">代码开发</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/06/26/2026-06-26/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/126473642_p0.jpg" class="responsive-img" alt="2026-06-26 日记">
-                            
-                            <span class="card-title">2026-06-26 日记</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                一、面试反思今天参加了之前几次面谈的测试，对方问了我不少问题，暴露出了很多问题：
-
-定位模糊：我甚至没有确定好自己在技术方面的定位是什么，无法明确自己的方向。
-广而不精：什么都懂一点，但只懂一点，太抽象了。
-基础薄弱：对方问到的很多问题，我
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-26
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E9%9A%8F%E7%AC%94/" class="post-category">
-                                    随笔
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E6%97%A5%E8%AE%B0/">
-                            <span class="chip bg-color">日记</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/06/24/yazi-pei-zhi/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/custom_3.jpg" class="responsive-img" alt="yazi配置">
-                            
-                            <span class="card-title">yazi配置</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Yazi 配置说明
-Yazi v26.5.6 · 主题: Dracula · 插件增强: augment-command
-
-新增插件的用法、快捷键和维护说明见 PLUGIN-GUIDE.md。
-
-目录
-全局设置
-插件清单
-快捷键总表
-目录跳
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-24
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">配置优化</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-             <!-- 隐藏某个文章 -->
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2026/06/24/mpv-pei-zhi-jiang-jie/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="mpv配置">
-                            
-                            <span class="card-title">mpv配置</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                mpv 配置这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland 桌面，使用gpu-next + Vulkan 输出，并围绕高质量视频、HDR/SDR 色彩处理、字幕、播放列表、历史记录和 uosc 操作界面进行定制。
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2026-06-24
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                
-                                <a href="/categories/%E6%8A%80%E6%9C%AF/" class="post-category">
-                                    技术
-                                </a>
-                                
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">
-                            <span class="chip bg-color">配置优化</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-              <!-- 隐藏某个文章 -->
-            
-        </div>
-    </article>
-
-</main>
-
-
-<div class="container paging">
-    <div class="row">
-        <div class="col s6 m4 l4">
-            
-            <a class="left btn-floating btn-large disabled">
-                <i class="fas fa-angle-left"></i>
-            </a>
-            
-        </div>
-        <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">1 / 2</div>
-        </div>
-        <div class="col s6 m4 l4">
-            
-            <a href="/page/2/"
-               class="right btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-right"></i>
-            </a>
-            
-        </div>
-    </div>
-</div>
-
-
-
-
-    <footer class="page-footer bg-color">
-    
-
-    <div class="container row center-align"
-         style="margin-bottom: 15px !important;">
-        <div class="col s12 m8 l8 copy-right">
-            Copyright&nbsp;&copy;
-            
-                <span id="year">2026</span>
-            
-            <a href="/about" target="_blank">emoeem</a>
-            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
-            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
-            
-                <span id="translate">|&nbsp;繁/简：</span><a id="translateLink" href="javascript:translatePage();">繁</a>
-            
-            <br>
-            
-                &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
-                        class="white-color">36.1k</span>
-            
-            
-            
-                
-            
-            
-                <span id="busuanzi_container_site_pv">
-                &nbsp;|&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;
-                    <span id="busuanzi_value_site_pv" class="white-color"></span>
-            </span>
-            
-            
-                <span id="busuanzi_container_site_uv">
-                &nbsp;|&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;
-                    <span id="busuanzi_value_site_uv" class="white-color"></span>
-            </span>
-            
-            <br>
-
-            <!-- 运行天数提醒. -->
-            
-                <span id="sitetime"> Loading ...</span>
-                <script>
-                    var calcSiteTime = function () {
-                        var seconds = 1000;
-                        var minutes = seconds * 60;
-                        var hours = minutes * 60;
-                        var days = hours * 24;
-                        var years = days * 365;
-                        var today = new Date();
-                        var startYear = "2026";
-                        var startMonth = "6";
-                        var startDate = "22";
-                        var startHour = "0";
-                        var startMinute = "0";
-                        var startSecond = "0";
-                        var todayYear = today.getFullYear();
-                        var todayMonth = today.getMonth() + 1;
-                        var todayDate = today.getDate();
-                        var todayHour = today.getHours();
-                        var todayMinute = today.getMinutes();
-                        var todaySecond = today.getSeconds();
-                        var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
-                        var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
-                        var diff = t2 - t1;
-                        var diffYears = Math.floor(diff / years);
-                        var diffDays = Math.floor((diff / days) - diffYears * 365);
-
-                        // 区分是否有年份.
-                        var language = 'zh-CN';
-                        if (startYear === String(todayYear)) {
-                            document.getElementById("year").innerHTML = todayYear;
-                            var daysTip = 'This site has been running for ' + diffDays + ' days';
-                            if (language === 'zh-CN') {
-                                daysTip = '本站已运行 ' + diffDays + ' 天';
-                            } else if (language === 'zh-HK') {
-                                daysTip = '本站已運行 ' + diffDays + ' 天';
-                            }
-                            document.getElementById("sitetime").innerHTML = daysTip;
-                        } else {
-                            document.getElementById("year").innerHTML = startYear + " - " + todayYear;
-                            var yearsAndDaysTip = 'This site has been running for ' + diffYears + ' years and '
-                                + diffDays + ' days';
-                            if (language === 'zh-CN') {
-                                yearsAndDaysTip = '本站已运行 ' + diffYears + ' 年 ' + diffDays + ' 天';
-                            } else if (language === 'zh-HK') {
-                                yearsAndDaysTip = '本站已運行 ' + diffYears + ' 年 ' + diffDays + ' 天';
-                            }
-                            document.getElementById("sitetime").innerHTML = yearsAndDaysTip;
-                        }
-                    }
-
-                    calcSiteTime();
-                </script>
-            
-            <br>
-            
-        </div>
-        <div class="col s12 m4 l4 social-link social-statis">
-    <a href="https://github.com/emoeem" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
-        <i class="fab fa-github"></i>
-    </a>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <a href="https://space.bilibili.com/474821319" class="tooltipped" target="_blank" data-tooltip="关注我的B站: https://space.bilibili.com/474821319" data-position="top" data-delay="50">
-        <i class="fab fa-bilibili"></i>
-    </a>
-
-
-
-
-
-
-
-    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
-        <i class="fas fa-rss"></i>
-    </a>
-
-</div>
-    </div>
-</footer>
-
-<div class="progress-bar"></div>
-
-
-    <!-- 搜索遮罩框 -->
-<div id="searchModal" class="modal">
-    <div class="modal-content">
-        <div class="search-header">
-            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
-            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
-                   class="search-input">
-        </div>
-        <div id="searchResult"></div>
-    </div>
-</div>
-
-    <!-- 白天和黑夜主题 -->
-<div class="stars-con">
-    <div id="stars"></div>
-    <div id="stars2"></div>
-    <div id="stars3"></div>  
-</div>
-
-<script>
-    function switchNightMode() {
-        $('<div class="Cuteen_DarkSky"><div class="Cuteen_DarkPlanet"></div></div>').appendTo($('body')),
-        setTimeout(function () {
-            $('body').hasClass('DarkMode') 
-            ? ($('body').removeClass('DarkMode'), localStorage.setItem('isDark', '0'), $('#sum-moon-icon').removeClass("fa-sun").addClass('fa-moon')) 
-            : ($('body').addClass('DarkMode'), localStorage.setItem('isDark', '1'), $('#sum-moon-icon').addClass("fa-sun").removeClass('fa-moon')),
-            
-            setTimeout(function () {
-            $('.Cuteen_DarkSky').fadeOut(1e3, function () {
-                $(this).remove()
-            })
-            }, 2e3)
-        })
-    }
-</script>
-
-    <!-- 回到顶部按钮 -->
-<div id="backTop" class="top-scroll">
-    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
-        <i class="fas fa-arrow-up"></i>
-    </a>
-</div>
-
-
-    <script src="/libs/materialize/materialize.min.js"></script>
-    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
-    <script src="/libs/aos/aos.js"></script>
-    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
-    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
-    <script src="/js/matery.js"></script>
-    <script src="/js/site-enhancements.js"></script>
-
-    
-
-    
-        <script type="text/javascript" src="/js/tw_cn.js"></script>
-        <script type="text/javascript">
-          var defaultEncoding = 2; //网站编写字体是否繁体，1-繁体，2-简体
-          var translateDelay = 0; //延迟时间,若不在前, 要设定延迟翻译时间, 如100表示100ms,默认为0
-          var cookieDomain = "https://emoeem.github.io"; //Cookie地址, 一定要设定, 通常为你的网址
-          var msgToTraditionalChinese = "繁"; //此处可以更改为你想要显示的文字
-          var msgToSimplifiedChinese = "简"; //同上，但两处均不建议更改
-          var translateButtonId = "translateLink"; //默认互换id
-          translateInitilization();
-        </script>
-    
-    
-    
-
-    <!-- 雪花特效 -->
-    
-
-    <!-- 鼠标星星特效 -->
-    
-
-    
-
-    <!-- Baidu Analytics -->
-
-    <!-- Baidu Push -->
-
-<script>
-    (function () {
-        var bp = document.createElement('script');
-        var curProtocol = window.location.protocol.split(':')[0];
-        if (curProtocol === 'https') {
-            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
-        } else {
-            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
-        }
-        var s = document.getElementsByTagName("script")[0];
-        s.parentNode.insertBefore(bp, s);
-    })();
-</script>
-
-    
-    
-    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
-    
-
-    
-
-    
-
-    <!--腾讯兔小巢-->
-    
-    
-
-    
-    
-    <script type="text/javascript" size="150" alpha='0.6'
-        zIndex="-1" src="/libs/background/ribbon-refresh.min.js" async="async"></script>
-    
-
-    
-
-    
-    <script src="/libs/instantpage/instantpage.js" type="module"></script>
-    
-
-</body>
-
-</html>
+  }
+}
+btf.addGlobalFn('pjaxSendOnce', () => { typed && typed.destroy() }, 'typedDestroy')
+</script><script>function subtitleType () {
+  typedJSFn.processSubtitle(["从来没有真正的绝境, 只有心灵的迷途","代码改变世界","Never really desperate, only the lost of the soul","Talk is cheap. Show me the code."])
+}
+typedJSFn.run(subtitleType)</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
