@@ -151,8 +151,28 @@
               </div>
             </div>
             <div class="row">
-              <div><label>封面图（可选）</label><input type="text" id="coverImg" placeholder="留空自动随机，或填 /img/xxx.jpg / 完整 URL"></div>
-              <div><label>摘要（可选）</label><input type="text" id="summary" placeholder="自定义摘要，留空则自动截取"></div>
+              <div style="flex: 1.4;">
+                <label>封面图（可选）</label>
+                <div style="display:flex; gap:8px; align-items:center;">
+                  <input type="text" id="coverImg" placeholder="留空自动随机，或填路径/URL" style="flex:1;">
+                  <button type="button" class="secondary" onclick="openCoverPicker()" style="white-space:nowrap;">🖼 选择封面</button>
+                  <button type="button" class="secondary" onclick="clearCover()" style="white-space:nowrap;">清空</button>
+                </div>
+                <div id="coverPreview" style="margin-top:8px; display:none;"></div>
+              </div>
+              <div style="flex:1;"><label>摘要（可选）</label><input type="text" id="summary" placeholder="自定义摘要，留空则自动截取"></div>
+            </div>
+            <div id="coverPickerModal" style="display:none; position:fixed; inset:0; background:rgba(15,10,30,0.75); backdrop-filter:blur(8px); z-index:9999; justify-content:center; align-items:center;">
+              <div style="background:var(--card-bg); border:1px solid var(--border); border-radius:14px; max-width:760px; width:92%; max-height:80vh; overflow:hidden; display:flex; flex-direction:column; box-shadow:0 20px 60px rgba(99,102,241,0.3);">
+                <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center;">
+                  <h3 style="margin:0; font-size:1rem; color:var(--text);">🖼 选择封面</h3>
+                  <div style="display:flex; gap:8px; align-items:center;">
+                    <button type="button" class="secondary" onclick="randomCover()" style="font-size:.82rem;">🎲 随机一张</button>
+                    <button type="button" class="secondary" onclick="closeCoverPicker()" style="font-size:.82rem;">✕ 关闭</button>
+                  </div>
+                </div>
+                <div id="coverPickerGrid" style="padding:16px 20px; overflow-y:auto; display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:12px;"></div>
+              </div>
             </div>
             <label style="margin-bottom:4px">正文</label>
             <textarea id="editor"></textarea>
@@ -184,6 +204,94 @@
     let currentSlug = null;
     let currentSha = null;
     let autoSaveTimer = null;
+
+    const FEATURE_IMAGES = [
+      ...Array.from({length: 24}, (_, i) => `/img/featureimages/${i}.jpg`),
+      '/img/featureimages/125824107_p0.jpg',
+      '/img/featureimages/126350108_p0.jpg',
+      '/img/featureimages/126473642_p0.jpg',
+      '/img/featureimages/126666381_p0.jpg',
+      '/img/featureimages/126768762_p0.jpg',
+      '/img/featureimages/126768762_p1.jpg',
+      '/img/featureimages/126932450_p0.jpg',
+      '/img/featureimages/127246755_p0.jpg',
+      '/img/featureimages/146170421_p0.jpg',
+      '/img/featureimages/custom_0.jpg',
+      '/img/featureimages/custom_1.jpg',
+      '/img/featureimages/custom_2.jpg',
+      '/img/featureimages/custom_3.jpg',
+      '/img/featureimages/custom_4.jpg',
+      '/img/featureimages/custom_5.jpg',
+    ];
+    const EXTRA_COVERS = [
+      '/img/covers/cover-1.jpg',
+      '/img/covers/cover-2.jpg',
+      '/img/covers/cover-3.jpg',
+      '/img/covers/cover-4.jpg',
+      '/img/covers/cover-5.jpg',
+      '/img/covers/cover-6.jpg',
+      '/img/cover.jpg',
+    ];
+    const ALL_COVERS = [...EXTRA_COVERS, ...FEATURE_IMAGES];
+
+    function openCoverPicker() {
+      const grid = document.getElementById('coverPickerGrid');
+      grid.innerHTML = '';
+      ALL_COVERS.forEach((src) => {
+        const card = document.createElement('div');
+        card.style.cssText = 'cursor:pointer; border-radius:10px; overflow:hidden; border:2px solid transparent; transition:all .2s ease; background:var(--surface);';
+        card.onmouseenter = () => { card.style.borderColor = 'var(--primary)'; card.style.transform = 'translateY(-2px)'; };
+        card.onmouseleave = () => { card.style.borderColor = 'transparent'; card.style.transform = ''; };
+        card.onclick = () => pickCover(src);
+        card.innerHTML = `<img src="${src}" style="width:100%; aspect-ratio:16/10; object-fit:cover; display:block;" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+        grid.appendChild(card);
+      });
+      const modal = document.getElementById('coverPickerModal');
+      modal.style.display = 'flex';
+      modal.onclick = (e) => { if (e.target === modal) closeCoverPicker(); };
+    }
+
+    function closeCoverPicker() {
+      document.getElementById('coverPickerModal').style.display = 'none';
+    }
+
+    function pickCover(src) {
+      document.getElementById('coverImg').value = src;
+      closeCoverPicker();
+      updateCoverPreview();
+    }
+
+    function clearCover() {
+      document.getElementById('coverImg').value = '';
+      updateCoverPreview();
+    }
+
+    function randomCover() {
+      const pick = ALL_COVERS[Math.floor(Math.random() * ALL_COVERS.length)];
+      document.getElementById('coverImg').value = pick;
+      updateCoverPreview();
+    }
+
+    function updateCoverPreview() {
+      const input = document.getElementById('coverImg');
+      const preview = document.getElementById('coverPreview');
+      const val = input.value.trim();
+      if (val) {
+        preview.style.display = 'block';
+        preview.innerHTML = `<img src="${val}" style="max-width:280px; max-height:160px; border-radius:8px; border:1px solid var(--border); object-fit:cover;" onerror="this.parentElement.style.display='none'; this.parentElement.innerHTML='<span style=color:var(--danger);font-size:.8rem>图片加载失败</span>'">`;
+      } else {
+        preview.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const coverInput = document.getElementById('coverImg');
+      if (coverInput) {
+        coverInput.addEventListener('input', updateCoverPreview);
+        coverInput.addEventListener('change', updateCoverPreview);
+        updateCoverPreview();
+      }
+    });
 
     // Dark mode
     if (localStorage.getItem('admin_dark') === 'false') {
