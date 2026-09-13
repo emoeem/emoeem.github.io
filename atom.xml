@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考</subtitle>
   <title>emoeem</title>
-  <updated>2026-09-10T05:38:06.844Z</updated>
+  <updated>2026-09-13T03:09:54.707Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
@@ -20,12 +20,9 @@
     <id>https://emoeem.github.io/2026/08/17/nvim-pei-zhi/</id>
     <link href="https://emoeem.github.io/2026/08/17/nvim-pei-zhi/"/>
     <published>2026-08-17T02:18:34.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="Neovim-配置详解"><a href="#Neovim-配置详解" class="headerlink" title="Neovim 配置详解"></a>Neovim 配置详解</h1><blockquote>
-<p>基于 lazy.nvim]]>
-    </summary>
+    <summary>基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</summary>
     <title>nvim配置</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -36,11 +33,9 @@
     <id>https://emoeem.github.io/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/"/>
     <published>2026-08-04T09:06:12.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="🦆-Yazi-配置"><a href="#🦆-Yazi-配置" class="headerlink" title="🦆 Yazi 配置"></a>🦆 Yazi 配置</h1><p><a]]>
-    </summary>
+    <summary>Yazi 文件管理器插件生态全解，快捷键、主题、预览、与 Neovim/Fish 联动技巧。</summary>
     <title>Yazi 配置</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -51,11 +46,9 @@
     <id>https://emoeem.github.io/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/</id>
     <link href="https://emoeem.github.io/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/"/>
     <published>2026-07-19T13:01:52.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="Fish-Shell-配置使用说明"><a href="#Fish-Shell-配置使用说明" class="headerlink" title="Fish Shell 配置使用说明"></a>Fish Shell]]>
-    </summary>
+    <summary>Linux 下 Fish shell 的实用配置与脚本片段，提升日常终端效率。</summary>
     <title>linux的fish配置和脚本</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -66,11 +59,9 @@
     <id>https://emoeem.github.io/2026/07/16/4-3-slice-lei-xing/</id>
     <link href="https://emoeem.github.io/2026/07/16/4-3-slice-lei-xing/"/>
     <published>2026-07-16T07:02:55.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="Slice-类型-总结"><a href="#Slice-类型-总结" class="headerlink" title="Slice 类型 总结"></a>Slice 类型 总结</h2><p><strong>切片（slice）</strong>  是]]>
-    </summary>
+    <summary>Rust slice 切片类型详解，字符串切片、数组切片的用法与坑。</summary>
     <title>4.3 slice类型</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -82,10 +73,10 @@
     <link href="https://emoeem.github.io/2026/07/16/4-2-yin-yong-he-jie-yong/"/>
     <published>2026-07-16T07:01:21.000Z</published>
     <summary>
-      <![CDATA[<h2 id="引用与借用-总结"><a href="#引用与借用-总结" class="headerlink" title="引用与借用 总结"></a>引用与借用]]>
+      <![CDATA[Rust 引用与借用规则，& 与 &mut 的区别，生命周期标注入门。]]>
     </summary>
     <title>4.2 引用和借用</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -96,11 +87,9 @@
     <id>https://emoeem.github.io/2026/07/16/4-1-shi-me-shi-suo-you-quan/</id>
     <link href="https://emoeem.github.io/2026/07/16/4-1-shi-me-shi-suo-you-quan/"/>
     <published>2026-07-16T07:00:02.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="一、所有权是什么？"><a href="#一、所有权是什么？" class="headerlink" title="一、所有权是什么？"></a>一、所有权是什么？</h2><p>所有权是 Rust]]>
-    </summary>
+    <summary>Rust 核心概念：所有权系统，理解 Rust 内存安全的基石。</summary>
     <title>4.1 什么是所有权</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -111,11 +100,9 @@
     <id>https://emoeem.github.io/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/</id>
     <link href="https://emoeem.github.io/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/"/>
     <published>2026-07-02T13:31:56.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="一、你以为你输在“能力”，其实你输在“入场资格”"><a href="#一、你以为你输在“能力”，其实你输在“入场资格”" class="headerlink"]]>
-    </summary>
+    <summary>关于当下毕业生求职困境的一些思考，培训、内卷与真实世界的差距。</summary>
     <title>为什么越来越多毕业生，被“培训”卡在第一步？</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.708Z</updated>
   </entry>
   <entry>
     <author>
@@ -126,12 +113,9 @@
     <id>https://emoeem.github.io/2026/06/27/2026-06-27-ri-ji/</id>
     <link href="https://emoeem.github.io/2026/06/27/2026-06-27-ri-ji/"/>
     <published>2026-06-27T22:59:28.000Z</published>
-    <summary>
-      <![CDATA[<p>今天实在没什么事情发生，感觉自己的这一天<strong>毫无意义</strong>，或者说——找不到前进的方向。</p>
-<h2 id="迷茫"><a href="#迷茫" class="headerlink"]]>
-    </summary>
+    <summary>2026 年 6 月 27 日的日常碎碎念。</summary>
     <title>2026-06-27 日记</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -142,11 +126,9 @@
     <id>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/"/>
     <published>2026-06-27T09:56:08.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="whisper-cli-是什么"><a href="#whisper-cli-是什么" class="headerlink" title="whisper-cli 是什么"></a>whisper-cli]]>
-    </summary>
+    <summary>whisper.cpp 参数调优指南，本地语音转文字的最佳实践。</summary>
     <title>whisper-cli 参数配置指南</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -157,11 +139,9 @@
     <id>https://emoeem.github.io/2026/06/26/2026-06-26/</id>
     <link href="https://emoeem.github.io/2026/06/26/2026-06-26/"/>
     <published>2026-06-26T22:58:29.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="一、面试反思"><a href="#一、面试反思" class="headerlink"]]>
-    </summary>
+    <summary>2026 年 6 月 26 日的日常碎碎念。</summary>
     <title>2026-06-26 日记</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -172,12 +152,9 @@
     <id>https://emoeem.github.io/2026/06/24/yazi-pei-zhi/</id>
     <link href="https://emoeem.github.io/2026/06/24/yazi-pei-zhi/"/>
     <published>2026-06-24T23:19:29.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="Yazi-配置说明"><a href="#Yazi-配置说明" class="headerlink" title="Yazi 配置说明"></a>Yazi 配置说明</h1><blockquote>
-<p>Yazi v26.5.6 · 主题: Dracula ·]]>
-    </summary>
+    <summary>Yazi 文件管理器入门配置，从零到可用。</summary>
     <title>yazi配置</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.708Z</updated>
   </entry>
   <entry>
     <author>
@@ -188,11 +165,9 @@
     <id>https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</id>
     <link href="https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/"/>
     <published>2026-06-24T17:51:05.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="mpv-配置"><a href="#mpv-配置" class="headerlink" title="mpv 配置"></a>mpv 配置</h1><p>这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland]]>
-    </summary>
+    <summary>mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。</summary>
     <title>mpv配置</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -203,15 +178,9 @@
     <id>https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/"/>
     <published>2026-06-23T22:31:49.000Z</published>
-    <summary>
-      <![CDATA[<blockquote>
-<p>基于 Fish Shell + Starship + Atuin + Zoxide + fzf 的现代化终端配置，<br>涵盖所有快捷键、无感集成函数、工具链及安装命令。</p>
-</blockquote>
-<hr>
-<h2]]>
-    </summary>
+    <summary>CachyOS 下 Fish shell 从零到一完全配置，插件、主题、快捷键、提示符美化一网打尽。</summary>
     <title>CachyOS Fish 终端完全配置指南</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -222,11 +191,9 @@
     <id>https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/"/>
     <published>2026-06-22T20:08:28.000Z</published>
-    <summary>
-      <![CDATA[<h2 id="通用参数-common-params"><a href="#通用参数-common-params" class="headerlink" title="通用参数 (common params)"></a>通用参数 (common]]>
-    </summary>
+    <summary>llama.cpp / llama-cli 常用参数详解，模型加载、上下文、采样调优。</summary>
     <title>llama-cli 参数配置指南</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.707Z</updated>
   </entry>
   <entry>
     <author>
@@ -237,13 +204,8 @@
     <id>https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/</id>
     <link href="https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/"/>
     <published>2026-06-22T11:16:26.000Z</published>
-    <summary>
-      <![CDATA[<p>有时候我会想，人是不是都会这样。</p>
-<p>明明知道结果不会好，还是会忍不住伸手。</p>
-<p>别人不回消息，会继续发；别人冷淡，会想着是不是自己再解释一点就好了；别人陷进泥里，哪怕自己根本没能力，也想试着拉一下。</p>
-<p>后来才发现，有些人不是等你救，而是根本]]>
-    </summary>
+    <summary>感性人的自省 — 那些关于真心、边界和自我保护的随笔。</summary>
     <title>感性的人，总会在废墟里捡别人不要的东西</title>
-    <updated>2026-09-10T05:38:06.844Z</updated>
+    <updated>2026-09-13T03:09:54.708Z</updated>
   </entry>
 </feed>
