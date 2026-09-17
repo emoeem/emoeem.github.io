@@ -99,3 +99,51 @@
 
 .timeline-item { margin: 14px 0; padding: 16px 18px; border-left: 3px solid var(--emo-accent); border-top: 1px solid var(--emo-line); border-right: 1px solid var(--emo-line); border-bottom: 1px solid var(--emo-line); border-radius: 0 12px 12px 0; background: var(--emo-surface); box-shadow: var(--emo-shadow); line-height: 1.85; }
 .timeline-item strong { color: var(--emo-ink); }
+
+/* Home: turn the landing page into a small personal dashboard before the archive. */
+.emo-home-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .36fr);
+  gap: 24px;
+  margin: 0 0 28px;
+  padding: 28px 30px;
+  border: 1px solid var(--emo-line);
+  border-radius: 16px;
+  background: var(--emo-surface);
+  box-shadow: var(--emo-shadow);
+}
+.emo-home-intro h2 { margin: 8px 0; font-size: clamp(1.45rem, 2.4vw, 2rem); }
+.emo-home-intro p { margin: 10px 0 0; color: var(--emo-muted); line-height: 1.85; }
+.emo-home-intro__side { display: flex; flex-direction: column; justify-content: center; padding-left: 24px; border-left: 1px solid var(--emo-line); }
+.emo-home-label { color: var(--emo-muted); font-size: .72em; font-weight: 750; letter-spacing: .12em; }
+.emo-home-intro__side strong { margin: 8px 0 4px; color: var(--emo-ink); }
+.emo-home-intro__side span:last-child { color: var(--emo-muted); font-size: .9em; }
+.emo-home-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 16px; }
+.emo-home-links a { font-weight: 650; }
+
+/* Project cards are intentionally denser than ordinary page cards. */
+.emo-project-card { min-height: 240px; display: flex; flex-direction: column; }
+.emo-project-card .emo-status { margin-top: auto; }
+.emo-project-card h3 { font-size: 1.28rem; }
+
+/* Embedded music stays responsive and is excluded from PJAX navigation. */
+.emo-music-player { overflow: hidden; margin: 18px 0 12px; border: 1px solid var(--emo-line); border-radius: 14px; background: #fff; box-shadow: var(--emo-shadow); }
+.emo-music-player iframe { display: block; width: 100%; min-height: 430px; border: 0; }
+
+/* Touch targets and reading width on small screens. */
+@media (max-width: 768px) {
+  .emo-home-intro { grid-template-columns: 1fr; gap: 18px; margin-bottom: 20px; padding: 20px; }
+  .emo-home-intro__side { padding: 16px 0 0; border-top: 1px solid var(--emo-line); border-left: 0; }
+  .emo-home-links a { padding: 5px 0; }
+  .emo-project-card { min-height: 0; }
+  .emo-music-player iframe { min-height: 360px; }
+  #nav .site-page { padding-bottom: 8px; }
+  #card-toc { right: 48px; bottom: 24px; width: min(calc(100vw - 72px), 380px); }
+  #local-search .search-dialog { padding: 16px; }
+  #local-search .search-result-list { padding-left: 16px; padding-right: 16px; }
+}
+
+.emo-widget-status p { margin: 8px 0; color: var(--emo-muted); line-height: 1.7; }
+.emo-widget-status a, .emo-widget-links a { color: var(--emo-accent); font-weight: 650; }
+.emo-widget-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; }
+.emo-widget-links a { padding: 6px 0; }

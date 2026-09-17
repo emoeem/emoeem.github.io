@@ -1,30 +1,37 @@
 (() => {
-  const setup = () => {
-    const root = document.documentElement
+  const focusSearch = () => {
+    const search = document.querySelector('#local-search-input, #search-input')
+    if (!search) return false
+    search.focus()
+    return true
+  }
 
-    // Keyboard shortcut: / focuses Butterfly's local search input.
-    document.addEventListener('keydown', (event) => {
-      const target = event.target
-      if (event.key === '/' && !['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName)) {
-        event.preventDefault()
-        const search = document.querySelector('#local-search-input, #search-input')
-        if (search) search.focus()
-      }
-      if (event.key === 'Escape' && document.activeElement?.matches?.('input, textarea')) {
-        document.activeElement.blur()
-      }
-    }, { passive: false })
-
-    // Make external links safer even for Markdown-generated content.
+  const enhanceExternalLinks = () => {
     document.querySelectorAll('a[href^="http"]').forEach((link) => {
       if (link.host !== location.host) {
         link.target = '_blank'
         link.rel = 'noopener noreferrer'
       }
     })
+  }
 
-    // Keep focus-visible usable without changing Butterfly's normal focus styling.
-    root.classList.add('emo-enhanced')
+  // Register keyboard handling once. PJAX must not duplicate this listener.
+  document.addEventListener('keydown', (event) => {
+    const target = event.target
+    const typing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName) || target?.isContentEditable
+
+    if ((event.key === '/' || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k')) && !typing) {
+      if (focusSearch()) event.preventDefault()
+    }
+
+    if (event.key === 'Escape' && document.activeElement?.matches?.('input, textarea')) {
+      document.activeElement.blur()
+    }
+  })
+
+  const setup = () => {
+    enhanceExternalLinks()
+    document.documentElement.classList.add('emo-enhanced')
   }
 
   document.addEventListener('DOMContentLoaded', setup, { once: true })

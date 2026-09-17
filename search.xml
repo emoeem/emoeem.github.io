@@ -20,7 +20,13 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> 配置优化 </tag>
+            
+            <tag> Neovim </tag>
+            
+            <tag> 开发工具 </tag>
             
         </tags>
       
@@ -45,7 +51,13 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> 配置优化 </tag>
+            
+            <tag> Yazi </tag>
+            
+            <tag> 插件 </tag>
             
         </tags>
       
@@ -70,7 +82,13 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
+            <tag> Fish </tag>
+            
             <tag> 配置优化 </tag>
+            
+            <tag> Shell </tag>
             
         </tags>
       
@@ -95,7 +113,11 @@
       
         <tags>
             
+            <tag> Rust </tag>
+            
             <tag> rust学习 </tag>
+            
+            <tag> Slice </tag>
             
         </tags>
       
@@ -120,7 +142,11 @@
       
         <tags>
             
+            <tag> Rust </tag>
+            
             <tag> rust学习 </tag>
+            
+            <tag> 借用 </tag>
             
         </tags>
       
@@ -144,6 +170,10 @@
       
       
         <tags>
+            
+            <tag> Rust </tag>
+            
+            <tag> 所有权 </tag>
             
             <tag> rust学习 </tag>
             
@@ -172,6 +202,12 @@
             
             <tag> 日记 </tag>
             
+            <tag> 求职 </tag>
+            
+            <tag> 教育 </tag>
+            
+            <tag> 社会观察 </tag>
+            
         </tags>
       
     </entry>
@@ -197,6 +233,8 @@
             
             <tag> 日记 </tag>
             
+            <tag> 生活 </tag>
+            
         </tags>
       
     </entry>
@@ -220,7 +258,13 @@
       
         <tags>
             
-            <tag> 代码开发 </tag>
+            <tag> AI </tag>
+            
+            <tag> 命令行 </tag>
+            
+            <tag> 音视频 </tag>
+            
+            <tag> Whisper </tag>
             
         </tags>
       
@@ -247,6 +291,10 @@
             
             <tag> 日记 </tag>
             
+            <tag> 求职 </tag>
+            
+            <tag> 生活 </tag>
+            
         </tags>
       
     </entry>
@@ -270,7 +318,13 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> 配置优化 </tag>
+            
+            <tag> Yazi </tag>
+            
+            <tag> 文件管理 </tag>
             
         </tags>
       
@@ -295,7 +349,13 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> 配置优化 </tag>
+            
+            <tag> mpv </tag>
+            
+            <tag> 音视频 </tag>
             
         </tags>
       
@@ -319,6 +379,12 @@
       
       
         <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> CachyOS </tag>
+            
+            <tag> Fish </tag>
             
             <tag> 配置优化 </tag>
             
@@ -344,6 +410,12 @@
       
       
         <tags>
+            
+            <tag> AI </tag>
+            
+            <tag> llama.cpp </tag>
+            
+            <tag> 命令行 </tag>
             
             <tag> 代码开发 </tag>
             
@@ -371,6 +443,12 @@
         <tags>
             
             <tag> 日记 </tag>
+            
+            <tag> 生活 </tag>
+            
+            <tag> 随笔 </tag>
+            
+            <tag> 成长 </tag>
             
         </tags>
       
