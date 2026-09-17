@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: emoeem/emoeem.github.io
+  repo: emoeem/blog-source
   branch: main
   base_url: https://decap-oauth-kappa.vercel.app
 
