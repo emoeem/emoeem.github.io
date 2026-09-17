@@ -127,8 +127,19 @@
 .emo-project-card h3 { font-size: 1.28rem; }
 
 /* Embedded music stays responsive and is excluded from PJAX navigation. */
-.emo-music-player { overflow: hidden; margin: 18px 0 12px; border: 1px solid var(--emo-line); border-radius: 14px; background: #fff; box-shadow: var(--emo-shadow); }
-.emo-music-player iframe { display: block; width: 100%; min-height: 430px; border: 0; }
+.emo-music-player { overflow: hidden; margin: 18px 0 12px; border: 1px solid var(--emo-line); border-radius: 16px; background: var(--card-bg); box-shadow: var(--emo-shadow); }
+.emo-music-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; padding: 22px 24px 18px; border-bottom: 1px solid var(--emo-line); }
+.emo-music-header h2 { margin: 4px 0 3px; font-size: 1.45rem; }
+.emo-music-header p { margin: 0; color: var(--emo-muted); font-size: .88rem; }
+.emo-music-header a { color: var(--emo-accent); font-weight: 650; white-space: nowrap; }
+.emo-music-kicker { color: var(--emo-accent); font-size: .68rem; font-weight: 750; letter-spacing: .14em; }
+.emo-music-aplayer { padding: 16px; background: var(--card-bg); }
+.emo-music-aplayer .aplayer { margin: 0; border-radius: 12px; box-shadow: none; background: transparent; }
+.emo-music-aplayer .aplayer .aplayer-info { border-bottom: 1px solid var(--emo-line); }
+.emo-music-aplayer .aplayer .aplayer-list ol li { border-top-color: var(--emo-line); }
+.emo-music-aplayer .aplayer .aplayer-list ol li.aplayer-list-light { background: color-mix(in srgb, var(--emo-accent) 10%, transparent); }
+.emo-music-aplayer .aplayer .aplayer-lrc:before,
+.emo-music-aplayer .aplayer .aplayer-lrc:after { display: none; }
 
 /* Touch targets and reading width on small screens. */
 @media (max-width: 768px) {
@@ -136,7 +147,8 @@
   .emo-home-intro__side { padding: 16px 0 0; border-top: 1px solid var(--emo-line); border-left: 0; }
   .emo-home-links a { padding: 5px 0; }
   .emo-project-card { min-height: 0; }
-  .emo-music-player iframe { min-height: 360px; }
+  .emo-music-header { align-items: flex-start; flex-direction: column; padding: 18px; }
+  .emo-music-aplayer { padding: 10px; }
   #nav .site-page { padding-bottom: 8px; }
   #card-toc { right: 48px; bottom: 24px; width: min(calc(100vw - 72px), 380px); }
   #local-search .search-dialog { padding: 16px; }
