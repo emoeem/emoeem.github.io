@@ -1,0 +1,101 @@
+/* emoeem / Butterfly design layer */
+:root {
+  --emo-accent: #2f6f6b;
+  --emo-accent-strong: #245a56;
+  --emo-ink: #20252b;
+  --emo-muted: #69727d;
+  --emo-line: rgba(32, 37, 43, .10);
+  --emo-surface: rgba(255, 255, 255, .86);
+  --emo-shadow: 0 14px 40px rgba(31, 35, 41, .08);
+}
+
+[data-theme='dark'] {
+  --emo-accent: #79b8b2;
+  --emo-accent-strong: #9ed0ca;
+  --emo-ink: #e7e9eb;
+  --emo-muted: #aab1b8;
+  --emo-line: rgba(255, 255, 255, .10);
+  --emo-surface: rgba(31, 35, 40, .84);
+  --emo-shadow: 0 18px 46px rgba(0, 0, 0, .22);
+}
+
+/* Keep Butterfly's feature-rich layout, but give the site a quieter editorial identity. */
+#page-header.full_page {
+  min-height: 560px;
+  background: radial-gradient(circle at 72% 28%, rgba(47,111,107,.22), transparent 34%),
+              linear-gradient(135deg, #f4f1ea 0%, #dfe8e5 52%, #cfdeda 100%) !important;
+}
+
+[data-theme='dark'] #page-header.full_page {
+  background: radial-gradient(circle at 72% 28%, rgba(121,184,178,.17), transparent 34%),
+              linear-gradient(135deg, #15191d 0%, #1d292a 55%, #20282c 100%) !important;
+}
+
+#site-info { max-width: 980px; padding: 0 28px; }
+#site-title { letter-spacing: -.035em; font-weight: 760; }
+#site-subtitle { max-width: 760px; margin: 18px auto 0; opacity: .88; }
+#site_social_icons { margin-top: 22px; }
+
+#page-header.not-home-page {
+  background: linear-gradient(135deg, #f4f1ea, #dfe8e5) !important;
+}
+[data-theme='dark'] #page-header.not-home-page {
+  background: linear-gradient(135deg, #171b1f, #202c2d) !important;
+}
+
+#nav #blog_name { font-weight: 760; letter-spacing: -.02em; }
+#nav .menus_items .menus_item:hover > a,
+#nav .menus_items .menus_item > a:hover { color: var(--emo-accent) !important; }
+
+#content-inner.layout { max-width: 1320px; }
+#recent-posts .recent-post-item,
+#aside-content .card-widget,
+#page .card-widget {
+  border: 1px solid var(--emo-line);
+  box-shadow: var(--emo-shadow);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+#recent-posts .recent-post-item:hover,
+#aside-content .card-widget:hover { transform: translateY(-3px); }
+
+#recent-posts .article-title { font-weight: 720; letter-spacing: -.015em; }
+#recent-posts .content { color: var(--emo-muted); line-height: 1.85; }
+#recent-posts .article-meta-wrap { color: var(--emo-muted); }
+#recent-posts .article-meta-wrap a:hover { color: var(--emo-accent); }
+
+#post .post-copyright { border: 1px solid var(--emo-line); }
+#post .post-content a,
+#page .page-content a { color: var(--emo-accent); text-decoration-thickness: .08em; }
+#post .post-content a:hover,
+#page .page-content a:hover { color: var(--emo-accent-strong); }
+
+#page .page-title { font-weight: 760; letter-spacing: -.025em; }
+#page .page-content h2,
+#page .page-content h3 { letter-spacing: -.02em; }
+
+/* Project / Now / Uses / Timeline pages */
+.emo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 26px 0; }
+.emo-card { padding: 22px; border: 1px solid var(--emo-line); border-radius: 14px; background: var(--emo-surface); box-shadow: var(--emo-shadow); }
+.emo-card h3 { margin: 0 0 8px; }
+.emo-card p { margin: 8px 0; color: var(--emo-muted); line-height: 1.8; }
+.emo-meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 14px; }
+.emo-chip { display: inline-flex; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--emo-line); font-size: .82em; color: var(--emo-muted); }
+.emo-status { color: var(--emo-accent); font-weight: 650; }
+.emo-kicker { color: var(--emo-accent); font-size: .82em; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.emo-list { padding-left: 1.2em; }
+.emo-list li { margin: 8px 0; }
+
+@media (max-width: 768px) {
+  #page-header.full_page { min-height: 470px; }
+  #site-info { padding: 0 18px; }
+  .emo-grid { grid-template-columns: 1fr; gap: 14px; }
+  .emo-card { padding: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #recent-posts .recent-post-item,
+  #aside-content .card-widget { transition: none; }
+}
+
+.timeline-item { margin: 14px 0; padding: 16px 18px; border-left: 3px solid var(--emo-accent); border-top: 1px solid var(--emo-line); border-right: 1px solid var(--emo-line); border-bottom: 1px solid var(--emo-line); border-radius: 0 12px 12px 0; background: var(--emo-surface); box-shadow: var(--emo-shadow); line-height: 1.85; }
+.timeline-item strong { color: var(--emo-ink); }
