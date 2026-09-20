@@ -1,0 +1,1 @@
+window.ADMIN_API_BASE = "https://REPLACE-WITH-YOUR-VERCEL-URL";
