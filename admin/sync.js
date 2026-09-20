@@ -120,12 +120,16 @@ async function checkAll(){
 }
 async function syncAll(){
   if(S.running)return;S.running=true;renderButtons();
-  S.results=await engine.syncAll(store.mappings,false);
-  S.running=false;render();
+  try{
+    S.results=await engine.syncAll(store.mappings,false);
+    for(const r of S.results){const m=store.mappings.find(x=>x.id===r.id);if(!m)continue;m.syncStatus=r.status;if(r.commit)m.syncCommit=r.commit;if(r.date)m.lastVerified=r.date}
+    await store.save();
+  }catch(e){toast('批量同步失败：'+e.message,'error')}
+  finally{S.running=false;render()}
 }
 async function syncOne(id,force=false){
   const m=store.mappings.find(x=>x.id===id);if(!m)return;
-  try{const r=force?await engine.syncOne(m,true):await engine.syncOne(m);S.results=[...S.results.filter(x=>x.id!==id),r];render()}
+  try{const r=force?await engine.syncOne(m,true):await engine.syncOne(m);m.syncStatus=r.status;if(r.commit)m.syncCommit=r.commit;if(r.date)m.lastVerified=r.date;await store.save();S.results=[...S.results.filter(x=>x.id!==id),r];render()}
   catch(e){toast('同步失败：'+e.message,'error')}
 }
 async function deleteMapping(id){
@@ -147,11 +151,11 @@ function renderDiscovery(){
   $('selectAllMd').onclick=()=>{S.tree.forEach(f=>{if(!f.ignored)S.selected.add(f.path)});renderTree();renderDetails()};
   $('clearMd').onclick=()=>{S.selected.clear();renderTree();renderDetails()};
   $('establishBtn').onclick=establish;
-  $('importBtn').onclick=async()=>{await establish(); if(S.running)return; const chosen=S.tree.filter(f=>S.selected.has(f.path)&&!f.ignored); if(!chosen.length)return; S.running=true;renderButtons(); try{S.results=await engine.syncAll(store.mappings.filter(m=>m.owner===S.repo.owner&&m.repo===S.repo.repo&&chosen.some(f=>f.path===m.path)),false); toast('已导入 '+chosen.length+' 篇文章并建立同步关系');}catch(e){toast('导入失败：'+e.message,'error')} finally{S.running=false;render()}};
+  $('importBtn').onclick=async()=>{await establish(); if(S.running)return; const chosen=S.tree.filter(f=>S.selected.has(f.path)&&!f.ignored); if(!chosen.length)return; S.running=true;renderButtons(); try{S.results=await engine.syncAll(store.mappings.filter(m=>m.owner===S.repo.owner&&m.repo===S.repo.repo&&chosen.some(f=>f.path===m.path)),false);for(const r of S.results){const m=store.mappings.find(x=>x.id===r.id);if(m){m.syncStatus=r.status;if(r.commit)m.syncCommit=r.commit;if(r.date)m.lastVerified=r.date}}await store.save();toast('已导入 '+chosen.length+' 篇文章并建立同步关系');}catch(e){toast('导入失败：'+e.message,'error')} finally{S.running=false;render()}};
 }
 function renderMappings(){
   const list=store.mappings.map(m=>{
-    const r=S.results.find(x=>x.id===m.id)||{status:'new'};
+    const r=S.results.find(x=>x.id===m.id)||{status:m.syncStatus||'new',commit:m.syncCommit,date:m.lastVerified};
     const actions=r.status==='local-modified'?'<button data-force="'+esc(m.id)+'">覆盖本地</button>':'<button data-sync="'+esc(m.id)+'">立即同步</button>';
     return '<article class="sync-card"><div class="sync-main"><div><span class="sync-kicker">'+esc(m.owner+'/'+m.repo)+'</span><h3>'+esc(m.name)+'</h3><p>'+esc(m.path)+' → '+esc(m.target)+'</p></div><span class="sync-status '+statusClass(r.status)+'">'+statusText(r.status)+'</span></div><div class="sync-meta"><span>commit: <code>'+esc((r.commit||'—').slice(0,12))+'</code></span><span>lastVerified: '+esc(r.date||'—')+'</span></div><div class="sync-actions"><button class="secondary" data-check="'+esc(m.id)+'">检查</button>'+actions+'<button class="text-btn" data-del="'+esc(m.id)+'">删除映射</button></div></article>';
   }).join('');
