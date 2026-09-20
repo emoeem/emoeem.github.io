@@ -107,5 +107,5 @@ $('commandInput').oninput=e=>{const q=e.target.value.toLowerCase();document.quer
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.modal.open').forEach(m=>closeModal(m.id))}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openCommand()}if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&$('editorModal').classList.contains('open')){e.preventDefault();publish()}});
 const savedTheme=localStorage.getItem('admin_dark');if(savedTheme!=='0')document.documentElement.classList.add('dark');if(localStorage.getItem(AUTH_KEY)==='1')init();else $('loginView').hidden=false;
 </script>
-<script src="./sync.js"></script>
+<script type="module" src="./sync.js"></script>
 </body></html>
