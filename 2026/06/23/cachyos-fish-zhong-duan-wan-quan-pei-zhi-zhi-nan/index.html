@@ -1,13 +1,13 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CachyOS Fish 终端完全配置指南 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CachyOS 下 Fish shell 从零到一完全配置，插件、主题、快捷键、提示符美化一网打尽。">
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CachyOS Fish 终端完全配置指南 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于当前本机 Fish 4.8 配置的完整终端工作流说明，覆盖 Starship、Atuin、Zoxide、fzf、abbr、媒体工具箱和系统集成。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CachyOS Fish 终端完全配置指南">
 <meta property="og:url" content="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/index.html">
 <meta property="og:site_name" content="emoeem">
-<meta property="og:description" content="CachyOS 下 Fish shell 从零到一完全配置，插件、主题、快捷键、提示符美化一网打尽。">
+<meta property="og:description" content="基于当前本机 Fish 4.8 配置的完整终端工作流说明，覆盖 Starship、Atuin、Zoxide、fzf、abbr、媒体工具箱和系统集成。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://emoeem.github.io/img/featureimages/custom_0.jpg">
 <meta property="article:published_time" content="2026-06-23T22:31:49.000Z">
-<meta property="article:modified_time" content="2026-09-20T04:49:02.411Z">
+<meta property="article:modified_time" content="2026-09-20T05:35:35.653Z">
 <meta property="article:author" content="emoeem">
 <meta property="article:tag" content="CachyOS">
 <meta property="article:tag" content="Fish">
@@ -21,7 +21,7 @@
   "url": "https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/",
   "image": "https://emoeem.github.io/img/featureimages/custom_0.jpg",
   "datePublished": "2026-06-23T22:31:49.000Z",
-  "dateModified": "2026-09-20T04:49:02.411Z",
+  "dateModified": "2026-09-20T05:35:35.653Z",
   "author": [
     {
       "@type": "Person",
@@ -234,196 +234,194 @@
 }</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
 <style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
 <link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
-</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/featureimages/custom_0.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">CachyOS Fish 终端完全配置指南</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CachyOS Fish 终端完全配置指南<a class="post-edit-link" href="https://github.com/emoeem/blog-source/edit/main/source/_posts/CachyOS-Fish-终端完全配置指南.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-06-23T22:31:49.000Z" title="发表于 2026-06-23 22:31:49">2026-06-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4577</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>22 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div class="emo-article-context"><div class="emo-article-context__meta"><span class="emo-article-context__badge"><i class="fas fa-circle-check fa-fw"></i>持续维护</span><span class="emo-article-context__badge"><i class="fas fa-clock fa-fw"></i>最后验证：2026-09-20</span></div><div class="emo-article-context__env"><span><strong>系统</strong>：CachyOS</span><span><strong>Shell</strong>：Fish</span><span><strong>终端</strong>：Kitty</span><span><strong>WM</strong>：Niri</span></div></div><blockquote>
-<p>基于 Fish Shell + Starship + Atuin + Zoxide + fzf 的现代化终端配置，<br>涵盖所有快捷键、无感集成函数、工具链及安装命令。</p>
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/featureimages/custom_0.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">CachyOS Fish 终端完全配置指南</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CachyOS Fish 终端完全配置指南<a class="post-edit-link" href="https://github.com/emoeem/blog-source/edit/main/source/_posts/CachyOS-Fish-终端完全配置指南.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-06-23T22:31:49.000Z" title="发表于 2026-06-23 22:31:49">2026-06-23</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">3982</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>17 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div class="emo-article-context"><div class="emo-article-context__meta"><span class="emo-article-context__badge"><i class="fas fa-circle-check fa-fw"></i>持续维护</span><span class="emo-article-context__badge"><i class="fas fa-clock fa-fw"></i>最后验证：2026-09-20</span></div><div class="emo-article-context__env"><span><strong>系统</strong>：CachyOS</span><span><strong>Shell</strong>：Fish</span><span><strong>终端</strong>：Kitty</span><span><strong>WM</strong>：Niri</span></div></div><h1 id="Fish-Shell-配置使用说明"><a href="#Fish-Shell-配置使用说明" class="headerlink" title="Fish Shell 配置使用说明"></a>Fish Shell 配置使用说明</h1><blockquote>
+<p>适用环境：CachyOS (Arch Linux) · Fish 4.8 · Niri 平铺窗口管理器</p>
 </blockquote>
 <hr>
-<h2 id="📋-配置总览"><a href="#📋-配置总览" class="headerlink" title="📋 配置总览"></a>📋 配置总览</h2><table>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ol>
+<li><a href="#1-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E6%A6%82%E8%A7%88">文件结构概览</a></li>
+<li><a href="#2-%E6%A0%B8%E5%BF%83%E5%B7%A5%E5%85%B7%E9%93%BE">核心工具链</a></li>
+<li><a href="#3-%E5%BF%AB%E6%8D%B7%E9%94%AE%E9%80%9F%E6%9F%A5">快捷键速查</a></li>
+<li><a href="#4-%E7%BC%A9%E5%86%99abbr%E5%AE%8C%E6%95%B4%E5%88%97%E8%A1%A8">缩写（abbr）完整列表</a></li>
+<li><a href="#5-cachyos-%E9%A2%84%E8%AE%BE%E5%88%AB%E5%90%8Dalias%E5%AE%8C%E6%95%B4%E5%88%97%E8%A1%A8">CachyOS 预设别名（alias）完整列表</a></li>
+<li><a href="#6-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0">自定义函数</a></li>
+<li><a href="#7-fzf-%E5%AA%92%E4%BD%93%E5%B7%A5%E5%85%B7%E7%AE%B1">fzf 媒体工具箱</a></li>
+<li><a href="#8-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E7%A7%98%E5%AF%86%E7%AE%A1%E7%90%86">环境变量与秘密管理</a></li>
+<li><a href="#9-%E5%8F%AF%E9%80%89%E5%A2%9E%E5%BC%BA%E4%B8%8E%E5%90%AF%E7%94%A8%E6%96%B9%E6%B3%95">可选增强与启用方法</a></li>
+<li><a href="#10-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98">常见问题</a></li>
+</ol>
+<hr>
+<h2 id="1-文件结构概览"><a href="#1-文件结构概览" class="headerlink" title="1. 文件结构概览"></a>1. 文件结构概览</h2><pre class="line-numbers language-none"><code class="language-none">~/.config/fish/
+├── config.fish              ← 主配置文件（你日常编辑的入口）
+├── secrets.fish             ← 敏感变量（API Key 等，不要提交到 Git）
+├── fish_variables           ← Fish 全局变量持久化存储（自动管理，一般不需要手动编辑）
+├── config.fish.bak          ← 旧版配置备份（可忽略）
+├── conf.d/                  ← Fish 启动时自动 source 的补充配置
+│   └── (已清空，迁移文件已删除)
+├── completions/             ← 自定义命令补全定义
+│   ├── fzf-fftools.fish     ← FFmpeg 工具箱补全
+│   ├── fzf-pkg.fish         ← 包管理工具补全
+│   ├── fzf-add-watermark.fish
+│   ├── fzf-burn-subs.fish
+│   ├── fzf-compress-video.fish
+│   ├── fzf-concat-video.fish
+│   ├── fzf-convert-media.fish
+│   ├── fzf-extract-audio.fish
+│   ├── fzf-merge-av.fish
+│   ├── fzf-mute-video.fish
+│   ├── fzf-speed-video.fish
+│   ├── fzf-trim-video.fish
+│   ├── fzf-validate-media.fish
+│   └── fzf-video-to-gif.fish
+├── functions/               ← Fish 自动加载的函数目录（当前为空，函数都写在 config.fish 里）
+└── README.md                ← 本文档
+
+外部依赖配置：
+~/.config/starship.toml      ← Starship 提示符主题
+~/.config/atuin/config.toml  ← Atuin 历史搜索配置<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="加载顺序"><a href="#加载顺序" class="headerlink" title="加载顺序"></a>加载顺序</h3><pre class="line-numbers language-none"><code class="language-none">config.fish 主配置
+  ├── 1. Starship 提示符初始化
+  ├── 2. Zoxide 目录跳转初始化
+  ├── 3. 环境变量 + secrets.fish
+  ├── 4. fzf 模糊查找初始化
+  ├── 5. Atuin 历史搜索初始化（接管 Ctrl+R）
+  ├── 6. direnv / pay-respects 钩子
+  ├── 7. 缩写（abbr）定义
+  ├── 8. 自定义函数
+  ├── 9. PATH 配置
+  └── 10. CachyOS 预设加载（放在最后，本文件配置优先）
+       ├── done 长命令通知
+       ├── eza 别名（ls/la/ll/lt 等）
+       ├── 系统管理别名（update/mirror/cleanup 等）
+       ├── !! / !$ 历史展开支持
+       ├── history 函数（带时间戳）
+       └── backup / copy 函数<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="2-核心工具链"><a href="#2-核心工具链" class="headerlink" title="2. 核心工具链"></a>2. 核心工具链</h2><p>本配置集成了以下现代命令行工具，它们共同构成了高效的终端工作流：</p>
+<h3 id="提示符与视觉"><a href="#提示符与视觉" class="headerlink" title="提示符与视觉"></a>提示符与视觉</h3><table>
 <thead>
 <tr>
 <th>工具</th>
 <th>作用</th>
-<th>状态</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><strong>Fish</strong></td>
-<td>Shell 环境</td>
-<td>✅ 核心</td>
-</tr>
-<tr>
 <td><strong>Starship</strong></td>
-<td>智能提示符（Git/时间/错误码）</td>
-<td>✅ 已启用</td>
-</tr>
-<tr>
-<td><strong>Atuin</strong></td>
-<td>加密历史同步与搜索</td>
-<td>✅ 已启用</td>
-</tr>
-<tr>
-<td><strong>Zoxide</strong></td>
-<td>智能目录跳转（记忆访问记录）</td>
-<td>✅ 已启用</td>
-</tr>
-<tr>
-<td><strong>fzf</strong></td>
-<td>模糊查找（文件/历史/目录/进程）</td>
-<td>✅ 已启用</td>
-</tr>
-<tr>
-<td><strong>eza</strong></td>
-<td><code>ls</code> 现代化替代（彩色、图标、树状）</td>
-<td>✅ 已启用</td>
+<td>跨 Shell 提示符引擎</td>
+<td>显示 Git 状态、语言版本、命令耗时等，主题配置在 <code>~/.config/starship.toml</code></td>
 </tr>
 <tr>
 <td><strong>bat</strong></td>
-<td><code>cat</code> 增强版（语法高亮、行号）</td>
-<td>✅ 已启用</td>
+<td>cat 的现代替代</td>
+<td>语法高亮 + 行号 + Git 变更标记，主题为 Dracula</td>
 </tr>
 <tr>
-<td><strong>fastfetch</strong></td>
-<td>终端系统信息展示</td>
-<td>✅ 已启用</td>
+<td><strong>eza</strong></td>
+<td>ls 的现代替代</td>
+<td>彩色图标 + 目录优先 + 树状视图</td>
+</tr>
+</tbody></table>
+<h3 id="历史与导航"><a href="#历史与导航" class="headerlink" title="历史与导航"></a>历史与导航</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Atuin</strong></td>
+<td>Shell 历史管理</td>
+<td>全局搜索、跨终端同步、SQLite 存储。<code>Ctrl+R</code> 触发</td>
 </tr>
 <tr>
+<td><strong>zoxide</strong></td>
+<td>智能目录跳转</td>
+<td>根据访问频率学习，<code>z 项目名</code> 直接跳转。<code>zi</code> 交互式选择</td>
+</tr>
+<tr>
+<td><strong>fzf</strong></td>
+<td>模糊查找器</td>
+<td>文件搜索、历史搜索、包管理等场景的通用模糊选择 UI</td>
+</tr>
+</tbody></table>
+<h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
 <td><strong>direnv</strong></td>
-<td>目录级环境变量自动加载</td>
-<td>✅ 已启用</td>
+<td>目录级环境变量</td>
+<td>进入项目目录自动加载 <code>.envrc</code>，离开自动卸载</td>
 </tr>
 <tr>
 <td><strong>pay-respects</strong></td>
-<td>命令纠错（<code>f</code> 键自动修正）</td>
-<td>✅ 已启用</td>
+<td>命令纠错</td>
+<td>命令报错后按 <code>f</code> 自动修正（thefuck 的 Rust 替代）</td>
 </tr>
+</tbody></table>
+<h3 id="文件管理"><a href="#文件管理" class="headerlink" title="文件管理"></a>文件管理</h3><table>
+<thead>
 <tr>
-<td><strong>git-delta</strong></td>
-<td><code>git diff</code> 美化（语法高亮、并排对比）</td>
-<td>✅ 已配置</td>
+<th>工具</th>
+<th>作用</th>
+<th>说明</th>
 </tr>
-<tr>
-<td><strong>done</strong></td>
-<td>长时间命令完成后桌面通知</td>
-<td>✅ 已启用</td>
-</tr>
-<tr>
-<td><strong>tldr</strong></td>
-<td><code>man</code> 速查替代</td>
-<td>✅ 已集成</td>
-</tr>
-<tr>
-<td><strong>xh</strong></td>
-<td>现代化 HTTP 客户端</td>
-<td>✅ 已集成</td>
-</tr>
-<tr>
-<td><strong>jless</strong></td>
-<td>JSON 交互式查看器</td>
-<td>✅ 已集成</td>
-</tr>
-<tr>
-<td><strong>glow</strong></td>
-<td>Markdown 终端渲染器</td>
-<td>✅ 已集成</td>
-</tr>
-<tr>
-<td><strong>bottom</strong></td>
-<td>系统监控器（<code>htop</code> 替代）</td>
-<td>✅ 已集成</td>
-</tr>
-<tr>
-<td><strong>procs</strong></td>
-<td>现代化进程查看</td>
-<td>✅ 已集成</td>
-</tr>
-<tr>
-<td><strong>sd</strong></td>
-<td>现代化 <code>sed</code></td>
-<td>✅ 推荐</td>
-</tr>
-<tr>
-<td><strong>dust</strong></td>
-<td>图形化 <code>du</code></td>
-<td>✅ 推荐</td>
-</tr>
-<tr>
-<td><strong>tokei</strong></td>
-<td>代码统计</td>
-<td>✅ 推荐</td>
-</tr>
-<tr>
-<td><strong>onefetch</strong></td>
-<td>Git 仓库信息展示</td>
-<td>✅ 推荐</td>
-</tr>
-<tr>
-<td><strong>dog</strong></td>
-<td>现代化 <code>dig</code></td>
-<td>✅ 推荐</td>
-</tr>
-<tr>
-<td><strong>gping</strong></td>
-<td>图形化 <code>ping</code></td>
-<td>✅ 推荐</td>
+</thead>
+<tbody><tr>
+<td><strong>yazi</strong></td>
+<td>终端文件管理器</td>
+<td><code>yy</code> 命令启动，退出后自动 cd 到最后浏览的目录</td>
 </tr>
 <tr>
 <td><strong>ouch</strong></td>
 <td>万能压缩解压</td>
-<td>✅ 推荐</td>
+<td>自动识别格式，一个命令搞定 zip/tar/gz/zst/7z 等</td>
+</tr>
+</tbody></table>
+<h3 id="开发辅助"><a href="#开发辅助" class="headerlink" title="开发辅助"></a>开发辅助</h3><table>
+<thead>
+<tr>
+<th>工具</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>tldr</strong></td>
+<td>man 的速查替代</td>
+<td><code>man tar</code> 先显示 tldr 简明用法，找不到回退到完整 man</td>
+</tr>
+<tr>
+<td><strong>delta</strong></td>
+<td>git diff 美化</td>
+<td>侧边并排对比、语法高亮（需手动配置，见第 9 节）</td>
+</tr>
+<tr>
+<td><strong>procs</strong></td>
+<td>ps 的现代替代</td>
+<td><code>pst</code> 树状视图，<code>psw</code> 实时刷新</td>
+</tr>
+<tr>
+<td><strong>tokei</strong></td>
+<td>代码行数统计</td>
+<td>按语言分类统计项目代码量</td>
+</tr>
+<tr>
+<td><strong>onefetch</strong></td>
+<td>Git 仓库信息展示</td>
+<td>显示语言分布、提交数、作者、许可证等</td>
 </tr>
 </tbody></table>
 <hr>
-<h2 id="🚀-一键安装命令"><a href="#🚀-一键安装命令" class="headerlink" title="🚀 一键安装命令"></a>🚀 一键安装命令</h2><h3 id="核心依赖（Arch-CachyOS）"><a href="#核心依赖（Arch-CachyOS）" class="headerlink" title="核心依赖（Arch / CachyOS）"></a>核心依赖（Arch / CachyOS）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 基础工具链</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> fish starship atuin zoxide fzf fd eza bat fastfetch direnv pay-respects git-delta
-
-<span class="token comment"># 系统监控与网络</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> bottom procs dog gping
-
-<span class="token comment"># 数据处理与查看</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> tldr jless glow sd dust tokei onefetch
-
-<span class="token comment"># HTTP 客户端</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> xh
-
-<span class="token comment"># AUR 工具</span>
-paru <span class="token parameter variable">-S</span> ouch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="可选增强"><a href="#可选增强" class="headerlink" title="可选增强"></a>可选增强</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 文件操作增强</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> xcp
-
-<span class="token comment"># 终端图片查看</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> viu
-
-<span class="token comment"># 跨设备传输</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> croc
-
-<span class="token comment"># 十六进制查看</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> hexyl
-
-<span class="token comment"># 列提取工具</span>
-<span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> choose<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="Git-Delta-配置（执行一次永久生效）"><a href="#Git-Delta-配置（执行一次永久生效）" class="headerlink" title="Git Delta 配置（执行一次永久生效）"></a>Git Delta 配置（执行一次永久生效）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> config <span class="token parameter variable">--global</span> core.pager delta
-<span class="token function">git</span> config <span class="token parameter variable">--global</span> interactive.diffFilter <span class="token string">"delta --color-only"</span>
-<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.line-numbers <span class="token boolean">true</span>
-<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.side-by-side <span class="token boolean">true</span>
-<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.syntax-theme Dracula<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<hr>
-<h2 id="🎨-主题配置"><a href="#🎨-主题配置" class="headerlink" title="🎨 主题配置"></a>🎨 主题配置</h2><h3 id="Dracula-主题（bat-delta）"><a href="#Dracula-主题（bat-delta）" class="headerlink" title="Dracula 主题（bat / delta）"></a>Dracula 主题（bat / delta）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 确认 bat 支持 Dracula</span>
-bat --list-themes <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-i</span> dracula
-
-<span class="token comment"># 如果未显示，手动安装：</span>
-<span class="token function">mkdir</span> <span class="token parameter variable">-p</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>bat --config-dir<span class="token variable">)</span></span>/themes"</span>
-<span class="token function">curl</span> <span class="token parameter variable">-fsSL</span> https://raw.githubusercontent.com/dracula/sublime/master/Dracula.tmTheme <span class="token punctuation">\</span>
-  <span class="token parameter variable">-o</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span>bat --config-dir<span class="token variable">)</span></span>/themes/Dracula.tmTheme"</span>
-bat cache <span class="token parameter variable">--build</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<p>在 <code>config.fish</code> 中设置：</p>
-<pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -gx BAT_THEME "Dracula"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<hr>
-<h2 id="⌨️-快捷键完全指南"><a href="#⌨️-快捷键完全指南" class="headerlink" title="⌨️ 快捷键完全指南"></a>⌨️ 快捷键完全指南</h2><h3 id="Fish-原生编辑"><a href="#Fish-原生编辑" class="headerlink" title="Fish 原生编辑"></a>Fish 原生编辑</h3><table>
+<h2 id="3-快捷键速查"><a href="#3-快捷键速查" class="headerlink" title="3. 快捷键速查"></a>3. 快捷键速查</h2><h3 id="fzf-快捷键"><a href="#fzf-快捷键" class="headerlink" title="fzf 快捷键"></a>fzf 快捷键</h3><table>
 <thead>
 <tr>
 <th>快捷键</th>
@@ -432,265 +430,101 @@ bat cache <span class="token parameter variable">--build</span><span aria-hidden
 </tr>
 </thead>
 <tbody><tr>
-<td><code>Ctrl + A</code></td>
-<td>光标移到行首</td>
-<td>同 Emacs</td>
+<td><code>Ctrl+T</code></td>
+<td>模糊搜索文件</td>
+<td>在当前目录递归搜索文件，选中后插入路径到命令行</td>
 </tr>
 <tr>
-<td><code>Ctrl + E</code></td>
-<td>光标移到行尾</td>
-<td>同 Emacs</td>
+<td><code>Ctrl+R</code></td>
+<td>Atuin 历史搜索</td>
+<td>全局模糊搜索 Shell 历史命令（Atuin 接管，非 fzf 原生）</td>
 </tr>
 <tr>
-<td><code>Ctrl + W</code></td>
-<td>删除前一个单词</td>
-<td>比 Backspace 快</td>
-</tr>
-<tr>
-<td><code>Alt + D</code></td>
-<td>删除后一个单词</td>
-<td></td>
-</tr>
-<tr>
-<td><code>Ctrl + U</code></td>
-<td>删除整行</td>
-<td></td>
-</tr>
-<tr>
-<td><code>Ctrl + K</code></td>
-<td>删除光标到行尾</td>
-<td></td>
-</tr>
-<tr>
-<td><code>Ctrl + Y</code></td>
-<td>粘贴刚才删除的内容</td>
-<td></td>
-</tr>
-<tr>
-<td><code>Ctrl + L</code></td>
-<td>清屏（保留当前输入）</td>
-<td>比 <code>clear</code> 优雅</td>
-</tr>
-<tr>
-<td><code>Ctrl + C</code></td>
-<td>取消当前输入</td>
-<td></td>
-</tr>
-<tr>
-<td><code>Ctrl + D</code></td>
-<td>退出 Fish / 关闭终端</td>
-<td>输入为空时</td>
+<td><code>Alt+C</code></td>
+<td><del>目录跳转</del></td>
+<td><strong>已禁用</strong>：Alt 是 niri 的 Mod 键，避免冲突</td>
 </tr>
 </tbody></table>
-<h3 id="自动补全与建议"><a href="#自动补全与建议" class="headerlink" title="自动补全与建议"></a>自动补全与建议</h3><table>
+<h3 id="Atuin-快捷键"><a href="#Atuin-快捷键" class="headerlink" title="Atuin 快捷键"></a>Atuin 快捷键</h3><table>
 <thead>
 <tr>
 <th>快捷键</th>
 <th>功能</th>
-<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>→</code></td>
-<td>接受右侧灰色建议</td>
-<td>Fish 自动显示灰色建议，按右方向键直接补全</td>
+<td><code>Ctrl+R</code></td>
+<td>打开 Atuin 搜索界面</td>
 </tr>
 <tr>
-<td><code>Alt + →</code></td>
-<td>接受建议的一个单词</td>
-<td>只补全到下一个空格</td>
+<td><code>Enter</code></td>
+<td>执行选中的命令</td>
 </tr>
 <tr>
 <td><code>Tab</code></td>
-<td>触发补全菜单</td>
-<td>按多次循环选择</td>
-</tr>
-<tr>
-<td><code>Shift + Tab</code></td>
-<td>fzf 模糊补全</td>
-<td>候选很多时，用 fzf 过滤选择</td>
-</tr>
-<tr>
-<td><code>Ctrl + F</code></td>
-<td>接受建议并执行</td>
-<td>相当于 <code>→</code> + <code>Enter</code></td>
+<td>将选中命令填入命令行（不执行）</td>
 </tr>
 </tbody></table>
-<h3 id="历史命令"><a href="#历史命令" class="headerlink" title="历史命令"></a>历史命令</h3><table>
+<h3 id="zoxide-快捷键（alias）"><a href="#zoxide-快捷键（alias）" class="headerlink" title="zoxide 快捷键（alias）"></a>zoxide 快捷键（alias）</h3><table>
 <thead>
 <tr>
-<th>快捷键</th>
-<th>功能</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>↑</code></td>
-<td>搜索以当前输入开头的历史</td>
-<td>输入 <code>git</code> 后按 <code>↑</code>，只显示 git 相关历史</td>
-</tr>
-<tr>
-<td><code>↓</code></td>
-<td>反向搜索历史</td>
-<td></td>
-</tr>
-<tr>
-<td><code>Alt + ↑</code></td>
-<td>从历史中提取参数</td>
-<td>快速复用之前命令的参数</td>
-</tr>
-</tbody></table>
-<h3 id="Bang-Bang-扩展"><a href="#Bang-Bang-扩展" class="headerlink" title="Bang-Bang 扩展"></a>Bang-Bang 扩展</h3><table>
-<thead>
-<tr>
-<th>快捷键</th>
+<th>命令</th>
 <th>功能</th>
 <th>示例</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>!</code></td>
-<td>插入上一条完整命令</td>
-<td>输入 <code>!</code> 自动展开为 <code>sudo pacman -Syu</code></td>
+<td><code>z &lt;关键词&gt;</code></td>
+<td>跳转到匹配的目录</td>
+<td><code>z proj</code> → 跳到含 “proj” 的最常访问目录</td>
 </tr>
 <tr>
-<td><code>$</code></td>
-<td>插入上条命令的最后一个参数</td>
-<td>输入 <code>cd $</code> 自动展开为 <code>cd /usr/share</code></td>
+<td><code>zi &lt;关键词&gt;</code></td>
+<td>交互式选择目录</td>
+<td><code>zi dot</code> → 用 fzf 选择所有匹配目录</td>
 </tr>
 </tbody></table>
-<h3 id="fzf-快捷键"><a href="#fzf-快捷键" class="headerlink" title="fzf 快捷键"></a>fzf 快捷键</h3><table>
-<thead>
-<tr>
-<th>快捷键</th>
-<th>功能</th>
-<th>场景</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>Ctrl + T</code></td>
-<td>当前目录下模糊搜索文件</td>
-<td><code>vim &lt;Ctrl+T&gt;</code> → 搜索文件 → 回车自动填入路径</td>
-</tr>
-<tr>
-<td><code>Alt + C</code></td>
-<td>模糊搜索目录并 <code>cd</code> 进入</td>
-<td><code>Alt + C</code> → 输入 <code>proj</code> → 选中 <code>~/projects/webapp</code> → 自动 cd</td>
-</tr>
-<tr>
-<td><code>Ctrl + R</code></td>
-<td>Atuin 历史搜索（覆盖原生）</td>
-<td>输入关键词模糊搜索历史命令</td>
-</tr>
-</tbody></table>
-<h3 id="fzf-界面内操作"><a href="#fzf-界面内操作" class="headerlink" title="fzf 界面内操作"></a>fzf 界面内操作</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>↑ / ↓</code></td>
-<td>上下选择候选</td>
-</tr>
-<tr>
-<td><code>Ctrl + N / P</code></td>
-<td>下/上选择（同 Vim）</td>
-</tr>
-<tr>
-<td><code>Ctrl + J / K</code></td>
-<td>下/上选择（同 Vim）</td>
-</tr>
-<tr>
-<td><code>Tab</code></td>
-<td>多选标记</td>
-</tr>
-<tr>
-<td><code>Ctrl + A</code></td>
-<td>全选</td>
-</tr>
-<tr>
-<td><code>Ctrl + D</code></td>
-<td>取消选择</td>
-</tr>
-<tr>
-<td><code>Enter</code></td>
-<td>确认选择</td>
-</tr>
-<tr>
-<td><code>Ctrl + G / Esc</code></td>
-<td>取消退出</td>
-</tr>
-<tr>
-<td><code>Ctrl + /</code></td>
-<td>切换预览窗口位置</td>
-</tr>
-<tr>
-<td><code>?</code></td>
-<td>查看所有快捷键帮助</td>
-</tr>
-</tbody></table>
-<h3 id="Atuin-界面操作"><a href="#Atuin-界面操作" class="headerlink" title="Atuin 界面操作"></a>Atuin 界面操作</h3><table>
-<thead>
-<tr>
-<th>按键</th>
-<th>功能</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>↑ / ↓</code></td>
-<td>选择历史命令</td>
-</tr>
-<tr>
-<td><code>Ctrl + R</code></td>
-<td>切换过滤模式（全局 / 当前目录 / 当前会话）</td>
-</tr>
-<tr>
-<td><code>Tab</code></td>
-<td>选中命令但不执行（可编辑后执行）</td>
-</tr>
-<tr>
-<td><code>Enter</code></td>
-<td>选中并执行</td>
-</tr>
-<tr>
-<td><code>Ctrl + D</code></td>
-<td>删除选中的历史记录</td>
-</tr>
-<tr>
-<td><code>Ctrl + G / Esc</code></td>
-<td>退出</td>
-</tr>
-<tr>
-<td>直接输入</td>
-<td>实时模糊搜索历史</td>
-</tr>
-</tbody></table>
-<h3 id="pay-respects-纠错"><a href="#pay-respects-纠错" class="headerlink" title="pay-respects 纠错"></a>pay-respects 纠错</h3><table>
-<thead>
-<tr>
-<th>触发方式</th>
-<th>功能</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>f</code> + <code>Enter</code></td>
-<td>修正并执行上一条错误命令</td>
-<td><code>git sttaus</code> → 报错 → <code>f</code> → 自动执行 <code>git status</code></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="📝-Abbreviation（abbr）速查表"><a href="#📝-Abbreviation（abbr）速查表" class="headerlink" title="📝 Abbreviation（abbr）速查表"></a>📝 Abbreviation（abbr）速查表</h2><blockquote>
-<p>输入缩写后按 <code>Space</code> 或 <code>Enter</code> 自动展开为完整命令。</p>
-</blockquote>
-<h3 id="Git-工作流"><a href="#Git-工作流" class="headerlink" title="Git 工作流"></a>Git 工作流</h3><table>
+<h3 id="CachyOS-预设的-bang-bang-支持"><a href="#CachyOS-预设的-bang-bang-支持" class="headerlink" title="CachyOS 预设的 bang-bang 支持"></a>CachyOS 预设的 bang-bang 支持</h3><table>
 <thead>
 <tr>
 <th>输入</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>!!</code></td>
+<td>展开为上一条命令</td>
+<td><code>sudo !!</code> → 以 root 执行上条命令</td>
+</tr>
+<tr>
+<td><code>!$</code></td>
+<td>展开为上一条命令的最后一个参数</td>
+<td><code>cd !$</code> → cd 到上条命令的最后一个路径</td>
+</tr>
+</tbody></table>
+<h3 id="命令纠错"><a href="#命令纠错" class="headerlink" title="命令纠错"></a>命令纠错</h3><table>
+<thead>
+<tr>
+<th>触发</th>
+<th>功能</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>f</code> + Enter</td>
+<td>自动修正上条错误命令</td>
+<td>输入 <code>apt install vim</code>（报错后），按 <code>f</code> 修正为 <code>sudo pacman -S vim</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="4-缩写（abbr）完整列表"><a href="#4-缩写（abbr）完整列表" class="headerlink" title="4. 缩写（abbr）完整列表"></a>4. 缩写（abbr）完整列表</h2><p>Fish 的 abbr 在键入时自动展开为完整命令，但历史记录中保存的是展开后的完整命令。这与 alias 不同——alias 只在执行时替换，脚本中也能用。</p>
+<h3 id="Git-工作流（21-条）"><a href="#Git-工作流（21-条）" class="headerlink" title="Git 工作流（21 条）"></a>Git 工作流（21 条）</h3><table>
+<thead>
+<tr>
+<th>缩写</th>
 <th>展开为</th>
-<th>场景</th>
+<th>用途</th>
 </tr>
 </thead>
 <tbody><tr>
@@ -701,83 +535,228 @@ bat cache <span class="token parameter variable">--build</span><span aria-hidden
 <tr>
 <td><code>ga</code></td>
 <td><code>git add</code></td>
-<td>添加文件</td>
+<td>暂存文件</td>
 </tr>
 <tr>
 <td><code>gaa</code></td>
 <td><code>git add --all</code></td>
-<td>添加所有修改</td>
+<td>暂存所有变更</td>
 </tr>
 <tr>
 <td><code>gc</code></td>
 <td><code>git commit</code></td>
-<td>打开编辑器写提交信息</td>
+<td>提交（打开编辑器）</td>
 </tr>
 <tr>
 <td><code>gcm</code></td>
 <td><code>git commit -m</code></td>
-<td>直接写提交信息：<code>gcm "fix bug"</code></td>
+<td>提交并附带消息</td>
 </tr>
 <tr>
 <td><code>gca</code></td>
 <td><code>git commit --amend</code></td>
-<td>修改上次提交</td>
+<td>修正上一次提交</td>
 </tr>
 <tr>
 <td><code>gp</code></td>
 <td><code>git push</code></td>
-<td>推送</td>
+<td>推送到远程</td>
 </tr>
 <tr>
 <td><code>gpf</code></td>
 <td><code>git push --force-with-lease</code></td>
-<td>安全强制推送</td>
+<td>安全强推（比 –force 更安全）</td>
 </tr>
 <tr>
 <td><code>gpl</code></td>
 <td><code>git pull</code></td>
-<td>拉取</td>
+<td>拉取远程更新</td>
+</tr>
+<tr>
+<td><code>gco</code></td>
+<td><code>git checkout</code></td>
+<td>切换分支/恢复文件</td>
 </tr>
 <tr>
 <td><code>gcb</code></td>
 <td><code>git checkout -b</code></td>
-<td>创建并切换分支：<code>gcb feature</code></td>
+<td>创建并切换新分支</td>
 </tr>
 <tr>
 <td><code>gb</code></td>
 <td><code>git branch</code></td>
-<td>查看分支</td>
+<td>查看/管理分支</td>
 </tr>
 <tr>
 <td><code>gd</code></td>
 <td><code>git diff</code></td>
-<td>查看修改（带 delta 美化）</td>
+<td>查看未暂存的变更</td>
 </tr>
 <tr>
 <td><code>gds</code></td>
 <td><code>git diff --staged</code></td>
-<td>查看暂存区修改</td>
+<td>查看已暂存的变更</td>
 </tr>
 <tr>
 <td><code>gl</code></td>
 <td><code>git log --oneline --graph -15</code></td>
-<td>简洁图形化日志</td>
+<td>最近 15 条提交的图形日志</td>
+</tr>
+<tr>
+<td><code>glog</code></td>
+<td><code>git log --oneline --graph --all</code></td>
+<td>全分支图形日志</td>
 </tr>
 <tr>
 <td><code>grh</code></td>
 <td><code>git reset --hard</code></td>
-<td>硬重置</td>
+<td>硬重置到 HEAD（<strong>丢弃所有未提交变更，慎用</strong>）</td>
 </tr>
 <tr>
 <td><code>grs</code></td>
 <td><code>git restore --staged</code></td>
 <td>取消暂存</td>
 </tr>
+<tr>
+<td><code>gsw</code></td>
+<td><code>git switch</code></td>
+<td>切换分支（比 checkout 更现代）</td>
+</tr>
+<tr>
+<td><code>gsc</code></td>
+<td><code>git switch -c</code></td>
+<td>创建并切换新分支</td>
+</tr>
+<tr>
+<td><code>gsh</code></td>
+<td><code>git stash</code></td>
+<td>暂存当前工作</td>
+</tr>
+<tr>
+<td><code>gsp</code></td>
+<td><code>git stash pop</code></td>
+<td>恢复最近的 stash</td>
+</tr>
+</tbody></table>
+<p><strong>常用组合示例：</strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">gaa              <span class="token comment"># 暂存所有变更</span>
+gcm <span class="token string">"feat: add x"</span>  <span class="token comment"># 提交</span>
+gp               <span class="token comment"># 推送</span>
+gsw main         <span class="token comment"># 切回 main</span>
+gsp              <span class="token comment"># 恢复 stash</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="系统管理（CachyOS-alias）"><a href="#系统管理（CachyOS-alias）" class="headerlink" title="系统管理（CachyOS alias）"></a>系统管理（CachyOS alias）</h3><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>展开为</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>please</code></td>
+<td><code>sudo</code></td>
+<td><code>please pacman -S vim</code> = sudo</td>
+</tr>
+<tr>
+<td><code>mk</code></td>
+<td><code>mkdir -p</code></td>
+<td>递归创建目录</td>
+</tr>
+</tbody></table>
+<h3 id="媒体工具"><a href="#媒体工具" class="headerlink" title="媒体工具"></a>媒体工具</h3><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>展开为</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>compress</code></td>
+<td><code>ouch compress</code></td>
+<td>压缩文件（自动识别格式）</td>
+</tr>
+<tr>
+<td><code>extract</code></td>
+<td><code>ouch decompress</code></td>
+<td>解压文件（自动识别格式）</td>
+</tr>
+<tr>
+<td><code>compress-list</code></td>
+<td><code>ouch list</code></td>
+<td>预览压缩包内容</td>
+</tr>
+</tbody></table>
+<h3 id="开发辅助-1"><a href="#开发辅助-1" class="headerlink" title="开发辅助"></a>开发辅助</h3><table>
+<thead>
+<tr>
+<th>缩写</th>
+<th>展开为</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>pst</code></td>
+<td><code>procs --tree</code></td>
+<td>树状查看进程</td>
+</tr>
+<tr>
+<td><code>psw</code></td>
+<td><code>procs --watch</code></td>
+<td>实时监控进程</td>
+</tr>
+<tr>
+<td><code>loc</code></td>
+<td><code>tokei</code></td>
+<td>代码行数统计</td>
+</tr>
+<tr>
+<td><code>repo</code></td>
+<td><code>onefetch</code></td>
+<td>Git 仓库信息展示</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="5-CachyOS-预设别名（alias）完整列表"><a href="#5-CachyOS-预设别名（alias）完整列表" class="headerlink" title="5. CachyOS 预设别名（alias）完整列表"></a>5. CachyOS 预设别名（alias）完整列表</h2><p>这些 alias 由 <code>/usr/share/cachyos-fish-config/cachyos-config.fish</code> 提供，会在 config.fish 末尾自动加载。</p>
+<h3 id="文件列表（eza）"><a href="#文件列表（eza）" class="headerlink" title="文件列表（eza）"></a>文件列表（eza）</h3><table>
+<thead>
+<tr>
+<th>别名</th>
+<th>展开为</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ls</code></td>
+<td><code>eza -al --color=always --group-directories-first --icons=always</code></td>
+<td>详细列表（含隐藏文件）</td>
+</tr>
+<tr>
+<td><code>la</code></td>
+<td><code>eza -a --color=always --group-directories-first --icons=always</code></td>
+<td>所有文件（含隐藏）</td>
+</tr>
+<tr>
+<td><code>ll</code></td>
+<td><code>eza -l --color=always --group-directories-first --icons=always</code></td>
+<td>长格式（不含隐藏）</td>
+</tr>
+<tr>
+<td><code>lt</code></td>
+<td><code>eza -aT --color=always --group-directories-first --icons=always</code></td>
+<td>树状视图</td>
+</tr>
+<tr>
+<td><code>l.</code></td>
+<td><code>eza -a | grep -e '^\.'</code></td>
+<td>仅显示隐藏文件</td>
+</tr>
 </tbody></table>
 <h3 id="目录导航"><a href="#目录导航" class="headerlink" title="目录导航"></a>目录导航</h3><table>
 <thead>
 <tr>
-<th>输入</th>
+<th>别名</th>
 <th>展开为</th>
 </tr>
 </thead>
@@ -797,234 +776,117 @@ bat cache <span class="token parameter variable">--build</span><span aria-hidden
 <td><code>.....</code></td>
 <td><code>cd ../../../..</code></td>
 </tr>
+<tr>
+<td><code>......</code></td>
+<td><code>cd ../../../../..</code></td>
+</tr>
 </tbody></table>
-<h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><table>
+<h3 id="系统管理-1"><a href="#系统管理-1" class="headerlink" title="系统管理"></a>系统管理</h3><table>
 <thead>
 <tr>
-<th>输入</th>
+<th>别名</th>
 <th>展开为</th>
-<th>场景</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><code>update</code></td>
-<td><code>sudo pacman -Syu</code></td>
-<td>系统更新</td>
-</tr>
-<tr>
-<td><code>cleanup</code></td>
-<td><code>sudo pacman -Rns (pacman -Qtdq)</code></td>
-<td>清理孤儿包</td>
+<td><code>sudo cachyos-rate-mirrors &amp;&amp; sudo pacman -Syu</code></td>
+<td>先排镜像再全量更新</td>
 </tr>
 <tr>
 <td><code>mirror</code></td>
 <td><code>sudo cachyos-rate-mirrors</code></td>
-<td>刷新镜像源</td>
+<td>测速排序镜像源</td>
 </tr>
 <tr>
-<td><code>jctl</code></td>
-<td><code>journalctl -p 3 -xb</code></td>
-<td>查看错误日志</td>
+<td><code>cleanup</code></td>
+<td><code>sudo pacman -Rns (pacman -Qtdq)</code></td>
+<td>清理孤儿依赖</td>
 </tr>
 <tr>
 <td><code>fixpacman</code></td>
 <td><code>sudo rm /var/lib/pacman/db.lck</code></td>
-<td>修复 pacman 锁</td>
+<td>删除 pacman 锁文件</td>
 </tr>
 <tr>
 <td><code>grubup</code></td>
 <td><code>sudo grub-mkconfig -o /boot/grub/grub.cfg</code></td>
-<td>更新 GRUB</td>
+<td>更新 GRUB 配置</td>
 </tr>
 <tr>
-<td><code>please</code></td>
-<td><code>sudo</code></td>
-<td>礼貌提权：<code>please pacman -S neovim</code></td>
-</tr>
-<tr>
-<td><code>hw</code></td>
-<td><code>hwinfo --short</code></td>
-<td>查看硬件信息</td>
-</tr>
-<tr>
-<td><code>mkdirp</code></td>
-<td><code>mkdir -p</code></td>
-<td>递归创建目录</td>
+<td><code>jctl</code></td>
+<td><code>journalctl -p 3 -xb</code></td>
+<td>本次启动以来的错误日志</td>
 </tr>
 </tbody></table>
 <h3 id="压缩解压"><a href="#压缩解压" class="headerlink" title="压缩解压"></a>压缩解压</h3><table>
 <thead>
 <tr>
-<th>输入</th>
+<th>别名</th>
 <th>展开为</th>
-<th>示例</th>
 </tr>
 </thead>
 <tbody><tr>
 <td><code>tarnow</code></td>
 <td><code>tar -acf</code></td>
-<td><code>tarnow backup.tar.gz file1 file2</code></td>
 </tr>
 <tr>
 <td><code>untar</code></td>
 <td><code>tar -zxvf</code></td>
-<td><code>untar backup.tar.gz</code></td>
 </tr>
 </tbody></table>
-<h3 id="HTTP-请求（xh）"><a href="#HTTP-请求（xh）" class="headerlink" title="HTTP 请求（xh）"></a>HTTP 请求（xh）</h3><table>
+<h3 id="信息查询"><a href="#信息查询" class="headerlink" title="信息查询"></a>信息查询</h3><table>
 <thead>
 <tr>
-<th>输入</th>
-<th>展开为</th>
-<th>示例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>req</code></td>
-<td><code>xh</code></td>
-<td><code>req api.example.com</code></td>
-</tr>
-<tr>
-<td><code>get</code></td>
-<td><code>xh GET</code></td>
-<td><code>get api.github.com/users/octocat</code></td>
-</tr>
-<tr>
-<td><code>post</code></td>
-<td><code>xh POST</code></td>
-<td><code>post api.example.com/users name=john</code></td>
-</tr>
-<tr>
-<td><code>put</code></td>
-<td><code>xh PUT</code></td>
-<td><code>put api.example.com/users/1 name=jane</code></td>
-</tr>
-<tr>
-<td><code>del</code></td>
-<td><code>xh DELETE</code></td>
-<td><code>del api.example.com/users/1</code></td>
-</tr>
-<tr>
-<td><code>patch</code></td>
-<td><code>xh PATCH</code></td>
-<td><code>patch api.example.com/users/1 age=25</code></td>
-</tr>
-</tbody></table>
-<h3 id="其他工具"><a href="#其他工具" class="headerlink" title="其他工具"></a>其他工具</h3><table>
-<thead>
-<tr>
-<th>输入</th>
+<th>别名</th>
 <th>展开为</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>top</code></td>
-<td><code>btm</code></td>
-<td>系统监控器</td>
-</tr>
-<tr>
-<td><code>top-basic</code></td>
-<td><code>btm --basic</code></td>
-<td>简化模式</td>
-</tr>
-<tr>
-<td><code>pst</code></td>
-<td><code>procs --tree</code></td>
-<td>进程树状视图</td>
-</tr>
-<tr>
-<td><code>psw</code></td>
-<td><code>procs --watch</code></td>
-<td>实时刷新进程</td>
-</tr>
-<tr>
-<td><code>loc</code></td>
-<td><code>tokei</code></td>
-<td>代码统计</td>
-</tr>
-<tr>
-<td><code>repo</code></td>
-<td><code>onefetch</code></td>
-<td>Git 仓库信息</td>
-</tr>
-<tr>
-<td><code>compress</code></td>
-<td><code>ouch compress</code></td>
-<td>万能压缩</td>
-</tr>
-<tr>
-<td><code>extract</code></td>
-<td><code>ouch decompress</code></td>
-<td>万能解压</td>
-</tr>
-<tr>
-<td><code>compress-list</code></td>
-<td><code>ouch list</code></td>
-<td>预览压缩包内容</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>💡 <strong>abbr 的优势</strong>：展开后的完整命令会写入历史记录，换机器后 <code>↑</code> 回放也能直接执行。</p>
-</blockquote>
-<hr>
-<h2 id="🔄-Alias（CachyOS-预设）"><a href="#🔄-Alias（CachyOS-预设）" class="headerlink" title="🔄 Alias（CachyOS 预设）"></a>🔄 Alias（CachyOS 预设）</h2><table>
-<thead>
-<tr>
-<th>命令</th>
-<th>实际执行</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>ls</code></td>
-<td><code>eza -al --color=always --group-directories-first --icons</code></td>
-<td>详细列表，带图标</td>
-</tr>
-<tr>
-<td><code>la</code></td>
-<td><code>eza -a --color=always --group-directories-first --icons</code></td>
-<td>所有文件（含隐藏）</td>
-</tr>
-<tr>
-<td><code>ll</code></td>
-<td><code>eza -l --color=always --group-directories-first --icons</code></td>
-<td>长格式</td>
-</tr>
-<tr>
-<td><code>lt</code></td>
-<td><code>eza -aT --color=always --group-directories-first --icons</code></td>
-<td>树状结构</td>
-</tr>
-<tr>
-<td><code>l.</code></td>
-<td>`eza -a</td>
-<td>grep -e ‘^.‘`</td>
-</tr>
-<tr>
-<td><code>psmem</code></td>
-<td>`ps auxf</td>
-<td>sort -nr -k 4`</td>
-</tr>
-<tr>
-<td><code>psmem10</code></td>
-<td>`ps auxf</td>
-<td>sort -nr -k 4</td>
+<td><code>hw</code></td>
+<td><code>hwinfo --short</code></td>
+<td>硬件信息概览</td>
 </tr>
 <tr>
 <td><code>big</code></td>
-<td>`expac -H M ‘%m\t%n’</td>
-<td>sort -h</td>
+<td><code>expac -H M '%m\t%n' | sort -h | nl</code></td>
+<td>按大小排列已安装包</td>
 </tr>
 <tr>
 <td><code>gitpkg</code></td>
-<td>`pacman -Q</td>
-<td>grep -i “-git”</td>
+<td><code>pacman -Q | grep -i "\-git" | wc -l</code></td>
+<td>统计 -git 包数量</td>
 </tr>
 <tr>
 <td><code>rip</code></td>
-<td>`expac –timefmt=’%Y-%m-%d %T’ ‘%l\t%n %v’</td>
-<td>sort</td>
+<td><code>expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl</code></td>
+<td>最近安装的 200 个包</td>
+</tr>
+<tr>
+<td><code>psmem</code></td>
+<td><code>ps auxf | sort -nr -k 4</code></td>
+<td>按内存占用排序进程</td>
+</tr>
+<tr>
+<td><code>psmem10</code></td>
+<td><code>ps auxf | sort -nr -k 4 | head -10</code></td>
+<td>内存占用 Top 10</td>
+</tr>
+</tbody></table>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><table>
+<thead>
+<tr>
+<th>别名</th>
+<th>展开为</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>grep</code></td>
+<td><code>grep --color=auto</code></td>
+<td>彩色高亮匹配</td>
 </tr>
 <tr>
 <td><code>wget</code></td>
@@ -1032,567 +894,319 @@ bat cache <span class="token parameter variable">--build</span><span aria-hidden
 <td>断点续传</td>
 </tr>
 <tr>
-<td><code>dir</code> / <code>vdir</code></td>
-<td>带 <code>--color=auto</code></td>
-<td></td>
+<td><code>apt</code></td>
+<td><code>man pacman</code></td>
+<td>给 Arch 新手的彩蛋</td>
 </tr>
 <tr>
-<td><code>grep</code> / <code>fgrep</code> / <code>egrep</code></td>
-<td>带 <code>--color=auto</code></td>
-<td></td>
+<td><code>apt-get</code></td>
+<td><code>man pacman</code></td>
+<td>同上</td>
+</tr>
+</tbody></table>
+<h3 id="CachyOS-预设函数"><a href="#CachyOS-预设函数" class="headerlink" title="CachyOS 预设函数"></a>CachyOS 预设函数</h3><table>
+<thead>
+<tr>
+<th>函数</th>
+<th>用法</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>backup &lt;文件&gt;</code></td>
+<td><code>backup config.txt</code></td>
+<td>复制文件为 <code>文件名.bak</code></td>
+</tr>
+<tr>
+<td><code>copy &lt;源目录&gt; &lt;目标&gt;</code></td>
+<td><code>copy project project-backup</code></td>
+<td>递归复制目录</td>
+</tr>
+<tr>
+<td><code>history</code></td>
+<td><code>history</code></td>
+<td>带时间戳的命令历史（<code>history | grep ssh</code>）</td>
 </tr>
 </tbody></table>
 <hr>
-<h2 id="🧠-无感集成函数详解"><a href="#🧠-无感集成函数详解" class="headerlink" title="🧠 无感集成函数详解"></a>🧠 无感集成函数详解</h2><blockquote>
-<p><strong>核心设计</strong>：用函数覆盖常用命令，<strong>不带参数时自动弹出 fzf，带参数时直接执行原功能</strong>。<br>你不需要记任何快捷键，像平常一样输入命令即可。</p>
-</blockquote>
-<h3 id="文件编辑：v-e"><a href="#文件编辑：v-e" class="headerlink" title="文件编辑：v / e"></a>文件编辑：<code>v</code> / <code>e</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function v -d "用 fzf 选文件并编辑"
-    if count $argv &gt;/dev/null
-        $EDITOR $argv        # 有参数 → 直接打开
-    else if type -q fzf
-        set file (fzf --preview 'bat --color=always --line-range :500 {}' --preview-window right:50% --prompt "Edit&gt; ")
-        if test -n "$file"
-            $EDITOR "$file"   # 无参数 → fzf 选文件 → 打开
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="6-自定义函数"><a href="#6-自定义函数" class="headerlink" title="6. 自定义函数"></a>6. 自定义函数</h2><h3 id="yy-—-Yazi-终端文件管理器"><a href="#yy-—-Yazi-终端文件管理器" class="headerlink" title="yy — Yazi 终端文件管理器"></a><code>yy</code> — Yazi 终端文件管理器</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">yy              <span class="token comment"># 在当前目录打开 yazi</span>
+yy /path/to/dir <span class="token comment"># 在指定目录打开</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>v</code></td>
-<td>弹出 fzf 选文件 → 选中后用 <code>$EDITOR</code> 打开</td>
-</tr>
-<tr>
-<td><code>v ~/.config/fish/config.fish</code></td>
-<td>直接 <code>nvim ~/.config/fish/config.fish</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="目录跳转：c-fcd"><a href="#目录跳转：c-fcd" class="headerlink" title="目录跳转：c / fcd"></a>目录跳转：<code>c</code> / <code>fcd</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function c -d "用 fzf 选目录并 cd"
-    if count $argv &gt;/dev/null
-        cd $argv              # 有参数 → 直接 cd
-    else if type -q fzf; and type -q fd
-        set dir (fd --type d --hidden --follow --exclude .git | fzf --preview 'eza -T --level=2 --color=always {} | head -200' --preview-window right:50% --prompt "Cd&gt; ")
-        if test -n "$dir"
-            cd "$dir"          # 无参数 → fzf 选目录 → cd
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>特点</strong>：退出 yazi 后，Shell 会自动切换到你最后浏览的目录。不需要手动 <code>cd</code>。</p>
+<h3 id="cat-—-智能-cat（bat-替代）"><a href="#cat-—-智能-cat（bat-替代）" class="headerlink" title="cat — 智能 cat（bat 替代）"></a><code>cat</code> — 智能 cat（bat 替代）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">cat</span> file.txt     <span class="token comment"># 输出到终端 → 用 bat（语法高亮 + 行号）</span>
+<span class="token function">cat</span> file.txt <span class="token operator">|</span> <span class="token function">wc</span> <span class="token parameter variable">-l</span>  <span class="token comment"># 管道中 → 用系统 cat（避免 bat 干扰管道）</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>c</code></td>
-<td>弹出 fzf 选目录 → 选中后自动 <code>cd</code></td>
-</tr>
-<tr>
-<td><code>c ~/Downloads</code></td>
-<td>直接 <code>cd ~/Downloads</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="进程管理：k-fkill"><a href="#进程管理：k-fkill" class="headerlink" title="进程管理：k / fkill"></a>进程管理：<code>k</code> / <code>fkill</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function k -d "用 fzf 选进程并 kill"
-    if count $argv &gt;/dev/null
-        kill $argv            # 有参数 → 直接 kill
-    else if type -q fzf
-        set pid (ps aux | sed 1d | fzf --multi --header "[Ctrl+A 全选 | Tab 多选 | Enter 确认]" --prompt "Kill&gt; " | awk '{print $2}')
-        if test -n "$pid"
-            kill $pid          # 无参数 → fzf 选进程 → kill
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>设计原理</strong>：Fish 的补全系统内部会调用 <code>cat</code> 读取缓存文件，如果 <code>cat</code> 被 alias 成 <code>bat --number</code>，补全会出现乱码。这里用函数包裹，仅在交互式终端输出时使用 bat，管道和脚本中保持原始 <code>cat</code> 行为。</p>
+<h3 id="man-—-智能-man（tldr-优先）"><a href="#man-—-智能-man（tldr-优先）" class="headerlink" title="man — 智能 man（tldr 优先）"></a><code>man</code> — 智能 man（tldr 优先）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">man</span> <span class="token function">tar</span>          <span class="token comment"># 优先显示 tldr 速查表</span>
+<span class="token function">man</span> <span class="token number">3</span> <span class="token builtin class-name">printf</span>     <span class="token comment"># 带章节号 → 直接用系统 man</span>
+<span class="token function">man</span>              <span class="token comment"># 无参数 → 直接用系统 man</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>k</code></td>
-<td>弹出 fzf 进程列表（支持 Tab 多选）→ 选中后 <code>kill</code></td>
-</tr>
-<tr>
-<td><code>k 12345</code></td>
-<td>直接 <code>kill 12345</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="SSH-连接：s-fssh"><a href="#SSH-连接：s-fssh" class="headerlink" title="SSH 连接：s / fssh"></a>SSH 连接：<code>s</code> / <code>fssh</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function s -d "用 fzf 选 SSH 主机并连接"
-    if count $argv &gt;/dev/null
-        ssh $argv             # 有参数 → 直接 ssh
-    else if type -q fzf
-        set hosts (cat ~/.ssh/known_hosts 2&gt;/dev/null | awk '{print $1}' | sed 's/\[//g; s/\]//g; s/:.*//g' | sort -u)
-        set config_hosts (awk '/^Host / &amp;&amp; !/\*/ {print $2}' ~/.ssh/config 2&gt;/dev/null)
-        set all_hosts (echo $hosts $config_hosts | tr ' ' '\n' | sort -u | string collect)
-        set target (echo $all_hosts | fzf --prompt "SSH&gt; ")
-        if test -n "$target"
-            ssh "$target"      # 无参数 → fzf 选主机 → ssh
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>s</code></td>
-<td>从 <code>known_hosts</code> 和 <code>~/.ssh/config</code> 中选主机 → 连接</td>
-</tr>
-<tr>
-<td><code>s user@192.168.1.1</code></td>
-<td>直接 <code>ssh user@192.168.1.1</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="Git-分支切换：gco"><a href="#Git-分支切换：gco" class="headerlink" title="Git 分支切换：gco"></a>Git 分支切换：<code>gco</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function gco -d "用 fzf 选 Git 分支并 checkout"
-    if count $argv &gt;/dev/null
-        git checkout $argv    # 有参数 → 直接 checkout
-    else if type -q fzf
-        set branch (git branch -a --format='%(refname:short)' 2&gt;/dev/null | fzf --prompt "Checkout&gt; " --preview 'git log --oneline --color=always {1} | head -20' --preview-window right:50%)
-        if test -n "$branch"
-            git checkout "$branch"  # 无参数 → fzf 选分支 → checkout
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>gco</code></td>
-<td>弹出所有分支（含远程），右侧预览最近 20 条提交 → 选中后 checkout</td>
-</tr>
-<tr>
-<td><code>gco main</code></td>
-<td>直接 <code>git checkout main</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="Git-查看提交：gsh"><a href="#Git-查看提交：gsh" class="headerlink" title="Git 查看提交：gsh"></a>Git 查看提交：<code>gsh</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function gsh -d "用 fzf 浏览 Git 提交并 show"
-    if count $argv &gt;/dev/null
-        git show $argv        # 有参数 → 直接 show
-    else if type -q fzf
-        set commit (git log --oneline --all --color=always | fzf --ansi --prompt "Show&gt; " --preview 'git show --color=always {1} | delta' --preview-window right:60% | awk '{print $1}')
-        if test -n "$commit"
-            git show "$commit"  # 无参数 → fzf 选提交 → show（带 delta 美化）
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>gsh</code></td>
-<td>弹出提交历史，右侧 delta 美化 diff → 选中后 show</td>
-</tr>
-<tr>
-<td><code>gsh HEAD~3</code></td>
-<td>直接 <code>git show HEAD~3</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="Pacman-包管理：pac-pacr"><a href="#Pacman-包管理：pac-pacr" class="headerlink" title="Pacman 包管理：pac / pacr"></a>Pacman 包管理：<code>pac</code> / <code>pacr</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function pac -d "用 fzf 搜索包并安装"
-    if count $argv &gt;/dev/null
-        sudo pacman -S $argv  # 有参数 → 直接安装
-    else
-        set pkg (pacman -Slq 2&gt;/dev/null | fzf --multi --prompt "Install&gt; " --preview 'pacman -Si {1} 2&gt;/dev/null | head -30' --preview-window right:50%)
-        if test -n "$pkg"
-            sudo pacman -S $pkg  # 无参数 → fzf 搜仓库包 → 安装
-        end
-    end
-end
-
-function pacr -d "用 fzf 搜索已安装包并卸载"
-    if count $argv &gt;/dev/null
-        sudo pacman -Rns $argv  # 有参数 → 直接卸载
-    else
-        set pkg (pacman -Qq 2&gt;/dev/null | fzf --multi --prompt "Remove&gt; " --preview 'pacman -Qi {1} 2&gt;/dev/null | head -30' --preview-window right:50%)
-        if test -n "$pkg"
-            sudo pacman -Rns $pkg  # 无参数 → fzf 搜已装包 → 卸载
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>pac</code></td>
-<td>弹出 fzf 搜索所有仓库包，右侧预览包信息 → 选中后 <code>sudo pacman -S</code></td>
-</tr>
-<tr>
-<td><code>pac neovim</code></td>
-<td>直接 <code>sudo pacman -S neovim</code>，不弹 fzf</td>
-</tr>
-<tr>
-<td><code>pacr</code></td>
-<td>弹出已安装包列表，右侧预览 → 选中后 <code>sudo pacman -Rns</code></td>
-</tr>
-<tr>
-<td><code>pacr firefox</code></td>
-<td>直接 <code>sudo pacman -Rns firefox</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="环境变量查看：envf"><a href="#环境变量查看：envf" class="headerlink" title="环境变量查看：envf"></a>环境变量查看：<code>envf</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function envf -d "用 fzf 搜索环境变量"
-    if type -q fzf
-        set var (env | fzf --prompt "Env&gt; " --preview 'echo $ {1}' | cut -d= -f1)
-        if test -n "$var"
-            echo "$$var = "$$var
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>envf</code></td>
-<td>弹出 fzf 搜索所有环境变量 → 选中后显示变量名和值</td>
-</tr>
-</tbody></table>
-<h3 id="历史命令直接执行：fh"><a href="#历史命令直接执行：fh" class="headerlink" title="历史命令直接执行：fh"></a>历史命令直接执行：<code>fh</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function fh -d "用 fzf 搜索历史并执行"
-    if type -q fzf
-        set cmd (history | fzf --tac --prompt "History&gt; " --preview 'echo {}' --preview-window down:3)
-        if test -n "$cmd"
-            eval $cmd  # 无参数 → fzf 搜历史 → 直接执行（不编辑）
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>fh</code></td>
-<td>弹出 fzf 搜索历史 → 选中后直接执行（与 Atuin 的 <code>Ctrl+R</code> 互补：Atuin 插入命令，fh 直接执行）</td>
-</tr>
-</tbody></table>
-<h3 id="JSON-查看：jl"><a href="#JSON-查看：jl" class="headerlink" title="JSON 查看：jl"></a>JSON 查看：<code>jl</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function jl -d "用 jless 查看 JSON，无参数时 fzf 选择"
-    if count $argv &gt;/dev/null
-        jless $argv           # 有参数 → 直接打开
-    else if type -q fzf; and type -q fd
-        set file (fd --type f --extension json --hidden --follow --exclude .git | fzf --prompt "JSON&gt; " --preview 'bat --language json --color=always --line-range :50 {}' --preview-window right:50%)
-        if test -n "$file"
-            jless "$file"      # 无参数 → fzf 选 JSON 文件 → jless 打开
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>jl</code></td>
-<td>弹出 fzf 搜索所有 JSON 文件 → 选中后 jless 交互式查看（支持折叠、搜索）</td>
-</tr>
-<tr>
-<td><code>jl data.json</code></td>
-<td>直接 <code>jless data.json</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="Markdown-查看：md"><a href="#Markdown-查看：md" class="headerlink" title="Markdown 查看：md"></a>Markdown 查看：<code>md</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function md -d "用 glow 查看 Markdown，无参数时 fzf 选择"
-    if count $argv &gt;/dev/null
-        glow $argv            # 有参数 → 直接打开
-    else if type -q fzf; and type -q fd
-        set file (fd --type f --extension md --hidden --follow --exclude .git | fzf --prompt "Markdown&gt; " --preview 'bat --language markdown --color=always --line-range :30 {}' --preview-window right:50%)
-        if test -n "$file"
-            glow "$file"       # 无参数 → fzf 选 MD 文件 → glow 渲染
-        end
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>md</code></td>
-<td>弹出 fzf 搜索所有 Markdown 文件 → 选中后 glow 漂亮渲染</td>
-</tr>
-<tr>
-<td><code>md README.md</code></td>
-<td>直接 <code>glow README.md</code>，不弹 fzf</td>
-</tr>
-</tbody></table>
-<h3 id="tldr-覆盖-man"><a href="#tldr-覆盖-man" class="headerlink" title="tldr 覆盖 man"></a>tldr 覆盖 <code>man</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function man -d "优先 tldr，fallback 到系统 man"
-    if count $argv &gt;/dev/null
-        if test (count $argv) -eq 1
-            if tldr $argv[1] &gt;/dev/null 2&gt;&amp;1
-                tldr $argv[1]   # 单参数 → 先尝试 tldr 速查表
-                return 0
-            end
-        end
-        command man $argv       # 多参数或 tldr 没有 → 回退系统 man
-    else
-        command man
-    end
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<table>
-<thead>
-<tr>
-<th>用法</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><code>man tar</code></td>
-<td>先显示 tldr 速查表（常用示例），没有才显示传统 man</td>
-</tr>
-<tr>
-<td><code>man 3 printf</code></td>
-<td>多参数直接走系统 man，不受影响</td>
-</tr>
-</tbody></table>
+<p><strong>设计原理</strong>：tldr 输出简洁实用，日常 80% 的场景够用。带章节号（如 <code>man 3 printf</code>）或 tldr 查不到时自动回退到完整 man page。</p>
 <hr>
-<h2 id="🏗️-其他智能工具"><a href="#🏗️-其他智能工具" class="headerlink" title="🏗️ 其他智能工具"></a>🏗️ 其他智能工具</h2><h3 id="Zoxide（智能-cd）"><a href="#Zoxide（智能-cd）" class="headerlink" title="Zoxide（智能 cd）"></a>Zoxide（智能 cd）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">z down        <span class="token comment"># 跳转到 ~/Downloads</span>
-z pro web     <span class="token comment"># 跳转到 ~/projects/webapp</span>
-zi            <span class="token comment"># 交互式选择（调用 fzf 选历史目录）</span>
-z -           <span class="token comment"># 跳转到上一个目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="direnv（目录环境自动加载）"><a href="#direnv（目录环境自动加载）" class="headerlink" title="direnv（目录环境自动加载）"></a>direnv（目录环境自动加载）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在项目根目录创建 .envrc</span>
-<span class="token builtin class-name">cd</span> ~/projects/myapp
-<span class="token builtin class-name">echo</span> <span class="token string">'source venv/bin/activate'</span> <span class="token operator">&gt;</span> .envrc
-<span class="token builtin class-name">echo</span> <span class="token string">'export API_KEY="sk-xxx"'</span> <span class="token operator">&gt;&gt;</span> .envrc
-
-<span class="token comment"># 授权（安全机制，防止恶意脚本）</span>
-direnv allow
-
-<span class="token comment"># 以后自动生效</span>
-<span class="token builtin class-name">cd</span> ~/projects/myapp     <span class="token comment"># 自动激活虚拟环境，API_KEY 可用</span>
-<span class="token builtin class-name">cd</span> <span class="token punctuation">..</span>                   <span class="token comment"># 自动退出虚拟环境，API_KEY 消失</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="yazi（文件管理器）"><a href="#yazi（文件管理器）" class="headerlink" title="yazi（文件管理器）"></a>yazi（文件管理器）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">yy            <span class="token comment"># 启动 yazi，按 q 退出后自动 cd 到当前所在目录</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="done（桌面通知）"><a href="#done（桌面通知）" class="headerlink" title="done（桌面通知）"></a>done（桌面通知）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">make</span> -j<span class="token variable"><span class="token variable">$(</span>nproc<span class="token variable">)</span></span>  <span class="token comment"># 编译大项目，完成后桌面弹出通知：「✅ make 已完成（耗时 2:34）」</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<hr>
-<h2 id="🎨-美化效果一览"><a href="#🎨-美化效果一览" class="headerlink" title="🎨 美化效果一览"></a>🎨 美化效果一览</h2><table>
+<h2 id="7-fzf-媒体工具箱"><a href="#7-fzf-媒体工具箱" class="headerlink" title="7. fzf 媒体工具箱"></a>7. fzf 媒体工具箱</h2><p>通过 <code>completions/</code> 目录注册了 14 个基于 fzf 的媒体处理命令，提供交互式文件选择 + FFmpeg 处理。</p>
+<h3 id="包管理"><a href="#包管理" class="headerlink" title="包管理"></a>包管理</h3><table>
 <thead>
 <tr>
 <th>命令</th>
-<th>效果</th>
+<th>功能</th>
+<th>子命令</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>ls</code> / <code>la</code> / <code>ll</code></td>
-<td><code>eza</code> 彩色图标列表</td>
-</tr>
-<tr>
-<td><code>cat</code></td>
-<td><code>bat</code> 语法高亮 + 行号 + Dracula 主题</td>
-</tr>
-<tr>
-<td><code>man xxx</code></td>
-<td><code>bat</code> 渲染的彩色 man 页面</td>
-</tr>
-<tr>
-<td><code>git diff</code></td>
-<td><code>delta</code> 并排对比 + 语法高亮 + Dracula 主题</td>
-</tr>
-<tr>
-<td>长命令完成</td>
-<td><code>done</code> 桌面通知</td>
-</tr>
-<tr>
-<td><code>man tar</code></td>
-<td><code>tldr</code> 速查表（常用示例）</td>
-</tr>
-<tr>
-<td><code>md README.md</code></td>
-<td><code>glow</code> 漂亮渲染 Markdown</td>
-</tr>
-<tr>
-<td><code>jl data.json</code></td>
-<td><code>jless</code> 交互式折叠查看 JSON</td>
+<td><code>fzf-pkg</code></td>
+<td>Arch/AUR 包管理</td>
+<td><code>menu</code>（交互菜单）、<code>update</code>（更新系统）、<code>orphans</code>（清理孤儿包）、<code>cache</code>（清理缓存）、<code>foreign</code>（AUR 包列表）、<code>news</code>（Arch 新闻）、<code>stats</code>（包统计）</td>
 </tr>
 </tbody></table>
-<hr>
-<h2 id="🚀-一日典型工作流"><a href="#🚀-一日典型工作流" class="headerlink" title="🚀 一日典型工作流"></a>🚀 一日典型工作流</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 打开终端，自动显示 fastfetch 系统信息</span>
-
-<span class="token comment"># 2. 进入项目目录（zoxide 自动补全）</span>
-z pro web          <span class="token comment"># 跳转到 ~/projects/webapp</span>
-
-<span class="token comment"># 3. 环境自动加载（direnv）</span>
-<span class="token comment"># 虚拟环境已激活，环境变量已设置</span>
-
-<span class="token comment"># 4. 查看 Git 状态</span>
-gs                 <span class="token comment"># 展开为 git status</span>
-
-<span class="token comment"># 5. 查看修改（delta 美化）</span>
-gd                 <span class="token comment"># 展开为 git diff</span>
-
-<span class="token comment"># 6. 添加文件并提交</span>
-gaa                <span class="token comment"># git add --all</span>
-gcm <span class="token string">"fix: login"</span>   <span class="token comment"># git commit -m "fix: login"</span>
-gp                 <span class="token comment"># git push</span>
-
-<span class="token comment"># 7. 切换分支（无感集成）</span>
-gco                <span class="token comment"># fzf 选分支 → 自动 checkout</span>
-
-<span class="token comment"># 8. 查看某次提交</span>
-gsh                <span class="token comment"># fzf 选提交 → 自动 show（带 delta 美化）</span>
-
-<span class="token comment"># 9. 编辑文件（无感集成）</span>
-<span class="token function">v</span>                  <span class="token comment"># fzf 选文件 → 自动 nvim 打开</span>
-
-<span class="token comment"># 10. 进入另一个目录（无感集成）</span>
-c                  <span class="token comment"># fzf 选目录 → 自动 cd</span>
-
-<span class="token comment"># 11. 安装新包（无感集成）</span>
-pac                <span class="token comment"># fzf 搜包 → 自动 sudo pacman -S</span>
-
-<span class="token comment"># 12. 长时间编译，切出去等通知</span>
-<span class="token function">make</span> -j<span class="token variable"><span class="token variable">$(</span>nproc<span class="token variable">)</span></span>
-<span class="token comment"># ... 桌面通知弹出 ...</span>
-
-<span class="token comment"># 13. 打错命令快速修正</span>
-<span class="token function">sudo</span> paman <span class="token parameter variable">-S</span> neovim    <span class="token comment"># 报错</span>
-f                       <span class="token comment"># 自动修正为 sudo pacman -S neovim</span>
-
-<span class="token comment"># 14. 查找之前用过的命令</span>
-Ctrl + R              <span class="token comment"># Atuin 搜索历史</span>
-<span class="token comment"># 输入 "docker" → 找到之前复杂的 docker run 命令</span>
-
-<span class="token comment"># 15. 查看系统状态</span>
-<span class="token function">top</span>                   <span class="token comment"># 展开为 btm，美观的系统监控</span>
-
-<span class="token comment"># 16. 测试 API</span>
-get api.github.com/users/octocat   <span class="token comment"># 展开为 xh GET ...</span>
-
-<span class="token comment"># 17. 查看 Markdown 文档</span>
-md                    <span class="token comment"># fzf 选 MD 文件 → glow 渲染</span>
-
-<span class="token comment"># 18. 查看 JSON 数据</span>
-jl                    <span class="token comment"># fzf 选 JSON 文件 → jless 交互查看</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-
-<hr>
-<h2 id="⚙️-配置调优建议"><a href="#⚙️-配置调优建议" class="headerlink" title="⚙️ 配置调优建议"></a>⚙️ 配置调优建议</h2><h3 id="1-禁用-fish-greeting（不显示-fastfetch）"><a href="#1-禁用-fish-greeting（不显示-fastfetch）" class="headerlink" title="1. 禁用 fish_greeting（不显示 fastfetch）"></a>1. 禁用 fish_greeting（不显示 fastfetch）</h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">function fish_greeting
-    # 空函数 = 不显示任何内容
-end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-
-<h3 id="2-修改-pay-respects-触发词为-fuck"><a href="#2-修改-pay-respects-触发词为-fuck" class="headerlink" title="2. 修改 pay-respects 触发词为 fuck"></a>2. 修改 pay-respects 触发词为 <code>fuck</code></h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -gx PAY_RESPECTS_ALIAS "fuck"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="3-调整-done-通知阈值"><a href="#3-调整-done-通知阈值" class="headerlink" title="3. 调整 done 通知阈值"></a>3. 调整 done 通知阈值</h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -U __done_min_cmd_duration 5000    # 改为 5 秒
-set -U __done_notification_urgency_level normal<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-
-<h3 id="4-调整-fzf-预览窗口宽度"><a href="#4-调整-fzf-预览窗口宽度" class="headerlink" title="4. 调整 fzf 预览窗口宽度"></a>4. 调整 fzf 预览窗口宽度</h3><pre class="line-numbers language-fish" data-language="fish"><code class="language-fish">set -gx FZF_CTRL_T_OPTS "--preview 'bat --color=always --line-range :500 {}' --preview-window right:40%"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<h3 id="5-Starship-性能排查"><a href="#5-Starship-性能排查" class="headerlink" title="5. Starship 性能排查"></a>5. Starship 性能排查</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">starship timings    <span class="token comment"># 查看哪些模块耗时最长</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-
-<hr>
-<h2 id="🆘-故障排查"><a href="#🆘-故障排查" class="headerlink" title="🆘 故障排查"></a>🆘 故障排查</h2><table>
+<h3 id="视频处理"><a href="#视频处理" class="headerlink" title="视频处理"></a>视频处理</h3><table>
 <thead>
 <tr>
-<th>问题</th>
-<th>原因</th>
-<th>解决</th>
+<th>命令</th>
+<th>功能</th>
 </tr>
 </thead>
 <tbody><tr>
-<td><code>Ctrl+T</code> 没反应</td>
-<td>fzf 未安装或未绑定</td>
-<td><code>sudo pacman -S fzf &amp;&amp; source ~/.config/fish/config.fish</code></td>
+<td><code>fzf-compress-video</code></td>
+<td>压缩视频（CRF 质量 + 分辨率缩放）</td>
 </tr>
 <tr>
-<td><code>f</code> 没反应</td>
-<td>pay-respects 未安装</td>
-<td><code>paru -S pay-respects</code></td>
+<td><code>fzf-trim-video</code></td>
+<td>无损裁剪视频片段（关键帧切割）</td>
 </tr>
 <tr>
-<td><code>z</code> 命令找不到</td>
-<td>zoxide 未初始化</td>
-<td>检查 `zoxide init fish</td>
+<td><code>fzf-speed-video</code></td>
+<td>调整播放速度（0.5x ~ 3.0x）</td>
 </tr>
 <tr>
-<td><code>yy</code> 报错</td>
-<td>yazi 未安装</td>
-<td><code>sudo pacman -S yazi</code></td>
+<td><code>fzf-mute-video</code></td>
+<td>移除音轨，生成无声视频</td>
 </tr>
 <tr>
-<td><code>direnv</code> 提示未允许</td>
-<td>安全机制</td>
-<td>在项目目录执行 <code>direnv allow</code></td>
+<td><code>fzf-concat-video</code></td>
+<td>拼接多个视频（stream copy，无损）</td>
 </tr>
 <tr>
-<td><code>git diff</code> 没有颜色</td>
-<td>delta 未配置</td>
-<td>执行 git config 命令（见上文）</td>
+<td><code>fzf-video-to-gif</code></td>
+<td>视频片段转高质量 GIF</td>
 </tr>
 <tr>
-<td><code>man</code> 页面没有颜色</td>
-<td>bat 未安装</td>
-<td><code>sudo pacman -S bat</code></td>
+<td><code>fzf-burn-subs</code></td>
+<td>字幕烧录到视频画面（SRT/ASS）</td>
+</tr>
+</tbody></table>
+<h3 id="音频处理"><a href="#音频处理" class="headerlink" title="音频处理"></a>音频处理</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>fzf-extract-audio</code></td>
+<td>从视频提取音频（M4A/MP3/Opus/WAV）</td>
 </tr>
 <tr>
-<td>abbr 不展开</td>
-<td>输入后没有按 Space</td>
-<td>abbr 需要按 Space 或 Enter 触发</td>
+<td><code>fzf-merge-av</code></td>
+<td>智能匹配分离的音视频文件并合并</td>
+</tr>
+</tbody></table>
+<h3 id="其他-1"><a href="#其他-1" class="headerlink" title="其他"></a>其他</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>fzf-fftools</code></td>
+<td>FFmpeg 工具箱总入口（<code>--yazi</code> 可在 yazi 中打开）</td>
 </tr>
 <tr>
-<td>Atuin 搜索为空</td>
-<td>数据库未初始化</td>
-<td>执行 <code>atuin import auto</code> 导入历史</td>
+<td><code>fzf-add-watermark</code></td>
+<td>添加文字/图片水印（支持位置、透明度、字体等参数）</td>
 </tr>
 <tr>
-<td><code>gco</code> 弹出 fzf 失败</td>
-<td>之前 <code>gco</code> 是 abbr</td>
-<td>删除 <code>abbr -a -- gco 'git checkout'</code> 这一行</td>
+<td><code>fzf-convert-media</code></td>
+<td>智能格式转换（自动识别类型匹配目标格式）</td>
 </tr>
 <tr>
-<td><code>v</code>/<code>c</code>/<code>k</code> 报错</td>
-<td>fzf 或 fd 未安装</td>
-<td><code>sudo pacman -S fzf fd</code></td>
+<td><code>fzf-validate-media</code></td>
+<td>验证媒体文件完整性</td>
 </tr>
 </tbody></table>
 <hr>
-<blockquote>
-<p>📌 <strong>核心哲学</strong>：减少记忆负担，增加上下文感知 —— 工具记住你访问过的目录、执行过的命令、项目环境，你只需要模糊输入，让机器去匹配。</p>
-</blockquote>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/">https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/CachyOS/">CachyOS</a><a class="post-meta__tags" href="/tags/Fish/">Fish</a><a class="post-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></div><div class="post-share"><div class="social-share" data-image="/img/featureimages/custom_0.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/06/24/mpv-pei-zhi-jiang-jie/" title="mpv配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">mpv配置</div></div><div class="info-2"><div class="info-item-1">mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。</div></div></div></a><a class="pagination-related" href="/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/" title="llama-cli 参数配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/11.avif"><source type="image/webp" srcset="/img/optimized/featureimages/11.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/11.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">llama-cli 参数配置指南</div></div><div class="info-2"><div class="info-item-1">llama.cpp / llama-cli 常用参数详解，模型加载、上下文、采样调优。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本"><picture><source type="image/avif" srcset="/img/optimized/featureimages/10.avif"><source type="image/webp" srcset="/img/optimized/featureimages/10.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/10.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-19</div><div class="info-item-2">linux的fish配置和脚本</div></div><div class="info-2"><div class="info-item-1">Linux 下 Fish shell 的实用配置与脚本片段，提升日常终端效率。</div></div></div></a><a class="pagination-related" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-17</div><div class="info-item-2">nvim配置</div></div><div class="info-2"><div class="info-item-1">基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</div></div></div></a><a class="pagination-related" href="/2026/06/24/mpv-pei-zhi-jiang-jie/" title="mpv配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-24</div><div class="info-item-2">mpv配置</div></div><div class="info-2"><div class="info-item-1">mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。</div></div></div></a><a class="pagination-related" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_2.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-04</div><div class="info-item-2">Yazi 配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器插件生态全解，快捷键、主题、预览、与 Neovim/Fish 联动技巧。</div></div></div></a><a class="pagination-related" href="/2026/06/24/yazi-pei-zhi/" title="yazi配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/14.avif"><source type="image/webp" srcset="/img/optimized/featureimages/14.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/14.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-24</div><div class="info-item-2">yazi配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器入门配置，从零到可用。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+<h2 id="8-环境变量与秘密管理"><a href="#8-环境变量与秘密管理" class="headerlink" title="8. 环境变量与秘密管理"></a>8. 环境变量与秘密管理</h2><h3 id="基础环境变量"><a href="#基础环境变量" class="headerlink" title="基础环境变量"></a>基础环境变量</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>值</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>EDITOR</code></td>
+<td><code>nvim</code></td>
+<td>默认编辑器（git commit、sudoedit 等读取）</td>
+</tr>
+<tr>
+<td><code>VISUAL</code></td>
+<td><code>$EDITOR</code></td>
+<td>图形编辑器回退</td>
+</tr>
+<tr>
+<td><code>LESS</code></td>
+<td><code>--RAW-CONTROL-CHARS --no-init --quit-if-one-screen --ignore-case</code></td>
+<td>保留 ANSI 颜色、退出不清屏、短内容自动退出、忽略大小写</td>
+</tr>
+<tr>
+<td><code>BAT_THEME</code></td>
+<td><code>Dracula</code></td>
+<td>bat 配色主题</td>
+</tr>
+<tr>
+<td><code>BAT_STYLE</code></td>
+<td><code>numbers,changes,header</code></td>
+<td>bat 显示行号 + Git 变更标记 + 文件头</td>
+</tr>
+</tbody></table>
+<h3 id="fzf-环境变量"><a href="#fzf-环境变量" class="headerlink" title="fzf 环境变量"></a>fzf 环境变量</h3><table>
+<thead>
+<tr>
+<th>变量</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>FZF_DEFAULT_COMMAND</code></td>
+<td>用 <code>fd</code> 替代 <code>find</code>，自动排除 .git/node_modules/.cache 等重目录</td>
+</tr>
+<tr>
+<td><code>FZF_DEFAULT_OPTS</code></td>
+<td><code>--height 100% --layout=reverse --border --cycle --inline-info</code>（全屏、反序、循环、边框）</td>
+</tr>
+<tr>
+<td><code>FZF_CTRL_T_COMMAND</code></td>
+<td>文件搜索使用与 <code>FZF_DEFAULT_COMMAND</code> 相同的 fd 命令</td>
+</tr>
+<tr>
+<td><code>FZF_CTRL_T_OPTS</code></td>
+<td>预览窗口在右侧 60% 宽度，用 bat 显示前 100 行</td>
+</tr>
+</tbody></table>
+<h3 id="敏感变量（secrets-fish）"><a href="#敏感变量（secrets-fish）" class="headerlink" title="敏感变量（secrets.fish）"></a>敏感变量（secrets.fish）</h3><p>API Key 等敏感信息存放在 <code>~/.config/fish/secrets.fish</code> 中，通过 <code>source</code> 引入。<strong>不要将此文件提交到 Git 仓库</strong>。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 如果使用 Git 管理 dotfiles，在 .gitignore 中添加：</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"secrets.fish"</span> <span class="token operator">&gt;&gt;</span> ~/.config/fish/.gitignore<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>当前 secrets.fish 中存放的变量：</p>
+<ul>
+<li><code>STRIX_LLM</code> — LLM 模型标识</li>
+<li><code>LLM_API_KEY</code> — LLM API 密钥</li>
+</ul>
+<p>如需添加新的敏感变量，直接编辑 <code>secrets.fish</code> 即可，无需修改 <code>config.fish</code>。</p>
+<h3 id="PATH-配置"><a href="#PATH-配置" class="headerlink" title="PATH 配置"></a>PATH 配置</h3><table>
+<thead>
+<tr>
+<th>路径</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~/.local/share/pnpm/bin</code></td>
+<td>pnpm 包管理器</td>
+</tr>
+<tr>
+<td><code>~/.local/bin</code></td>
+<td>用户本地可执行文件</td>
+</tr>
+<tr>
+<td><code>~/.cargo/bin</code></td>
+<td>Rust Cargo（通过 CachyOS <code>fish_add_path</code>）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="9-可选增强与启用方法"><a href="#9-可选增强与启用方法" class="headerlink" title="9. 可选增强与启用方法"></a>9. 可选增强与启用方法</h2><h3 id="delta-—-Git-Diff-美化"><a href="#delta-—-Git-Diff-美化" class="headerlink" title="delta — Git Diff 美化"></a>delta — Git Diff 美化</h3><p>delta 提供语法高亮、侧边并排对比、行号等特性，比默认的 git diff 美观得多。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 一次性配置（写入 ~/.gitconfig，无需每次设置）：</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> core.pager delta
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> interactive.diffFilter <span class="token string">"delta --color-only"</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.line-numbers <span class="token boolean">true</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.side-by-side <span class="token boolean">true</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> delta.syntax-theme TwoDark<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="xh-—-现代-HTTP-客户端"><a href="#xh-—-现代-HTTP-客户端" class="headerlink" title="xh — 现代 HTTP 客户端"></a>xh — 现代 HTTP 客户端</h3><p>xh 是 HTTPie 的 Rust 重写，比 curl 更直观。<strong>需要先安装：<code>sudo pacman -S xh</code></strong></p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 安装后，取消 config.fish 第 227-237 行的注释即可启用以下缩写：</span>
+req https://api.example.com    <span class="token comment"># 发送 GET 请求</span>
+get https://api.example.com    <span class="token comment"># 明确 GET</span>
+post https://api.example.com <span class="token assign-left variable">name</span><span class="token operator">=</span>foo  <span class="token comment"># POST 表单</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Atuin-目录过滤模式"><a href="#Atuin-目录过滤模式" class="headerlink" title="Atuin 目录过滤模式"></a>Atuin 目录过滤模式</h3><p>默认 Atuin 搜索全局历史。如果希望优先显示当前目录下的命令：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在 config.fish 第 42 行取消注释：</span>
+<span class="token builtin class-name">set</span> <span class="token parameter variable">-gx</span> ATUIN_FILTER_MODE <span class="token string">"directory"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="pay-respects-触发词"><a href="#pay-respects-触发词" class="headerlink" title="pay-respects 触发词"></a>pay-respects 触发词</h3><p>默认按 <code>f</code> + Enter 触发纠错。如果更习惯 <code>fuck</code>：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 在 config.fish 第 101 行取消注释：</span>
+<span class="token builtin class-name">set</span> <span class="token parameter variable">-gx</span> PAY_RESPECTS_ALIAS <span class="token string">"fuck"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<h3 id="开启终端欢迎信息（fastfetch）"><a href="#开启终端欢迎信息（fastfetch）" class="headerlink" title="开启终端欢迎信息（fastfetch）"></a>开启终端欢迎信息（fastfetch）</h3><p>当前已禁用自动运行的 fastfetch。如需恢复：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 删除 config.fish 第 189 行的覆盖：</span>
+<span class="token comment"># function fish_greeting; end</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="10-常见问题"><a href="#10-常见问题" class="headerlink" title="10. 常见问题"></a>10. 常见问题</h2><h3 id="Q-为什么不用-alias-cat-bat-而是用-function-包裹？"><a href="#Q-为什么不用-alias-cat-bat-而是用-function-包裹？" class="headerlink" title="Q: 为什么不用 alias cat=bat 而是用 function 包裹？"></a>Q: 为什么不用 <code>alias cat=bat</code> 而是用 function 包裹？</h3><p>Fish 的补全系统内部（<code>__fish_cached</code> 等）会调用 <code>cat</code> 读取缓存文件。如果 <code>cat</code> 被 alias 成 <code>bat --number</code>，缓存输出会被加上行号，导致 pacman 等补全出现乱码。用 function 包裹可以在终端输出时使用 bat，在管道/脚本中回退到原始 cat。</p>
+<h3 id="Q-为什么-Alt-C-被禁用了？"><a href="#Q-为什么-Alt-C-被禁用了？" class="headerlink" title="Q: 为什么 Alt+C 被禁用了？"></a>Q: 为什么 Alt+C 被禁用了？</h3><p>你的窗口管理器是 Niri，Alt 键作为 Mod 键使用。fzf 默认将 <code>Alt+C</code> 绑定为目录跳转快捷键，会与 Niri 冲突，因此在配置中显式解绑。</p>
+<h3 id="Q-abbr-和-alias-有什么区别？为什么混用？"><a href="#Q-abbr-和-alias-有什么区别？为什么混用？" class="headerlink" title="Q: abbr 和 alias 有什么区别？为什么混用？"></a>Q: abbr 和 alias 有什么区别？为什么混用？</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>abbr</th>
+<th>alias</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>展开时机</td>
+<td>键入时（按空格/回车前）</td>
+<td>执行时</td>
+</tr>
+<tr>
+<td>脚本兼容</td>
+<td>❌ 脚本中不展开</td>
+<td>✅ 在脚本中也能替换</td>
+</tr>
+<tr>
+<td>历史记录</td>
+<td>保存展开后的完整命令</td>
+<td>保存别名本身</td>
+</tr>
+<tr>
+<td>适用场景</td>
+<td>交互式终端日常使用</td>
+<td>需要脚本兼容的场景</td>
+</tr>
+</tbody></table>
+<p>本配置中，高频交互命令用 <code>abbr</code>（Git 操作等），CachyOS 预设的兼容性命令用 <code>alias</code>（ls/cd 等）。两者共存互不冲突——abbr 优先展开，如果展开后的词恰好是 alias 名，还会再被 alias 替换。</p>
+<h3 id="Q-update-是什么？和-sudo-pacman-Syu-有什么区别？"><a href="#Q-update-是什么？和-sudo-pacman-Syu-有什么区别？" class="headerlink" title="Q: update 是什么？和 sudo pacman -Syu 有什么区别？"></a>Q: <code>update</code> 是什么？和 <code>sudo pacman -Syu</code> 有什么区别？</h3><p><code>update</code>（CachyOS alias）= <code>sudo cachyos-rate-mirrors &amp;&amp; sudo pacman -Syu</code>，在系统更新前先测速排序镜像源，确保下载速度最快。比单纯的 <code>pacman -Syu</code> 多一步镜像优化。</p>
+<h3 id="Q-yy-和直接运行-yazi-有什么区别？"><a href="#Q-yy-和直接运行-yazi-有什么区别？" class="headerlink" title="Q: yy 和直接运行 yazi 有什么区别？"></a>Q: <code>yy</code> 和直接运行 <code>yazi</code> 有什么区别？</h3><p>直接运行 <code>yazi</code> 退出后终端还在原来的目录。<code>yy</code> 会在 yazi 退出后自动 <code>cd</code> 到你最后在 yazi 中浏览的目录，无需手动再 <code>cd</code>。</p>
+<h3 id="Q-如何添加自己的缩写或函数？"><a href="#Q-如何添加自己的缩写或函数？" class="headerlink" title="Q: 如何添加自己的缩写或函数？"></a>Q: 如何添加自己的缩写或函数？</h3><p>直接编辑 <code>~/.config/fish/config.fish</code>，在对应区块添加即可。修改会在<strong>新开终端</strong>时生效，或在当前终端执行 <code>source ~/.config/fish/config.fish</code> 立即生效。</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 添加缩写：</span>
+abbr <span class="token parameter variable">-a</span> -- <span class="token function">dc</span> <span class="token string">'docker compose'</span>
+
+<span class="token comment"># 添加函数：</span>
+<span class="token keyword">function</span> mkcd
+    <span class="token function">mkdir</span> <span class="token parameter variable">-p</span> <span class="token variable">$argv</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+    <span class="token builtin class-name">cd</span> <span class="token variable">$argv</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
+end<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="Q-如何备份和迁移这份配置？"><a href="#Q-如何备份和迁移这份配置？" class="headerlink" title="Q: 如何备份和迁移这份配置？"></a>Q: 如何备份和迁移这份配置？</h3><p>核心文件只有 <code>config.fish</code> 和 <code>secrets.fish</code>（不含 API Key）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 备份（排除敏感文件和缓存）</span>
+<span class="token function">cp</span> ~/.config/fish/config.fish ~/backup/
+<span class="token function">cp</span> ~/.config/fish/completions/*.fish ~/backup/
+
+<span class="token comment"># 迁移到新机器后，确保安装所有依赖：</span>
+<span class="token comment"># sudo pacman -S fish starship zoxide fzf fd atuin direnv tldr bat yazi eza procs tokei onefetch ouch</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/">https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CachyOS/">CachyOS</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/Fish/">Fish</a><a class="post-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a></div><div class="post-share"><div class="social-share" data-image="/img/featureimages/custom_0.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/06/24/mpv-pei-zhi-jiang-jie/" title="mpv配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">mpv配置</div></div><div class="info-2"><div class="info-item-1">mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。</div></div></div></a><a class="pagination-related" href="/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/" title="llama-cli 参数配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/11.avif"><source type="image/webp" srcset="/img/optimized/featureimages/11.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/11.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">llama-cli 参数配置指南</div></div><div class="info-2"><div class="info-item-1">llama.cpp / llama-cli 常用参数详解，模型加载、上下文、采样调优。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本"><picture><source type="image/avif" srcset="/img/optimized/featureimages/10.avif"><source type="image/webp" srcset="/img/optimized/featureimages/10.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/10.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-19</div><div class="info-item-2">linux的fish配置和脚本</div></div><div class="info-2"><div class="info-item-1">Linux 下 Fish shell 的实用配置与脚本片段，提升日常终端效率。</div></div></div></a><a class="pagination-related" href="/2026/06/24/yazi-pei-zhi/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/14.avif"><source type="image/webp" srcset="/img/optimized/featureimages/14.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/14.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-24</div><div class="info-item-2">Yazi 配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器入门配置，从零到可用。</div></div></div></a><a class="pagination-related" href="/2026/08/17/nvim-pei-zhi/" title="Neovim 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-17</div><div class="info-item-2">Neovim 配置</div></div><div class="info-2"><div class="info-item-1">基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</div></div></div></a><a class="pagination-related" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_2.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-04</div><div class="info-item-2">Yazi 配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器插件生态全解，快捷键、主题、预览、与 Neovim/Fish 联动技巧。</div></div></div></a><a class="pagination-related" href="/2026/06/24/mpv-pei-zhi-jiang-jie/" title="mpv配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-24</div><div class="info-item-2">mpv配置</div></div><div class="info-2"><div class="info-item-1">mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。</div></div></div></a><a class="pagination-related" href="/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/" title="Arch Linux 私人软件仓库与构建体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-18</div><div class="info-item-2">Arch Linux 私人软件仓库与构建体系</div></div><div class="info-2"><div class="info-item-1">私人 Arch Linux 软件仓库的构建、测试、依赖传播与 pacman 仓库发布体系。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
   <strong>正在做什么</strong>
   <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
   <a href="/now/">查看 Now →</a>
-</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%8B-%E9%85%8D%E7%BD%AE%E6%80%BB%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">📋 配置总览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9A%80-%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E5%91%BD%E4%BB%A4"><span class="toc-number">2.</span> <span class="toc-text">🚀 一键安装命令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E4%BE%9D%E8%B5%96%EF%BC%88Arch-CachyOS%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">核心依赖（Arch &#x2F; CachyOS）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%AF%E9%80%89%E5%A2%9E%E5%BC%BA"><span class="toc-number">2.2.</span> <span class="toc-text">可选增强</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-Delta-%E9%85%8D%E7%BD%AE%EF%BC%88%E6%89%A7%E8%A1%8C%E4%B8%80%E6%AC%A1%E6%B0%B8%E4%B9%85%E7%94%9F%E6%95%88%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">Git Delta 配置（执行一次永久生效）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%A8-%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE"><span class="toc-number">3.</span> <span class="toc-text">🎨 主题配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Dracula-%E4%B8%BB%E9%A2%98%EF%BC%88bat-delta%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">Dracula 主题（bat &#x2F; delta）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%8C%A8%EF%B8%8F-%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97"><span class="toc-number">4.</span> <span class="toc-text">⌨️ 快捷键完全指南</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Fish-%E5%8E%9F%E7%94%9F%E7%BC%96%E8%BE%91"><span class="toc-number">4.1.</span> <span class="toc-text">Fish 原生编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E4%B8%8E%E5%BB%BA%E8%AE%AE"><span class="toc-number">4.2.</span> <span class="toc-text">自动补全与建议</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4"><span class="toc-number">4.3.</span> <span class="toc-text">历史命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Bang-Bang-%E6%89%A9%E5%B1%95"><span class="toc-number">4.4.</span> <span class="toc-text">Bang-Bang 扩展</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fzf-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">4.5.</span> <span class="toc-text">fzf 快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fzf-%E7%95%8C%E9%9D%A2%E5%86%85%E6%93%8D%E4%BD%9C"><span class="toc-number">4.6.</span> <span class="toc-text">fzf 界面内操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Atuin-%E7%95%8C%E9%9D%A2%E6%93%8D%E4%BD%9C"><span class="toc-number">4.7.</span> <span class="toc-text">Atuin 界面操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pay-respects-%E7%BA%A0%E9%94%99"><span class="toc-number">4.8.</span> <span class="toc-text">pay-respects 纠错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9D-Abbreviation%EF%BC%88abbr%EF%BC%89%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-number">5.</span> <span class="toc-text">📝 Abbreviation（abbr）速查表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">5.1.</span> <span class="toc-text">Git 工作流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E5%AF%BC%E8%88%AA"><span class="toc-number">5.2.</span> <span class="toc-text">目录导航</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="toc-number">5.3.</span> <span class="toc-text">系统管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B"><span class="toc-number">5.4.</span> <span class="toc-text">压缩解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HTTP-%E8%AF%B7%E6%B1%82%EF%BC%88xh%EF%BC%89"><span class="toc-number">5.5.</span> <span class="toc-text">HTTP 请求（xh）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%B7%A5%E5%85%B7"><span class="toc-number">5.6.</span> <span class="toc-text">其他工具</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%84-Alias%EF%BC%88CachyOS-%E9%A2%84%E8%AE%BE%EF%BC%89"><span class="toc-number">6.</span> <span class="toc-text">🔄 Alias（CachyOS 预设）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%A7%A0-%E6%97%A0%E6%84%9F%E9%9B%86%E6%88%90%E5%87%BD%E6%95%B0%E8%AF%A6%E8%A7%A3"><span class="toc-number">7.</span> <span class="toc-text">🧠 无感集成函数详解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BC%96%E8%BE%91%EF%BC%9Av-e"><span class="toc-number">7.1.</span> <span class="toc-text">文件编辑：v &#x2F; e</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E8%B7%B3%E8%BD%AC%EF%BC%9Ac-fcd"><span class="toc-number">7.2.</span> <span class="toc-text">目录跳转：c &#x2F; fcd</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86%EF%BC%9Ak-fkill"><span class="toc-number">7.3.</span> <span class="toc-text">进程管理：k &#x2F; fkill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SSH-%E8%BF%9E%E6%8E%A5%EF%BC%9As-fssh"><span class="toc-number">7.4.</span> <span class="toc-text">SSH 连接：s &#x2F; fssh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E5%88%86%E6%94%AF%E5%88%87%E6%8D%A2%EF%BC%9Agco"><span class="toc-number">7.5.</span> <span class="toc-text">Git 分支切换：gco</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E6%9F%A5%E7%9C%8B%E6%8F%90%E4%BA%A4%EF%BC%9Agsh"><span class="toc-number">7.6.</span> <span class="toc-text">Git 查看提交：gsh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Pacman-%E5%8C%85%E7%AE%A1%E7%90%86%EF%BC%9Apac-pacr"><span class="toc-number">7.7.</span> <span class="toc-text">Pacman 包管理：pac &#x2F; pacr</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E6%9F%A5%E7%9C%8B%EF%BC%9Aenvf"><span class="toc-number">7.8.</span> <span class="toc-text">环境变量查看：envf</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4%E7%9B%B4%E6%8E%A5%E6%89%A7%E8%A1%8C%EF%BC%9Afh"><span class="toc-number">7.9.</span> <span class="toc-text">历史命令直接执行：fh</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JSON-%E6%9F%A5%E7%9C%8B%EF%BC%9Ajl"><span class="toc-number">7.10.</span> <span class="toc-text">JSON 查看：jl</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Markdown-%E6%9F%A5%E7%9C%8B%EF%BC%9Amd"><span class="toc-number">7.11.</span> <span class="toc-text">Markdown 查看：md</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#tldr-%E8%A6%86%E7%9B%96-man"><span class="toc-number">7.12.</span> <span class="toc-text">tldr 覆盖 man</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8F%97%EF%B8%8F-%E5%85%B6%E4%BB%96%E6%99%BA%E8%83%BD%E5%B7%A5%E5%85%B7"><span class="toc-number">8.</span> <span class="toc-text">🏗️ 其他智能工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Zoxide%EF%BC%88%E6%99%BA%E8%83%BD-cd%EF%BC%89"><span class="toc-number">8.1.</span> <span class="toc-text">Zoxide（智能 cd）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#direnv%EF%BC%88%E7%9B%AE%E5%BD%95%E7%8E%AF%E5%A2%83%E8%87%AA%E5%8A%A8%E5%8A%A0%E8%BD%BD%EF%BC%89"><span class="toc-number">8.2.</span> <span class="toc-text">direnv（目录环境自动加载）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#yazi%EF%BC%88%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8%EF%BC%89"><span class="toc-number">8.3.</span> <span class="toc-text">yazi（文件管理器）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#done%EF%BC%88%E6%A1%8C%E9%9D%A2%E9%80%9A%E7%9F%A5%EF%BC%89"><span class="toc-number">8.4.</span> <span class="toc-text">done（桌面通知）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%A8-%E7%BE%8E%E5%8C%96%E6%95%88%E6%9E%9C%E4%B8%80%E8%A7%88"><span class="toc-number">9.</span> <span class="toc-text">🎨 美化效果一览</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%9A%80-%E4%B8%80%E6%97%A5%E5%85%B8%E5%9E%8B%E5%B7%A5%E4%BD%9C%E6%B5%81"><span class="toc-number">10.</span> <span class="toc-text">🚀 一日典型工作流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E2%9A%99%EF%B8%8F-%E9%85%8D%E7%BD%AE%E8%B0%83%E4%BC%98%E5%BB%BA%E8%AE%AE"><span class="toc-number">11.</span> <span class="toc-text">⚙️ 配置调优建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E7%A6%81%E7%94%A8-fish-greeting%EF%BC%88%E4%B8%8D%E6%98%BE%E7%A4%BA-fastfetch%EF%BC%89"><span class="toc-number">11.1.</span> <span class="toc-text">1. 禁用 fish_greeting（不显示 fastfetch）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E4%BF%AE%E6%94%B9-pay-respects-%E8%A7%A6%E5%8F%91%E8%AF%8D%E4%B8%BA-fuck"><span class="toc-number">11.2.</span> <span class="toc-text">2. 修改 pay-respects 触发词为 fuck</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%B0%83%E6%95%B4-done-%E9%80%9A%E7%9F%A5%E9%98%88%E5%80%BC"><span class="toc-number">11.3.</span> <span class="toc-text">3. 调整 done 通知阈值</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E8%B0%83%E6%95%B4-fzf-%E9%A2%84%E8%A7%88%E7%AA%97%E5%8F%A3%E5%AE%BD%E5%BA%A6"><span class="toc-number">11.4.</span> <span class="toc-text">4. 调整 fzf 预览窗口宽度</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-Starship-%E6%80%A7%E8%83%BD%E6%8E%92%E6%9F%A5"><span class="toc-number">11.5.</span> <span class="toc-text">5. Starship 性能排查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%86%98-%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5"><span class="toc-number">12.</span> <span class="toc-text">🆘 故障排查</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="nvim配置" loading='lazy'/ decoding="async" src="/img/featureimages/custom_1.jpg"></picture></a><div class="content"><a class="title" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置">nvim配置</a><time datetime="2026-08-17T02:18:34.000Z" title="发表于 2026-08-17 02:18:34">2026-08-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Yazi 配置" loading='lazy'/ decoding="async" src="/img/featureimages/custom_2.jpg"></picture></a><div class="content"><a class="title" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置">Yazi 配置</a><time datetime="2026-08-04T09:06:12.000Z" title="发表于 2026-08-04 09:06:12">2026-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本"><picture><source type="image/avif" srcset="/img/optimized/featureimages/10.avif"><source type="image/webp" srcset="/img/optimized/featureimages/10.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="linux的fish配置和脚本" loading='lazy'/ decoding="async" src="/img/featureimages/10.jpg"></picture></a><div class="content"><a class="title" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本">linux的fish配置和脚本</a><time datetime="2026-07-19T13:01:52.000Z" title="发表于 2026-07-19 13:01:52">2026-07-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/16/4-3-slice-lei-xing/" title="4.3 slice类型"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_5.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_5.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4.3 slice类型" loading='lazy'/ decoding="async" src="/img/featureimages/custom_5.jpg"></picture></a><div class="content"><a class="title" href="/2026/07/16/4-3-slice-lei-xing/" title="4.3 slice类型">4.3 slice类型</a><time datetime="2026-07-16T07:02:55.000Z" title="发表于 2026-07-16 07:02:55">2026-07-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/16/4-2-yin-yong-he-jie-yong/" title="4.2 引用和借用"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_4.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_4.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4.2 引用和借用" loading='lazy'/ decoding="async" src="/img/featureimages/custom_4.jpg"></picture></a><div class="content"><a class="title" href="/2026/07/16/4-2-yin-yong-he-jie-yong/" title="4.2 引用和借用">4.2 引用和借用</a><time datetime="2026-07-16T07:01:21.000Z" title="发表于 2026-07-16 07:01:21">2026-07-16</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Fish-Shell-%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E"><span class="toc-number">1.</span> <span class="toc-text">Fish Shell 配置使用说明</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E6%A6%82%E8%A7%88"><span class="toc-number">1.2.</span> <span class="toc-text">1. 文件结构概览</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A0%E8%BD%BD%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.2.1.</span> <span class="toc-text">加载顺序</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A0%B8%E5%BF%83%E5%B7%A5%E5%85%B7%E9%93%BE"><span class="toc-number">1.3.</span> <span class="toc-text">2. 核心工具链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%90%E7%A4%BA%E7%AC%A6%E4%B8%8E%E8%A7%86%E8%A7%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">提示符与视觉</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2%E4%B8%8E%E5%AF%BC%E8%88%AA"><span class="toc-number">1.3.2.</span> <span class="toc-text">历史与导航</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86"><span class="toc-number">1.3.3.</span> <span class="toc-text">系统管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86"><span class="toc-number">1.3.4.</span> <span class="toc-text">文件管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%BE%85%E5%8A%A9"><span class="toc-number">1.3.5.</span> <span class="toc-text">开发辅助</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E5%BF%AB%E6%8D%B7%E9%94%AE%E9%80%9F%E6%9F%A5"><span class="toc-number">1.4.</span> <span class="toc-text">3. 快捷键速查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#fzf-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">1.4.1.</span> <span class="toc-text">fzf 快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Atuin-%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">Atuin 快捷键</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#zoxide-%E5%BF%AB%E6%8D%B7%E9%94%AE%EF%BC%88alias%EF%BC%89"><span class="toc-number">1.4.3.</span> <span class="toc-text">zoxide 快捷键（alias）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CachyOS-%E9%A2%84%E8%AE%BE%E7%9A%84-bang-bang-%E6%94%AF%E6%8C%81"><span class="toc-number">1.4.4.</span> <span class="toc-text">CachyOS 预设的 bang-bang 支持</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E7%BA%A0%E9%94%99"><span class="toc-number">1.4.5.</span> <span class="toc-text">命令纠错</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E7%BC%A9%E5%86%99%EF%BC%88abbr%EF%BC%89%E5%AE%8C%E6%95%B4%E5%88%97%E8%A1%A8"><span class="toc-number">1.5.</span> <span class="toc-text">4. 缩写（abbr）完整列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%8821-%E6%9D%A1%EF%BC%89"><span class="toc-number">1.5.1.</span> <span class="toc-text">Git 工作流（21 条）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86%EF%BC%88CachyOS-alias%EF%BC%89"><span class="toc-number">1.5.2.</span> <span class="toc-text">系统管理（CachyOS alias）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AA%92%E4%BD%93%E5%B7%A5%E5%85%B7"><span class="toc-number">1.5.3.</span> <span class="toc-text">媒体工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%8F%91%E8%BE%85%E5%8A%A9-1"><span class="toc-number">1.5.4.</span> <span class="toc-text">开发辅助</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-CachyOS-%E9%A2%84%E8%AE%BE%E5%88%AB%E5%90%8D%EF%BC%88alias%EF%BC%89%E5%AE%8C%E6%95%B4%E5%88%97%E8%A1%A8"><span class="toc-number">1.6.</span> <span class="toc-text">5. CachyOS 预设别名（alias）完整列表</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%88%97%E8%A1%A8%EF%BC%88eza%EF%BC%89"><span class="toc-number">1.6.1.</span> <span class="toc-text">文件列表（eza）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E5%AF%BC%E8%88%AA"><span class="toc-number">1.6.2.</span> <span class="toc-text">目录导航</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B3%BB%E7%BB%9F%E7%AE%A1%E7%90%86-1"><span class="toc-number">1.6.3.</span> <span class="toc-text">系统管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%8B%E7%BC%A9%E8%A7%A3%E5%8E%8B"><span class="toc-number">1.6.4.</span> <span class="toc-text">压缩解压</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%A1%E6%81%AF%E6%9F%A5%E8%AF%A2"><span class="toc-number">1.6.5.</span> <span class="toc-text">信息查询</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96"><span class="toc-number">1.6.6.</span> <span class="toc-text">其他</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CachyOS-%E9%A2%84%E8%AE%BE%E5%87%BD%E6%95%B0"><span class="toc-number">1.6.7.</span> <span class="toc-text">CachyOS 预设函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0"><span class="toc-number">1.7.</span> <span class="toc-text">6. 自定义函数</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#yy-%E2%80%94-Yazi-%E7%BB%88%E7%AB%AF%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.7.1.</span> <span class="toc-text">yy — Yazi 终端文件管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cat-%E2%80%94-%E6%99%BA%E8%83%BD-cat%EF%BC%88bat-%E6%9B%BF%E4%BB%A3%EF%BC%89"><span class="toc-number">1.7.2.</span> <span class="toc-text">cat — 智能 cat（bat 替代）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#man-%E2%80%94-%E6%99%BA%E8%83%BD-man%EF%BC%88tldr-%E4%BC%98%E5%85%88%EF%BC%89"><span class="toc-number">1.7.3.</span> <span class="toc-text">man — 智能 man（tldr 优先）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-fzf-%E5%AA%92%E4%BD%93%E5%B7%A5%E5%85%B7%E7%AE%B1"><span class="toc-number">1.8.</span> <span class="toc-text">7. fzf 媒体工具箱</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%85%E7%AE%A1%E7%90%86"><span class="toc-number">1.8.1.</span> <span class="toc-text">包管理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E5%A4%84%E7%90%86"><span class="toc-number">1.8.2.</span> <span class="toc-text">视频处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91%E5%A4%84%E7%90%86"><span class="toc-number">1.8.3.</span> <span class="toc-text">音频处理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96-1"><span class="toc-number">1.8.4.</span> <span class="toc-text">其他</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E4%B8%8E%E7%A7%98%E5%AF%86%E7%AE%A1%E7%90%86"><span class="toc-number">1.9.</span> <span class="toc-text">8. 环境变量与秘密管理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.9.1.</span> <span class="toc-text">基础环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fzf-%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F"><span class="toc-number">1.9.2.</span> <span class="toc-text">fzf 环境变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%8F%E6%84%9F%E5%8F%98%E9%87%8F%EF%BC%88secrets-fish%EF%BC%89"><span class="toc-number">1.9.3.</span> <span class="toc-text">敏感变量（secrets.fish）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#PATH-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.9.4.</span> <span class="toc-text">PATH 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%8F%AF%E9%80%89%E5%A2%9E%E5%BC%BA%E4%B8%8E%E5%90%AF%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">1.10.</span> <span class="toc-text">9. 可选增强与启用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#delta-%E2%80%94-Git-Diff-%E7%BE%8E%E5%8C%96"><span class="toc-number">1.10.1.</span> <span class="toc-text">delta — Git Diff 美化</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#xh-%E2%80%94-%E7%8E%B0%E4%BB%A3-HTTP-%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">1.10.2.</span> <span class="toc-text">xh — 现代 HTTP 客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Atuin-%E7%9B%AE%E5%BD%95%E8%BF%87%E6%BB%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.10.3.</span> <span class="toc-text">Atuin 目录过滤模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pay-respects-%E8%A7%A6%E5%8F%91%E8%AF%8D"><span class="toc-number">1.10.4.</span> <span class="toc-text">pay-respects 触发词</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E7%BB%88%E7%AB%AF%E6%AC%A2%E8%BF%8E%E4%BF%A1%E6%81%AF%EF%BC%88fastfetch%EF%BC%89"><span class="toc-number">1.10.5.</span> <span class="toc-text">开启终端欢迎信息（fastfetch）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#10-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.11.</span> <span class="toc-text">10. 常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E7%94%A8-alias-cat-bat-%E8%80%8C%E6%98%AF%E7%94%A8-function-%E5%8C%85%E8%A3%B9%EF%BC%9F"><span class="toc-number">1.11.1.</span> <span class="toc-text">Q: 为什么不用 alias cat&#x3D;bat 而是用 function 包裹？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E4%B8%BA%E4%BB%80%E4%B9%88-Alt-C-%E8%A2%AB%E7%A6%81%E7%94%A8%E4%BA%86%EF%BC%9F"><span class="toc-number">1.11.2.</span> <span class="toc-text">Q: 为什么 Alt+C 被禁用了？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-abbr-%E5%92%8C-alias-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B7%B7%E7%94%A8%EF%BC%9F"><span class="toc-number">1.11.3.</span> <span class="toc-text">Q: abbr 和 alias 有什么区别？为什么混用？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-update-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%92%8C-sudo-pacman-Syu-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.11.4.</span> <span class="toc-text">Q: update 是什么？和 sudo pacman -Syu 有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-yy-%E5%92%8C%E7%9B%B4%E6%8E%A5%E8%BF%90%E8%A1%8C-yazi-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">1.11.5.</span> <span class="toc-text">Q: yy 和直接运行 yazi 有什么区别？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E5%A6%82%E4%BD%95%E6%B7%BB%E5%8A%A0%E8%87%AA%E5%B7%B1%E7%9A%84%E7%BC%A9%E5%86%99%E6%88%96%E5%87%BD%E6%95%B0%EF%BC%9F"><span class="toc-number">1.11.6.</span> <span class="toc-text">Q: 如何添加自己的缩写或函数？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Q-%E5%A6%82%E4%BD%95%E5%A4%87%E4%BB%BD%E5%92%8C%E8%BF%81%E7%A7%BB%E8%BF%99%E4%BB%BD%E9%85%8D%E7%BD%AE%EF%BC%9F"><span class="toc-number">1.11.7.</span> <span class="toc-text">Q: 如何备份和迁移这份配置？</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/" title="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_3.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_3.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系" loading='lazy'/ decoding="async" src="/img/featureimages/custom_3.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/" title="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系">Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</a><time datetime="2026-09-20T00:00:00.000Z" title="发表于 2026-09-20 00:00:00">2026-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/20/voicefox-shi-yong-zhi-nan/" title="voicefox 使用与功能指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/7.avif"><source type="image/webp" srcset="/img/optimized/featureimages/7.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="voicefox 使用与功能指南" loading='lazy'/ decoding="async" src="/img/featureimages/7.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/20/voicefox-shi-yong-zhi-nan/" title="voicefox 使用与功能指南">voicefox 使用与功能指南</a><time datetime="2026-09-20T00:00:00.000Z" title="发表于 2026-09-20 00:00:00">2026-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/20/voicefox-pei-zhi-zhi-nan/" title="voicefox 配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/18.avif"><source type="image/webp" srcset="/img/optimized/featureimages/18.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="voicefox 配置指南" loading='lazy'/ decoding="async" src="/img/featureimages/18.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/20/voicefox-pei-zhi-zhi-nan/" title="voicefox 配置指南">voicefox 配置指南</a><time datetime="2026-09-20T00:00:00.000Z" title="发表于 2026-09-20 00:00:00">2026-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/19/mpv-emo-gou-jian-zhi-nan/" title="mpv-Emo 构建与 Patch 体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/4.avif"><source type="image/webp" srcset="/img/optimized/featureimages/4.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="mpv-Emo 构建与 Patch 体系" loading='lazy'/ decoding="async" src="/img/featureimages/4.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/19/mpv-emo-gou-jian-zhi-nan/" title="mpv-Emo 构建与 Patch 体系">mpv-Emo 构建与 Patch 体系</a><time datetime="2026-09-19T00:00:00.000Z" title="发表于 2026-09-19 00:00:00">2026-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/" title="voicefox：Rust 终端音乐播放器"><picture><source type="image/avif" srcset="/img/optimized/featureimages/20.avif"><source type="image/webp" srcset="/img/optimized/featureimages/20.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="voicefox：Rust 终端音乐播放器" loading='lazy'/ decoding="async" src="/img/featureimages/20.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/" title="voicefox：Rust 终端音乐播放器">voicefox：Rust 终端音乐播放器</a><time datetime="2026-09-19T00:00:00.000Z" title="发表于 2026-09-19 00:00:00">2026-09-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
   const parseViewBox = viewBox => {
     if (!viewBox) return null
     const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))

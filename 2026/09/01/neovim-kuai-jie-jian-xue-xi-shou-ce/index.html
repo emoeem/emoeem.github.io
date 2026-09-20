@@ -1,0 +1,2007 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Neovim 快捷键学习手册 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="基于当前 Neovim 配置整理的快捷键学习手册，覆盖窗口、文件、搜索、代码和日常编辑操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Neovim 快捷键学习手册">
+<meta property="og:url" content="https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="基于当前 Neovim 配置整理的快捷键学习手册，覆盖窗口、文件、搜索、代码和日常编辑操作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/featureimages/3.jpg">
+<meta property="article:published_time" content="2026-09-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-09-20T05:35:35.653Z">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Neovim">
+<meta property="article:tag" content="开发工具">
+<meta property="article:tag" content="快捷键">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://emoeem.github.io/img/featureimages/3.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Neovim 快捷键学习手册",
+  "url": "https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/",
+  "image": "https://emoeem.github.io/img/featureimages/3.jpg",
+  "datePublished": "2026-09-01T00:00:00.000Z",
+  "dateModified": "2026-09-20T05:35:35.653Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "emoeem",
+      "url": "https://emoeem.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.1.260810"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":2,"unescape":false,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Neovim 快捷键学习手册',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/featureimages/3.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">Neovim 快捷键学习手册</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Neovim 快捷键学习手册<a class="post-edit-link" href="https://github.com/emoeem/blog-source/edit/main/source/_posts/neovim快捷键学习手册.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-09-01T00:00:00.000Z" title="发表于 2026-09-01 00:00:00">2026-09-01</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4770</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>19 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div class="emo-article-context"><div class="emo-article-context__meta"><span class="emo-article-context__badge"><i class="fas fa-circle-check fa-fw"></i>持续维护</span><span class="emo-article-context__badge"><i class="fas fa-clock fa-fw"></i>最后验证：2026-09-01</span></div></div><h1 id="Neovim-快捷键学习手册"><a href="#Neovim-快捷键学习手册" class="headerlink" title="Neovim 快捷键学习手册"></a>Neovim 快捷键学习手册</h1><blockquote>
+<p>本手册以当前 <code>~/.config/nvim</code> 的实际配置为准，适合边用边查。<br>它覆盖两类内容：本配置明确设置的全部快捷键，以及日常编辑必须掌握的 Neovim 原生操作。<br>Neovim 原生命令非常多，本文优先说明日常编辑、文件管理、代码阅读和开发流程中真正会用到的部分。</p>
+</blockquote>
+<h2 id="一、先记住这-12-个按键"><a href="#一、先记住这-12-个按键" class="headerlink" title="一、先记住这 12 个按键"></a>一、先记住这 12 个按键</h2><p>刚开始不需要背完整张表。先把下面这些用熟，已经足够完成大部分日常工作。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>什么时候用</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; e</code></td>
+<td>要找文件、浏览目录</td>
+<td>打开文件管理器</td>
+</tr>
+<tr>
+<td><code>Ctrl+i/j/k/l</code></td>
+<td>文件管理器、代码、分屏之间移动</td>
+<td>上 / 左 / 下 / 右切换窗口</td>
+</tr>
+<tr>
+<td><code>Shift+Left</code> / <code>Shift+Right</code></td>
+<td>打开了多个文件</td>
+<td>上一个 / 下一个文件</td>
+</tr>
+<tr>
+<td><code>1</code> 至 <code>9</code></td>
+<td>想直接到顶部某个文件</td>
+<td>切到第 1 至第 9 个文件</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; b b</code></td>
+<td>文件很多或忘了文件位置</td>
+<td>打开已打开文件的列表</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f f</code></td>
+<td>要打开项目内文件</td>
+<td>按文件名查找并打开</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f g</code></td>
+<td>要在项目中找文字</td>
+<td>全项目文本搜索</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; w</code></td>
+<td>编辑后</td>
+<td>保存当前文件</td>
+</tr>
+<tr>
+<td><code>i</code> / <code>jj</code></td>
+<td>开始 / 结束输入文字</td>
+<td>进入插入模式 / 回到普通模式</td>
+</tr>
+<tr>
+<td><code>u</code> / <code>Ctrl+r</code></td>
+<td>操作错了</td>
+<td>撤销 / 重做</td>
+</tr>
+<tr>
+<td><code>K</code></td>
+<td>看不懂当前函数、变量或类型</td>
+<td>显示代码文档</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; c a</code></td>
+<td>代码有提示或可自动修复</td>
+<td>打开代码动作菜单</td>
+</tr>
+</tbody></table>
+<h2 id="二、记号与模式"><a href="#二、记号与模式" class="headerlink" title="二、记号与模式"></a>二、记号与模式</h2><h3 id="按键记号"><a href="#按键记号" class="headerlink" title="按键记号"></a>按键记号</h3><table>
+<thead>
+<tr>
+<th>写法</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt;</code> 或 <code>&lt;leader&gt;</code></td>
+<td>空格键。本配置的自定义功能入口。</td>
+</tr>
+<tr>
+<td><code>&lt;C-x&gt;</code></td>
+<td>按住 <code>Ctrl</code> 再按 <code>x</code>，例如 <code>&lt;C-j&gt;</code> 是 <code>Ctrl+j</code>。</td>
+</tr>
+<tr>
+<td><code>&lt;S-x&gt;</code></td>
+<td>按住 <code>Shift</code> 再按 <code>x</code>。</td>
+</tr>
+<tr>
+<td><code>&lt;C-S-x&gt;</code></td>
+<td>同时按住 <code>Ctrl</code>、<code>Shift</code> 再按 <code>x</code>。</td>
+</tr>
+<tr>
+<td><code>&lt;CR&gt;</code></td>
+<td>回车键。</td>
+</tr>
+<tr>
+<td><code>&lt;Esc&gt;</code></td>
+<td>Escape 键。</td>
+</tr>
+</tbody></table>
+<p>在普通模式按 <code>&lt;Space&gt;</code> 后稍等片刻，which-key 会显示后续可用的中文快捷键。它只显示本配置的中文说明，避免大量英文内置提示干扰学习。</p>
+<h3 id="四个最常用模式"><a href="#四个最常用模式" class="headerlink" title="四个最常用模式"></a>四个最常用模式</h3><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>如何进入</th>
+<th>如何退出</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通模式</td>
+<td><code>&lt;Esc&gt;</code> 或刚打开文件时</td>
+<td>无需退出</td>
+<td>移动、删除、复制、保存、切换窗口等。</td>
+</tr>
+<tr>
+<td>插入模式</td>
+<td><code>i</code>、<code>a</code>、<code>o</code> 等</td>
+<td><code>jj</code> 或 <code>&lt;Esc&gt;</code></td>
+<td>输入文字。</td>
+</tr>
+<tr>
+<td>可视模式</td>
+<td><code>v</code>、<code>V</code>、<code>Ctrl+v</code></td>
+<td><code>&lt;Esc&gt;</code></td>
+<td>选中字符、行或矩形区域后再操作。</td>
+</tr>
+<tr>
+<td>命令行模式</td>
+<td><code>:</code></td>
+<td><code>&lt;Esc&gt;</code></td>
+<td>输入命令，例如 <code>:w</code>、<code>:q</code>、<code>:Lazy</code>。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>建议：需要输入文字时先按 <code>i</code>；输入结束马上按 <code>jj</code> 回普通模式。绝大多数快捷键都在普通模式使用。</p>
+</blockquote>
+<h3 id="保存、退出与终端"><a href="#保存、退出与终端" class="headerlink" title="保存、退出与终端"></a>保存、退出与终端</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>模式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; w</code></td>
+<td>普通</td>
+<td>保存当前文件。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; q</code></td>
+<td>普通</td>
+<td>退出当前窗口；有未保存修改时 Neovim 会提醒。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; Q</code></td>
+<td>普通</td>
+<td>退出全部 Neovim 窗口。</td>
+</tr>
+<tr>
+<td><code>&lt;Esc&gt;</code></td>
+<td>普通</td>
+<td>清除当前搜索结果的高亮。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; t t</code></td>
+<td>普通</td>
+<td>打开或切换终端（在当前路径，即 Neovim 当前工作目录）。</td>
+</tr>
+<tr>
+<td><code>Ctrl+\</code></td>
+<td>普通</td>
+<td>打开或切换终端（与 <code>&lt;Space&gt; t t</code> 相同）。</td>
+</tr>
+<tr>
+<td><code>&lt;Esc&gt;</code></td>
+<td>终端</td>
+<td>退出终端输入模式；再按 <code>&lt;Space&gt; t t</code> 或 <code>Ctrl+\</code> 可关闭终端。</td>
+</tr>
+</tbody></table>
+<h2 id="三、日常编辑与原生操作"><a href="#三、日常编辑与原生操作" class="headerlink" title="三、日常编辑与原生操作"></a>三、日常编辑与原生操作</h2><h3 id="光标移动和阅读文件"><a href="#光标移动和阅读文件" class="headerlink" title="光标移动和阅读文件"></a>光标移动和阅读文件</h3><p>本配置不要求使用 <code>h/j/k/l</code>。普通模式可以直接使用方向键移动光标。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>使用提示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Left/Down/Up/Right</code></td>
+<td>左 / 下 / 上 / 右移动光标</td>
+<td>推荐的基础移动方式。</td>
+</tr>
+<tr>
+<td><code>Home</code> / <code>End</code></td>
+<td>行首 / 行尾</td>
+<td>适合编辑当前行。</td>
+</tr>
+<tr>
+<td><code>PageUp</code> / <code>PageDown</code></td>
+<td>向上 / 向下翻页</td>
+<td>快速阅读。</td>
+</tr>
+<tr>
+<td><code>Ctrl+u</code></td>
+<td>向上翻半页并居中</td>
+<td>已启用平滑滚动。</td>
+</tr>
+<tr>
+<td><code>Ctrl+d</code></td>
+<td>向下翻半页</td>
+<td>已启用平滑滚动。</td>
+</tr>
+<tr>
+<td><code>gg</code> / <code>G</code></td>
+<td>文件开头 / 文件结尾</td>
+<td>浏览长文件。</td>
+</tr>
+<tr>
+<td><code>gv</code></td>
+<td>重新选择上一次的可视选区</td>
+<td>选区操作后恢复刚才的选择。</td>
+</tr>
+<tr>
+<td><code>gq</code> 加移动</td>
+<td>格式化一段文字</td>
+<td>例如在可视选择后按 <code>gq</code>。</td>
+</tr>
+<tr>
+<td><code>w</code> / <code>b</code> / <code>e</code></td>
+<td>下个词首 / 上个词首 / 当前或下个词尾</td>
+<td>熟悉后比逐字符移动快。</td>
+</tr>
+<tr>
+<td><code>0</code> / <code>^</code> / <code>$</code></td>
+<td>行首 / 第一个非空字符 / 行尾</td>
+<td>适合代码行。</td>
+</tr>
+<tr>
+<td><code>Ctrl+o</code></td>
+<td>跳转历史的上一个位置</td>
+<td>从定义跳转回来时常用。</td>
+</tr>
+</tbody></table>
+<h3 id="输入、删除、复制与撤销"><a href="#输入、删除、复制与撤销" class="headerlink" title="输入、删除、复制与撤销"></a>输入、删除、复制与撤销</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>模式</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>i</code> / <code>a</code></td>
+<td>普通</td>
+<td>在光标前 / 后开始输入。</td>
+</tr>
+<tr>
+<td><code>I</code> / <code>A</code></td>
+<td>普通</td>
+<td>在行首第一个字符前 / 行尾开始输入。</td>
+</tr>
+<tr>
+<td><code>o</code> / <code>O</code></td>
+<td>普通</td>
+<td>在下方 / 上方新建一行并开始输入。</td>
+</tr>
+<tr>
+<td><code>jj</code> / <code>&lt;Esc&gt;</code></td>
+<td>插入</td>
+<td>回到普通模式。</td>
+</tr>
+<tr>
+<td><code>x</code> / <code>X</code></td>
+<td>普通</td>
+<td>删除光标处字符 / 前一个字符。</td>
+</tr>
+<tr>
+<td><code>dd</code></td>
+<td>普通</td>
+<td>删除整行。</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>普通</td>
+<td>从光标删到行尾。</td>
+</tr>
+<tr>
+<td><code>yy</code></td>
+<td>普通</td>
+<td>复制整行。</td>
+</tr>
+<tr>
+<td><code>y</code> 后接移动</td>
+<td>普通</td>
+<td>复制一个范围，例如 <code>yw</code> 复制一个词。</td>
+</tr>
+<tr>
+<td><code>p</code> / <code>P</code></td>
+<td>普通</td>
+<td>在光标后 / 前粘贴；由 Yanky 管理粘贴历史。</td>
+</tr>
+<tr>
+<td><code>gp</code> / <code>gP</code></td>
+<td>普通</td>
+<td>粘贴后保留光标位置。</td>
+</tr>
+<tr>
+<td><code>Ctrl+n</code> / <code>Ctrl+p</code></td>
+<td>普通</td>
+<td>循环下一个 / 上一个粘贴历史内容。</td>
+</tr>
+<tr>
+<td><code>u</code> / <code>Ctrl+r</code></td>
+<td>普通</td>
+<td>撤销 / 重做。</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>普通</td>
+<td>重复上一次修改。</td>
+</tr>
+</tbody></table>
+<h3 id="选择与批量编辑"><a href="#选择与批量编辑" class="headerlink" title="选择与批量编辑"></a>选择与批量编辑</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>v</code></td>
+<td>按字符进入可视选择。</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td>按整行进入可视选择。</td>
+</tr>
+<tr>
+<td><code>Ctrl+v</code></td>
+<td>矩形选择，适合多行同时插入或删除。</td>
+</tr>
+<tr>
+<td><code>&gt;</code> / <code>&lt;</code></td>
+<td>在可视模式中增加 / 减少缩进，并保持选中。</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>在可视模式中粘贴并替换选区；被替换内容进入 Yanky 历史，可用 <code>Ctrl+p</code> 找回。</td>
+</tr>
+<tr>
+<td><code>d</code> / <code>y</code> / <code>c</code></td>
+<td>删除 / 复制 / 修改当前选区。</td>
+</tr>
+</tbody></table>
+<h3 id="注释、环绕与快速跳转"><a href="#注释、环绕与快速跳转" class="headerlink" title="注释、环绕与快速跳转"></a>注释、环绕与快速跳转</h3><p>这些是注释（Neovim 内置）、环绕（mini.surround）与快速跳转（flash.nvim）的操作。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>gcc</code></td>
+<td>注释或取消注释当前行</td>
+<td>在代码行上直接按。</td>
+</tr>
+<tr>
+<td><code>gc</code> 加移动</td>
+<td>注释一个范围</td>
+<td><code>gc}</code> 注释到当前段落结束。</td>
+</tr>
+<tr>
+<td><code>gsa</code> 加移动再加符号</td>
+<td>为范围添加环绕符号</td>
+<td><code>gsaiw"</code> 为当前词加双引号；可视模式下选中后 <code>gsa"</code>。</td>
+</tr>
+<tr>
+<td><code>gsd</code> 加符号</td>
+<td>删除环绕符号</td>
+<td><code>gsd"</code> 删除一对双引号。</td>
+</tr>
+<tr>
+<td><code>gsr</code> 加旧符号和新符号</td>
+<td>替换环绕符号</td>
+<td><code>gsr"'</code> 把双引号改为单引号。</td>
+</tr>
+<tr>
+<td><code>gsh</code></td>
+<td>高亮显示最近的环绕符号</td>
+<td>不确定配对位置时按一下。</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>Flash 快速跳转</td>
+<td>输入目标字符，再按屏幕提示的字母跳转。</td>
+</tr>
+</tbody></table>
+<h2 id="四、文件、目录与已打开文件"><a href="#四、文件、目录与已打开文件" class="headerlink" title="四、文件、目录与已打开文件"></a>四、文件、目录与已打开文件</h2><h3 id="三种“文件页面”的区别"><a href="#三种“文件页面”的区别" class="headerlink" title="三种“文件页面”的区别"></a>三种“文件页面”的区别</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>你会看到什么</th>
+<th>本配置的切换方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件管理器</td>
+<td>左侧或独立的目录树</td>
+<td><code>&lt;Space&gt; e</code> 打开；用 <code>Ctrl+i/j/k/l</code> 切换焦点。</td>
+</tr>
+<tr>
+<td>缓冲区</td>
+<td>顶部一排已打开文件名</td>
+<td><code>Shift+Left/Right</code>、<code>1</code> 至 <code>9</code>、<code>&lt;Space&gt; b b</code>。</td>
+</tr>
+<tr>
+<td>Vim 标签页</td>
+<td>一个标签页中可以包含多个分屏</td>
+<td><code>Shift+Up/Down</code>。通常较少使用。</td>
+</tr>
+</tbody></table>
+<h3 id="文件管理器"><a href="#文件管理器" class="headerlink" title="文件管理器"></a>文件管理器</h3><table>
+<thead>
+<tr>
+<th>按键或命令</th>
+<th>作用</th>
+<th>使用方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; e</code></td>
+<td>Snacks 文件管理器</td>
+<td>打开或关闭项目目录浏览器。</td>
+</tr>
+<tr>
+<td><code>Ctrl+i</code></td>
+<td>切到上方窗口</td>
+<td>文件管理器在上方时进入它。</td>
+</tr>
+<tr>
+<td><code>Ctrl+j</code></td>
+<td>切到左侧窗口</td>
+<td>文件管理器在左侧时回到它。</td>
+</tr>
+<tr>
+<td><code>Ctrl+k</code></td>
+<td>切到下方窗口</td>
+<td>文件管理器在下方时进入它。</td>
+</tr>
+<tr>
+<td><code>Ctrl+l</code></td>
+<td>切到右侧窗口</td>
+<td>文件管理器在左侧时回到正文。</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Oil 文件管理器</td>
+<td>以可编辑缓冲区形式浏览当前文件所在目录。</td>
+</tr>
+</tbody></table>
+<p>在 Snacks 文件管理器或文件查找列表中，通常用方向键选中项目、按回车打开、按 <code>&lt;Esc&gt;</code> 关闭当前面板。打开文件后焦点可能留在文件管理器；按 <code>Ctrl+l</code> 即可回到右侧正文窗口。</p>
+<h3 id="缓冲区：顶部文件栏"><a href="#缓冲区：顶部文件栏" class="headerlink" title="缓冲区：顶部文件栏"></a>缓冲区：顶部文件栏</h3><p>顶部显示的一排文件名是<strong>缓冲区</strong>，不是 Vim 标签页。它们代表当前 Neovim 已打开的文件。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Shift+Left</code> / <code>Shift+Right</code></td>
+<td>上一个 / 下一个缓冲区</td>
+<td>在两个或少量文件间来回切换。</td>
+</tr>
+<tr>
+<td><code>1</code> 至 <code>9</code></td>
+<td>切换顶部第 1 至第 9 个缓冲区</td>
+<td>已知目标文件在顶部的位置。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; b b</code></td>
+<td>打开缓冲区列表</td>
+<td>文件很多或记不住位置时推荐。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; b d</code></td>
+<td>智能关闭当前缓冲区</td>
+<td>有修改会先保存，再关闭。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; b o</code></td>
+<td>关闭其他缓冲区</td>
+<td>只保留当前文件。</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注意：普通模式的数字 <code>1</code> 至 <code>9</code> 已被专门用于选择顶部文件栏。因此它们不能再作为重复次数前缀使用。例如需要执行“向下移动 5 行”时，可临时使用命令行 <code>:normal 5j</code>，或直接使用 <code>PageDown</code> / 搜索。</p>
+</blockquote>
+<h3 id="Vim-标签页"><a href="#Vim-标签页" class="headerlink" title="Vim 标签页"></a>Vim 标签页</h3><p>Vim 标签页和顶部的缓冲区不同。一个标签页可包含多个分屏窗口。</p>
+<table>
+<thead>
+<tr>
+<th>按键或命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Shift+Up</code> / <code>Shift+Down</code></td>
+<td>上一个 / 下一个 Vim 标签页。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; T n</code></td>
+<td>新建标签页。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; T x</code></td>
+<td>关闭当前标签页。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; T o</code></td>
+<td>只保留当前标签页（关闭其它标签页）。</td>
+</tr>
+<tr>
+<td><code>:tabnew</code></td>
+<td>新建标签页。</td>
+</tr>
+<tr>
+<td><code>:tabclose</code></td>
+<td>关闭当前标签页。</td>
+</tr>
+<tr>
+<td><code>:tabs</code></td>
+<td>列出所有标签页。</td>
+</tr>
+</tbody></table>
+<h2 id="五、分屏窗口与尺寸调整"><a href="#五、分屏窗口与尺寸调整" class="headerlink" title="五、分屏窗口与尺寸调整"></a>五、分屏窗口与尺寸调整</h2><h3 id="创建、关闭与切换窗口"><a href="#创建、关闭与切换窗口" class="headerlink" title="创建、关闭与切换窗口"></a>创建、关闭与切换窗口</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; s v</code></td>
+<td>左右分屏</td>
+<td>当前文件会出现在两个窗口中。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; s h</code></td>
+<td>上下分屏</td>
+<td>当前文件会出现在两个窗口中。</td>
+</tr>
+<tr>
+<td><code>Ctrl+i</code></td>
+<td>切到上方窗口</td>
+<td>IJKL 方向布局中的上。</td>
+</tr>
+<tr>
+<td><code>Ctrl+j</code></td>
+<td>切到左侧窗口</td>
+<td>IJKL 方向布局中的左。</td>
+</tr>
+<tr>
+<td><code>Ctrl+k</code></td>
+<td>切到下方窗口</td>
+<td>IJKL 方向布局中的下。</td>
+</tr>
+<tr>
+<td><code>Ctrl+l</code></td>
+<td>切到右侧窗口</td>
+<td>IJKL 方向布局中的右。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; s x</code></td>
+<td>关闭当前窗口</td>
+<td>不会自动关闭缓冲区。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; s o</code></td>
+<td>只保留当前窗口</td>
+<td>关闭其余分屏。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; s e</code></td>
+<td>均衡所有分屏尺寸</td>
+<td>适合调整后恢复整齐布局。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; s m</code></td>
+<td>最大化当前窗口</td>
+<td>再按 <code>&lt;Space&gt; s e</code> 可恢复均衡大小。</td>
+</tr>
+</tbody></table>
+<h3 id="调整当前窗口大小"><a href="#调整当前窗口大小" class="headerlink" title="调整当前窗口大小"></a>调整当前窗口大小</h3><p>先用 <code>Ctrl+i/j/k/l</code> 进入需要调整的窗口，再按下面的组合键。每次宽度变化 5 列，高度变化 3 行。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Ctrl+PageUp</code></td>
+<td>缩小当前窗口宽度。</td>
+</tr>
+<tr>
+<td><code>Ctrl+PageDown</code></td>
+<td>扩大当前窗口宽度。</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+PageUp</code></td>
+<td>缩小当前窗口高度。</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+PageDown</code></td>
+<td>扩大当前窗口高度。</td>
+</tr>
+</tbody></table>
+<h2 id="六、查找、搜索与跳转"><a href="#六、查找、搜索与跳转" class="headerlink" title="六、查找、搜索与跳转"></a>六、查找、搜索与跳转</h2><h3 id="项目级查找"><a href="#项目级查找" class="headerlink" title="项目级查找"></a>项目级查找</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; f f</code></td>
+<td>按文件名查找文件</td>
+<td>打开项目内文件。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f r</code></td>
+<td>最近文件</td>
+<td>回到刚编辑过的文件。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f g</code></td>
+<td>全局文本搜索</td>
+<td>在整个项目里查函数名、错误文字。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f w</code></td>
+<td>搜索光标下单词或可视选区</td>
+<td>快速找当前变量、函数名。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f s</code></td>
+<td>当前文件符号</td>
+<td>查找函数、类、方法。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f h</code></td>
+<td>Neovim 帮助</td>
+<td>查官方帮助主题。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f k</code></td>
+<td>已注册快捷键</td>
+<td>忘记按键时查找。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; f R</code></td>
+<td>项目级查找替换</td>
+<td>批量修改前先确认范围。</td>
+</tr>
+</tbody></table>
+<p>搜索面板内输入文字过滤结果，使用方向键选择，按回车确认，按 <code>&lt;Esc&gt;</code> 取消。</p>
+<h3 id="当前文件内搜索"><a href="#当前文件内搜索" class="headerlink" title="当前文件内搜索"></a>当前文件内搜索</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/文字</code> 后回车</td>
+<td>向下搜索。</td>
+</tr>
+<tr>
+<td><code>?文字</code> 后回车</td>
+<td>向上搜索。</td>
+</tr>
+<tr>
+<td><code>n</code> / <code>N</code></td>
+<td>下一个 / 上一个搜索结果。</td>
+</tr>
+<tr>
+<td><code>*</code> / <code>#</code></td>
+<td>向下 / 向上搜索光标所在完整单词。</td>
+</tr>
+<tr>
+<td><code>&lt;Esc&gt;</code></td>
+<td>清除搜索高亮。</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>Flash 跳转；适合在当前屏幕内快速定位字符。</td>
+</tr>
+</tbody></table>
+<h2 id="七、代码导航、补全与诊断"><a href="#七、代码导航、补全与诊断" class="headerlink" title="七、代码导航、补全与诊断"></a>七、代码导航、补全与诊断</h2><p>下面的语言服务快捷键只在当前文件已启动 LSP 时有效，例如 Lua、Python、C/C++、TypeScript、Rust 等。</p>
+<h3 id="代码导航与修改"><a href="#代码导航与修改" class="headerlink" title="代码导航与修改"></a>代码导航与修改</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>K</code></td>
+<td>悬浮文档</td>
+<td>查看函数参数、变量类型、说明。</td>
+</tr>
+<tr>
+<td><code>gd</code></td>
+<td>跳转定义</td>
+<td>进入函数、变量、类型的定义。</td>
+</tr>
+<tr>
+<td><code>gD</code></td>
+<td>跳转声明（Snacks 预览）</td>
+<td>在预览窗口中查看声明，<code>Esc</code> 关闭。</td>
+</tr>
+<tr>
+<td><code>gr</code></td>
+<td>查找引用</td>
+<td>找出项目中全部使用位置。</td>
+</tr>
+<tr>
+<td><code>gi</code></td>
+<td>跳转实现</td>
+<td>进入接口或抽象类的实现。</td>
+</tr>
+<tr>
+<td><code>gy</code></td>
+<td>跳转类型定义（Snacks 预览）</td>
+<td>在预览窗口中查看类型定义，<code>Esc</code> 关闭。</td>
+</tr>
+<tr>
+<td><code>Ctrl+o</code></td>
+<td>返回上一个跳转位置</td>
+<td>从定义返回调用处。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; c a</code></td>
+<td>代码动作</td>
+<td>修复、导入、重构等。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; c r</code></td>
+<td>重命名符号</td>
+<td>输入新名称后确认，LSP 会更新引用。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; c f</code></td>
+<td>格式化当前文件</td>
+<td>保存时也会自动格式化。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; c s</code></td>
+<td>代码符号大纲</td>
+<td>打开当前文件的函数、类、方法列表。</td>
+</tr>
+</tbody></table>
+<h3 id="诊断与问题列表"><a href="#诊断与问题列表" class="headerlink" title="诊断与问题列表"></a>诊断与问题列表</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[d</code> / <code>]d</code></td>
+<td>上一条 / 下一条诊断。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; x d</code></td>
+<td>显示光标位置的诊断说明。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; x x</code></td>
+<td>打开整个工作区诊断列表。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; x X</code></td>
+<td>只打开当前文件诊断列表。</td>
+</tr>
+</tbody></table>
+<h3 id="插入模式补全"><a href="#插入模式补全" class="headerlink" title="插入模式补全"></a>插入模式补全</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Ctrl+j</code> / <code>Ctrl+k</code></td>
+<td>补全列表的下一个 / 上一个候选项。</td>
+</tr>
+<tr>
+<td><code>Ctrl+b</code> / <code>Ctrl+f</code></td>
+<td>向上 / 向下滚动候选项文档。</td>
+</tr>
+<tr>
+<td><code>Ctrl+/</code></td>
+<td>主动打开补全菜单。</td>
+</tr>
+<tr>
+<td><code>&lt;CR&gt;</code></td>
+<td>确认当前候选项。</td>
+</tr>
+<tr>
+<td><code>&lt;Esc&gt;</code> 或 <code>jj</code></td>
+<td>取消输入并回到普通模式。</td>
+</tr>
+</tbody></table>
+<p><code>Ctrl+j/k</code> 在插入模式只控制补全；在普通模式才用于切换分屏窗口，因此两者不冲突。</p>
+<h2 id="八、Git、结构化代码与折叠"><a href="#八、Git、结构化代码与折叠" class="headerlink" title="八、Git、结构化代码与折叠"></a>八、Git、结构化代码与折叠</h2><h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>[h</code> / <code>]h</code></td>
+<td>上一处 / 下一处 Git 修改块</td>
+<td>仅 Git 仓库内文件有效。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; g g</code></td>
+<td>打开 LazyGit</td>
+<td>进行暂存、提交、分支等操作。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; g b</code></td>
+<td>浏览 Git 链接</td>
+<td>可用于打开或复制远端链接。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; g d</code></td>
+<td>打开差异视图</td>
+<td>查看当前工作区差异。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; g h</code></td>
+<td>打开文件历史</td>
+<td>查看当前文件历史。</td>
+</tr>
+</tbody></table>
+<h3 id="函数、类与参数文本对象"><a href="#函数、类与参数文本对象" class="headerlink" title="函数、类与参数文本对象"></a>函数、类与参数文本对象</h3><p>这些功能依赖 Tree-sitter，适用于解析器已安装的代码文件。可与 <code>d</code>、<code>y</code>、<code>c</code>、<code>v</code> 组合。</p>
+<table>
+<thead>
+<tr>
+<th>对象</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>af</code> / <code>if</code></td>
+<td>整个函数 / 函数内部</td>
+<td><code>daf</code> 删除整个函数；<code>yif</code> 复制函数体。</td>
+</tr>
+<tr>
+<td><code>ac</code> / <code>ic</code></td>
+<td>整个类 / 类内部</td>
+<td><code>vac</code> 选中整个类。</td>
+</tr>
+<tr>
+<td><code>aa</code> / <code>ia</code></td>
+<td>整个参数 / 参数内部</td>
+<td><code>cia</code> 修改当前参数内容。</td>
+</tr>
+<tr>
+<td><code>]f</code> / <code>[f</code></td>
+<td>下一个 / 上一个函数开头</td>
+<td>快速在函数之间移动。</td>
+</tr>
+<tr>
+<td><code>]c</code> / <code>[c</code></td>
+<td>下一个 / 上一个类开头</td>
+<td>快速在类之间移动。</td>
+</tr>
+</tbody></table>
+<h3 id="折叠"><a href="#折叠" class="headerlink" title="折叠"></a>折叠</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>zR</code> / <code>zM</code></td>
+<td>展开全部 / 关闭全部折叠。</td>
+</tr>
+<tr>
+<td><code>zo</code> / <code>zc</code></td>
+<td>展开 / 关闭当前折叠。</td>
+</tr>
+<tr>
+<td><code>za</code></td>
+<td>切换当前折叠。</td>
+</tr>
+</tbody></table>
+<h2 id="九、运行、测试、调试、构建与-Rust"><a href="#九、运行、测试、调试、构建与-Rust" class="headerlink" title="九、运行、测试、调试、构建与 Rust"></a>九、运行、测试、调试、构建与 Rust</h2><h3 id="运行当前文件"><a href="#运行当前文件" class="headerlink" title="运行当前文件"></a>运行当前文件</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; r f</code></td>
+<td>运行当前文件，按文件类型自动选择：Python(<code>python3</code>)、C/C++（编译到 <code>/tmp</code> 后运行）、Shell(<code>bash</code>)、Lua(<code>lua</code>)、JS/TS(<code>node</code>)、Go(<code>go run</code>)、Rust(<code>cargo run</code>）。</td>
+</tr>
+</tbody></table>
+<p>运行由 code_runner 插件在浮动终端中进行：输出始终可见、支持 <code>input()</code> 等交互式输入，运行结束后按 <code>Esc</code> 或 <code>q</code> 关闭窗口。</p>
+<h3 id="会话管理（persistence-nvim）"><a href="#会话管理（persistence-nvim）" class="headerlink" title="会话管理（persistence.nvim）"></a>会话管理（persistence.nvim）</h3><p>退出时自动保存当前目录的窗口与缓冲区布局。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; p s</code></td>
+<td>恢复当前目录的会话。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; p l</code></td>
+<td>恢复上一次保存的会话（不限目录）。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; p d</code></td>
+<td>本次退出时不保存会话。</td>
+</tr>
+</tbody></table>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; t r</code></td>
+<td>运行最近一次测试。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; t f</code></td>
+<td>运行当前文件测试。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; t d</code></td>
+<td>用调试器运行最近一次测试。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; t s</code></td>
+<td>打开或关闭测试总览。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; t o</code></td>
+<td>打开测试输出。</td>
+</tr>
+</tbody></table>
+<h3 id="调试"><a href="#调试" class="headerlink" title="调试"></a>调试</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; d c</code></td>
+<td>启动或继续调试。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d b</code></td>
+<td>在当前行添加或删除断点。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d B</code></td>
+<td>添加条件断点。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d o</code></td>
+<td>单步跳过。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d i</code></td>
+<td>单步进入。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d O</code></td>
+<td>单步退出当前函数。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d r</code></td>
+<td>打开调试交互终端。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; d u</code></td>
+<td>显示或隐藏调试界面。</td>
+</tr>
+</tbody></table>
+<p>Python 调试：在 Python 文件中按 <code>&lt;Space&gt; d c</code>，选择 <code>Python: Launch file</code>（首次使用前 Mason 会自动安装 debugpy）。</p>
+<p>C/C++ 调试：在 C/C++ 文件中按 <code>&lt;Space&gt; d c</code>，选择 codelldb；CMake 项目可先按 <code>&lt;Space&gt; m d</code> 构建后调试。</p>
+<h3 id="C-C-构建"><a href="#C-C-构建" class="headerlink" title="C/C++ 构建"></a>C/C++ 构建</h3><p>这些命令假定当前项目使用 CMake，并在项目根目录的 <code>build/</code> 下构建。没有 CMake 的单个文件请用 <code>&lt;Space&gt; r f</code>。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; m b</code></td>
+<td>构建 C++ 项目。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; m r</code></td>
+<td>构建后运行检测到的可执行文件。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; m d</code></td>
+<td>构建后启动调试。</td>
+</tr>
+</tbody></table>
+<h3 id="Rust"><a href="#Rust" class="headerlink" title="Rust"></a>Rust</h3><p>以下快捷键只在 Rust 文件中可用。</p>
+<table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; r r</code></td>
+<td>运行可运行目标。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; r t</code></td>
+<td>选择并运行测试。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; r d</code></td>
+<td>选择可调试目标。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; r e</code></td>
+<td>解释当前错误。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; r c</code></td>
+<td>打开 <code>Cargo.toml</code>。</td>
+</tr>
+</tbody></table>
+<h2 id="十、任务、开关与工具"><a href="#十、任务、开关与工具" class="headerlink" title="十、任务、开关与工具"></a>十、任务、开关与工具</h2><h3 id="任务"><a href="#任务" class="headerlink" title="任务"></a>任务</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; r f</code></td>
+<td>运行当前文件（多语言）。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; o r</code></td>
+<td>选择并运行 Overseer 任务。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; o l</code></td>
+<td>打开或关闭任务列表。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; o o</code></td>
+<td>对当前任务执行快速操作。</td>
+</tr>
+</tbody></table>
+<h3 id="编辑开关与界面工具"><a href="#编辑开关与界面工具" class="headerlink" title="编辑开关与界面工具"></a>编辑开关与界面工具</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&lt;Space&gt; u s</code></td>
+<td>开启或关闭拼写检查。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; u w</code></td>
+<td>开启或关闭自动换行。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; u h</code></td>
+<td>开启或关闭当前缓冲区的行内类型提示。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; u u</code></td>
+<td>打开或关闭撤销树。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; n</code></td>
+<td>查看通知历史。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; l</code></td>
+<td>打开 Lazy 插件管理器。</td>
+</tr>
+<tr>
+<td><code>&lt;Space&gt; M</code></td>
+<td>打开 Mason 语言服务和工具管理器。</td>
+</tr>
+<tr>
+<td><code>Ctrl+\</code> 或 <code>&lt;Space&gt; t t</code></td>
+<td>打开或切换终端。</td>
+</tr>
+<tr>
+<td><code>&lt;Esc&gt;</code>（终端模式）</td>
+<td>退出终端输入模式；随后按 <code>Ctrl+\</code> 关闭终端。</td>
+</tr>
+</tbody></table>
+<h3 id="其他可用命令"><a href="#其他可用命令" class="headerlink" title="其他可用命令"></a>其他可用命令</h3><p>这些功能已安装但没有自定义单键映射，使用命令行模式 <code>:</code> 调用。</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>:CccPick</code></td>
+<td>打开颜色选择器。</td>
+</tr>
+<tr>
+<td><code>:MarkdownPreviewToggle</code>（或 <code>&lt;Space&gt; m p</code>）</td>
+<td>在浏览器中切换 Markdown 预览。</td>
+</tr>
+<tr>
+<td><code>:UndotreeToggle</code></td>
+<td>切换撤销树。</td>
+</tr>
+<tr>
+<td><code>:Trouble</code></td>
+<td>打开 Trouble 问题列表。</td>
+</tr>
+<tr>
+<td><code>:AerialToggle</code></td>
+<td>切换代码符号大纲。</td>
+</tr>
+<tr>
+<td><code>:DiffviewOpen</code></td>
+<td>打开 Git 差异视图。</td>
+</tr>
+<tr>
+<td><code>:OverseerRun</code></td>
+<td>运行任务。</td>
+</tr>
+</tbody></table>
+<h2 id="十一、推荐学习顺序"><a href="#十一、推荐学习顺序" class="headerlink" title="十一、推荐学习顺序"></a>十一、推荐学习顺序</h2><ol>
+<li>先练习：<code>i</code>、<code>jj</code>、方向键、<code>u</code>、<code>Ctrl+r</code>、<code>&lt;Space&gt;w</code>。</li>
+<li>然后练习文件流转：<code>&lt;Space&gt;e</code>、<code>Ctrl+i/j/k/l</code>、<code>Shift+Left/Right</code>、<code>&lt;Space&gt;bb</code>、<code>&lt;Space&gt;ff</code>。</li>
+<li>再练习代码阅读：<code>K</code>、<code>gd</code>、<code>Ctrl+o</code>、<code>gr</code>、<code>[d</code>、<code>]d</code>。</li>
+<li>开始写代码后使用：<code>&lt;Space&gt;ca</code>、<code>&lt;Space&gt;cr</code>、<code>&lt;Space&gt;cf</code>、补全的 <code>Ctrl+j/k</code>。</li>
+<li>最后按需要学习 Git、测试、调试、Tree-sitter 文本对象和任务系统。</li>
+</ol>
+<p>遇到不确定的功能时，先按 <code>&lt;Space&gt;</code> 看中文提示，或用 <code>&lt;Space&gt;fk</code> 搜索已注册快捷键。这个习惯比硬背整张表更有效。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/">https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/Neovim/">Neovim</a><a class="post-meta__tags" href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a><a class="post-meta__tags" href="/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/">快捷键</a></div><div class="post-share"><div class="social-share" data-image="/img/featureimages/3.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/" title="Arch Linux 私人软件仓库与构建体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Arch Linux 私人软件仓库与构建体系</div></div><div class="info-2"><div class="info-item-1">私人 Arch Linux 软件仓库的构建、测试、依赖传播与 pacman 仓库发布体系。</div></div></div></a><a class="pagination-related" href="/2026/08/17/nvim-pei-zhi/" title="Neovim 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/custom_1.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Neovim 配置</div></div><div class="info-2"><div class="info-item-1">基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/08/17/nvim-pei-zhi/" title="Neovim 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-17</div><div class="info-item-2">Neovim 配置</div></div><div class="info-2"><div class="info-item-1">基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</div></div></div></a><a class="pagination-related" href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/" title="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_3.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_3.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_3.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-20</div><div class="info-item-2">Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</div></div><div class="info-2"><div class="info-item-1">基于 ~/.local/bin 当前脚本体系整理的 Linux 媒体处理工具箱，覆盖转码、字幕、音频、图片、混流、质量分析与 Fish 集成。</div></div></div></a><a class="pagination-related" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_2.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-04</div><div class="info-item-2">Yazi 配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器插件生态全解，快捷键、主题、预览、与 Neovim/Fish 联动技巧。</div></div></div></a><a class="pagination-related" href="/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/" title="Arch Linux 私人软件仓库与构建体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/12.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-18</div><div class="info-item-2">Arch Linux 私人软件仓库与构建体系</div></div><div class="info-2"><div class="info-item-1">私人 Arch Linux 软件仓库的构建、测试、依赖传播与 pacman 仓库发布体系。</div></div></div></a><a class="pagination-related" href="/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/" title="CachyOS Fish 终端完全配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_0.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_0.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_0.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-23</div><div class="info-item-2">CachyOS Fish 终端完全配置指南</div></div><div class="info-2"><div class="info-item-1">基于当前本机 Fish 4.8 配置的完整终端工作流说明，覆盖 Starship、Atuin、Zoxide、fzf、abbr、媒体工具箱和系统集成。</div></div></div></a><a class="pagination-related" href="/2026/09/19/mpv-emo-gou-jian-zhi-nan/" title="mpv-Emo 构建与 Patch 体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/4.avif"><source type="image/webp" srcset="/img/optimized/featureimages/4.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/4.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-09-19</div><div class="info-item-2">mpv-Emo 构建与 Patch 体系</div></div><div class="info-2"><div class="info-item-1">mpv-Emo 的 Stable/Development 构建轨道、Patch series、mpv-full 基线和 Arch CI 验证体系。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">22</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">42</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+  <strong>正在做什么</strong>
+  <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
+  <a href="/now/">查看 Now →</a>
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Neovim-%E5%BF%AB%E6%8D%B7%E9%94%AE%E5%AD%A6%E4%B9%A0%E6%89%8B%E5%86%8C"><span class="toc-number">1.</span> <span class="toc-text">Neovim 快捷键学习手册</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E8%AE%B0%E4%BD%8F%E8%BF%99-12-%E4%B8%AA%E6%8C%89%E9%94%AE"><span class="toc-number">1.1.</span> <span class="toc-text">一、先记住这 12 个按键</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E8%AE%B0%E5%8F%B7%E4%B8%8E%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.</span> <span class="toc-text">二、记号与模式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E9%94%AE%E8%AE%B0%E5%8F%B7"><span class="toc-number">1.2.1.</span> <span class="toc-text">按键记号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B%E4%B8%AA%E6%9C%80%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.2.2.</span> <span class="toc-text">四个最常用模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%9D%E5%AD%98%E3%80%81%E9%80%80%E5%87%BA%E4%B8%8E%E7%BB%88%E7%AB%AF"><span class="toc-number">1.2.3.</span> <span class="toc-text">保存、退出与终端</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E6%97%A5%E5%B8%B8%E7%BC%96%E8%BE%91%E4%B8%8E%E5%8E%9F%E7%94%9F%E6%93%8D%E4%BD%9C"><span class="toc-number">1.3.</span> <span class="toc-text">三、日常编辑与原生操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8%E5%92%8C%E9%98%85%E8%AF%BB%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.1.</span> <span class="toc-text">光标移动和阅读文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E3%80%81%E5%88%A0%E9%99%A4%E3%80%81%E5%A4%8D%E5%88%B6%E4%B8%8E%E6%92%A4%E9%94%80"><span class="toc-number">1.3.2.</span> <span class="toc-text">输入、删除、复制与撤销</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E4%B8%8E%E6%89%B9%E9%87%8F%E7%BC%96%E8%BE%91"><span class="toc-number">1.3.3.</span> <span class="toc-text">选择与批量编辑</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E9%87%8A%E3%80%81%E7%8E%AF%E7%BB%95%E4%B8%8E%E5%BF%AB%E9%80%9F%E8%B7%B3%E8%BD%AC"><span class="toc-number">1.3.4.</span> <span class="toc-text">注释、环绕与快速跳转</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E6%96%87%E4%BB%B6%E3%80%81%E7%9B%AE%E5%BD%95%E4%B8%8E%E5%B7%B2%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6"><span class="toc-number">1.4.</span> <span class="toc-text">四、文件、目录与已打开文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E2%80%9C%E6%96%87%E4%BB%B6%E9%A1%B5%E9%9D%A2%E2%80%9D%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.4.1.</span> <span class="toc-text">三种“文件页面”的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86%E5%99%A8"><span class="toc-number">1.4.2.</span> <span class="toc-text">文件管理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%93%E5%86%B2%E5%8C%BA%EF%BC%9A%E9%A1%B6%E9%83%A8%E6%96%87%E4%BB%B6%E6%A0%8F"><span class="toc-number">1.4.3.</span> <span class="toc-text">缓冲区：顶部文件栏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vim-%E6%A0%87%E7%AD%BE%E9%A1%B5"><span class="toc-number">1.4.4.</span> <span class="toc-text">Vim 标签页</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%88%86%E5%B1%8F%E7%AA%97%E5%8F%A3%E4%B8%8E%E5%B0%BA%E5%AF%B8%E8%B0%83%E6%95%B4"><span class="toc-number">1.5.</span> <span class="toc-text">五、分屏窗口与尺寸调整</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E3%80%81%E5%85%B3%E9%97%AD%E4%B8%8E%E5%88%87%E6%8D%A2%E7%AA%97%E5%8F%A3"><span class="toc-number">1.5.1.</span> <span class="toc-text">创建、关闭与切换窗口</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E6%95%B4%E5%BD%93%E5%89%8D%E7%AA%97%E5%8F%A3%E5%A4%A7%E5%B0%8F"><span class="toc-number">1.5.2.</span> <span class="toc-text">调整当前窗口大小</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E6%9F%A5%E6%89%BE%E3%80%81%E6%90%9C%E7%B4%A2%E4%B8%8E%E8%B7%B3%E8%BD%AC"><span class="toc-number">1.6.</span> <span class="toc-text">六、查找、搜索与跳转</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E7%BA%A7%E6%9F%A5%E6%89%BE"><span class="toc-number">1.6.1.</span> <span class="toc-text">项目级查找</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6%E5%86%85%E6%90%9C%E7%B4%A2"><span class="toc-number">1.6.2.</span> <span class="toc-text">当前文件内搜索</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%83%E3%80%81%E4%BB%A3%E7%A0%81%E5%AF%BC%E8%88%AA%E3%80%81%E8%A1%A5%E5%85%A8%E4%B8%8E%E8%AF%8A%E6%96%AD"><span class="toc-number">1.7.</span> <span class="toc-text">七、代码导航、补全与诊断</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E5%AF%BC%E8%88%AA%E4%B8%8E%E4%BF%AE%E6%94%B9"><span class="toc-number">1.7.1.</span> <span class="toc-text">代码导航与修改</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AF%8A%E6%96%AD%E4%B8%8E%E9%97%AE%E9%A2%98%E5%88%97%E8%A1%A8"><span class="toc-number">1.7.2.</span> <span class="toc-text">诊断与问题列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8F%92%E5%85%A5%E6%A8%A1%E5%BC%8F%E8%A1%A5%E5%85%A8"><span class="toc-number">1.7.3.</span> <span class="toc-text">插入模式补全</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AB%E3%80%81Git%E3%80%81%E7%BB%93%E6%9E%84%E5%8C%96%E4%BB%A3%E7%A0%81%E4%B8%8E%E6%8A%98%E5%8F%A0"><span class="toc-number">1.8.</span> <span class="toc-text">八、Git、结构化代码与折叠</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-number">1.8.1.</span> <span class="toc-text">Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E3%80%81%E7%B1%BB%E4%B8%8E%E5%8F%82%E6%95%B0%E6%96%87%E6%9C%AC%E5%AF%B9%E8%B1%A1"><span class="toc-number">1.8.2.</span> <span class="toc-text">函数、类与参数文本对象</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%8F%A0"><span class="toc-number">1.8.3.</span> <span class="toc-text">折叠</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B9%9D%E3%80%81%E8%BF%90%E8%A1%8C%E3%80%81%E6%B5%8B%E8%AF%95%E3%80%81%E8%B0%83%E8%AF%95%E3%80%81%E6%9E%84%E5%BB%BA%E4%B8%8E-Rust"><span class="toc-number">1.9.</span> <span class="toc-text">九、运行、测试、调试、构建与 Rust</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%90%E8%A1%8C%E5%BD%93%E5%89%8D%E6%96%87%E4%BB%B6"><span class="toc-number">1.9.1.</span> <span class="toc-text">运行当前文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%9A%E8%AF%9D%E7%AE%A1%E7%90%86%EF%BC%88persistence-nvim%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">会话管理（persistence.nvim）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B5%8B%E8%AF%95"><span class="toc-number">1.9.3.</span> <span class="toc-text">测试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E8%AF%95"><span class="toc-number">1.9.4.</span> <span class="toc-text">调试</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#C-C-%E6%9E%84%E5%BB%BA"><span class="toc-number">1.9.5.</span> <span class="toc-text">C&#x2F;C++ 构建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Rust"><span class="toc-number">1.9.6.</span> <span class="toc-text">Rust</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E3%80%81%E4%BB%BB%E5%8A%A1%E3%80%81%E5%BC%80%E5%85%B3%E4%B8%8E%E5%B7%A5%E5%85%B7"><span class="toc-number">1.10.</span> <span class="toc-text">十、任务、开关与工具</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.10.1.</span> <span class="toc-text">任务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%BE%91%E5%BC%80%E5%85%B3%E4%B8%8E%E7%95%8C%E9%9D%A2%E5%B7%A5%E5%85%B7"><span class="toc-number">1.10.2.</span> <span class="toc-text">编辑开关与界面工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%8F%AF%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">1.10.3.</span> <span class="toc-text">其他可用命令</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E6%8E%A8%E8%8D%90%E5%AD%A6%E4%B9%A0%E9%A1%BA%E5%BA%8F"><span class="toc-number">1.11.</span> <span class="toc-text">十一、推荐学习顺序</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/" title="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_3.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_3.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系" loading='lazy'/ decoding="async" src="/img/featureimages/custom_3.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/" title="Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系">Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</a><time datetime="2026-09-20T00:00:00.000Z" title="发表于 2026-09-20 00:00:00">2026-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/20/voicefox-shi-yong-zhi-nan/" title="voicefox 使用与功能指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/7.avif"><source type="image/webp" srcset="/img/optimized/featureimages/7.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="voicefox 使用与功能指南" loading='lazy'/ decoding="async" src="/img/featureimages/7.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/20/voicefox-shi-yong-zhi-nan/" title="voicefox 使用与功能指南">voicefox 使用与功能指南</a><time datetime="2026-09-20T00:00:00.000Z" title="发表于 2026-09-20 00:00:00">2026-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/20/voicefox-pei-zhi-zhi-nan/" title="voicefox 配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/18.avif"><source type="image/webp" srcset="/img/optimized/featureimages/18.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="voicefox 配置指南" loading='lazy'/ decoding="async" src="/img/featureimages/18.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/20/voicefox-pei-zhi-zhi-nan/" title="voicefox 配置指南">voicefox 配置指南</a><time datetime="2026-09-20T00:00:00.000Z" title="发表于 2026-09-20 00:00:00">2026-09-20</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/19/mpv-emo-gou-jian-zhi-nan/" title="mpv-Emo 构建与 Patch 体系"><picture><source type="image/avif" srcset="/img/optimized/featureimages/4.avif"><source type="image/webp" srcset="/img/optimized/featureimages/4.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="mpv-Emo 构建与 Patch 体系" loading='lazy'/ decoding="async" src="/img/featureimages/4.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/19/mpv-emo-gou-jian-zhi-nan/" title="mpv-Emo 构建与 Patch 体系">mpv-Emo 构建与 Patch 体系</a><time datetime="2026-09-19T00:00:00.000Z" title="发表于 2026-09-19 00:00:00">2026-09-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/" title="voicefox：Rust 终端音乐播放器"><picture><source type="image/avif" srcset="/img/optimized/featureimages/20.avif"><source type="image/webp" srcset="/img/optimized/featureimages/20.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="voicefox：Rust 终端音乐播放器" loading='lazy'/ decoding="async" src="/img/featureimages/20.jpg"></picture></a><div class="content"><a class="title" href="/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/" title="voicefox：Rust 终端音乐播放器">voicefox：Rust 终端音乐播放器</a><time datetime="2026-09-19T00:00:00.000Z" title="发表于 2026-09-19 00:00:00">2026-09-19</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners and stale content before re-rendering
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      const oldError = item.querySelector('.mermaid-error')
+      if (oldError) oldError.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (theme in value) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const destroyChart = canvas => {
+    const chart = canvas && window.Chart && Chart.getChart(canvas)
+    if (chart) chart.destroy()
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, destroy its chart and remove it to avoid rendering duplicates
+      if (existingCanvas) {
+        destroyChart(existingCanvas)
+        existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Destroy all charts before navigating away to avoid leaks
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    document.querySelectorAll('.chartjs-wrap canvas').forEach(destroyChart)
+  }, 'chartjs')
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><script src="/js/custom.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox]):not([href="/music/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.1.260810"></script></div></div></body></html>

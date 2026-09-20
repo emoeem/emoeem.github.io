@@ -2,6 +2,24 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://emoeem.github.io/music/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/now/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/projects/pkgbuild/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
@@ -11,7 +29,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/projects/voicefox/index.html</loc>
+    <loc>https://emoeem.github.io/projects/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -29,7 +47,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/timeline/index.html</loc>
+    <loc>https://emoeem.github.io/projects/voicefox/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -39,6 +57,15 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/timeline/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -65,34 +92,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/music/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/now/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/projects/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/contact/index.html</loc>
+    <loc>https://emoeem.github.io/about/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -102,6 +102,15 @@
   
   <url>
     <loc>https://emoeem.github.io/categories/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/contact/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -128,25 +137,16 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/about/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://emoeem.github.io/2026/06/26/2026-06-26/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/27/2026-06-27-ri-ji/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -173,6 +173,24 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/2026/07/16/4-3-slice-lei-xing/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/</loc>
     
     <lastmod>2026-09-20</lastmod>
@@ -182,7 +200,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/2026/07/16/4-3-slice-lei-xing/</loc>
+    <loc>https://emoeem.github.io/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -218,6 +236,15 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/2026/09/19/mpv-emo-gou-jian-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</loc>
     
     <lastmod>2026-09-20</lastmod>
@@ -227,7 +254,52 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/2026/08/17/nvim-pei-zhi/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -254,16 +326,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/2026/06/27/2026-06-27-ri-ji/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</loc>
+    <loc>https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -339,7 +402,14 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/tags/Linux/</loc>
+    <loc>https://emoeem.github.io/tags/Slice/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/Arch-Linux/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -347,6 +417,27 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/CachyOS/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/PKGBUILD/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/CI/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/Linux/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -367,7 +458,28 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/tags/Slice/</loc>
+    <loc>https://emoeem.github.io/tags/FFmpeg/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/fzf/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/Shell/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/%E5%AA%92%E4%BD%93%E5%A4%84%E7%90%86/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -382,13 +494,6 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/%E6%8F%92%E4%BB%B6/</loc>
-    <lastmod>2026-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/tags/Shell/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -430,6 +535,13 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/tags/Omniphony/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -451,6 +563,55 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/voicefox/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/TUI/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/Whisper/</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/tags/%E6%96%87%E4%BB%B6%E7%AE%A1%E7%90%86/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -466,13 +627,6 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/%E7%A4%BE%E4%BC%9A%E8%A7%82%E5%AF%9F/</loc>
-    <lastmod>2026-09-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/tags/Whisper/</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
