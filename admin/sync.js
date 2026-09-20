@@ -23,7 +23,6 @@ function configFor(f){
   return S.configs[f.path];
 }
 async function discover(url){
-  if(!token())throw Error('请先在「设置」配置 GitHub Token');
   const parsed=parseGithubUrl(url),found=await scanRepository(api,parsed);
   S.repo={owner:parsed.owner,repo:parsed.repo,branch:found.branch,name:found.info.full_name,description:found.info.description||'',topics:Array.isArray(found.info.topics)?found.info.topics:[]};
   const rs=repoState();rs.branch=found.branch;
