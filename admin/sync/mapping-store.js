@@ -16,7 +16,7 @@ export function createMappingStore({api,encode,decode}){
       const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-repositories.json');
       if(r){repositories=JSON.parse(decode(r.content));repoSha=r.sha;repoSnapshot=JSON.stringify(repositories,null,2)+'\n'}
     }catch{}
-    for(const m of mappings){if(m.owner&&m.repo)ensureRepository({owner:m.owner,repo:m.repo,branch:m.branch||'main'})}
+    for(const m of mappings){if(m.owner&&m.repo){const r=ensureRepository({owner:m.owner,repo:m.repo,branch:m.branch||'main'});if(!r.documents[m.path])r.documents[m.path]={path:m.path,title:m.name,mapped:true,status:'mapped',lastSeen:m.lastVerified||null}}}
     cache();return {mappings,repositories};
   }
   async function put(path,data,sha,message){
@@ -42,10 +42,11 @@ export function createMappingStore({api,encode,decode}){
   function find(owner,repo,path){return mappings.find(x=>x.owner===owner&&x.repo===repo&&x.path===path)}
   function upsert(m){const i=mappings.findIndex(x=>x.id===m.id);if(i<0)mappings.push(m);else mappings[i]=m}
   function remove(id){mappings=mappings.filter(x=>x.id!==id)}
+  function removeRepository(key){delete repositories[key]}
   function upsertDocument(repo,path,doc={}){const r=ensureRepository(repo);r.documents[path]={...(r.documents[path]||{}),path,...doc};return r.documents[path]}
   function getDocument(repo,path){return repositories[repoKey(repo)]?.documents?.[path]||null}
   function removeDocument(repo,path){const r=repositories[repoKey(repo)];if(r?.documents)delete r.documents[path]}
-  return {load,save,ensureRepository,find,upsert,remove,upsertDocument,getDocument,removeDocument,repoKey,get mappings(){return mappings},get repositories(){return repositories}};
+  return {load,save,ensureRepository,find,upsert,remove,removeRepository,upsertDocument,getDocument,removeDocument,repoKey,get mappings(){return mappings},get repositories(){return repositories}};
 }
 export function mappingId(owner,repo,path){
   return 'github-'+owner+'-'+repo+'-'+path.replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();

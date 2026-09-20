@@ -1,5 +1,6 @@
 export function createGithubApi() {
   const etags=new Map(JSON.parse(localStorage.getItem('blog_sync_etags')||'[]')); const payloads=new Map(JSON.parse(localStorage.getItem('blog_sync_payloads')||'[]'));
+  const state={online:true,lastSuccessAt:null,lastError:null,cacheHits:0,usingCache:false};
   const save=()=>{localStorage.setItem('blog_sync_etags',JSON.stringify([...etags]));localStorage.setItem('blog_sync_payloads',JSON.stringify([...payloads]));};
   const request=async(path,method='GET',body)=>{
     const headers={Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
@@ -7,16 +8,24 @@ export function createGithubApi() {
     const key=method+':'+path;
     if(method==='GET'&&etags.has(key)) headers['If-None-Match']=etags.get(key);
     const base=window.ADMIN_API_BASE||'';
-    const r=await fetch(base+'/api/github?path='+encodeURIComponent(path),{method,headers,credentials:'include',body:body?JSON.stringify(body):undefined});
-    if(r.status===304)return payloads.get(key)||null;
+    let r;try{r=await fetch(base+'/api/github?path='+encodeURIComponent(path),{method,headers,credentials:'include',body:body?JSON.stringify(body):undefined})}catch(e){state.online=false;state.usingCache=true;state.lastError=e.message;throw e}
+    if(r.status===304){state.online=true;state.cacheHits++;state.usingCache=true;return payloads.get(key)||null;}
     if(r.headers.get('etag')&&method==='GET')etags.set(key,r.headers.get('etag'));
-    if(!r.ok){let e={};try{e=await r.json()}catch{};const reset=r.headers.get('x-ratelimit-reset');
+    state.online=true;state.usingCache=false;state.lastSuccessAt=new Date().toISOString();state.lastError=null;
+    if(!r.ok){state.online=true;state.lastError=r.status+' '+r.statusText;let e={};try{e=await r.json()}catch{};const reset=r.headers.get('x-ratelimit-reset');
       throw Error((e.message||r.status+' '+r.statusText)+(reset?' · rate reset '+new Date(+reset*1000).toLocaleTimeString():''));}
     if(r.status===204)return null; const data=await r.json(); if(method==='GET'){payloads.set(key,data);save()} return data;
   };
   const encode=s=>btoa(String.fromCharCode(...new TextEncoder().encode(s)));
   const decode=s=>{const b=Uint8Array.from(atob(s.replace(/\n/g,'')),c=>c.charCodeAt(0));return new TextDecoder().decode(b)};
-  return {request,encode,decode};
+  const resolvePermalinks=async items=>{
+    const r=await fetch((window.ADMIN_API_BASE||'')+'/api/permalink',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({items})});
+    const data=await r.json().catch(()=>({message:'Invalid permalink API response'}));
+    if(!r.ok)throw Error(data.message||r.status+' '+r.statusText);
+    return data.items||[];
+  };
+  const status=()=>({...state}); const setUsingCache=v=>{state.usingCache=!!v};
+  return {request,encode,decode,resolvePermalinks,status,setUsingCache};
 }
 export function parseGithubUrl(input){
   const u=input.trim().replace(/\.git$/,'').replace(/\/$/,'');
