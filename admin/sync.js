@@ -10,7 +10,7 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&
 const api=createGithubApi();
 const store=createMappingStore({api,encode:api.encode,decode:api.decode});
 const engine=createSyncEngine({api,store});
-const S={repo:null,tree:[],selected:new Set(),open:new Set(),active:null,configs:{},results:[],running:false};
+const S={repo:null,tree:[],selected:new Set(),open:new Set(),active:null,configs:{},results:[],running:false,detailToken:0};
 
 function toast(t,type='success'){if(window.toast)window.toast(t,type);else console[type==='error'?'error':'log'](t)}
 function defaultTarget(title){return 'source/_posts/'+String(title).toLowerCase().replace(/[^\w\u4e00-\u9fff-]+/g,'-').replace(/^-+|-+$/g,'')+'.md'}
@@ -29,10 +29,9 @@ async function discover(url){
   for(const f of found.tree.filter(x=>x.type==='blob'&&isMarkdown(x.path)&&!excludedDir(x.path))){
     const old=store.find(S.repo.owner,S.repo.repo,f.path),registry=store.getDocument(S.repo,f.path);
     const title=registry?.title||old?.metadata?.title||f.path.split('/').pop().replace(/\.md$/i,'');
-    store.upsertDocument(S.repo,f.path,{title,sha:f.sha,size:f.size,ignored:rs.ignoredPaths.includes(f.path)||ignoredByDefault(f.path),mapped:!!old,lastSeen:new Date().toISOString()});
+    const ignored=rs.ignoredPaths.includes(f.path)||ignoredByDefault(f.path),mapped=!!old;const nextDoc={title,sha:f.sha,size:f.size,ignored,mapped,status:ignored?'ignored':mapped?'mapped':'unmapped'};if(!registry||registry.sha!==f.sha)nextDoc.lastSeen=new Date().toISOString();store.upsertDocument(S.repo,f.path,nextDoc);
     docs.push({...f,title,body:'',meta:{},existing:old,ignored:rs.ignoredPaths.includes(f.path)||ignoredByDefault(f.path)});
   }
-  rs.lastScan=new Date().toISOString();
   await store.save();
   S.tree=docs;S.selected=new Set(docs.filter(x=>x.existing&&!x.ignored).map(x=>x.path));
   S.active=docs[0]?.path||null;render();
@@ -78,10 +77,11 @@ function renderTree(){
   v.querySelectorAll('.folder-check').forEach(x=>{const s=folderState(x.dataset.folder);x.indeterminate=s==='partial'});
 }
 async function renderDetails(){
-  const v=$('sync-details'),f=S.tree.find(x=>x.path===S.active);if(!v)return;
+  const token=++S.detailToken;const v=$('sync-details'),f=S.tree.find(x=>x.path===S.active);if(!v)return;
   if(!f){v.innerHTML='<div class="sync-empty">选择一个 Markdown 查看配置</div>';return}
   const c=configFor(f);
   if(!f.body){try{const r=await api.request('repos/'+S.repo.owner+'/'+S.repo.repo+'/contents/'+f.path+'?ref='+encodeURIComponent(S.repo.branch));f.body=api.decode(r.content);const fm=parseFrontMatter(f.body);f.meta=fm.meta;f.title=titleFromDocument(f.path,fm.body,fm.meta)}catch(e){f.body='';}}
+  if(token!==S.detailToken)return;
   const refs=parseReferences(f.body);
   const missing=refs.links.filter(x=>/\.md(?:#|$)/i.test(x.url)).map(x=>x.url).filter(url=>{
     const clean=url.split('#')[0].split('?')[0],target=S.tree.find(x=>x.path.endsWith('/'+clean)||x.path===clean);return !target||(!target.existing&&!S.selected.has(target.path));
@@ -119,7 +119,7 @@ function deletedMappings(){
 }
 async function checkAll(){
   if(S.running)return;S.running=true;renderButtons();
-  try{const results=[];for(const repo of Object.values(store.repositories)){const r=await engine.checkRepository(repo,store.mappings);results.push(...r.out);repo.lastScan=new Date().toISOString();for(const f of (r.scan.tree||[]).filter(x=>x.type==='blob'&&isMarkdown(x.path)&&!excludedDir(x.path))){store.upsertDocument(repo,f.path,{sha:f.sha,size:f.size,lastSeen:repo.lastScan,mapped:!!store.find(repo.owner,repo.repo,f.path)})}}S.results=results;for(const r of results){const m=store.mappings.find(x=>x.id===r.id);if(m){m.syncStatus=r.status;if(r.commit)m.syncCommit=r.commit;if(r.date)m.lastVerified=r.date}}await store.save()}catch(e){toast('检查全部失败：'+e.message,'error')}finally{S.running=false;render()}
+  try{const results=[];for(const repo of Object.values(store.repositories)){const r=await engine.checkRepository(repo,store.mappings);results.push(...r.out);for(const f of (r.scan.tree||[]).filter(x=>x.type==='blob'&&isMarkdown(x.path)&&!excludedDir(x.path))){const prior=store.getDocument(repo,f.path);const mapped=!!store.find(repo.owner,repo.repo,f.path);const ignored=store.getDocument(repo,f.path)?.ignored===true;const nextDoc={sha:f.sha,size:f.size,mapped,status:ignored?'ignored':mapped?'mapped':'unmapped'};if(!prior||prior.sha!==f.sha)nextDoc.lastSeen=new Date().toISOString();store.upsertDocument(repo,f.path,nextDoc)}}S.results=results;for(const r of results){const m=store.mappings.find(x=>x.id===r.id);if(m){m.syncStatus=r.status;if(r.commit)m.syncCommit=r.commit;if(r.date)m.lastVerified=r.date}}await store.save()}catch(e){toast('检查全部失败：'+e.message,'error')}finally{S.running=false;render()}
 }
 async function syncAll(){
   if(S.running)return;S.running=true;renderButtons();
@@ -139,7 +139,7 @@ async function deleteMapping(id){
   if(!confirm('删除同步映射？不会删除现有博客文章。'))return;
   store.remove(id);try{await store.save();toast('同步映射已删除')}catch(e){toast('本地已删除，但写回 GitHub 失败：'+e.message,'error')}render();
 }
-function statusText(s){return {synced:'已同步',unchanged:'已是最新',changed:'有更新','local-modified':'本地有修改','source-deleted':'源文件已删除',error:'失败',new:'未导入'}[s]||'待检查'}
+function statusText(s){return {synced:'已同步',unchanged:'已是最新',changed:'有更新',conflict:'同步冲突','local-modified':'本地有修改','source-deleted':'源文件已删除',unmapped:'未建立映射',error:'失败',new:'未导入'}[s]||'待检查'}
 function statusClass(s){return s||'new'}
 function renderButtons(){['discoverBtn','checkAllBtn','syncAllBtn','establishBtn'].forEach(id=>{const b=$(id);if(b)b.disabled=S.running})}
 function renderDiscovery(){
@@ -159,12 +159,15 @@ function renderDiscovery(){
 function renderMappings(){
   const list=store.mappings.map(m=>{
     const r=S.results.find(x=>x.id===m.id)||{status:m.syncStatus||'new',commit:m.syncCommit,date:m.lastVerified};
-    const actions=r.status==='local-modified'?'<button data-force="'+esc(m.id)+'">覆盖本地</button>':'<button data-sync="'+esc(m.id)+'">立即同步</button>';
+    const actions=(r.status==='local-modified'||r.status==='conflict')?'<button data-force="'+esc(m.id)+'">覆盖本地</button>':'<button data-sync="'+esc(m.id)+'">立即同步</button>';
     return '<article class="sync-card"><div class="sync-main"><div><span class="sync-kicker">'+esc(m.owner+'/'+m.repo)+'</span><h3>'+esc(m.name)+'</h3><p>'+esc(m.path)+' → '+esc(m.target)+'</p></div><span class="sync-status '+statusClass(r.status)+'">'+statusText(r.status)+'</span></div><div class="sync-meta"><span>commit: <code>'+esc((r.commit||'—').slice(0,12))+'</code></span><span>lastVerified: '+esc(r.date||'—')+'</span></div><div class="sync-actions"><button class="secondary" data-check="'+esc(m.id)+'">检查</button>'+actions+'<button class="text-btn" data-del="'+esc(m.id)+'">删除映射</button></div></article>';
   }).join('');
+  const unmapped=S.results.filter(r=>r.status==='unmapped');
+  const unmappedHtml=unmapped.map(r=>'<article class="sync-card unmapped-card"><div class="sync-main"><div><span class="sync-kicker">'+esc(r.owner+'/'+r.repo)+'</span><h3>'+esc(r.name)+'</h3><p>'+esc(r.path)+'</p></div><span class="sync-status unmapped">未建立映射</span></div><div class="sync-actions"><button class="secondary" data-discover-path="'+esc(r.owner+'/'+r.repo+'/'+r.path)+'">去仓库检索并建立映射</button></div></article>').join('');
   const deleted=deletedMappings().filter(m=>!S.results.find(x=>x.id===m.id));
   const delHtml=deleted.map(m=>'<article class="sync-card deleted-card"><div><strong>⚠ 源文件已删除</strong><p>'+esc(m.owner+'/'+m.repo+'/'+m.path)+' → '+esc(m.target)+'</p></div><div class="sync-actions"><button class="secondary" data-del="'+esc(m.id)+'">停止同步（保留文章）</button></div></article>').join('');
-  $('sync-list').innerHTML=delHtml+list;
+  $('sync-list').innerHTML=unmappedHtml+delHtml+list;
+  document.querySelectorAll('[data-discover-path]').forEach(b=>b.onclick=()=>{const parts=b.dataset.discoverPath.split('/');discover('https://github.com/'+parts[0]+'/'+parts[1]).catch(e=>toast(e.message,'error'))});
   document.querySelectorAll('[data-check]').forEach(b=>b.onclick=()=>checkMapping(b.dataset.check));
   document.querySelectorAll('[data-sync]').forEach(b=>b.onclick=()=>syncOne(b.dataset.sync));
   document.querySelectorAll('[data-force]').forEach(b=>b.onclick=()=>{if(confirm('确认用 GitHub 源文档覆盖博客本地修改？'))syncOne(b.dataset.force,true)});

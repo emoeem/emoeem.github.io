@@ -2,7 +2,7 @@ const MAP_KEY='blog_sync_mappings_v2';
 const REPO_KEY='blog_sync_repositories_v2';
 
 export function createMappingStore({api,encode,decode}){
-  let mappings=[],repositories={},mapSha=null,repoSha=null;
+  let mappings=[],repositories={},mapSha=null,repoSha=null,mapSnapshot='',repoSnapshot='';
   const local=()=>{try{mappings=JSON.parse(localStorage.getItem(MAP_KEY)||'[]')}catch{mappings=[]}
     try{repositories=JSON.parse(localStorage.getItem(REPO_KEY)||'{}')}catch{repositories={}}};
   const cache=()=>{localStorage.setItem(MAP_KEY,JSON.stringify(mappings));localStorage.setItem(REPO_KEY,JSON.stringify(repositories))};
@@ -10,11 +10,11 @@ export function createMappingStore({api,encode,decode}){
     local();
     try{
       const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-mappings.json');
-      if(r){mappings=JSON.parse(decode(r.content));mapSha=r.sha}
+      if(r){mappings=JSON.parse(decode(r.content));mapSha=r.sha;mapSnapshot=JSON.stringify(mappings,null,2)+'\n'}
     }catch{}
     try{
       const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-repositories.json');
-      if(r){repositories=JSON.parse(decode(r.content));repoSha=r.sha}
+      if(r){repositories=JSON.parse(decode(r.content));repoSha=r.sha;repoSnapshot=JSON.stringify(repositories,null,2)+'\n'}
     }catch{}
     for(const m of mappings){if(m.owner&&m.repo)ensureRepository({owner:m.owner,repo:m.repo,branch:m.branch||'main'})}
     cache();return {mappings,repositories};
@@ -25,10 +25,11 @@ export function createMappingStore({api,encode,decode}){
     return api.request('repos/emoeem/blog-source/contents/'+path,'PUT',body);
   }
   async function save(){
-    const a=await put('source/_data/sync-mappings.json',mappings,mapSha,'chore: update sync mappings');
-    mapSha=a?.content?.sha||a?.sha||mapSha;
-    const b=await put('source/_data/sync-repositories.json',repositories,repoSha,'chore: update sync repositories');
-    repoSha=b?.content?.sha||b?.sha||repoSha;cache();
+    const nextMap=JSON.stringify(mappings,null,2)+'\n';
+    const nextRepo=JSON.stringify(repositories,null,2)+'\n';
+    if(nextMap!==mapSnapshot){const a=await put('source/_data/sync-mappings.json',mappings,mapSha,'chore: update sync mappings');mapSha=a?.content?.sha||a?.sha||mapSha;mapSnapshot=nextMap}
+    if(nextRepo!==repoSnapshot){const b=await put('source/_data/sync-repositories.json',repositories,repoSha,'chore: update sync repositories');repoSha=b?.content?.sha||b?.sha||repoSha;repoSnapshot=nextRepo}
+    cache();
   }
   function repoKey(r){return r.owner+'/'+r.repo}
   function ensureRepository(repo){

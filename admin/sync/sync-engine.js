@@ -30,14 +30,14 @@ export function createSyncEngine({api,store}){
   async function inspect(m){
     const old=await getTarget(m.target); let src;
     try{src=await getSource(m)}catch(e){if(/404|not found/i.test(String(e.message)))return {...m,status:'source-deleted'};throw e}
-    if(old){const parsed=parseFrontMatter(api.decode(old.content)); if(parsed.meta.syncContentHash){const h=await sha256(parsed.body);if(h!==parsed.meta.syncContentHash)return {...m,status:'local-modified',commit:src.commit,date:src.date}} if(parsed.meta.syncCommit===src.commit)return {...m,status:'unchanged',commit:src.commit,date:src.date}}
+    if(old){const parsed=parseFrontMatter(api.decode(old.content)); if(parsed.meta.syncContentHash){const h=await sha256(parsed.body);if(h!==parsed.meta.syncContentHash)return {...m,status:parsed.meta.syncCommit===src.commit?'local-modified':'conflict',commit:src.commit,date:src.date}} if(parsed.meta.syncCommit===src.commit)return {...m,status:'unchanged',commit:src.commit,date:src.date}}
     return {...m,status:'changed',commit:src.commit,date:src.date};
   }
   async function syncOne(m,force=false){
     const old=await getTarget(m.target); let src;
     try{src=await getSource(m)}catch(e){if(/404|not found/i.test(String(e.message)))return {...m,status:'source-deleted'};throw e}
     const oldParsed=old?parseFrontMatter(api.decode(old.content)):null;
-    if(oldParsed?.meta.syncContentHash&&!force){const h=await sha256(oldParsed.body);if(h!==oldParsed.meta.syncContentHash)return {...m,status:'local-modified',commit:src.commit,date:src.date}}
+    if(oldParsed?.meta.syncContentHash&&!force){const h=await sha256(oldParsed.body);if(h!==oldParsed.meta.syncContentHash)return {...m,status:oldParsed.meta.syncCommit===src.commit?'local-modified':'conflict',commit:src.commit,date:src.date}}
     if(oldParsed?.meta.syncCommit===src.commit)return {...m,status:'unchanged',commit:src.commit,date:src.date};
     const parsed=parseFrontMatter(src.content),refs=parseReferences(parsed.body); let body=parsed.body;
     for(const link of refs.links){if(!isMarkdownReference(link.url)||(link.url.startsWith('http://')||link.url.startsWith('https://')))continue;const tp=resolveRelative(m.path,link.url.split('#')[0].split('?')[0]),tm=store.find(m.owner,m.repo,tp);if(!tm)continue;const tf=await getTarget(tm.target);if(!tf)continue;const tfm=parseFrontMatter(api.decode(tf.content)),d=String(tfm.meta.date||'').slice(0,10).replaceAll('-','/'),u=tfm.meta.permalink||('/'+d+'/'+slug(tfm.meta.title||tm.name)+'/');body=body.split(link.url).join(u+(link.url.includes('#')?'#'+link.url.split('#')[1]:''))}
@@ -45,7 +45,7 @@ export function createSyncEngine({api,store}){
     const meta={...(oldParsed?.meta||{}),...(m.metadata||{}),title:m.metadata?.title||parsed.meta.title||m.name,syncSource:m.owner+'/'+m.repo,syncPath:m.path,syncBranch:m.branch,syncCommit:src.commit,lastVerified:src.date,syncContentHash:await sha256(body),syncLinkCount:refs.links.length,syncImageCount:refs.images.length};
     const content=dumpFrontMatter(meta)+body.replace(/^\n+/,'');const put={message:'sync: '+meta.title,content:api.encode(content),branch:'main'};if(old)put.sha=old.sha;await api.request('repos/emoeem/blog-source/contents/'+m.target,'PUT',put);return {...m,status:'synced',commit:src.commit,date:src.date};
   }
-  async function checkRepository(repo,mappings){const scan=await scanRepository(api,repo),paths=new Set((scan.tree||[]).filter(x=>x.type==='blob').map(x=>x.path)),relevant=mappings.filter(m=>m.owner===repo.owner&&m.repo===repo.repo),out=[];for(const m of relevant){if(!paths.has(m.path)){out.push({...m,status:'source-deleted'});continue}try{out.push(await inspect(m))}catch(e){out.push({...m,status:'error',error:e.message})}}return {scan,out}}
+  async function checkRepository(repo,mappings){const scan=await scanRepository(api,repo),blobs=(scan.tree||[]).filter(x=>x.type==='blob'),paths=new Set(blobs.map(x=>x.path)),relevant=mappings.filter(m=>m.owner===repo.owner&&m.repo===repo.repo),out=[];for(const m of relevant){if(!paths.has(m.path)){out.push({...m,status:'source-deleted'});continue}try{out.push(await inspect(m))}catch(e){out.push({...m,status:'error',error:e.message})}}const mapped=new Set(relevant.map(m=>m.path));for(const f of blobs.filter(x=>/\.md$/i.test(x.path)&&!(/(^|\/)(node_modules|vendor|dist|build|target)\//i.test(x.path))))if(!mapped.has(f.path))out.push({owner:repo.owner,repo:repo.repo,branch:repo.branch,path:f.path,name:f.path.split('/').pop(),status:'unmapped',sha:f.sha,size:f.size});return {scan,out}}
   async function syncAll(list,checkOnly=false){
     const out=[];
     for(const m of list.filter(x=>x.enabled!==false)){
