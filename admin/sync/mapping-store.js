@@ -1,21 +1,11 @@
 const MAP_KEY='blog_sync_mappings_v2';
-const REPO_KEY='blog_sync_repositories_v1';
+const REPO_KEY='blog_sync_repositories_v2';
 
 export function createMappingStore({api,encode,decode}){
   let mappings=[],repositories={},mapSha=null,repoSha=null;
   const local=()=>{try{mappings=JSON.parse(localStorage.getItem(MAP_KEY)||'[]')}catch{mappings=[]}
     try{repositories=JSON.parse(localStorage.getItem(REPO_KEY)||'{}')}catch{repositories={}}};
   const cache=()=>{localStorage.setItem(MAP_KEY,JSON.stringify(mappings));localStorage.setItem(REPO_KEY,JSON.stringify(repositories))};
-  async function load(){
-    local();
-    try{const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-mappings.json');
-      if(r){mappings=JSON.parse(decode(r.content));mapSha=r.sha}
-    }catch{}
-    try{const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-repositories.json');
-      if(r){repositories=JSON.parse(decode(r.content));repoSha=r.sha}
-    }catch{}
-    cache();return {mappings,repositories};
-  }
   async function load(){
     local();
     try{
@@ -26,6 +16,7 @@ export function createMappingStore({api,encode,decode}){
       const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-repositories.json');
       if(r){repositories=JSON.parse(decode(r.content));repoSha=r.sha}
     }catch{}
+    for(const m of mappings){if(m.owner&&m.repo)ensureRepository({owner:m.owner,repo:m.repo,branch:m.branch||'main'})}
     cache();return {mappings,repositories};
   }
   async function put(path,data,sha,message){
@@ -42,14 +33,18 @@ export function createMappingStore({api,encode,decode}){
   function repoKey(r){return r.owner+'/'+r.repo}
   function ensureRepository(repo){
     const k=repoKey(repo);
-    if(!repositories[k])repositories[k]={owner:repo.owner,repo:repo.repo,branch:repo.branch||'main',ignoredPaths:[],topicMap:{}};
+    if(!repositories[k])repositories[k]={owner:repo.owner,repo:repo.repo,branch:repo.branch||'main',ignoredPaths:[],topicMap:{},documents:{},lastScan:null};
+    repositories[k].documents ||= {}; repositories[k].ignoredPaths ||= [];
     if(repo.branch)repositories[k].branch=repo.branch;
     return repositories[k];
   }
   function find(owner,repo,path){return mappings.find(x=>x.owner===owner&&x.repo===repo&&x.path===path)}
   function upsert(m){const i=mappings.findIndex(x=>x.id===m.id);if(i<0)mappings.push(m);else mappings[i]=m}
   function remove(id){mappings=mappings.filter(x=>x.id!==id)}
-  return {load,save,ensureRepository,find,upsert,remove,repoKey,get mappings(){return mappings},get repositories(){return repositories}};
+  function upsertDocument(repo,path,doc={}){const r=ensureRepository(repo);r.documents[path]={...(r.documents[path]||{}),path,...doc};return r.documents[path]}
+  function getDocument(repo,path){return repositories[repoKey(repo)]?.documents?.[path]||null}
+  function removeDocument(repo,path){const r=repositories[repoKey(repo)];if(r?.documents)delete r.documents[path]}
+  return {load,save,ensureRepository,find,upsert,remove,upsertDocument,getDocument,removeDocument,repoKey,get mappings(){return mappings},get repositories(){return repositories}};
 }
 export function mappingId(owner,repo,path){
   return 'github-'+owner+'-'+repo+'-'+path.replace(/[^a-zA-Z0-9]+/g,'-').replace(/^-|-$/g,'').toLowerCase();

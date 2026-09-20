@@ -27,10 +27,13 @@ async function discover(url){
   const rs=repoState();rs.branch=found.branch;
   const docs=[];
   for(const f of found.tree.filter(x=>x.type==='blob'&&isMarkdown(x.path)&&!excludedDir(x.path))){
-    let body='';try{const r=await api.request('repos/'+S.repo.owner+'/'+S.repo.repo+'/contents/'+f.path+'?ref='+encodeURIComponent(found.branch));body=api.decode(r.content)}catch{}
-    const fm=parseFrontMatter(body),old=store.find(S.repo.owner,S.repo.repo,f.path);
-    docs.push({...f,title:titleFromDocument(f.path,fm.body,fm.meta),body,meta:fm.meta,existing:old,ignored:rs.ignoredPaths.includes(f.path)||ignoredByDefault(f.path)});
+    const old=store.find(S.repo.owner,S.repo.repo,f.path),registry=store.getDocument(S.repo,f.path);
+    const title=registry?.title||old?.metadata?.title||f.path.split('/').pop().replace(/\.md$/i,'');
+    store.upsertDocument(S.repo,f.path,{title,sha:f.sha,size:f.size,ignored:rs.ignoredPaths.includes(f.path)||ignoredByDefault(f.path),mapped:!!old,lastSeen:new Date().toISOString()});
+    docs.push({...f,title,body:'',meta:{},existing:old,ignored:rs.ignoredPaths.includes(f.path)||ignoredByDefault(f.path)});
   }
+  rs.lastScan=new Date().toISOString();
+  await store.save();
   S.tree=docs;S.selected=new Set(docs.filter(x=>x.existing&&!x.ignored).map(x=>x.path));
   S.active=docs[0]?.path||null;render();
 }
@@ -74,10 +77,12 @@ function renderTree(){
   v.querySelectorAll('[data-folder]').forEach(x=>{x.onclick=e=>e.stopPropagation();x.onchange=e=>toggleFolder(x.dataset.folder)});
   v.querySelectorAll('.folder-check').forEach(x=>{const s=folderState(x.dataset.folder);x.indeterminate=s==='partial'});
 }
-function renderDetails(){
+async function renderDetails(){
   const v=$('sync-details'),f=S.tree.find(x=>x.path===S.active);if(!v)return;
   if(!f){v.innerHTML='<div class="sync-empty">选择一个 Markdown 查看配置</div>';return}
-  const c=configFor(f),refs=parseReferences(f.body);
+  const c=configFor(f);
+  if(!f.body){try{const r=await api.request('repos/'+S.repo.owner+'/'+S.repo.repo+'/contents/'+f.path+'?ref='+encodeURIComponent(S.repo.branch));f.body=api.decode(r.content);const fm=parseFrontMatter(f.body);f.meta=fm.meta;f.title=titleFromDocument(f.path,fm.body,fm.meta)}catch(e){f.body='';}}
+  const refs=parseReferences(f.body);
   const missing=refs.links.filter(x=>/\.md(?:#|$)/i.test(x.url)).map(x=>x.url).filter(url=>{
     const clean=url.split('#')[0].split('?')[0],target=S.tree.find(x=>x.path.endsWith('/'+clean)||x.path===clean);return !target||(!target.existing&&!S.selected.has(target.path));
   });
@@ -114,9 +119,7 @@ function deletedMappings(){
 }
 async function checkAll(){
   if(S.running)return;S.running=true;renderButtons();
-  S.results=await engine.syncAll(store.mappings,true);
-  for(const m of deletedMappings())S.results.push({...m,status:'source-deleted'});
-  S.running=false;render();
+  try{const results=[];for(const repo of Object.values(store.repositories)){const r=await engine.checkRepository(repo,store.mappings);results.push(...r.out);repo.lastScan=new Date().toISOString();for(const f of (r.scan.tree||[]).filter(x=>x.type==='blob'&&isMarkdown(x.path)&&!excludedDir(x.path))){store.upsertDocument(repo,f.path,{sha:f.sha,size:f.size,lastSeen:repo.lastScan,mapped:!!store.find(repo.owner,repo.repo,f.path)})}}S.results=results;for(const r of results){const m=store.mappings.find(x=>x.id===r.id);if(m){m.syncStatus=r.status;if(r.commit)m.syncCommit=r.commit;if(r.date)m.lastVerified=r.date}}await store.save()}catch(e){toast('检查全部失败：'+e.message,'error')}finally{S.running=false;render()}
 }
 async function syncAll(){
   if(S.running)return;S.running=true;renderButtons();
