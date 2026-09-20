@@ -22,8 +22,10 @@
 /* Keep Butterfly's feature-rich layout, but give the site a quieter editorial identity. */
 #page-header.full_page {
   min-height: 560px;
-  background: radial-gradient(circle at 72% 28%, rgba(47,111,107,.22), transparent 34%),
-              linear-gradient(135deg, #f4f1ea 0%, #dfe8e5 52%, #cfdeda 100%) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-color: #dfe8e5;
 }
 
 [data-theme='dark'] #page-header.full_page {
@@ -37,10 +39,9 @@
 #site_social_icons { margin-top: 22px; }
 
 #page-header.not-home-page {
-  background: linear-gradient(135deg, #f4f1ea, #dfe8e5) !important;
-}
-[data-theme='dark'] #page-header.not-home-page {
-  background: linear-gradient(135deg, #171b1f, #202c2d) !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 #nav #blog_name { font-weight: 760; letter-spacing: -.02em; }
@@ -159,3 +160,30 @@
 .emo-widget-status a, .emo-widget-links a { color: var(--emo-accent); font-weight: 650; }
 .emo-widget-links { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px 12px; }
 .emo-widget-links a { padding: 6px 0; }
+
+
+/* Reading progress + command palette */
+#reading-progress { position: fixed; inset: 0 0 auto; height: 3px; z-index: 9999; pointer-events: none; }
+#reading-progress span { display: block; width: 0; height: 100%; background: var(--emo-accent); transition: width .08s linear; }
+.emo-command-palette { position: fixed; inset: 0; z-index: 10000; display: none; align-items: flex-start; justify-content: center; padding: 12vh 1rem; }
+.emo-command-palette.is-open { display: flex; }
+.emo-command-palette__backdrop { position: absolute; inset: 0; background: rgba(15,23,42,.5); backdrop-filter: blur(6px); }
+.emo-command-palette__dialog { position: relative; width: min(680px,100%); padding: 14px; border: 1px solid var(--emo-line); border-radius: 16px; background: var(--emo-surface); box-shadow: 0 25px 80px rgba(0,0,0,.24); }
+.emo-command-palette__input { width: 100%; box-sizing: border-box; padding: 12px 14px; border: 1px solid var(--emo-line); border-radius: 10px; background: transparent; color: var(--emo-ink); outline: none; }
+.emo-command-palette__items { display: grid; gap: 3px; margin-top: 8px; }
+.emo-command-palette__item { display: flex; justify-content: space-between; gap: 1rem; padding: 10px 12px; border: 0; border-radius: 9px; background: transparent; color: var(--emo-ink); text-align: left; cursor: pointer; }
+.emo-command-palette__item:hover, .emo-command-palette__item.is-selected { background: color-mix(in srgb, var(--emo-accent) 12%, transparent); }
+.emo-command-palette__item span { opacity: .55; }
+.emo-command-palette__hint { margin: 8px 2px 0; font-size: .75rem; color: var(--emo-muted); }
+.emo-article-context { margin: 0 auto 22px; padding: 14px 18px; border: 1px solid var(--emo-line); border-radius: 14px; background: var(--emo-surface); }
+.emo-article-context__meta { display: flex; flex-wrap: wrap; gap: 7px; }
+.emo-article-context__badge { display: inline-flex; padding: 4px 9px; border-radius: 999px; background: color-mix(in srgb, var(--emo-accent) 10%, transparent); color: var(--emo-accent-strong); font-size: .8rem; }
+.emo-article-context__env { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.emo-article-context__env span { padding: 4px 8px; border-radius: 7px; background: color-mix(in srgb, var(--emo-accent) 6%, transparent); font-size: .78rem; }
+@media (max-width: 768px) { .emo-command-palette { padding: 7vh .65rem; } #page-header.full_page { min-height: 470px; } .emo-article-context { padding: 12px 14px; } }
+@media (prefers-reduced-motion: reduce) { #reading-progress span { transition: none; } }
+
+.emo-code-copy { position: absolute; top: 8px; right: 8px; z-index: 2; padding: 4px 8px; border: 0; border-radius: 7px; background: rgba(0,0,0,.45); color: #fff; font-size: .72rem; cursor: pointer; opacity: 0; transition: opacity .15s ease; }
+#article-container pre { position: relative; overflow: auto; max-width: 100%; }
+#article-container pre:hover .emo-code-copy, #article-container pre:focus-within .emo-code-copy { opacity: 1; }
+@media (max-width: 768px) { .emo-code-copy { opacity: 1; } }
