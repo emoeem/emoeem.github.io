@@ -112,37 +112,6 @@
     
     
     <entry>
-      <title>voicefox 使用与功能指南</title>
-      <link href="/2026/09/20/voicefox-shi-yong-zhi-nan/"/>
-      <url>/2026/09/20/voicefox-shi-yong-zhi-nan/</url>
-      
-        <content type="html"><![CDATA[<h1 id="voicefox-0-3-15-用户与功能说明"><a href="#voicefox-0-3-15-用户与功能说明" class="headerlink" title="voicefox 0.3.15 用户与功能说明"></a>voicefox 0.3.15 用户与功能说明</h1><p>voicefox 是 Rust + ratatui + libmpv 构建的终端音乐播放器。当前 <code>voicefox-old</code> 发布线保留原有稳定 TUI 页面，同时整合新的音源、下载、登录、歌词、封面、本地音乐和跨平台运行时能力。</p><h2 id="页面"><a href="#页面" class="headerlink" title="页面"></a>页面</h2><ol><li><strong>队列</strong>：播放队列、歌曲信息、歌词、拖拽排序、筛选、全屏歌词。</li><li><strong>搜索</strong>：聚合搜索、音源切换、<code>@</code> 歌手追搜、<code>#</code> 专辑追搜、音源版本选择。</li><li><strong>排行榜</strong>：按音源浏览实时榜单。</li><li><strong>热门歌单</strong>：按音源浏览、搜索、分页和收藏歌单。</li><li><strong>收藏</strong>：歌曲收藏、筛选、排序。</li><li><strong>历史</strong>：播放历史、筛选、排序、删除。</li><li><strong>本地音乐</strong>：目录监听、标签、封面、歌词、CUE 分轨、文件诊断。</li><li><strong>设置</strong>：音源、播放器、界面、歌词、下载和快捷键等配置。</li></ol><p>完整快捷键见 <a href="../KEYBINDINGS.md"><code>../KEYBINDINGS.md</code></a>。</p><blockquote><p>0.3.15 快捷键重点：<code>↑/↓</code> 可用于列表导航；队列 <code>/</code> 进入筛选，<code>V</code> 切换全屏歌词；搜索 <code>@</code> 追搜歌手、<code>#</code> 追搜专辑；下载面板支持 <code>↑/↓</code>、<code>Del</code> 与鼠标右键。全局 <code>Ctrl+↑/↓</code> 调整音量。</p></blockquote><h2 id="播放器能力"><a href="#播放器能力" class="headerlink" title="播放器能力"></a>播放器能力</h2><ul><li>libmpv 进程内播放，不依赖外部 <code>mpv</code> 命令。</li><li>128K / 320K / FLAC / Hi-Res 等音质档位由音源实际提供情况决定。</li><li>ReplayGain、均衡器、声道、左右平衡。</li><li>列表循环、单曲循环、随机、顺序、播完停止。</li><li>A-B 循环、淡入、淡出、无缝切换。</li><li>在线播放失败时支持跨音源/解析器回退。</li></ul><h2 id="歌词与下载"><a href="#歌词与下载" class="headerlink" title="歌词与下载"></a>歌词与下载</h2><p>支持 LRC、KRC、QRC、YRC 以及翻译/罗马音数据。下载歌词会过滤非标准 LRC 数据，避免把网易云接口原始 JSON 写入 <code>.lrc</code>。</p><p>下载支持并发分片、CDN 回退、重试、大小/MD5 校验、标签、封面、标准 LRC、取消与清理。失败任务只保留在当前下载任务视图，不再重复写入持久下载历史。</p><h2 id="本地音乐"><a href="#本地音乐" class="headerlink" title="本地音乐"></a>本地音乐</h2><p>支持 MP3、FLAC、M4A、OGG、OPUS、WAV、WMA、AAC、APE、AIFF 等常见格式及 CUE 分轨。支持增量扫描、标签、封面、内嵌/同名歌词以及重复、损坏、缺失文件诊断。</p><h2 id="当前音源"><a href="#当前音源" class="headerlink" title="当前音源"></a>当前音源</h2><table><thead><tr><th>音源</th><th align="right">搜索</th><th align="right">播放</th><th align="right">歌词</th><th align="right">封面</th><th align="right">歌手/专辑</th><th align="right">歌单</th><th align="right">榜单</th><th align="right">链接直解</th><th align="right">登录</th></tr></thead><tbody><tr><td>酷我 <code>kw</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>酷狗 <code>kg</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码/个人歌单</td></tr><tr><td>QQ <code>tx</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码/个人歌单</td></tr><tr><td>网易云 <code>wy</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码/个人歌单</td></tr><tr><td>咪咕 <code>mg</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>哔哩哔哩 <code>bili</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码</td></tr><tr><td>千千 <code>qianqian</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>JOOX <code>joox</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>5sing <code>fivesing</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>Jamendo <code>jamendo</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>Apple Music <code>apple</code></td><td align="right">✓</td><td align="right">✓（试听）</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>汽水 <code>soda</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>本地 <code>local</code></td><td align="right">—</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">—</td><td align="right">—</td><td align="right">—</td></tr></tbody></table><p>“✓”表示代码层已实现/声明对应能力；具体歌曲仍可能受到平台接口、地区、账号权限或版权限制影响。Apple Music 当前为试听片段，不应视为完整曲目下载源。</p><p>JS 音源可以动态加载多个社区脚本，具体能力由脚本声明，可参与搜索、播放 URL、歌词和封面解析。</p><h2 id="通知与平台"><a href="#通知与平台" class="headerlink" title="通知与平台"></a>通知与平台</h2><ul><li>Linux：D-Bus 桌面通知和 MPRIS。</li><li>Windows：<code>Shell_NotifyIconW</code> 通知区气泡。<ul><li>使用 voicefox 应用图标，并遵循系统的提示音与勿扰设置。</li><li>发送新通知前撤下本应用上一条气泡；其他应用正在显示气泡时，新通知仍可能进入 Windows 气泡队列。</li><li>通知区图标在最后一次通知 10 秒后移除。</li><li>不提供专辑封面、操作按钮和通知中心历史。</li></ul></li><li>Windows SMTC / 硬件媒体键：尚未实现。</li></ul><h2 id="数据目录"><a href="#数据目录" class="headerlink" title="数据目录"></a>数据目录</h2><table><thead><tr><th>平台</th><th>数据目录</th></tr></thead><tbody><tr><td>Linux</td><td><code>$XDG_DATA_HOME/voicefox</code>，没有时使用系统数据目录</td></tr><tr><td>macOS</td><td><code>~/Library/Application Support/voicefox</code></td></tr><tr><td>Windows</td><td><code>%LOCALAPPDATA%\voicefox</code></td></tr></tbody></table><p>配置与会话仍使用平台配置目录。</p><h2 id="0-3-15-修复重点"><a href="#0-3-15-修复重点" class="headerlink" title="0.3.15 修复重点"></a>0.3.15 修复重点</h2><ul><li>队列 <code>↑/↓</code> 选择冲突、鼠标命中与过滤索引。</li><li>队列筛选与全屏歌词。</li><li>长歌词自动换行。</li><li>多歌手分别查看。</li><li>下载上下选择、右键操作与帮助提示。</li><li>失败下载不再与历史重复展示。</li><li>Windows 桌面通知。</li><li>平台数据目录规范。</li><li>网易云歌词落盘标准化。</li><li>JS 音源非法 URL 不再触发 HTTP request builder panic。</li></ul><h2 id="发布验证"><a href="#发布验证" class="headerlink" title="发布验证"></a>发布验证</h2><ul><li><code>cargo fmt --all</code></li><li><code>cargo test -p voicefox-app</code></li><li><code>cargo test -p lx-core</code></li><li><code>cargo test -p lx-lyric</code></li><li><code>cargo check -p voicefox-app --target x86_64-pc-windows-gnu</code></li></ul>]]></content>
-      
-      
-      <categories>
-          
-          <category> 技术 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Rust </tag>
-            
-            <tag> voicefox </tag>
-            
-            <tag> TUI </tag>
-            
-            <tag> 使用指南 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>voicefox 0.3.15 快捷键完整参考</title>
       <link href="/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/"/>
       <url>/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/</url>
@@ -205,6 +174,37 @@
     
     
     <entry>
+      <title>voicefox 使用与功能指南</title>
+      <link href="/2026/09/20/voicefox-shi-yong-zhi-nan/"/>
+      <url>/2026/09/20/voicefox-shi-yong-zhi-nan/</url>
+      
+        <content type="html"><![CDATA[<h1 id="voicefox-0-3-15-用户与功能说明"><a href="#voicefox-0-3-15-用户与功能说明" class="headerlink" title="voicefox 0.3.15 用户与功能说明"></a>voicefox 0.3.15 用户与功能说明</h1><p>voicefox 是 Rust + ratatui + libmpv 构建的终端音乐播放器。当前 <code>voicefox-old</code> 发布线保留原有稳定 TUI 页面，同时整合新的音源、下载、登录、歌词、封面、本地音乐和跨平台运行时能力。</p><h2 id="页面"><a href="#页面" class="headerlink" title="页面"></a>页面</h2><ol><li><strong>队列</strong>：播放队列、歌曲信息、歌词、拖拽排序、筛选、全屏歌词。</li><li><strong>搜索</strong>：聚合搜索、音源切换、<code>@</code> 歌手追搜、<code>#</code> 专辑追搜、音源版本选择。</li><li><strong>排行榜</strong>：按音源浏览实时榜单。</li><li><strong>热门歌单</strong>：按音源浏览、搜索、分页和收藏歌单。</li><li><strong>收藏</strong>：歌曲收藏、筛选、排序。</li><li><strong>历史</strong>：播放历史、筛选、排序、删除。</li><li><strong>本地音乐</strong>：目录监听、标签、封面、歌词、CUE 分轨、文件诊断。</li><li><strong>设置</strong>：音源、播放器、界面、歌词、下载和快捷键等配置。</li></ol><p>完整快捷键见 <a href="../KEYBINDINGS.md"><code>../KEYBINDINGS.md</code></a>。</p><blockquote><p>0.3.15 快捷键重点：<code>↑/↓</code> 可用于列表导航；队列 <code>/</code> 进入筛选，<code>V</code> 切换全屏歌词；搜索 <code>@</code> 追搜歌手、<code>#</code> 追搜专辑；下载面板支持 <code>↑/↓</code>、<code>Del</code> 与鼠标右键。全局 <code>Ctrl+↑/↓</code> 调整音量。</p></blockquote><h2 id="播放器能力"><a href="#播放器能力" class="headerlink" title="播放器能力"></a>播放器能力</h2><ul><li>libmpv 进程内播放，不依赖外部 <code>mpv</code> 命令。</li><li>128K / 320K / FLAC / Hi-Res 等音质档位由音源实际提供情况决定。</li><li>ReplayGain、均衡器、声道、左右平衡。</li><li>列表循环、单曲循环、随机、顺序、播完停止。</li><li>A-B 循环、淡入、淡出、无缝切换。</li><li>在线播放失败时支持跨音源/解析器回退。</li></ul><h2 id="歌词与下载"><a href="#歌词与下载" class="headerlink" title="歌词与下载"></a>歌词与下载</h2><p>支持 LRC、KRC、QRC、YRC 以及翻译/罗马音数据。下载歌词会过滤非标准 LRC 数据，避免把网易云接口原始 JSON 写入 <code>.lrc</code>。</p><p>下载支持并发分片、CDN 回退、重试、大小/MD5 校验、标签、封面、标准 LRC、取消与清理。失败任务只保留在当前下载任务视图，不再重复写入持久下载历史。</p><h2 id="本地音乐"><a href="#本地音乐" class="headerlink" title="本地音乐"></a>本地音乐</h2><p>支持 MP3、FLAC、M4A、OGG、OPUS、WAV、WMA、AAC、APE、AIFF 等常见格式及 CUE 分轨。支持增量扫描、标签、封面、内嵌/同名歌词以及重复、损坏、缺失文件诊断。</p><h2 id="当前音源"><a href="#当前音源" class="headerlink" title="当前音源"></a>当前音源</h2><table><thead><tr><th>音源</th><th align="right">搜索</th><th align="right">播放</th><th align="right">歌词</th><th align="right">封面</th><th align="right">歌手/专辑</th><th align="right">歌单</th><th align="right">榜单</th><th align="right">链接直解</th><th align="right">登录</th></tr></thead><tbody><tr><td>酷我 <code>kw</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>酷狗 <code>kg</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码/个人歌单</td></tr><tr><td>QQ <code>tx</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码/个人歌单</td></tr><tr><td>网易云 <code>wy</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码/个人歌单</td></tr><tr><td>咪咕 <code>mg</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>哔哩哔哩 <code>bili</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">扫码</td></tr><tr><td>千千 <code>qianqian</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>JOOX <code>joox</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>5sing <code>fivesing</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>Jamendo <code>jamendo</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>Apple Music <code>apple</code></td><td align="right">✓</td><td align="right">✓（试听）</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>汽水 <code>soda</code></td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td><td align="right">✓</td><td align="right">—</td></tr><tr><td>本地 <code>local</code></td><td align="right">—</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">✓</td><td align="right">—</td><td align="right">—</td><td align="right">—</td><td align="right">—</td></tr></tbody></table><p>“✓”表示代码层已实现/声明对应能力；具体歌曲仍可能受到平台接口、地区、账号权限或版权限制影响。Apple Music 当前为试听片段，不应视为完整曲目下载源。</p><p>JS 音源可以动态加载多个社区脚本，具体能力由脚本声明，可参与搜索、播放 URL、歌词和封面解析。</p><h2 id="通知与平台"><a href="#通知与平台" class="headerlink" title="通知与平台"></a>通知与平台</h2><ul><li>Linux：D-Bus 桌面通知和 MPRIS。</li><li>Windows：<code>Shell_NotifyIconW</code> 通知区气泡。<ul><li>使用 voicefox 应用图标，并遵循系统的提示音与勿扰设置。</li><li>发送新通知前撤下本应用上一条气泡；其他应用正在显示气泡时，新通知仍可能进入 Windows 气泡队列。</li><li>通知区图标在最后一次通知 10 秒后移除。</li><li>不提供专辑封面、操作按钮和通知中心历史。</li></ul></li><li>Windows SMTC / 硬件媒体键：尚未实现。</li></ul><h2 id="数据目录"><a href="#数据目录" class="headerlink" title="数据目录"></a>数据目录</h2><table><thead><tr><th>平台</th><th>数据目录</th></tr></thead><tbody><tr><td>Linux</td><td><code>$XDG_DATA_HOME/voicefox</code>，没有时使用系统数据目录</td></tr><tr><td>macOS</td><td><code>~/Library/Application Support/voicefox</code></td></tr><tr><td>Windows</td><td><code>%LOCALAPPDATA%\voicefox</code></td></tr></tbody></table><p>配置与会话仍使用平台配置目录。</p><h2 id="0-3-15-修复重点"><a href="#0-3-15-修复重点" class="headerlink" title="0.3.15 修复重点"></a>0.3.15 修复重点</h2><ul><li>队列 <code>↑/↓</code> 选择冲突、鼠标命中与过滤索引。</li><li>队列筛选与全屏歌词。</li><li>长歌词自动换行。</li><li>多歌手分别查看。</li><li>下载上下选择、右键操作与帮助提示。</li><li>失败下载不再与历史重复展示。</li><li>Windows 桌面通知。</li><li>平台数据目录规范。</li><li>网易云歌词落盘标准化。</li><li>JS 音源非法 URL 不再触发 HTTP request builder panic。</li></ul><h2 id="发布验证"><a href="#发布验证" class="headerlink" title="发布验证"></a>发布验证</h2><ul><li><code>cargo fmt --all</code></li><li><code>cargo test -p voicefox-app</code></li><li><code>cargo test -p lx-core</code></li><li><code>cargo test -p lx-lyric</code></li><li><code>cargo check -p voicefox-app --target x86_64-pc-windows-gnu</code></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+            <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
+            
+            <tag> 使用指南 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mpv-Emo 构建与 Patch 体系</title>
       <link href="/2026/09/19/mpv-emo-gou-jian-zhi-nan/"/>
       <url>/2026/09/19/mpv-emo-gou-jian-zhi-nan/</url>
@@ -221,13 +221,13 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
-            <tag> mpv </tag>
-            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> mpv </tag>
             
             <tag> Omniphony </tag>
             
@@ -310,15 +310,15 @@
       
         <tags>
             
-            <tag> Linux </tag>
+            <tag> Arch Linux </tag>
             
             <tag> CachyOS </tag>
-            
-            <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
             
             <tag> CI </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
       
@@ -467,9 +467,9 @@
             
             <tag> Rust </tag>
             
-            <tag> rust学习 </tag>
-            
             <tag> Slice </tag>
+            
+            <tag> rust学习 </tag>
             
         </tags>
       
@@ -525,9 +525,9 @@
             
             <tag> Rust </tag>
             
-            <tag> 所有权 </tag>
-            
             <tag> rust学习 </tag>
+            
+            <tag> 所有权 </tag>
             
         </tags>
       
@@ -732,9 +732,9 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> CachyOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> Fish </tag>
             
