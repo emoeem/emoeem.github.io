@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>Arch Linux 私人软件仓库管理与 fzf TUI</title>
+      <link href="/2026/09/20/package-management/"/>
+      <url>/2026/09/20/package-management/</url>
+      
+        <content type="html"><![CDATA[<h1 id="软件包管理与-fzf-TUI"><a href="#软件包管理与-fzf-TUI" class="headerlink" title="软件包管理与 fzf TUI"></a>软件包管理与 fzf TUI</h1><p>仓库提供添加、删除、同步、构建和本地安装的一体化管理脚本。</p><h2 id="启动管理界面"><a href="#启动管理界面" class="headerlink" title="启动管理界面"></a>启动管理界面</h2><p>安装依赖：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> fzf github-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>在源码仓库运行：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/pkgbuild-source./manage.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>主菜单支持：</p><ul><li>从 AUR 添加 package base。</li><li>从自定义 Git 地址添加 PKGBUILD。</li><li>从源码和二进制仓库删除 package base。</li><li>手动触发全部或指定 AUR 脚本同步。</li><li>多选软件包并指定编译并行数。</li><li>在 TUI 中直接检查选定包的 <code>PKGBUILD</code>、<code>.SRCINFO</code> 和本地源文件。</li><li>同步本地 <code>emoeem</code> pacman 仓库。</li><li>从 <code>emoeem</code> 选择并安装软件包。</li><li>查看最近的 GitHub Actions 状态。</li><li>拉取最新 <code>main</code>。</li><li>打开或关闭添加、删除操作的自动推送。</li></ul><p>软件包选择界面显示版本、架构和描述，并在右侧预览 <code>PKGBUILD</code>；使用<br><code>Ctrl-/</code> 显示或隐藏预览。多选界面使用 <code>Tab</code> 切换选择，<code>Ctrl-A</code> 全选，<br><code>Ctrl-D</code> 取消全选。<br>按 <code>Esc</code> 可以取消当前菜单。</p><p>主菜单标题会显示当前分支、包数量、工作区是否干净以及自动推送状态。</p><p>默认情况下，添加和删除会立即提交并推送。以下方式启动时默认只创建本地<br>提交：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./manage.sh --no-push<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>可以通过环境变量调整默认配置：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">PKGBUILD_GITHUB_REPOSITORY</span><span class="token operator">=</span>emoeem/pkgbuild<span class="token assign-left variable">PKGBUILD_PACMAN_REPOSITORY</span><span class="token operator">=</span>emoeem<span class="token assign-left variable">PKGBUILD_DEFAULT_MAKE_JOBS</span><span class="token operator">=</span><span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><ul><li><code>PKGBUILD_GITHUB_REPOSITORY</code>：GitHub 的 <code>owner/repository</code>。</li><li><code>PKGBUILD_PACMAN_REPOSITORY</code>：<code>pacman.conf</code> 中的仓库名称。</li><li><code>PKGBUILD_DEFAULT_MAKE_JOBS</code>：构建菜单默认显示的并行编译数。你的 8C/16T CachyOS 主机可以手动设为 4；CI 通过 workflow input 单独覆盖。</li></ul><h2 id="删除软件包"><a href="#删除软件包" class="headerlink" title="删除软件包"></a>删除软件包</h2><p>不使用 TUI 时，可以直接运行：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/remove-package.sh package-base<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>只创建本地提交：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/remove-package.sh --no-push package-base<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>脚本会：</p><ol><li>拉取最新 <code>main</code>。</li><li>拒绝删除包含未提交修改的软件包目录。</li><li>从 <code>.SRCINFO</code> 读取 package base 产生的所有 <code>pkgname</code>。</li><li>删除 <code>packages/package-base/</code>。</li><li>写入 <code>removals/package-base</code> 删除记录。</li><li>提交并默认推送到 GitHub。</li></ol><p><code>Remove packages from private repository</code> 工作流随后会：</p><ol><li>读取新增的删除记录。</li><li>从 <code>repo/x86_64</code> 删除匹配 <code>pkgname</code> 的所有当前版本及签名。</li><li>从剩余软件包重新生成 <code>emoeem.db</code> 和 <code>emoeem.files</code>。</li><li>更新 SHA256、签名和单提交 <code>repo</code> 快照。</li></ol><p>删除完成后，本地客户端会在下次定时更新时同步。也可以立即执行：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">emoeem-updatepacman <span class="token parameter variable">-Sl</span> emoeem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>从仓库删除不会卸载电脑上已经安装的软件包。如需卸载：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> pacman <span class="token parameter variable">-Rns</span> package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="重新添加"><a href="#重新添加" class="headerlink" title="重新添加"></a>重新添加</h2><p>重新添加同一个 package base 时：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-base<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>添加脚本会自动删除对应的 <code>removals/package-base</code> 记录，随后正常触发构建<br>和发布。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Arch Linux </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> fzf </tag>
+            
+            <tag> TUI </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Arch Linux 软件包导入与自动构建指南</title>
       <link href="/2026/09/20/add-aur/"/>
       <url>/2026/09/20/add-aur/</url>
@@ -53,7 +86,15 @@
       
         <tags>
             
-            <tag> Arch Linux&#92;n- PKGBUILD&#92;n- CI&#92;n- CachyOS&#92;n- Linux </tag>
+            <tag> Arch Linux </tag>
+            
+            <tag> CachyOS </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> CI </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
       
@@ -62,11 +103,11 @@
     
     
     <entry>
-      <title>Arch Linux 私人软件仓库管理与 fzf TUI</title>
-      <link href="/2026/09/20/package-management/"/>
-      <url>/2026/09/20/package-management/</url>
+      <title>mpv-Emo Stable 与 Development 构建轨道</title>
+      <link href="/2026/09/20/mpv-emo-tracks/"/>
+      <url>/2026/09/20/mpv-emo-tracks/</url>
       
-        <content type="html"><![CDATA[<h1 id="软件包管理与-fzf-TUI"><a href="#软件包管理与-fzf-TUI" class="headerlink" title="软件包管理与 fzf TUI"></a>软件包管理与 fzf TUI</h1><p>仓库提供添加、删除、同步、构建和本地安装的一体化管理脚本。</p><h2 id="启动管理界面"><a href="#启动管理界面" class="headerlink" title="启动管理界面"></a>启动管理界面</h2><p>安装依赖：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> fzf github-cli<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>在源码仓库运行：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token builtin class-name">cd</span> ~/pkgbuild-source./manage.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>主菜单支持：</p><ul><li>从 AUR 添加 package base。</li><li>从自定义 Git 地址添加 PKGBUILD。</li><li>从源码和二进制仓库删除 package base。</li><li>手动触发全部或指定 AUR 脚本同步。</li><li>多选软件包并指定编译并行数。</li><li>在 TUI 中直接检查选定包的 <code>PKGBUILD</code>、<code>.SRCINFO</code> 和本地源文件。</li><li>同步本地 <code>emoeem</code> pacman 仓库。</li><li>从 <code>emoeem</code> 选择并安装软件包。</li><li>查看最近的 GitHub Actions 状态。</li><li>拉取最新 <code>main</code>。</li><li>打开或关闭添加、删除操作的自动推送。</li></ul><p>软件包选择界面显示版本、架构和描述，并在右侧预览 <code>PKGBUILD</code>；使用<br><code>Ctrl-/</code> 显示或隐藏预览。多选界面使用 <code>Tab</code> 切换选择，<code>Ctrl-A</code> 全选，<br><code>Ctrl-D</code> 取消全选。<br>按 <code>Esc</code> 可以取消当前菜单。</p><p>主菜单标题会显示当前分支、包数量、工作区是否干净以及自动推送状态。</p><p>默认情况下，添加和删除会立即提交并推送。以下方式启动时默认只创建本地<br>提交：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./manage.sh --no-push<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>可以通过环境变量调整默认配置：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">PKGBUILD_GITHUB_REPOSITORY</span><span class="token operator">=</span>emoeem/pkgbuild<span class="token assign-left variable">PKGBUILD_PACMAN_REPOSITORY</span><span class="token operator">=</span>emoeem<span class="token assign-left variable">PKGBUILD_DEFAULT_MAKE_JOBS</span><span class="token operator">=</span><span class="token number">2</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><ul><li><code>PKGBUILD_GITHUB_REPOSITORY</code>：GitHub 的 <code>owner/repository</code>。</li><li><code>PKGBUILD_PACMAN_REPOSITORY</code>：<code>pacman.conf</code> 中的仓库名称。</li><li><code>PKGBUILD_DEFAULT_MAKE_JOBS</code>：构建菜单默认显示的并行编译数。你的 8C/16T CachyOS 主机可以手动设为 4；CI 通过 workflow input 单独覆盖。</li></ul><h2 id="删除软件包"><a href="#删除软件包" class="headerlink" title="删除软件包"></a>删除软件包</h2><p>不使用 TUI 时，可以直接运行：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/remove-package.sh package-base<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>只创建本地提交：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/remove-package.sh --no-push package-base<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>脚本会：</p><ol><li>拉取最新 <code>main</code>。</li><li>拒绝删除包含未提交修改的软件包目录。</li><li>从 <code>.SRCINFO</code> 读取 package base 产生的所有 <code>pkgname</code>。</li><li>删除 <code>packages/package-base/</code>。</li><li>写入 <code>removals/package-base</code> 删除记录。</li><li>提交并默认推送到 GitHub。</li></ol><p><code>Remove packages from private repository</code> 工作流随后会：</p><ol><li>读取新增的删除记录。</li><li>从 <code>repo/x86_64</code> 删除匹配 <code>pkgname</code> 的所有当前版本及签名。</li><li>从剩余软件包重新生成 <code>emoeem.db</code> 和 <code>emoeem.files</code>。</li><li>更新 SHA256、签名和单提交 <code>repo</code> 快照。</li></ol><p>删除完成后，本地客户端会在下次定时更新时同步。也可以立即执行：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">emoeem-updatepacman <span class="token parameter variable">-Sl</span> emoeem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>从仓库删除不会卸载电脑上已经安装的软件包。如需卸载：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> pacman <span class="token parameter variable">-Rns</span> package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><h2 id="重新添加"><a href="#重新添加" class="headerlink" title="重新添加"></a>重新添加</h2><p>重新添加同一个 package base 时：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-base<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>添加脚本会自动删除对应的 <code>removals/package-base</code> 记录，随后正常触发构建<br>和发布。</p>]]></content>
+        <content type="html"><![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code> is a real mpv-full-style core build: upstream mpv is the base, and<br>curated core patches are applied before compilation.</p><table><thead><tr><th>Track</th><th>Package</th><th>Upstream</th><th>Patch policy</th></tr></thead><tbody><tr><td>Stable</td><td><code>mpv-emo</code></td><td>mpv release tags</td><td>stable patch series is part of the core build</td></tr><tr><td>Development</td><td><code>mpv-emo-git</code></td><td>mpv <code>master</code></td><td>matching master patch series; drift blocks publication</td></tr></tbody></table><h2 id="Rules"><a href="#Rules" class="headerlink" title="Rules"></a>Rules</h2><ol><li>Stable never consumes mpv <code>master</code>.</li><li>Development pins an exact upstream commit.</li><li>Core patches live under <code>packages/mpv-emo/patches/</code> and the corresponding<br>development series under <code>packages/mpv-emo-git/patches/</code>.</li><li>Omniphony is a core Patch layer, not a second mpv package.</li><li><code>orender</code> is runtime-only and is not linked at mpv build time.</li><li>Patch application is a hard gate: any failed patch means no publication.</li><li>A successful build and test are required before the private pacman repo updates.</li><li>When a feature lands upstream, its private Patch is removed instead of being<br>maintained forever.</li></ol><p>The current Stable baseline is mpv <code>v0.41.0</code> with the Omniphony v0.4.2 mpv-side<br>series. Upstream mpv currently publishes a separate development build for<br>master, so Stable and Development remain separate tracks.</p>]]></content>
       
       
       <categories>
@@ -78,7 +119,15 @@
       
         <tags>
             
-            <tag> Arch Linux&#92;n- PKGBUILD&#92;n- fzf&#92;n- TUI&#92;n- Linux </tag>
+            <tag> Arch Linux </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> mpv </tag>
+            
+            <tag> Omniphony </tag>
             
         </tags>
       
@@ -138,9 +187,9 @@
             
             <tag> Rust </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> 使用指南 </tag>
             
@@ -171,9 +220,9 @@
             
             <tag> 快捷键 </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
         </tags>
       
@@ -200,9 +249,9 @@
             
             <tag> Rust </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> 配置 </tag>
             
@@ -264,9 +313,9 @@
             
             <tag> Rust </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> 音乐播放器 </tag>
             
