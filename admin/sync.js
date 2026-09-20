@@ -32,7 +32,7 @@ async function target(path){try{return await api('repos/emoeem/blog-source/conte
 async function syncOne(m,dry){
  const src=await source(m),old=await target(m.target),oldFM=old?parseFM(dec(old.content)):{};
  if(oldFM.syncCommit&&oldFM.syncCommit===src.commit)return{...m,status:'unchanged',commit:src.commit,date:src.date};
- const meta={...oldFM,...(m.metadata||{}),title:(m.metadata?.title||oldFM.title||m.name),lastVerified:src.date,syncSource:m.owner+'/'+m.repo,syncPath:m.path,syncCommit:src.commit};
+ const meta={...oldFM,...(m.metadata||{}),title:(m.metadata?.title||oldFM.title||m.name),lastVerified:src.date,syncSource:m.owner+'/'+m.repo,syncPath:m.path,syncCommit:src.commit,syncEditUrl:'https://github.com/'+m.owner+'/'+m.repo+'/edit/'+encodeURIComponent(m.branch||'main')+'/'+m.path.split('/').map(encodeURIComponent).join('/')};
  const content=fm(meta)+stripFM(src.content).replace(/^\n+/,'');
  if(dry)return{...m,status:'changed',commit:src.commit,date:src.date,content};
  const body={message:'sync: '+meta.title,content:enc(content),branch:'main'};if(old)body.sha=old.sha;

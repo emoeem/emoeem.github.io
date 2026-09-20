@@ -2,24 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://emoeem.github.io/music/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/now/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://emoeem.github.io/projects/pkgbuild/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
@@ -29,7 +11,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/projects/index.html</loc>
+    <loc>https://emoeem.github.io/projects/voicefox/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -39,15 +21,6 @@
   
   <url>
     <loc>https://emoeem.github.io/projects/yiwei/index.html</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/projects/voicefox/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -83,6 +56,15 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/music/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/moments/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
@@ -92,7 +74,34 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/about/index.html</loc>
+    <loc>https://emoeem.github.io/now/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/projects/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/friends/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/gallery/index.html</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -119,7 +128,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/friends/index.html</loc>
+    <loc>https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -128,7 +137,115 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/gallery/index.html</loc>
+    <loc>https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/24/yazi-pei-zhi/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/about/index.html</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/19/mpv-emo-gou-jian-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/08/17/nvim-pei-zhi/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/</loc>
+    
+    <lastmod>2026-09-20</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
@@ -219,114 +336,6 @@
   
   <url>
     <loc>https://emoeem.github.io/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/06/22/llama-cli-can-shu-pei-zhi-zhi-nan/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/09/19/mpv-emo-gou-jian-zhi-nan/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/08/17/nvim-pei-zhi/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/06/24/yazi-pei-zhi/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/07/02/wei-shi-me-yue-lai-yue-duo-bi-ye-sheng-bei-pei-xun-qia-zai-di-yi-bu/</loc>
-    
-    <lastmod>2026-09-20</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/2026/06/22/gan-xing-de-ren-zong-hui-zai-fei-xu-li-jian-bie-ren-bu-yao-de-dong-xi/</loc>
     
     <lastmod>2026-09-20</lastmod>
     
