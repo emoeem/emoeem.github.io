@@ -18,7 +18,7 @@ function repoState(){return store.ensureRepository(S.repo)}
 function configFor(f){
   if(S.configs[f.path])return S.configs[f.path];
   const old=store.find(S.repo.owner,S.repo.repo,f.path),meta=old?.metadata||{};
-  S.configs[f.path]={title:meta.title||f.title,tags:[...(meta.tags||S.repo.topics||[])],category:meta.categories||'技术',target:old?.target||defaultTarget(meta.title||f.title)};
+  S.configs[f.path]={title:meta.title||f.title,summary:meta.summary||S.repo.description||'',tags:[...(meta.tags||S.repo.topics||[])],category:meta.categories||'技术',target:old?.target||defaultTarget(meta.title||f.title)};
   return S.configs[f.path];
 }
 async function discover(url){
@@ -82,12 +82,12 @@ function renderDetails(){
     const clean=url.split('#')[0].split('?')[0],target=S.tree.find(x=>x.path.endsWith('/'+clean)||x.path===clean);return !target||(!target.existing&&!S.selected.has(target.path));
   });
   v.innerHTML='<div class="sync-detail-head"><div><span class="sync-kicker">DOCUMENT CONFIGURATION</span><h2>'+esc(f.title)+'</h2><p>'+esc(f.path)+'</p></div><div><button class="secondary" id="ignoreDoc">'+(f.ignored?'取消忽略':'忽略文档')+'</button></div></div>'+
-    '<div class="sync-form-grid"><label>标题<input id="docTitle" value="'+esc(c.title)+'"></label><label>分类<input id="docCategory" value="'+esc(c.category)+'"></label><label class="wide">标签 <small>用逗号分隔，可覆盖 GitHub Topics</small><input id="docTags" value="'+esc(c.tags.join(', '))+'"></label><label class="wide">目标文章<input id="docTarget" value="'+esc(c.target)+'"></label></div>'+
+    '<div class="sync-form-grid"><label>标题<input id="docTitle" value="'+esc(c.title)+'"></label><label>分类<input id="docCategory" value="'+esc(c.category)+'"></label><label class="wide">简介 <small>默认使用 GitHub About / Description，可修改</small><input id="docSummary" value="'+esc(c.summary||'')+'"></label><label class="wide">标签 <small>用逗号分隔，可覆盖 GitHub Topics</small><input id="docTags" value="'+esc(c.tags.join(', '))+'"></label><label class="wide">目标文章<input id="docTarget" value="'+esc(c.target)+'"></label></div>'+
     '<div class="sync-graph"><div><strong>Markdown 引用</strong><span>'+refs.links.length+' 个链接 · '+missing.length+' 个未导入引用</span></div><div class="graph-items">'+(refs.links.length?refs.links.map(x=>'<span class="'+(missing.includes(x.url)?'missing':'')+'">'+esc(x.text)+' → '+esc(x.url)+'</span>').join(''):'<small>没有 Markdown 链接</small>')+'</div></div>'+
     '<div class="sync-graph"><div><strong>图片 / 附件</strong><span>'+refs.images.length+' 个图片引用</span></div><div class="graph-items">'+(refs.images.length?refs.images.map(x=>'<span>'+esc(x.url)+'</span>').join(''):'<small>没有图片引用</small>')+'</div></div>'+
     '<div class="sync-detail-foot"><span>正文 '+f.body.length.toLocaleString()+' 字符</span><button id="saveDocConfig">保存文档配置</button></div>';
   $('saveDocConfig').onclick=async()=>{
-    const n={title:$('docTitle').value.trim()||f.title,category:$('docCategory').value.trim()||'技术',tags:$('docTags').value.split(',').map(x=>x.trim()).filter(Boolean),target:$('docTarget').value.trim()||defaultTarget(f.title)};
+    const n={title:$('docTitle').value.trim()||f.title,category:$('docCategory').value.trim()||'技术',summary:$('docSummary').value.trim(),tags:$('docTags').value.split(',').map(x=>x.trim()).filter(Boolean),target:$('docTarget').value.trim()||defaultTarget(f.title)};
     S.configs[f.path]=n;S.selected.add(f.path);renderDetails();renderTree();toast('文档配置已更新');
   };
   $('ignoreDoc').onclick=async()=>{
@@ -102,7 +102,7 @@ async function establish(){
     const c=configFor(f),old=store.find(S.repo.owner,S.repo.repo,f.path);
     const id=old?.id||mappingId(S.repo.owner,S.repo.repo,f.path);
     store.upsert({id,name:c.title,owner:S.repo.owner,repo:S.repo.repo,branch:S.repo.branch,path:f.path,target:c.target,
-      metadata:{title:c.title,categories:c.category,tags:c.tags},enabled:true});
+      metadata:{title:c.title,summary:c.summary,categories:c.category,tags:c.tags},enabled:true});
   }
   try{await store.save();toast('已建立 '+chosen.length+' 个同步映射')}catch(e){toast('本地状态已更新，但写回 GitHub 失败：'+e.message,'error')}
   render();
@@ -140,12 +140,14 @@ function renderDiscovery(){
   if(!S.repo){v.innerHTML='<div class="sync-empty"><i class="fa fa-github"></i><h3>输入 GitHub 仓库开始</h3><p>扫描仓库元数据与 Markdown 文件树；不会自动导入正文。</p></div>';return}
   const selected=S.tree.filter(f=>S.selected.has(f.path)&&!f.ignored).length;
   v.innerHTML='<div class="sync-repo-head"><div><span class="sync-kicker">GITHUB REPOSITORY</span><h2>'+esc(S.repo.name)+'</h2><p>'+esc(S.repo.description)+'</p><div class="sync-topics">'+S.repo.topics.map(x=>'<span>'+esc(x)+'</span>').join('')+'</div></div><div class="repo-meta"><b>'+esc(S.repo.branch)+'</b><small>default branch</small><button class="secondary" id="rediscover">重新检索</button></div></div>'+
-    '<div class="sync-tree-toolbar"><span>共 '+S.tree.length+' 个 Markdown · 已选择 '+selected+'</span><button class="text-btn" id="selectAllMd">全选</button><button class="text-btn" id="clearMd">清空</button><button id="establishBtn">建立 / 更新映射</button></div><div id="sync-tree" class="md-tree"></div>';
+    '<div class="sync-tree-toolbar"><span>共 '+S.tree.length+' 个 Markdown · 已选择 '+selected+'</span><button class="text-btn" id="selectAllMd">全选</button><button class="text-btn" id="clearMd">清空</button><button class="secondary" id="establishBtn">仅建立映射</button><button id="importBtn">导入所选文章</button></div><div id="sync-tree" class="md-tree"></div>';
   renderTree();
   $('rediscover').onclick=()=>discover('https://github.com/'+S.repo.owner+'/'+S.repo.repo);
+  const countEl=$('syncCount'); if(countEl) countEl.textContent=String(store.mappings.filter(m=>m.owner===S.repo.owner&&m.repo===S.repo.repo).length);
   $('selectAllMd').onclick=()=>{S.tree.forEach(f=>{if(!f.ignored)S.selected.add(f.path)});renderTree();renderDetails()};
   $('clearMd').onclick=()=>{S.selected.clear();renderTree();renderDetails()};
   $('establishBtn').onclick=establish;
+  $('importBtn').onclick=async()=>{await establish(); if(S.running)return; const chosen=S.tree.filter(f=>S.selected.has(f.path)&&!f.ignored); if(!chosen.length)return; S.running=true;renderButtons(); try{S.results=await engine.syncAll(store.mappings.filter(m=>m.owner===S.repo.owner&&m.repo===S.repo.repo&&chosen.some(f=>f.path===m.path)),false); toast('已导入 '+chosen.length+' 篇文章并建立同步关系');}catch(e){toast('导入失败：'+e.message,'error')} finally{S.running=false;render()}};
 }
 function renderMappings(){
   const list=store.mappings.map(m=>{
