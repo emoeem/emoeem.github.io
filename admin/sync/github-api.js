@@ -6,8 +6,8 @@ export function createGithubApi() {
     if(body) headers['Content-Type']='application/json';
     const key=method+':'+path;
     if(method==='GET'&&etags.has(key)) headers['If-None-Match']=etags.get(key);
-    const base=window.ADMIN_API_BASE||''; if(!base)throw Error('Admin API 尚未配置');
-    const r=await fetch(base+'/api/github/'+path,{method,headers,credentials:'include',body:body?JSON.stringify(body):undefined});
+    const base=window.ADMIN_API_BASE||'';
+    const r=await fetch(base+'/api/github?path='+encodeURIComponent(path),{method,headers,credentials:'include',body:body?JSON.stringify(body):undefined});
     if(r.status===304)return payloads.get(key)||null;
     if(r.headers.get('etag')&&method==='GET')etags.set(key,r.headers.get('etag'));
     if(!r.ok){let e={};try{e=await r.json()}catch{};const reset=r.headers.get('x-ratelimit-reset');
