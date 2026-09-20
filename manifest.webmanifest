@@ -1,0 +1,11 @@
+{
+  "name": "emoeem · 技术博客",
+  "short_name": "emoeem",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#6366f1",
+  "description": "记录 Linux、Rust、开发工具与技术实践的个人博客。",
+  "icons": [{"src": "/favicon.png", "sizes": "any", "type": "image/png"}]
+}

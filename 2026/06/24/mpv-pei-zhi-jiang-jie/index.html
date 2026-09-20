@@ -1,0 +1,2591 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>mpv配置 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mpv配置">
+<meta property="og:url" content="https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="mpv 播放器配置详解，从基础到进阶，打造最强视频播放器。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/featureimages/12.jpg">
+<meta property="article:published_time" content="2026-06-24T17:51:05.000Z">
+<meta property="article:modified_time" content="2026-09-20T04:22:44.028Z">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="mpv">
+<meta property="article:tag" content="配置优化">
+<meta property="article:tag" content="音视频">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://emoeem.github.io/img/featureimages/12.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "mpv配置",
+  "url": "https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/",
+  "image": "https://emoeem.github.io/img/featureimages/12.jpg",
+  "datePublished": "2026-06-24T17:51:05.000Z",
+  "dateModified": "2026-09-20T04:22:44.028Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "emoeem",
+      "url": "https://emoeem.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.1.260810"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":2,"unescape":false,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'mpv配置',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/featureimages/12.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">mpv配置</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">mpv配置<a class="post-edit-link" href="https://github.com/emoeem/blog-source/edit/main/source/_posts/mpv配置讲解.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-06-24T17:51:05.000Z" title="发表于 2026-06-24 17:51:05">2026-06-24</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">6596</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>26 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="mpv-配置"><a href="#mpv-配置" class="headerlink" title="mpv 配置"></a>mpv 配置</h1><p>这是我的个人 mpv 配置仓库，主要面向 Linux / Wayland 桌面，使用<br><code>gpu-next + Vulkan</code> 输出，并围绕高质量视频、HDR/SDR 色彩处理、字幕、播放列表、<br>历史记录和 uosc 操作界面进行定制。</p>
+<p>当前配置的核心原则：</p>
+<ul>
+<li>以 <code>mpv.conf</code>、<code>input.conf</code> 和 <code>script-opts/</code> 为主要配置入口。</li>
+<li>禁用 mpv 默认键位，使用仓库内可审计的自定义键位。</li>
+<li>使用定制版 uosc，不直接用上游文件覆盖本地改动。</li>
+<li>使用 profile 组织画质、色彩、HDR、着色器和场景模式。</li>
+<li>运行时数据、缓存和第三方更新器的 Git 镜像不提交到仓库。</li>
+</ul>
+<blockquote>
+<p>文档以当前工作区中的实际文件为准。修改配置后，快捷键和参数说明应再次以<br><code>input.conf</code>、<code>mpv.conf</code> 与 <code>script-opts/</code> 为最终依据。</p>
+</blockquote>
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><ul>
+<li><a href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B">快速开始</a></li>
+<li><a href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84">目录结构</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E7%89%B9%E7%82%B9">配置特点</a></li>
+<li><a href="#%E7%94%BB%E8%B4%A8%E4%B8%8E%E8%89%B2%E5%BD%A9-profile">画质与色彩 profile</a></li>
+<li><a href="#uosc-%E7%95%8C%E9%9D%A2">uosc 界面</a></li>
+<li><a href="#%E8%84%9A%E6%9C%AC%E5%8A%9F%E8%83%BD">脚本功能</a></li>
+<li><a href="#%E5%BF%AB%E6%8D%B7%E9%94%AE">快捷键</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%9B%B4%E6%96%B0%E5%99%A8">第三方更新器</a></li>
+<li><a href="#%E4%BE%9D%E8%B5%96%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">依赖与注意事项</a></li>
+</ul>
+<h2 id="快速开始"><a href="#快速开始" class="headerlink" title="快速开始"></a>快速开始</h2><h3 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h3><p>建议使用带有以下能力的完整 mpv 构建：</p>
+<ul>
+<li><code>gpu-next</code></li>
+<li>Vulkan / Wayland 视频输出</li>
+<li>PipeWire 音频输出</li>
+<li>VapourSynth</li>
+<li><code>ytdl_hook</code></li>
+<li><code>yt-dlp</code></li>
+</ul>
+<p>部分脚本还需要系统工具或外部运行时，例如 VapourSynth、Whisper、Trakt<br>访问令牌、浏览器 cookies 和桌面剪贴板工具。未使用对应功能时，可以不安装<br>相关依赖。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>如果目标目录还没有 mpv 配置，可以执行：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone https://github.com/emoeem/mpv.git ~/.config/mpv<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>如果目录已经存在，请先备份当前配置，再根据需要合并文件。此仓库包含个人<br>字体、ICC 文件、脚本和着色器，不建议直接覆盖另一个完整配置目录。</p>
+<h3 id="启动与检查"><a href="#启动与检查" class="headerlink" title="启动与检查"></a>启动与检查</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">mpv --force-window<span class="token operator">=</span>yes<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>运行时可使用 <code>M</code> 检查 <code>manager.json</code> 中配置的第三方来源。检查配置语法时，<br>可以执行：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> <span class="token function">diff</span> <span class="token parameter variable">--check</span>
+luac <span class="token parameter variable">-p</span> scripts/uosc/main.lua <span class="token punctuation">\</span>
+  scripts/uosc/elements/Menu.lua <span class="token punctuation">\</span>
+  scripts/uosc/elements/Controls.lua <span class="token punctuation">\</span>
+  scripts/uosc/elements/Timeline.lua<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h2><pre class="line-numbers language-text" data-language="text"><code class="language-text">~/.config/mpv/
+├── mpv.conf                         # 主配置：输出、解码、音频、字幕、截图和 profile
+├── input.conf                       # 自定义快捷键与 uosc 菜单
+├── inputevent_key.conf              # 单击、双击、长按等增强键位
+├── profiles.conf                    # 游戏、电影、动画、HDR 等场景 profile
+├── menu.conf                        # select.lua 菜单数据，目前由动态菜单接管
+├── scripts/                         # Lua / JavaScript 播放脚本
+├── script-opts/                     # 各脚本的配置
+├── script-modules/                  # 脚本共用模块
+├── shaders/                         # GLSL 缩放、锐化、去色带和 AI 着色器
+├── vs/                              # VapourSynth 补帧、超分、降噪和去交错脚本
+├── fonts/                           # OSD、字幕和 uosc 字体
+├── osc-style/                       # 其他 OSC 样式备份
+├── icc/                             # ICC 色彩配置文件
+├── script-assets/                   # 起播格式徽标等资源
+├── manager.json                     # 第三方来源与更新策略
+├── .manager/                        # 更新器缓存和备份，已加入 gitignore
+├── cache/                           # watch-later、着色器和 ICC 缓存，已忽略
+├── files/                           # 播放历史、截图等运行时数据，已忽略
+└── archive/                         # 已停用的历史配置备份<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h3 id="主要文件"><a href="#主要文件" class="headerlink" title="主要文件"></a>主要文件</h3><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>mpv.conf</code></td>
+<td>定义默认输出、解码、音频、字幕、截图、网络和 profile</td>
+</tr>
+<tr>
+<td><code>input.conf</code></td>
+<td>定义键位，并通过 <code>#menu:</code> 注释生成 uosc 菜单</td>
+</tr>
+<tr>
+<td><code>profiles.conf</code></td>
+<td>定义可手动启用的场景模式</td>
+</tr>
+<tr>
+<td><code>script-opts/uosc.conf</code></td>
+<td>定义 uosc 控件、颜色、字体、时间轴和动画</td>
+</tr>
+<tr>
+<td><code>manager.json</code></td>
+<td>定义哪些第三方目录只检查，哪些目录允许整体替换</td>
+</tr>
+<tr>
+<td><code>scripts/manager.lua</code></td>
+<td>异步检查、比较、备份和更新第三方脚本 / 着色器</td>
+</tr>
+<tr>
+<td><code>script-opts/</code></td>
+<td>控制各个脚本的行为，避免把脚本参数硬编码在 Lua 中</td>
+</tr>
+</tbody></table>
+<h2 id="配置特点"><a href="#配置特点" class="headerlink" title="配置特点"></a>配置特点</h2><h3 id="视频输出与硬件解码"><a href="#视频输出与硬件解码" class="headerlink" title="视频输出与硬件解码"></a>视频输出与硬件解码</h3><p><code>mpv.conf</code> 的默认视频链路为：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">vo=gpu-next
+gpu-context=waylandvk
+hwdec=auto-safe
+hwdec-codecs=all<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>这套设置适合 Wayland + Vulkan 环境。<code>auto-safe</code> 优先保证硬解兼容性，<br><code>hwdec-codecs=all</code> 允许全功能构建尝试更多编码格式。高负载的 8K、高帧率<br>内容会通过条件 profile 降低后处理或切换到音频同步，减少掉帧风险。</p>
+<h3 id="播放状态与历史"><a href="#播放状态与历史" class="headerlink" title="播放状态与历史"></a>播放状态与历史</h3><ul>
+<li><code>idle=yes</code>：没有文件或播放结束后保持 mpv 窗口运行。</li>
+<li><code>ontop</code>：默认窗口置顶。</li>
+<li><code>save-position-on-quit=yes</code>：退出时保存播放位置。</li>
+<li><code>watch-later-dir=~~/cache/watch_later</code>：将 watch-later 状态放入缓存目录。</li>
+<li><code>resume-playback-check-mtime=yes</code>：文件修改时间改变时避免错误恢复同名文件。</li>
+<li><code>save-watch-history=yes</code>：将播放记录写入 <code>files/watch_history.jsonl</code>。</li>
+<li><code>reset-on-next-file=...</code>：切换文件时重置音轨、字幕、滤镜、速度、色彩和画面变换。</li>
+<li><code>hr-seek=yes</code>：默认启用精确跳转。</li>
+<li><code>hr-seek-framedrop=no</code>：精确跳转时不主动丢帧，便于保持音视频同步和配合补帧。</li>
+</ul>
+<h3 id="OSD、字体与-Catppuccin-Mocha"><a href="#OSD、字体与-Catppuccin-Mocha" class="headerlink" title="OSD、字体与 Catppuccin Mocha"></a>OSD、字体与 Catppuccin Mocha</h3><p>主 OSD、文本字幕和 uosc 使用 LXGW WenKai Screen，并回退到 Noto Color Emoji。<br>当前主题是 <a target="_blank" rel="noopener" href="https://catppuccin.com/palette/">Catppuccin Mocha</a>：</p>
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>颜色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Text</td>
+<td><code>#CDD6F4</code></td>
+</tr>
+<tr>
+<td>Crust</td>
+<td><code>#11111B</code></td>
+</tr>
+<tr>
+<td>Mantle</td>
+<td><code>#181825</code></td>
+</tr>
+<tr>
+<td>Base / Surface</td>
+<td><code>#1E1E2E</code></td>
+</tr>
+<tr>
+<td>Overlay</td>
+<td><code>#313244</code></td>
+</tr>
+<tr>
+<td>Window border</td>
+<td><code>#45475A</code></td>
+</tr>
+<tr>
+<td>Blue</td>
+<td><code>#89B4FA</code></td>
+</tr>
+<tr>
+<td>Mauve</td>
+<td><code>#CBA6F7</code></td>
+</tr>
+<tr>
+<td>Green</td>
+<td><code>#A6E3A1</code></td>
+</tr>
+<tr>
+<td>Red</td>
+<td><code>#F38BA8</code></td>
+</tr>
+</tbody></table>
+<p>对应设置分布在：</p>
+<ul>
+<li><code>mpv.conf</code>：<code>osd-color</code>、<code>osd-back-color</code>、字幕颜色和轮廓。</li>
+<li><code>script-opts/uosc.conf</code>：uosc 控件、菜单、时间轴、选中状态和提示颜色。</li>
+<li><code>scripts/manager.lua</code>：更新器底部进度条的独立颜色。</li>
+</ul>
+<p>原生 OSC 通过 <code>osc=no</code> 禁用，由定制版 uosc 提供播放控制界面。</p>
+<h3 id="音频"><a href="#音频" class="headerlink" title="音频"></a>音频</h3><ul>
+<li><code>ao=pipewire</code>：Linux 下使用 PipeWire。</li>
+<li><code>audio-format=float</code>：使用浮点格式处理音频。</li>
+<li><code>audio-channels=auto-safe</code>：默认按安全方式选择输出声道。</li>
+<li><code>replaygain=album</code>：优先使用专辑 ReplayGain。</li>
+<li><code>gapless-audio=weak</code>：音乐模式下尽量无缝切歌，同时保留格式变化时的兼容性。</li>
+<li><code>audio-file-auto=fuzzy</code>：从 <code>audio/</code> 等目录自动查找匹配音轨。</li>
+<li><code>alang=japanese,jpn,jap,ja,jp,english,eng,en</code>：日语优先，其次英语。</li>
+</ul>
+<h3 id="字幕"><a href="#字幕" class="headerlink" title="字幕"></a>字幕</h3><ul>
+<li><code>sub-codepage=gb18030</code>：兼容常见中文文本字幕编码。</li>
+<li><code>sub-auto=fuzzy</code>：自动加载匹配的外挂字幕。</li>
+<li><code>sub-file-paths=sub:subs:subtitles:字幕</code>：搜索多个字幕目录。</li>
+<li><code>slang=chs,sc,zh-Hans,zh-CN,cht,tc,zh-Hant,zh-HK,zh-TW,chi,zho,zh</code>：<br>优先加载中文字幕。</li>
+<li>默认字幕字体为 <code>LXGW WenKai Screen</code>，字号为 34。</li>
+<li>支持字幕重载、轨道切换、字幕同步、字幕导出、Whisper 生成字幕和字幕兼容性<br>开关，见<a href="#%E5%AD%97%E5%B9%95">字幕快捷键</a>。</li>
+</ul>
+<h3 id="截图"><a href="#截图" class="headerlink" title="截图"></a>截图</h3><p>默认截图为 WebP：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">screenshot-format=webp
+screenshot-webp-quality=85
+screenshot-webp-compression=6
+screenshot-tag-colorspace=yes<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>截图模板为：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">~~/files/screen/%{media-title}-%P-%n<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>因此截图会保存在 <code>files/screen/</code>，同时保留正确的色彩空间标记。<code>profiles.conf</code><br>中的 <code>截图</code> profile 可以临时切换到高质量 PNG。</p>
+<h3 id="网络播放与-yt-dlp"><a href="#网络播放与-yt-dlp" class="headerlink" title="网络播放与 yt-dlp"></a>网络播放与 yt-dlp</h3><ul>
+<li><code>ytdl=yes</code>：启用 mpv 的 URL 解析增强。</li>
+<li>默认优先选择 2160p 以下视频并排除 VP9.2。</li>
+<li>通过 <code>cookies-from-browser=Firefox</code> 读取 Firefox cookies。</li>
+<li><code>script-opts/quality-menu.conf</code> 与 <code>quality-menu.lua</code> 提供视频 / 音频格式菜单。</li>
+<li><code>profiles.conf</code> 中的 <code>网络流</code> 会在 <code>demuxer-via-network=yes</code> 时自动启用：<br>预读目标为 30 秒，前向缓存上限为 256 MiB，回退缓存上限为 32 MiB。</li>
+<li><code>直播</code> 是需要手动应用的低缓存、低延迟场景配置，不会被普通网络视频自动触发。</li>
+</ul>
+<h3 id="输入策略"><a href="#输入策略" class="headerlink" title="输入策略"></a>输入策略</h3><p><code>input-default-bindings=no</code> 会关闭 mpv 默认键位和脚本默认键位注册方案，<br>主要行为统一由 <code>input.conf</code> 显式定义。这样可以减少不同脚本之间的快捷键冲突，<br>也便于通过 uosc 菜单找到对应操作。</p>
+<h2 id="画质与色彩-profile"><a href="#画质与色彩-profile" class="headerlink" title="画质与色彩 profile"></a>画质与色彩 profile</h2><h3 id="当前默认启用"><a href="#当前默认启用" class="headerlink" title="当前默认启用"></a>当前默认启用</h3><p><code>mpv.conf</code> 当前启用以下 profile：</p>
+<pre class="line-numbers language-text" data-language="text"><code class="language-text">profile=Target
+profile=Dither
+profile=HQ
+profile=HDR2SDR<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Target</code></td>
+<td>使用目标色彩空间链路，不自动套用系统 ICC</td>
+</tr>
+<tr>
+<td><code>Dither</code></td>
+<td>使用 <code>fruit</code> 抖动，降低量化色带且开销适中</td>
+</tr>
+<tr>
+<td><code>HQ</code></td>
+<td>EWA Lanczos Sharp、Catmull-Rom、抗振铃和 sigmoid upscaling</td>
+</tr>
+<tr>
+<td><code>HDR2SDR</code></td>
+<td>HDR 到 SDR 的动态峰值检测和 tone mapping</td>
+</tr>
+</tbody></table>
+<p><code>Target</code> 与 <code>ICC</code> / <code>ICC+</code> 是不同的色彩管理路径，不建议同时启用。</p>
+<h3 id="主配置中的可选-profile"><a href="#主配置中的可选-profile" class="headerlink" title="主配置中的可选 profile"></a>主配置中的可选 profile</h3><table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ICC</code></td>
+<td>使用系统自动发现的 ICC 配置</td>
+</tr>
+<tr>
+<td><code>ICC+</code></td>
+<td>使用仓库中的 ICC 文件或手动指定的显示器 ICC</td>
+</tr>
+<tr>
+<td><code>Dither+</code></td>
+<td>Floyd-Steinberg 误差扩散，质量更高、开销更大</td>
+</tr>
+<tr>
+<td><code>Tscale</code></td>
+<td><code>display-resample + oversample</code> 时域插值</td>
+</tr>
+<tr>
+<td><code>Tscale+</code></td>
+<td><code>display-resample + sphinx</code> 时域插值</td>
+</tr>
+<tr>
+<td><code>DeBand-low</code></td>
+<td>轻度去色带</td>
+</tr>
+<tr>
+<td><code>DeBand-medium</code></td>
+<td>中等去色带</td>
+</tr>
+<tr>
+<td><code>DeBand-high</code></td>
+<td>强去色带</td>
+</tr>
+<tr>
+<td><code>SDR2HDR</code></td>
+<td>SDR 反向映射到 HDR，仅适合 HDR 显示设备</td>
+</tr>
+<tr>
+<td><code>SWscaler</code></td>
+<td>软件缩放器备用方案</td>
+</tr>
+<tr>
+<td><code>NNEDI3</code> / <code>NNEDI3+</code></td>
+<td>高质量神经网络插值，后者开销更大</td>
+</tr>
+<tr>
+<td><code>ravu-zoom</code></td>
+<td>较轻量的通用放大</td>
+</tr>
+<tr>
+<td><code>FSRCNNX</code> / <code>FSRCNNX+</code></td>
+<td>HD 放大 / SD 去伪影变体</td>
+</tr>
+<tr>
+<td><code>Ani4K</code> / <code>AniSD</code></td>
+<td>动画和 SD 动画的高负载 ArtCNN 方案</td>
+</tr>
+<tr>
+<td><code>Anime4K</code></td>
+<td>KrigBilateral + Anime4K 修复、抗锯齿和高光限制</td>
+</tr>
+<tr>
+<td><code>SSIM</code></td>
+<td>适合 4K 或希望控制开销的场景</td>
+</tr>
+</tbody></table>
+<h3 id="profiles-conf-场景模式"><a href="#profiles-conf-场景模式" class="headerlink" title="profiles.conf 场景模式"></a><code>profiles.conf</code> 场景模式</h3><p>除 <code>网络流</code> 会按网络媒体属性自动触发外，其余场景 profile 需要在启动参数或配置中<br>使用 <code>--profile=&lt;名称&gt;</code>；也可以通过快捷键动态应用部分着色器 profile。</p>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>游戏</code></td>
+<td>低延迟、高性能，关闭插帧和去色带</td>
+</tr>
+<tr>
+<td><code>电影</code></td>
+<td>高质量、插帧、去色带和 HDR 映射</td>
+</tr>
+<tr>
+<td><code>动画</code></td>
+<td>动画专用 Anime4K 修复与去模糊</td>
+</tr>
+<tr>
+<td><code>低功耗</code></td>
+<td>关闭硬解并降低缩放和解码负载，适合排查性能问题</td>
+</tr>
+<tr>
+<td><code>网络流</code></td>
+<td>网络媒体自动触发，使用 30 秒预读、256 MiB 前向缓存和网络超时设置</td>
+</tr>
+<tr>
+<td><code>HDR画质</code></td>
+<td>手动 HDR 画质预设：目标峰值、色域映射和 PixelClipper</td>
+</tr>
+<tr>
+<td><code>截图</code></td>
+<td>PNG 高质量截图和高质量缩放</td>
+</tr>
+<tr>
+<td><code>直播</code></td>
+<td>低缓存、低延迟和流重连</td>
+</tr>
+</tbody></table>
+<h3 id="自动条件-profile"><a href="#自动条件-profile" class="headerlink" title="自动条件 profile"></a>自动条件 profile</h3><p>以下 profile 由 mpv 属性或媒体参数自动触发：</p>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>触发目的</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>hdr-2390</code></td>
+<td>使用 BT.2390 时调整 tone mapping 参数</td>
+</tr>
+<tr>
+<td><code>peak-percentile</code></td>
+<td>对低亮度 HDR 场景降低峰值百分位</td>
+</tr>
+<tr>
+<td><code>SDR-gamut</code></td>
+<td>对非 BT.709 SDR 内容使用 clip 色域映射</td>
+</tr>
+<tr>
+<td><code>SDR-target</code></td>
+<td>对普通 SDR 内容关闭不必要的目标色彩提示</td>
+</tr>
+<tr>
+<td><code>HDR</code></td>
+<td>识别 PQ / HLG 内容并设置 HDR 目标参数</td>
+</tr>
+<tr>
+<td><code>HDR-PASS</code></td>
+<td>HDR 显示设备满足条件时启用直通路径</td>
+</tr>
+<tr>
+<td><code>video-sync</code></td>
+<td>速度修正较大时切换到 <code>display-tempo</code></td>
+</tr>
+<tr>
+<td><code>fps-fix</code></td>
+<td>高帧率视频改用音频同步，降低异常耗能</td>
+</tr>
+<tr>
+<td><code>8k-fix</code></td>
+<td>8K 级别视频关闭高负载后处理并降低掉帧风险</td>
+</tr>
+<tr>
+<td><code>pgs-fix</code></td>
+<td>修复超宽画面中 PGS 字幕的比例错位</td>
+</tr>
+<tr>
+<td><code>pause</code></td>
+<td>暂停时取消置顶</td>
+</tr>
+<tr>
+<td><code>maximized</code></td>
+<td>最大化时禁止自动调整窗口大小</td>
+</tr>
+<tr>
+<td><code>minimized</code></td>
+<td>最小化时自动暂停</td>
+</tr>
+<tr>
+<td><code>end</code></td>
+<td>播放结束后退出全屏和最大化</td>
+</tr>
+<tr>
+<td><code>media-title</code></td>
+<td>网络协议和磁链使用媒体标题作为窗口标题</td>
+</tr>
+</tbody></table>
+<h2 id="uosc-界面"><a href="#uosc-界面" class="headerlink" title="uosc 界面"></a>uosc 界面</h2><p>当前定制版 uosc 位于 <code>scripts/uosc/</code>，版本标识为 <code>5.12.0</code>。它不是可以随意<br>整体替换的上游副本，原因是本地对菜单、时间轴、顶栏、鼠标行为、动画和颜色<br>有定制。</p>
+<h3 id="主要外观设置"><a href="#主要外观设置" class="headerlink" title="主要外观设置"></a>主要外观设置</h3><p>来自 <code>script-opts/uosc.conf</code>：</p>
+<table>
+<thead>
+<tr>
+<th>设置</th>
+<th>当前值</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>timeline_style</code></td>
+<td><code>bar</code></td>
+<td>展开时间轴使用条形样式</td>
+</tr>
+<tr>
+<td><code>timeline_size</code></td>
+<td><code>12</code></td>
+<td>展开时间轴高度</td>
+</tr>
+<tr>
+<td><code>timeline_cache</code></td>
+<td><code>no</code></td>
+<td>不显示网络渲染缓存指标</td>
+</tr>
+<tr>
+<td><code>timeline_heatmap</code></td>
+<td><code>no</code></td>
+<td>不显示 YouTube 热图</td>
+</tr>
+<tr>
+<td><code>chapter_display</code></td>
+<td><code>yes</code></td>
+<td>在时间轴显示章节标记和名称</td>
+</tr>
+<tr>
+<td><code>controls_size</code></td>
+<td><code>36</code></td>
+<td>控制按钮尺寸</td>
+</tr>
+<tr>
+<td><code>controls_margin</code></td>
+<td><code>18</code></td>
+<td>控制栏外边距</td>
+</tr>
+<tr>
+<td><code>controls_persistency</code></td>
+<td><code>idle</code></td>
+<td>空闲时保留控制栏</td>
+</tr>
+<tr>
+<td><code>menu_font</code></td>
+<td><code>LXGW WenKai Screen</code></td>
+<td>菜单字体</td>
+</tr>
+<tr>
+<td><code>menu_item_height</code></td>
+<td><code>44</code></td>
+<td>菜单项目高度</td>
+</tr>
+<tr>
+<td><code>scale</code></td>
+<td><code>1.30</code></td>
+<td>界面缩放</td>
+</tr>
+<tr>
+<td><code>font_scale</code></td>
+<td><code>1.15</code></td>
+<td>文字缩放</td>
+</tr>
+<tr>
+<td><code>border_radius</code></td>
+<td><code>7</code></td>
+<td>控件和菜单圆角</td>
+</tr>
+<tr>
+<td><code>pause_indicator</code></td>
+<td><code>none</code></td>
+<td>不显示中央暂停指示器</td>
+</tr>
+<tr>
+<td><code>progress</code></td>
+<td><code>windowed</code></td>
+<td>窗口模式显示细进度条</td>
+</tr>
+<tr>
+<td><code>progress_playing_only</code></td>
+<td><code>yes</code></td>
+<td>只在实际播放时显示细进度条</td>
+</tr>
+<tr>
+<td><code>dock_animation</code></td>
+<td><code>yes</code></td>
+<td>启用底部 Dock 动画</td>
+</tr>
+<tr>
+<td><code>dock_animation_mode</code></td>
+<td><code>classic</code></td>
+<td>默认使用经典 Morph 动画</td>
+</tr>
+</tbody></table>
+<h3 id="控制栏"><a href="#控制栏" class="headerlink" title="控制栏"></a>控制栏</h3><p>控制栏根据媒体类型动态显示，包含以下功能：</p>
+<ul>
+<li>打开文件、最近播放和按钮提示。</li>
+<li>音轨、字幕轨和弹幕菜单。</li>
+<li>时间显示、上一集、停止、播放 / 暂停、下一集和播放速度。</li>
+<li>WebDAV 快捷入口。</li>
+<li>片头片尾标记与跳过。</li>
+<li>播放列表、统计信息和更多菜单。</li>
+<li>空闲状态下保留打开文件、历史、WebDAV、播放列表等入口。</li>
+</ul>
+<p>时间轴右键绑定为 <code>uosc/chapters</code>，不会修改视频或片头片尾标记。<br>uosc 快捷键面板由 <code>CTRL+ALT+u</code> 打开，界面开关由<br><code>CTRL+ALT+SHIFT+u</code> 控制。</p>
+<h2 id="脚本功能"><a href="#脚本功能" class="headerlink" title="脚本功能"></a>脚本功能</h2><h3 id="界面、播放列表与文件"><a href="#界面、播放列表与文件" class="headerlink" title="界面、播放列表与文件"></a>界面、播放列表与文件</h3><table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>uosc/</code></td>
+<td>主播放界面、菜单、时间轴、顶栏、缩放和自定义按钮</td>
+</tr>
+<tr>
+<td><code>uosc_danmaku/</code></td>
+<td>弹幕搜索、加载、延迟、保存、源管理和弹幕样式菜单</td>
+</tr>
+<tr>
+<td><code>thumbfast.lua</code></td>
+<td>时间轴缩略图预览</td>
+</tr>
+<tr>
+<td><code>playlistmanager.lua</code></td>
+<td>播放列表浏览、排序、移动、保存、随机和网络标题解析</td>
+</tr>
+<tr>
+<td><code>playlist-view.lua</code></td>
+<td>播放列表视图</td>
+</tr>
+<tr>
+<td><code>file-browser/</code></td>
+<td>OSD 文件浏览器、目录缓存、收藏和多选</td>
+</tr>
+<tr>
+<td><code>open_dialog.lua</code></td>
+<td>调用原生文件选择器</td>
+</tr>
+<tr>
+<td><code>command_palette.lua</code></td>
+<td>命令面板</td>
+</tr>
+<tr>
+<td><code>dyn_menu.lua</code> / <code>cycle-commands.lua</code></td>
+<td>动态菜单和循环命令</td>
+</tr>
+</tbody></table>
+<h3 id="历史、书签与状态"><a href="#历史、书签与状态" class="headerlink" title="历史、书签与状态"></a>历史、书签与状态</h3><table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>simplehistory.lua</code></td>
+<td>播放历史、隐身历史、恢复进度和最近播放菜单</td>
+</tr>
+<tr>
+<td><code>recentmenu.lua</code></td>
+<td>对历史菜单进行 uosc / select / 命令面板适配</td>
+</tr>
+<tr>
+<td><code>simplebookmark.lua</code></td>
+<td>文件书签和进度书签</td>
+</tr>
+<tr>
+<td><code>history-bookmark.lua</code></td>
+<td>历史与书签辅助功能</td>
+</tr>
+<tr>
+<td><code>auto-save-state.lua</code></td>
+<td>自动保存状态</td>
+</tr>
+<tr>
+<td><code>episode-preferences.lua</code></td>
+<td>在同一连续剧内临时保持音轨、字幕位置和播放倍速</td>
+</tr>
+<tr>
+<td><code>persist_properties.lua</code></td>
+<td>跨文件持久化指定属性</td>
+</tr>
+<tr>
+<td><code>memo.lua</code></td>
+<td>本地备注记录</td>
+</tr>
+<tr>
+<td><code>undoredo.lua</code></td>
+<td>跳转和循环跳转撤销 / 重做</td>
+</tr>
+</tbody></table>
+<h3 id="字幕、章节与片段"><a href="#字幕、章节与片段" class="headerlink" title="字幕、章节与片段"></a>字幕、章节与片段</h3><table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>sub-select.lua</code></td>
+<td>字幕选择</td>
+</tr>
+<tr>
+<td><code>sub-assrt.lua</code></td>
+<td>字幕下载菜单</td>
+</tr>
+<tr>
+<td><code>autosubsync/</code></td>
+<td>字幕同步菜单和同步处理</td>
+</tr>
+<tr>
+<td><code>sub-fastwhisper.lua</code></td>
+<td>使用本地 Whisper 生成字幕</td>
+</tr>
+<tr>
+<td><code>sub_export.lua</code></td>
+<td>导出当前内封字幕</td>
+</tr>
+<tr>
+<td><code>uosc-subtitle-lines.lua</code></td>
+<td>在 uosc 中查看字幕行内容</td>
+</tr>
+<tr>
+<td><code>mute-on-specific-subtitle-words.js</code></td>
+<td>根据指定字幕词语切换静音</td>
+</tr>
+<tr>
+<td><code>chapter-list.lua</code></td>
+<td>章节列表</td>
+</tr>
+<tr>
+<td><code>chapter-make-read.lua</code></td>
+<td>创建、编辑、删除和写出章节文件</td>
+</tr>
+<tr>
+<td><code>chapterskip.lua</code></td>
+<td>静音跳转、章节跳过和片头片尾标记</td>
+</tr>
+<tr>
+<td><code>mpv_chapters.js</code></td>
+<td>JavaScript 章节列表</td>
+</tr>
+<tr>
+<td><code>skip-segments.lua</code></td>
+<td>标记、编辑和自动跳过片头片尾</td>
+</tr>
+</tbody></table>
+<h3 id="画面、音频和截图"><a href="#画面、音频和截图" class="headerlink" title="画面、音频和截图"></a>画面、音频和截图</h3><table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>dynamic-crop.lua</code></td>
+<td>检测并切除黑边，只对视频流工作</td>
+</tr>
+<tr>
+<td><code>hdr-mode.lua</code></td>
+<td>HDR 模式辅助</td>
+</tr>
+<tr>
+<td><code>drcbox.lua</code></td>
+<td>音频动态范围处理</td>
+</tr>
+<tr>
+<td><code>music-mode.lua</code></td>
+<td>音乐播放模式</td>
+</tr>
+<tr>
+<td><code>playback-info.lua</code></td>
+<td>播放信息面板</td>
+</tr>
+<tr>
+<td><code>stats.lua</code></td>
+<td>中文增强统计信息</td>
+</tr>
+<tr>
+<td><code>screenshot-to-clipboard.lua</code></td>
+<td>截图并复制到剪贴板</td>
+</tr>
+<tr>
+<td><code>mpv-animated.lua</code></td>
+<td>动图截取与导出</td>
+</tr>
+<tr>
+<td><code>pip.lua</code></td>
+<td>画中画辅助</td>
+</tr>
+<tr>
+<td><code>startup-format-logos.lua</code></td>
+<td>起播时显示编码、音频、字幕等格式徽标</td>
+</tr>
+</tbody></table>
+<h3 id="在线服务和远程控制"><a href="#在线服务和远程控制" class="headerlink" title="在线服务和远程控制"></a>在线服务和远程控制</h3><table>
+<thead>
+<tr>
+<th>脚本</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>quality-menu.lua</code></td>
+<td>使用 yt-dlp 选择在线视频和音频格式</td>
+</tr>
+<tr>
+<td><code>simple-mpv-webui/</code></td>
+<td>提供浏览器控制界面，端口由 <code>script-opts/webui.conf</code> 决定</td>
+</tr>
+<tr>
+<td><code>trakt-scrobble/</code></td>
+<td>Trakt 搜索和播放记录同步</td>
+</tr>
+<tr>
+<td><code>sponsorblock</code> 相关脚本</td>
+<td>跳过已标记的赞助商片段</td>
+</tr>
+<tr>
+<td><code>trackselect.lua</code></td>
+<td>按语言或元数据辅助选择音轨</td>
+</tr>
+</tbody></table>
+<h3 id="画质增强资源"><a href="#画质增强资源" class="headerlink" title="画质增强资源"></a>画质增强资源</h3><p><code>shaders/</code> 按用途收录多类 GLSL 资源，包括：</p>
+<ul>
+<li>Anime4K、Ani4K、AniSD、ArtCNN、ACNet、CuNNy。</li>
+<li>FSRCNNX、NNEDI3、RAVU、SSIM、AiUpscale。</li>
+<li>KrigBilateral、JointBilateral、色度升频和自适应锐化。</li>
+<li>SMAA、DLAA、CMAA、去色带、降噪、翻转、旋转、缩放和色温滤镜。</li>
+</ul>
+<p><code>vs/</code> 收录 VapourSynth 处理链，包括：</p>
+<ul>
+<li><code>MEMC_*</code>：RIFE、SVP、MVT 和 DRBA 补帧。</li>
+<li><code>SR_*</code>：ACNet、ArtCNN 超分。</li>
+<li><code>NR_*</code>：BM3D、CCD 降噪。</li>
+<li><code>ETC_DEINT_EX</code>：去交错。</li>
+<li><code>MIX_UAI_*</code>：AI 画质增强。</li>
+</ul>
+<h2 id="快捷键"><a href="#快捷键" class="headerlink" title="快捷键"></a>快捷键</h2><p>快捷键定义在 <code>input.conf</code>。下表只记录当前启用的绑定；以大写字母书写的键名<br>表示需要按住 <code>Shift</code>，例如 <code>A</code> 与 <code>a</code> 是两个不同绑定。uosc 菜单中的项目<br>也来自 <code>input.conf</code> 行尾的 <code>#menu:</code> 注释。</p>
+<p>为避免被 niri 的全局绑定截获，mpv 不直接使用 <code>F2</code>、<code>F7</code>–<code>F11</code> 和<br><code>CTRL+LEFT</code> / <code>CTRL+RIGHT</code>；对应功能使用下表中的带修饰键组合。</p>
+<h3 id="打开、历史、书签与剪贴板"><a href="#打开、历史、书签与剪贴板" class="headerlink" title="打开、历史、书签与剪贴板"></a>打开、历史、书签与剪贴板</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>o</code></td>
+<td>打开 uosc 内置文件浏览器</td>
+</tr>
+<tr>
+<td><code>CTRL+o</code></td>
+<td>打开原生文件浏览器</td>
+</tr>
+<tr>
+<td><code>TAB</code></td>
+<td>打开 OSD 文件浏览器并刷新</td>
+</tr>
+<tr>
+<td><code>`</code></td>
+<td>打开播放历史</td>
+</tr>
+<tr>
+<td><code>ALT+l</code></td>
+<td>切换隐身历史模式</td>
+</tr>
+<tr>
+<td><code>CTRL+L</code></td>
+<td>加载最后播放文件</td>
+</tr>
+<tr>
+<td><code>CTRL+l</code></td>
+<td>加载最后播放文件及进度</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>打开书签菜单</td>
+</tr>
+<tr>
+<td><code>CTRL+n</code></td>
+<td>添加进度书签</td>
+</tr>
+<tr>
+<td><code>CTRL+N</code></td>
+<td>添加文件书签</td>
+</tr>
+<tr>
+<td><code>ALT+C</code></td>
+<td>打开剪贴菜单</td>
+</tr>
+<tr>
+<td><code>CTRL+c</code></td>
+<td>复制文件路径和进度</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+c</code></td>
+<td>只复制文件路径</td>
+</tr>
+<tr>
+<td><code>CTRL+v</code></td>
+<td>跳转到剪贴板中的路径或进度</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+v</code></td>
+<td>将剪贴板内容加入播放列表</td>
+</tr>
+<tr>
+<td><code>CTRL+F</code></td>
+<td>打开 / 关闭 yt-dlp 视频格式菜单</td>
+</tr>
+<tr>
+<td><code>ALT+F</code></td>
+<td>打开 / 关闭 yt-dlp 音频格式菜单</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+h</code></td>
+<td>打开近期播放菜单</td>
+</tr>
+</tbody></table>
+<h3 id="文件、窗口与播放状态"><a href="#文件、窗口与播放状态" class="headerlink" title="文件、窗口与播放状态"></a>文件、窗口与播放状态</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>SHIFT+F11</code></td>
+<td>停止当前播放</td>
+</tr>
+<tr>
+<td><code>ALT+t</code></td>
+<td>切换窗口置顶</td>
+</tr>
+<tr>
+<td><code>ALT+b</code></td>
+<td>切换窗口最大化</td>
+</tr>
+<tr>
+<td><code>ENTER</code></td>
+<td>切换全屏</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td>临时显示统计信息</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>常驻显示统计信息</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td>设置或清除 A-B 片段循环</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>切换单文件循环</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td>随机播放列表</td>
+</tr>
+<tr>
+<td><code>[</code> / <code>]</code></td>
+<td>播放速度减 0.1 / 加 0.1</td>
+</tr>
+<tr>
+<td><code>{</code> / <code>}</code></td>
+<td>播放速度减半 / 加倍</td>
+</tr>
+<tr>
+<td><code>BS</code></td>
+<td>播放速度重置为 1.0</td>
+</tr>
+<tr>
+<td><code>ALT+o</code></td>
+<td>在文件管理器中定位当前文件</td>
+</tr>
+<tr>
+<td><code>DEL</code></td>
+<td>删除当前文件，并要求确认</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td>最小化窗口</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td>退出 mpv</td>
+</tr>
+<tr>
+<td><code>Q</code></td>
+<td>退出并保存 watch-later 状态</td>
+</tr>
+</tbody></table>
+<h3 id="导航、章节与跳转"><a href="#导航、章节与跳转" class="headerlink" title="导航、章节与跳转"></a>导航、章节与跳转</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>O</code></td>
+<td>切换 OSD 时间轴</td>
+</tr>
+<tr>
+<td><code>F4</code></td>
+<td>打开综合 OSD 菜单</td>
+</tr>
+<tr>
+<td><code>F5</code></td>
+<td>打开播放列表</td>
+</tr>
+<tr>
+<td><code>F6</code></td>
+<td>打开音频设备列表</td>
+</tr>
+<tr>
+<td><code>CTRL+F7</code></td>
+<td>打开章节列表</td>
+</tr>
+<tr>
+<td><code>CTRL+F8</code></td>
+<td>打开轨道列表</td>
+</tr>
+<tr>
+<td><code>CTRL+F9</code></td>
+<td>打开视频轨列表</td>
+</tr>
+<tr>
+<td><code>CTRL+F10</code></td>
+<td>打开音频轨列表</td>
+</tr>
+<tr>
+<td><code>CTRL+F11</code></td>
+<td>打开字幕轨列表</td>
+</tr>
+<tr>
+<td><code>ALT+c</code></td>
+<td>标记章节时间</td>
+</tr>
+<tr>
+<td><code>ALT+e</code></td>
+<td>编辑当前章节标题</td>
+</tr>
+<tr>
+<td><code>ALT+r</code></td>
+<td>删除当前章节</td>
+</tr>
+<tr>
+<td><code>ALT+w</code></td>
+<td>写出 CHAPTER 文件</td>
+</tr>
+<tr>
+<td><code>ALT+g</code></td>
+<td>写出 OGM 章节文件</td>
+</tr>
+<tr>
+<td><code>&lt;</code> / <code>&gt;</code></td>
+<td>播放列表上一个 / 下一个文件</td>
+</tr>
+<tr>
+<td><code>PGDWN</code> / <code>PGUP</code></td>
+<td>上一章节 / 下一章节</td>
+</tr>
+<tr>
+<td><code>F3</code></td>
+<td>跳到下一个静音位置</td>
+</tr>
+<tr>
+<td><code>ALT+q</code></td>
+<td>切换章节跳过模式</td>
+</tr>
+<tr>
+<td><code>ALT+n</code></td>
+<td>标记片头或片尾</td>
+</tr>
+<tr>
+<td><code>,</code> / <code>.</code></td>
+<td>上一帧 / 下一帧</td>
+</tr>
+<tr>
+<td><code>LEFT</code> / <code>RIGHT</code></td>
+<td>后退 30 秒 / 前进 60 秒</td>
+</tr>
+<tr>
+<td><code>SHIFT+LEFT</code> / <code>SHIFT+RIGHT</code></td>
+<td>精确后退 / 前进 1 秒</td>
+</tr>
+<tr>
+<td><code>SHIFT+DOWN</code> / <code>SHIFT+UP</code></td>
+<td>精确后退 80 秒 / 前进 80 秒</td>
+</tr>
+<tr>
+<td><code>CTRL+z</code> / <code>CTRL+x</code></td>
+<td>撤销 / 重做跳转</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+z</code></td>
+<td>撤销循环跳转</td>
+</tr>
+</tbody></table>
+<h3 id="画面、窗口缩放与色彩"><a href="#画面、窗口缩放与色彩" class="headerlink" title="画面、窗口缩放与色彩"></a>画面、窗口缩放与色彩</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>A</code></td>
+<td>循环切换 16:9、4:3、2.35:1 和默认宽高比</td>
+</tr>
+<tr>
+<td><code>ALT+SHIFT+LEFT</code> / <code>ALT+SHIFT+RIGHT</code></td>
+<td>左旋转 / 右旋转视频</td>
+</tr>
+<tr>
+<td><code>CTRL+-</code> / <code>CTRL+=</code></td>
+<td>缩小 / 放大窗口</td>
+</tr>
+<tr>
+<td><code>ALT+-</code> / <code>ALT+=</code></td>
+<td>缩小 / 放大视频画面</td>
+</tr>
+<tr>
+<td><code>ALT+LEFT</code> / <code>ALT+RIGHT</code></td>
+<td>向左 / 向右移动画面</td>
+</tr>
+<tr>
+<td><code>ALT+UP</code> / <code>ALT+DOWN</code></td>
+<td>向上 / 向下移动画面</td>
+</tr>
+<tr>
+<td><code>ALT+p</code></td>
+<td>切换裁切填充</td>
+</tr>
+<tr>
+<td><code>ALT+BS</code></td>
+<td>重置画面缩放、裁切、旋转、平移和宽高比</td>
+</tr>
+<tr>
+<td><code>CTRL+I</code></td>
+<td>切换 ICC 自动校色</td>
+</tr>
+<tr>
+<td><code>1</code> / <code>2</code></td>
+<td>对比度减 1 / 加 1</td>
+</tr>
+<tr>
+<td><code>3</code> / <code>4</code></td>
+<td>明度减 1 / 加 1</td>
+</tr>
+<tr>
+<td><code>5</code> / <code>6</code></td>
+<td>伽马减 1 / 加 1</td>
+</tr>
+<tr>
+<td><code>7</code> / <code>8</code></td>
+<td>饱和度减 1 / 加 1</td>
+</tr>
+<tr>
+<td><code>-</code> / <code>=</code></td>
+<td>色相减 1 / 加 1</td>
+</tr>
+<tr>
+<td><code>CTRL+BS</code></td>
+<td>重置对比度、明度、伽马、饱和度和色相</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>切换 deband</td>
+</tr>
+<tr>
+<td><code>ALT+z</code> / <code>ALT+x</code></td>
+<td>增加 / 降低 deband 强度</td>
+</tr>
+<tr>
+<td><code>h</code></td>
+<td>循环切换 HDR tone mapping 曲线</td>
+</tr>
+<tr>
+<td><code>ALT+h</code></td>
+<td>切换 HDR 动态峰值检测</td>
+</tr>
+<tr>
+<td><code>CTRL+h</code></td>
+<td>切换 HDR 直通提示</td>
+</tr>
+<tr>
+<td><code>CTRL+t</code></td>
+<td>循环切换显示器传输特性</td>
+</tr>
+<tr>
+<td><code>CTRL+T</code></td>
+<td>切换映射目标峰值 100 / 203</td>
+</tr>
+<tr>
+<td><code>CTRL+g</code></td>
+<td>切换色域映射模式</td>
+</tr>
+</tbody></table>
+<h3 id="视频、截图与动图"><a href="#视频、截图与动图" class="headerlink" title="视频、截图与动图"></a>视频、截图与动图</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ALT+i</code></td>
+<td>切换插帧 / 抖动补偿</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>切换 dynamic-crop 去黑边</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td>切换去交错</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>有字幕、无 OSD 的源尺寸单帧截图</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>无字幕、无 OSD 的源尺寸单帧截图</td>
+</tr>
+<tr>
+<td><code>CTRL+s</code></td>
+<td>有字幕、有 OSD 的窗口尺寸单帧截图</td>
+</tr>
+<tr>
+<td><code>ALT+s</code></td>
+<td>有字幕、无 OSD 的逐帧截图</td>
+</tr>
+<tr>
+<td><code>ALT+S</code></td>
+<td>无字幕、无 OSD 的逐帧截图</td>
+</tr>
+<tr>
+<td><code>CTRL+S</code></td>
+<td>有字幕、有 OSD 的窗口尺寸逐帧截图</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td>标记片段剪切起止位置</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>切换剪切音频信息</td>
+</tr>
+<tr>
+<td><code>CTRL+C</code></td>
+<td>清除剪切标记</td>
+</tr>
+<tr>
+<td><code>w</code> / <code>W</code></td>
+<td>设置动图开始 / 结束时间</td>
+</tr>
+<tr>
+<td><code>CTRL+w</code></td>
+<td>导出无字幕动图</td>
+</tr>
+<tr>
+<td><code>CTRL+W</code></td>
+<td>导出带字幕动图</td>
+</tr>
+</tbody></table>
+<h3 id="音频与音量"><a href="#音频与音量" class="headerlink" title="音频与音量"></a>音频与音量</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>UP</code> / <code>DOWN</code></td>
+<td>音量加 5 / 减 5</td>
+</tr>
+<tr>
+<td><code>9</code> / <code>0</code></td>
+<td>音量减 1 / 加 1</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td>切换音轨</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td>切换静音</td>
+</tr>
+<tr>
+<td><code>CTRL+,</code> / <code>CTRL+.</code></td>
+<td>音频延迟减 0.1 / 加 0.1</td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td>重置音频延迟</td>
+</tr>
+<tr>
+<td><code>CTRL+y</code></td>
+<td>切换音频独占模式</td>
+</tr>
+<tr>
+<td><code>CTRL+Y</code></td>
+<td>切换精确跳转丢帧同步模式</td>
+</tr>
+<tr>
+<td><code>ALT+y</code></td>
+<td>循环切换 7.1、5.1、立体声和自动声道模式</td>
+</tr>
+<tr>
+<td><code>CTRL+F2</code></td>
+<td>循环切换动态范围 / 响度滤镜</td>
+</tr>
+<tr>
+<td><code>ALT+` </code></td>
+<td>清空音频滤镜</td>
+</tr>
+</tbody></table>
+<h3 id="字幕-1"><a href="#字幕-1" class="headerlink" title="字幕"></a>字幕</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>j</code></td>
+<td>切换主字幕轨</td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td>切换次字幕轨</td>
+</tr>
+<tr>
+<td><code>v</code> / <code>ALT+V</code></td>
+<td>切换主字幕 / 次字幕可见性</td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td>切换 ASS 字幕渲染样式</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>循环切换默认字幕字体</td>
+</tr>
+<tr>
+<td><code>CTRL+r</code></td>
+<td>重载当前字幕</td>
+</tr>
+<tr>
+<td><code>ALT+R</code></td>
+<td>切换次字幕样式覆盖</td>
+</tr>
+<tr>
+<td><code>ALT+T</code></td>
+<td>切换字幕与视频帧混合</td>
+</tr>
+<tr>
+<td><code>K</code></td>
+<td>切换字幕时序修复</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>切换 ASS 字幕颜色转换兼容</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td>切换使用视频信息渲染字幕</td>
+</tr>
+<tr>
+<td><code>ALT+B</code></td>
+<td>切换 bidi 双向检测兼容</td>
+</tr>
+<tr>
+<td><code>ALT+X</code></td>
+<td>切换 ASS 阴影边框缩放覆盖</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>切换 ASS 字幕输出到黑边</td>
+</tr>
+<tr>
+<td><code>ALT+Z</code></td>
+<td>切换文本字幕输出到黑边</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td>切换 PGS 字幕铺满屏幕</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td>切换 PGS 字幕灰度转换</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>切换字幕选择脚本</td>
+</tr>
+<tr>
+<td><code>CTRL+f</code></td>
+<td>打开字幕下载菜单</td>
+</tr>
+<tr>
+<td><code>CTRL+m</code></td>
+<td>打开字幕同步菜单</td>
+</tr>
+<tr>
+<td><code>CTRL+M</code></td>
+<td>打开字幕内容菜单</td>
+</tr>
+<tr>
+<td><code>ALT+m</code></td>
+<td>导出当前内封字幕</td>
+</tr>
+<tr>
+<td><code>ALT+f</code></td>
+<td>使用 Whisper 生成 AI 字幕</td>
+</tr>
+<tr>
+<td><code>r</code> / <code>t</code></td>
+<td>主字幕上移 / 下移</td>
+</tr>
+<tr>
+<td><code>R</code> / <code>T</code></td>
+<td>次字幕上移 / 下移</td>
+</tr>
+<tr>
+<td><code>z</code> / <code>x</code></td>
+<td>主字幕延迟减 0.1 / 加 0.1</td>
+</tr>
+<tr>
+<td><code>Z</code> / <code>X</code></td>
+<td>次字幕延迟减 0.1 / 加 0.1</td>
+</tr>
+<tr>
+<td><code>ALT+j</code> / <code>ALT+k</code></td>
+<td>主字幕缩小 / 放大</td>
+</tr>
+<tr>
+<td><code>CTRL+j</code> / <code>CTRL+k</code></td>
+<td>跳转上一条 / 下一条字幕</td>
+</tr>
+<tr>
+<td><code>SHIFT+BS</code></td>
+<td>重置字幕位置、字号和延迟</td>
+</tr>
+</tbody></table>
+<h3 id="视频滤镜"><a href="#视频滤镜" class="headerlink" title="视频滤镜"></a>视频滤镜</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CTRL+` </code></td>
+<td>清空视频滤镜</td>
+</tr>
+<tr>
+<td><code>ALT+v</code></td>
+<td>切换弱去色块滤镜</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>切换限定色域格式滤镜</td>
+</tr>
+<tr>
+<td><code>@</code></td>
+<td>垂直翻转</td>
+</tr>
+<tr>
+<td><code>SHARP</code></td>
+<td>水平翻转</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>旋转 180 度</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Gamma 2.2 修正</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>强制 59.94 fps</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>填充 16:9 黑边并居中</td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td>6500K 色温修正</td>
+</tr>
+</tbody></table>
+<h3 id="着色器"><a href="#着色器" class="headerlink" title="着色器"></a>着色器</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>着色器</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CTRL+0</code></td>
+<td>清空所有 GLSL 着色器</td>
+</tr>
+<tr>
+<td><code>CTRL+1</code></td>
+<td>KrigBilateral</td>
+</tr>
+<tr>
+<td><code>CTRL+2</code></td>
+<td>SSimSuperRes</td>
+</tr>
+<tr>
+<td><code>CTRL+3</code></td>
+<td>SSimDownscaler</td>
+</tr>
+<tr>
+<td><code>CTRL+4</code></td>
+<td>adaptive-sharpen</td>
+</tr>
+<tr>
+<td><code>CTRL+5</code></td>
+<td>FSRCNNX</td>
+</tr>
+<tr>
+<td><code>CTRL+6</code></td>
+<td>FSRCNNX distort</td>
+</tr>
+<tr>
+<td><code>CTRL+7</code></td>
+<td>NNEDI3 nns32 win8x4</td>
+</tr>
+<tr>
+<td><code>CTRL+8</code></td>
+<td>RAVU zoom</td>
+</tr>
+<tr>
+<td><code>CTRL+9</code></td>
+<td>Anime4K 抗锯齿</td>
+</tr>
+</tbody></table>
+<h3 id="profile、命令面板与工具"><a href="#profile、命令面板与工具" class="headerlink" title="profile、命令面板与工具"></a>profile、命令面板与工具</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CTRL+P</code></td>
+<td>循环切换 FSRCNNX、FSRCNNX+、NNEDI3、ravu-zoom 和 Anime4K</td>
+</tr>
+<tr>
+<td><code>ALT+1</code></td>
+<td>应用 <code>FSRCNNX</code></td>
+</tr>
+<tr>
+<td><code>ALT+2</code></td>
+<td>应用 <code>FSRCNNX+</code></td>
+</tr>
+<tr>
+<td><code>ALT+3</code></td>
+<td>应用 <code>ravu-zoom</code></td>
+</tr>
+<tr>
+<td><code>ALT+4</code></td>
+<td>应用 <code>Ani4K</code></td>
+</tr>
+<tr>
+<td><code>ALT+5</code></td>
+<td>应用 <code>AniSD</code></td>
+</tr>
+<tr>
+<td><code>ALT+6</code></td>
+<td>应用 <code>Anime4K</code></td>
+</tr>
+<tr>
+<td><code>ALT+7</code></td>
+<td>应用 <code>NNEDI3</code></td>
+</tr>
+<tr>
+<td><code>ALT+8</code></td>
+<td>应用 <code>NNEDI3+</code></td>
+</tr>
+<tr>
+<td><code>CTRL+B</code></td>
+<td>切换标题栏</td>
+</tr>
+<tr>
+<td><code>CTRL+R</code></td>
+<td>切换播放下一个文件时重置的状态集合</td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>打开 mpv 控制台</td>
+</tr>
+<tr>
+<td><code>Ctrl+p</code></td>
+<td>打开 Command Palette</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+u</code></td>
+<td>打开 uosc 快捷键面板</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+SHIFT+u</code></td>
+<td>显示 / 隐藏 uosc 界面</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+t</code></td>
+<td>复制当前时间</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+s</code></td>
+<td>复制当前字幕内容</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>检查并更新第三方脚本和着色器</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+SHIFT+s</code></td>
+<td>截图到剪贴板</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+b</code></td>
+<td>切换 SponsorBlock</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+i</code></td>
+<td>显示 / 隐藏播放信息面板</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+SHIFT+t</code></td>
+<td>复制当前时间戳</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+g</code></td>
+<td>显示 / 隐藏 JavaScript 章节列表</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+m</code></td>
+<td>根据字幕特定词语切换静音</td>
+</tr>
+</tbody></table>
+<h3 id="Trakt、弹幕和-Web-功能"><a href="#Trakt、弹幕和-Web-功能" class="headerlink" title="Trakt、弹幕和 Web 功能"></a>Trakt、弹幕和 Web 功能</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ALT+d</code></td>
+<td>打开 Trakt 搜索菜单</td>
+</tr>
+<tr>
+<td><code>ALT+D</code></td>
+<td>切换 Trakt 播放记录同步</td>
+</tr>
+<tr>
+<td><code>CTRL+d</code></td>
+<td>显示 / 隐藏弹幕</td>
+</tr>
+<tr>
+<td><code>CTRL+D</code></td>
+<td>打开弹幕综合菜单</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+d</code></td>
+<td>弹幕延迟加 1 秒</td>
+</tr>
+<tr>
+<td><code>CTRL+ALT+a</code></td>
+<td>弹幕延迟减 1 秒</td>
+</tr>
+<tr>
+<td><code>_</code></td>
+<td>立即保存当前弹幕</td>
+</tr>
+<tr>
+<td><code>ALT+_</code></td>
+<td>检查弹幕脚本更新</td>
+</tr>
+</tbody></table>
+<h3 id="鼠标、媒体键和退出"><a href="#鼠标、媒体键和退出" class="headerlink" title="鼠标、媒体键和退出"></a>鼠标、媒体键和退出</h3><table>
+<thead>
+<tr>
+<th>按键</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>MENU</code></td>
+<td>开关 uosc 菜单</td>
+</tr>
+<tr>
+<td><code>POWER</code></td>
+<td>退出 mpv</td>
+</tr>
+<tr>
+<td><code>PLAY</code> / <code>PAUSE</code> / <code>PLAYPAUSE</code></td>
+<td>播放 / 暂停</td>
+</tr>
+<tr>
+<td><code>STOP</code></td>
+<td>退出 mpv</td>
+</tr>
+<tr>
+<td><code>FORWARD</code> / <code>REWIND</code></td>
+<td>前进 30 秒 / 后退 30 秒</td>
+</tr>
+<tr>
+<td><code>NEXT</code> / <code>PREV</code></td>
+<td>播放列表下一个 / 上一个文件</td>
+</tr>
+<tr>
+<td><code>SPACE</code></td>
+<td>播放 / 暂停</td>
+</tr>
+<tr>
+<td><code>MBTN_LEFT</code></td>
+<td>播放 / 暂停</td>
+</tr>
+<tr>
+<td><code>MBTN_Right</code></td>
+<td>开关 uosc 菜单</td>
+</tr>
+<tr>
+<td><code>MBTN_FORWARD</code> / <code>MBTN_BACK</code></td>
+<td>播放列表下一个 / 上一个文件</td>
+</tr>
+<tr>
+<td><code>Wheel_Up</code> / <code>Wheel_Down</code></td>
+<td>音量加 10 / 减 10</td>
+</tr>
+<tr>
+<td><code>ESC</code></td>
+<td>退出全屏并取消窗口最大化</td>
+</tr>
+</tbody></table>
+<h2 id="第三方更新器"><a href="#第三方更新器" class="headerlink" title="第三方更新器"></a>第三方更新器</h2><p>按 <code>M</code> 会运行 <code>scripts/manager.lua</code>，来源由根目录的 <code>manager.json</code> 管理。<br>更新器使用异步 Git 子进程，不阻塞 mpv 的播放和其他 Lua 脚本，并在 uosc / OSD<br>底部显示来源、阶段和总体进度。</p>
+<h3 id="来源策略"><a href="#来源策略" class="headerlink" title="来源策略"></a>来源策略</h3><table>
+<thead>
+<tr>
+<th>来源</th>
+<th>目标目录</th>
+<th>模式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>uosc</code></td>
+<td><code>scripts/uosc</code></td>
+<td><code>check</code></td>
+<td>基于本地定制版 <code>5.12.0</code>，只检查上游</td>
+</tr>
+<tr>
+<td><code>uosc_danmaku</code></td>
+<td><code>scripts/uosc_danmaku</code></td>
+<td><code>check</code></td>
+<td>本地有弹幕适配和行为定制</td>
+</tr>
+<tr>
+<td><code>trakt_scrobble</code></td>
+<td><code>scripts/trakt-scrobble</code></td>
+<td><code>check</code></td>
+<td>本地配置可能包含服务适配</td>
+</tr>
+<tr>
+<td><code>simple_mpv_webui</code></td>
+<td><code>scripts/simple-mpv-webui</code></td>
+<td><code>check</code></td>
+<td>本地端口和页面有定制</td>
+</tr>
+<tr>
+<td><code>anime4k</code></td>
+<td><code>shaders/Anime4K/glsl</code></td>
+<td><code>replace</code></td>
+<td>允许整体替换上游 GLSL 目录</td>
+</tr>
+<tr>
+<td><code>file_browser</code></td>
+<td><code>scripts/file-browser</code></td>
+<td><code>replace</code></td>
+<td>允许整体替换上游文件浏览器</td>
+</tr>
+</tbody></table>
+<h3 id="check-与-replace"><a href="#check-与-replace" class="headerlink" title="check 与 replace"></a><code>check</code> 与 <code>replace</code></h3><ul>
+<li><code>check</code>：获取上游分支并比较提交和目录树，只报告是否有更新，绝不覆盖本地目录。</li>
+<li><code>replace</code>：确认上游目录树确实变化后，才暂存、备份和整体替换。</li>
+<li>无变化时不更新、不创建备份、不改动目标目录。</li>
+<li>已管理目录出现本地修改时，<code>replace</code> 会保护性跳过，避免覆盖本地文件。</li>
+<li>旧版嵌套 <code>.git</code> 会移动到 <code>.manager/backups/&lt;name&gt;/</code>，不会参与目标目录复制。</li>
+<li>每个来源使用 <code>.manager/&lt;name&gt;.git</code> bare mirror，并在 <code>.manager/state.json</code> 保存状态。</li>
+<li>mpv 退出时会中止仍在运行的更新子进程。</li>
+</ul>
+<p><code>manager.json</code> 中的 <code>baseline</code> 用于记录定制版本基于哪个上游版本或提交。<br>例如 uosc 当前 baseline 为 <code>5.12.0</code>；发现上游版本变化时，需要人工比较和合并<br>本地改动，再决定是否更新 baseline。不要把 <code>.manager/</code> 缓存目录提交到仓库。</p>
+<p>添加来源时，建议先使用 <code>check</code>：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"unique_name"</span><span class="token punctuation">,</span>
+  <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://github.com/owner/project.git"</span><span class="token punctuation">,</span>
+  <span class="token property">"branch"</span><span class="token operator">:</span> <span class="token string">"main"</span><span class="token punctuation">,</span>
+  <span class="token property">"source"</span><span class="token operator">:</span> <span class="token string">"upstream/subdirectory"</span><span class="token punctuation">,</span>
+  <span class="token property">"destination"</span><span class="token operator">:</span> <span class="token string">"scripts/project"</span><span class="token punctuation">,</span>
+  <span class="token property">"mode"</span><span class="token operator">:</span> <span class="token string">"check"</span><span class="token punctuation">,</span>
+  <span class="token property">"baseline"</span><span class="token operator">:</span> <span class="token string">"v1.0.0"</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>只有明确允许整体替换、且没有本地定制的目录，才使用<br><code>"mode": "replace"</code>。</p>
+<h2 id="依赖与注意事项"><a href="#依赖与注意事项" class="headerlink" title="依赖与注意事项"></a>依赖与注意事项</h2><ul>
+<li><code>vo=gpu-next</code> 和 <code>gpu-context=waylandvk</code> 适用于 Wayland；在 X11 或 Windows<br>环境中需要调整 GPU context。</li>
+<li><code>hwdec=auto-safe</code> 不能保证所有显卡驱动和编码格式都能硬解。遇到画面异常时，<br>可用 <code>--hwdec=no</code> 临时排查。</li>
+<li><code>dynamic-crop.lua</code> 只处理视频流。播放音乐封面或单张图片时看到<br><code>only works for videos</code> 属于预期行为。</li>
+<li>VapourSynth、Anime4K、NNEDI3、Ani4K 和 Whisper 等高负载功能会明显增加<br>GPU / CPU 使用率，建议按片源和设备性能选择。</li>
+<li><code>ytdl-raw-options-append=cookies-from-browser=Firefox</code> 需要 Firefox cookies<br>可访问，并且不应把浏览器 cookies 文件复制进仓库。</li>
+<li>WebUI 会监听由 <code>script-opts/webui.conf</code> 指定的地址和端口。若监听在局域网<br>地址，应确认防火墙和访问权限。</li>
+<li><code>cache/</code>、<code>files/</code> 和 <code>.manager/</code> 是运行时目录，已在 <code>.gitignore</code> 中排除。</li>
+<li>字体、ICC、着色器和脚本属于配置的一部分，克隆后不要只复制 <code>mpv.conf</code>。</li>
+<li>修改 <code>uosc</code> 时应优先手动比较上游变化；不要对当前定制目录直接执行上游整体覆盖。</li>
+</ul>
+<h2 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://mpv.io/manual/master/">mpv 官方手册</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/tomasklaen/uosc">uosc</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Tony15246/uosc_danmaku">uosc_danmaku</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/po5/thumbfast">thumbfast</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/zhongfly/InputEvent">InputEvent</a></li>
+<li><a target="_blank" rel="noopener" href="https://catppuccin.com/palette/">Catppuccin Mocha 调色板</a></li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/">https://emoeem.github.io/2026/06/24/mpv-pei-zhi-jiang-jie/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/">配置优化</a><a class="post-meta__tags" href="/tags/mpv/">mpv</a><a class="post-meta__tags" href="/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/">音视频</a></div><div class="post-share"><div class="social-share" data-image="/img/featureimages/12.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/06/24/yazi-pei-zhi/" title="yazi配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/14.avif"><source type="image/webp" srcset="/img/optimized/featureimages/14.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/featureimages/14.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">yazi配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器入门配置，从零到可用。</div></div></div></a><a class="pagination-related" href="/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/" title="CachyOS Fish 终端完全配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_0.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_0.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/custom_0.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">CachyOS Fish 终端完全配置指南</div></div><div class="info-2"><div class="info-item-1">CachyOS 下 Fish shell 从零到一完全配置，插件、主题、快捷键、提示符美化一网打尽。</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/06/24/yazi-pei-zhi/" title="yazi配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/14.avif"><source type="image/webp" srcset="/img/optimized/featureimages/14.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/14.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-24</div><div class="info-item-2">yazi配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器入门配置，从零到可用。</div></div></div></a><a class="pagination-related" href="/2026/06/23/cachyos-fish-zhong-duan-wan-quan-pei-zhi-zhi-nan/" title="CachyOS Fish 终端完全配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_0.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_0.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_0.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-23</div><div class="info-item-2">CachyOS Fish 终端完全配置指南</div></div><div class="info-2"><div class="info-item-1">CachyOS 下 Fish shell 从零到一完全配置，插件、主题、快捷键、提示符美化一网打尽。</div></div></div></a><a class="pagination-related" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_2.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-04</div><div class="info-item-2">Yazi 配置</div></div><div class="info-2"><div class="info-item-1">Yazi 文件管理器插件生态全解，快捷键、主题、预览、与 Neovim/Fish 联动技巧。</div></div></div></a><a class="pagination-related" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-17</div><div class="info-item-2">nvim配置</div></div><div class="info-2"><div class="info-item-1">基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</div></div></div></a><a class="pagination-related" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本"><picture><source type="image/avif" srcset="/img/optimized/featureimages/10.avif"><source type="image/webp" srcset="/img/optimized/featureimages/10.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/10.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-07-19</div><div class="info-item-2">linux的fish配置和脚本</div></div><div class="info-2"><div class="info-item-1">Linux 下 Fish shell 的实用配置与脚本片段，提升日常终端效率。</div></div></div></a><a class="pagination-related" href="/2026/06/27/whisper-cli-can-shu-pei-zhi-zhi-nan/" title="whisper-cli 参数配置指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/13.avif"><source type="image/webp" srcset="/img/optimized/featureimages/13.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/13.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-06-27</div><div class="info-item-2">whisper-cli 参数配置指南</div></div><div class="info-2"><div class="info-item-1">whisper.cpp 参数调优指南，本地语音转文字的最佳实践。</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">15</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+  <strong>正在做什么</strong>
+  <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
+  <a href="/now/">查看 Now →</a>
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#mpv-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">mpv 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95"><span class="toc-number">1.1.</span> <span class="toc-text">目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B"><span class="toc-number">1.2.</span> <span class="toc-text">快速开始</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96"><span class="toc-number">1.2.1.</span> <span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%89%E8%A3%85"><span class="toc-number">1.2.2.</span> <span class="toc-text">安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8%E4%B8%8E%E6%A3%80%E6%9F%A5"><span class="toc-number">1.2.3.</span> <span class="toc-text">启动与检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">1.3.</span> <span class="toc-text">目录结构</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.1.</span> <span class="toc-text">主要文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E7%89%B9%E7%82%B9"><span class="toc-number">1.4.</span> <span class="toc-text">配置特点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E8%BE%93%E5%87%BA%E4%B8%8E%E7%A1%AC%E4%BB%B6%E8%A7%A3%E7%A0%81"><span class="toc-number">1.4.1.</span> <span class="toc-text">视频输出与硬件解码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%92%AD%E6%94%BE%E7%8A%B6%E6%80%81%E4%B8%8E%E5%8E%86%E5%8F%B2"><span class="toc-number">1.4.2.</span> <span class="toc-text">播放状态与历史</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#OSD%E3%80%81%E5%AD%97%E4%BD%93%E4%B8%8E-Catppuccin-Mocha"><span class="toc-number">1.4.3.</span> <span class="toc-text">OSD、字体与 Catppuccin Mocha</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91"><span class="toc-number">1.4.4.</span> <span class="toc-text">音频</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E5%B9%95"><span class="toc-number">1.4.5.</span> <span class="toc-text">字幕</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%88%AA%E5%9B%BE"><span class="toc-number">1.4.6.</span> <span class="toc-text">截图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BD%91%E7%BB%9C%E6%92%AD%E6%94%BE%E4%B8%8E-yt-dlp"><span class="toc-number">1.4.7.</span> <span class="toc-text">网络播放与 yt-dlp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BE%93%E5%85%A5%E7%AD%96%E7%95%A5"><span class="toc-number">1.4.8.</span> <span class="toc-text">输入策略</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%94%BB%E8%B4%A8%E4%B8%8E%E8%89%B2%E5%BD%A9-profile"><span class="toc-number">1.5.</span> <span class="toc-text">画质与色彩 profile</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%93%E5%89%8D%E9%BB%98%E8%AE%A4%E5%90%AF%E7%94%A8"><span class="toc-number">1.5.1.</span> <span class="toc-text">当前默认启用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E9%85%8D%E7%BD%AE%E4%B8%AD%E7%9A%84%E5%8F%AF%E9%80%89-profile"><span class="toc-number">1.5.2.</span> <span class="toc-text">主配置中的可选 profile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#profiles-conf-%E5%9C%BA%E6%99%AF%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.3.</span> <span class="toc-text">profiles.conf 场景模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E6%9D%A1%E4%BB%B6-profile"><span class="toc-number">1.5.4.</span> <span class="toc-text">自动条件 profile</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#uosc-%E7%95%8C%E9%9D%A2"><span class="toc-number">1.6.</span> <span class="toc-text">uosc 界面</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E5%A4%96%E8%A7%82%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.6.1.</span> <span class="toc-text">主要外观设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A7%E5%88%B6%E6%A0%8F"><span class="toc-number">1.6.2.</span> <span class="toc-text">控制栏</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%84%9A%E6%9C%AC%E5%8A%9F%E8%83%BD"><span class="toc-number">1.7.</span> <span class="toc-text">脚本功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%95%8C%E9%9D%A2%E3%80%81%E6%92%AD%E6%94%BE%E5%88%97%E8%A1%A8%E4%B8%8E%E6%96%87%E4%BB%B6"><span class="toc-number">1.7.1.</span> <span class="toc-text">界面、播放列表与文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8E%86%E5%8F%B2%E3%80%81%E4%B9%A6%E7%AD%BE%E4%B8%8E%E7%8A%B6%E6%80%81"><span class="toc-number">1.7.2.</span> <span class="toc-text">历史、书签与状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E5%B9%95%E3%80%81%E7%AB%A0%E8%8A%82%E4%B8%8E%E7%89%87%E6%AE%B5"><span class="toc-number">1.7.3.</span> <span class="toc-text">字幕、章节与片段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E9%9D%A2%E3%80%81%E9%9F%B3%E9%A2%91%E5%92%8C%E6%88%AA%E5%9B%BE"><span class="toc-number">1.7.4.</span> <span class="toc-text">画面、音频和截图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E6%9C%8D%E5%8A%A1%E5%92%8C%E8%BF%9C%E7%A8%8B%E6%8E%A7%E5%88%B6"><span class="toc-number">1.7.5.</span> <span class="toc-text">在线服务和远程控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E8%B4%A8%E5%A2%9E%E5%BC%BA%E8%B5%84%E6%BA%90"><span class="toc-number">1.7.6.</span> <span class="toc-text">画质增强资源</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BF%AB%E6%8D%B7%E9%94%AE"><span class="toc-number">1.8.</span> <span class="toc-text">快捷键</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%93%E5%BC%80%E3%80%81%E5%8E%86%E5%8F%B2%E3%80%81%E4%B9%A6%E7%AD%BE%E4%B8%8E%E5%89%AA%E8%B4%B4%E6%9D%BF"><span class="toc-number">1.8.1.</span> <span class="toc-text">打开、历史、书签与剪贴板</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E3%80%81%E7%AA%97%E5%8F%A3%E4%B8%8E%E6%92%AD%E6%94%BE%E7%8A%B6%E6%80%81"><span class="toc-number">1.8.2.</span> <span class="toc-text">文件、窗口与播放状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AF%BC%E8%88%AA%E3%80%81%E7%AB%A0%E8%8A%82%E4%B8%8E%E8%B7%B3%E8%BD%AC"><span class="toc-number">1.8.3.</span> <span class="toc-text">导航、章节与跳转</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%BB%E9%9D%A2%E3%80%81%E7%AA%97%E5%8F%A3%E7%BC%A9%E6%94%BE%E4%B8%8E%E8%89%B2%E5%BD%A9"><span class="toc-number">1.8.4.</span> <span class="toc-text">画面、窗口缩放与色彩</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E3%80%81%E6%88%AA%E5%9B%BE%E4%B8%8E%E5%8A%A8%E5%9B%BE"><span class="toc-number">1.8.5.</span> <span class="toc-text">视频、截图与动图</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%9F%B3%E9%A2%91%E4%B8%8E%E9%9F%B3%E9%87%8F"><span class="toc-number">1.8.6.</span> <span class="toc-text">音频与音量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E5%B9%95-1"><span class="toc-number">1.8.7.</span> <span class="toc-text">字幕</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%86%E9%A2%91%E6%BB%A4%E9%95%9C"><span class="toc-number">1.8.8.</span> <span class="toc-text">视频滤镜</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9D%80%E8%89%B2%E5%99%A8"><span class="toc-number">1.8.9.</span> <span class="toc-text">着色器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#profile%E3%80%81%E5%91%BD%E4%BB%A4%E9%9D%A2%E6%9D%BF%E4%B8%8E%E5%B7%A5%E5%85%B7"><span class="toc-number">1.8.10.</span> <span class="toc-text">profile、命令面板与工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Trakt%E3%80%81%E5%BC%B9%E5%B9%95%E5%92%8C-Web-%E5%8A%9F%E8%83%BD"><span class="toc-number">1.8.11.</span> <span class="toc-text">Trakt、弹幕和 Web 功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%BC%A0%E6%A0%87%E3%80%81%E5%AA%92%E4%BD%93%E9%94%AE%E5%92%8C%E9%80%80%E5%87%BA"><span class="toc-number">1.8.12.</span> <span class="toc-text">鼠标、媒体键和退出</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%96%B9%E6%9B%B4%E6%96%B0%E5%99%A8"><span class="toc-number">1.9.</span> <span class="toc-text">第三方更新器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A5%E6%BA%90%E7%AD%96%E7%95%A5"><span class="toc-number">1.9.1.</span> <span class="toc-text">来源策略</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#check-%E4%B8%8E-replace"><span class="toc-number">1.9.2.</span> <span class="toc-text">check 与 replace</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%9D%E8%B5%96%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">1.10.</span> <span class="toc-text">依赖与注意事项</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%9B%B8%E5%85%B3%E9%93%BE%E6%8E%A5"><span class="toc-number">1.11.</span> <span class="toc-text">相关链接</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_1.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="nvim配置" loading='lazy'/ decoding="async" src="/img/featureimages/custom_1.jpg"></picture></a><div class="content"><a class="title" href="/2026/08/17/nvim-pei-zhi/" title="nvim配置">nvim配置</a><time datetime="2026-08-17T02:18:34.000Z" title="发表于 2026-08-17 02:18:34">2026-08-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Yazi 配置" loading='lazy'/ decoding="async" src="/img/featureimages/custom_2.jpg"></picture></a><div class="content"><a class="title" href="/2026/08/04/yazi-cha-jian-shi-yong-zhi-nan/" title="Yazi 配置">Yazi 配置</a><time datetime="2026-08-04T09:06:12.000Z" title="发表于 2026-08-04 09:06:12">2026-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本"><picture><source type="image/avif" srcset="/img/optimized/featureimages/10.avif"><source type="image/webp" srcset="/img/optimized/featureimages/10.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="linux的fish配置和脚本" loading='lazy'/ decoding="async" src="/img/featureimages/10.jpg"></picture></a><div class="content"><a class="title" href="/2026/07/19/linux-de-fish-pei-zhi-he-jiao-ben/" title="linux的fish配置和脚本">linux的fish配置和脚本</a><time datetime="2026-07-19T13:01:52.000Z" title="发表于 2026-07-19 13:01:52">2026-07-19</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/16/4-3-slice-lei-xing/" title="4.3 slice类型"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_5.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_5.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4.3 slice类型" loading='lazy'/ decoding="async" src="/img/featureimages/custom_5.jpg"></picture></a><div class="content"><a class="title" href="/2026/07/16/4-3-slice-lei-xing/" title="4.3 slice类型">4.3 slice类型</a><time datetime="2026-07-16T07:02:55.000Z" title="发表于 2026-07-16 07:02:55">2026-07-16</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/07/16/4-2-yin-yong-he-jie-yong/" title="4.2 引用和借用"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_4.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_4.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="4.2 引用和借用" loading='lazy'/ decoding="async" src="/img/featureimages/custom_4.jpg"></picture></a><div class="content"><a class="title" href="/2026/07/16/4-2-yin-yong-he-jie-yong/" title="4.2 引用和借用">4.2 引用和借用</a><time datetime="2026-07-16T07:01:21.000Z" title="发表于 2026-07-16 07:01:21">2026-07-16</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners and stale content before re-rendering
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      const oldError = item.querySelector('.mermaid-error')
+      if (oldError) oldError.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (theme in value) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const destroyChart = canvas => {
+    const chart = canvas && window.Chart && Chart.getChart(canvas)
+    if (chart) chart.destroy()
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, destroy its chart and remove it to avoid rendering duplicates
+      if (existingCanvas) {
+        destroyChart(existingCanvas)
+        existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Destroy all charts before navigating away to avoid leaks
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    document.querySelectorAll('.chartjs-wrap canvas').forEach(destroyChart)
+  }, 'chartjs')
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><script src="/js/custom.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox]):not([href="/music/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.1.260810"></script></div></div></body></html>
