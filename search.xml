@@ -4,39 +4,6 @@
   
     
     <entry>
-      <title>mpv-Emo Stable 与 Development 构建轨道</title>
-      <link href="/2026/09/21/mpv-emo-tracks/"/>
-      <url>/2026/09/21/mpv-emo-tracks/</url>
-      
-        <content type="html"><![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code> is a real mpv-full-style core build: upstream mpv is the base, and<br>curated core patches are applied before compilation.</p><table><thead><tr><th>Track</th><th>Package</th><th>Upstream</th><th>Patch policy</th></tr></thead><tbody><tr><td>Stable</td><td><code>mpv-emo</code></td><td>mpv release tags</td><td>stable patch series is part of the core build</td></tr><tr><td>Development</td><td><code>mpv-emo-git</code></td><td>mpv <code>master</code></td><td>matching master patch series; drift blocks publication</td></tr></tbody></table><h2 id="Rules"><a href="#Rules" class="headerlink" title="Rules"></a>Rules</h2><ol><li>Stable never consumes mpv <code>master</code>.</li><li>Development pins an exact upstream commit.</li><li>Core patches live under <code>packages/mpv-emo/patches/</code> and the corresponding<br>development series under <code>packages/mpv-emo-git/patches/</code>.</li><li>Omniphony is a core Patch layer, not a second mpv package.</li><li><code>orender</code> is runtime-only and is not linked at mpv build time.</li><li>Patch application is a hard gate: any failed patch means no publication.</li><li>A successful build and test are required before the private pacman repo updates.</li><li>When a feature lands upstream, its private Patch is removed instead of being<br>maintained forever.</li></ol><p>The current Stable baseline is mpv <code>v0.41.0</code> with the Omniphony v0.4.2 mpv-side<br>series. Upstream mpv currently publishes a separate development build for<br>master, so Stable and Development remain separate tracks.</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 技术 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Arch Linux </tag>
-            
-            <tag> PKGBUILD </tag>
-            
-            <tag> Linux </tag>
-            
-            <tag> mpv </tag>
-            
-            <tag> Omniphony </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Arch Linux 私人软件仓库管理与 fzf TUI</title>
       <link href="/2026/09/21/package-management/"/>
       <url>/2026/09/21/package-management/</url>
@@ -128,6 +95,39 @@
             <tag> Linux </tag>
             
             <tag> AUR </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>mpv-Emo Stable 与 Development 构建轨道</title>
+      <link href="/2026/09/21/mpv-emo-tracks/"/>
+      <url>/2026/09/21/mpv-emo-tracks/</url>
+      
+        <content type="html"><![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code> is a real mpv-full-style core build: upstream mpv is the base, and<br>curated core patches are applied before compilation.</p><table><thead><tr><th>Track</th><th>Package</th><th>Upstream</th><th>Patch policy</th></tr></thead><tbody><tr><td>Stable</td><td><code>mpv-emo</code></td><td>mpv release tags</td><td>stable patch series is part of the core build</td></tr><tr><td>Development</td><td><code>mpv-emo-git</code></td><td>mpv <code>master</code></td><td>matching master patch series; drift blocks publication</td></tr></tbody></table><h2 id="Rules"><a href="#Rules" class="headerlink" title="Rules"></a>Rules</h2><ol><li>Stable never consumes mpv <code>master</code>.</li><li>Development pins an exact upstream commit.</li><li>Core patches live under <code>packages/mpv-emo/patches/</code> and the corresponding<br>development series under <code>packages/mpv-emo-git/patches/</code>.</li><li>Omniphony is a core Patch layer, not a second mpv package.</li><li><code>orender</code> is runtime-only and is not linked at mpv build time.</li><li>Patch application is a hard gate: any failed patch means no publication.</li><li>A successful build and test are required before the private pacman repo updates.</li><li>When a feature lands upstream, its private Patch is removed instead of being<br>maintained forever.</li></ol><p>The current Stable baseline is mpv <code>v0.41.0</code> with the Omniphony v0.4.2 mpv-side<br>series. Upstream mpv currently publishes a separate development build for<br>master, so Stable and Development remain separate tracks.</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Arch Linux </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> mpv </tag>
+            
+            <tag> Omniphony </tag>
             
         </tags>
       
