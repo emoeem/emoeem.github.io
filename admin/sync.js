@@ -13,7 +13,7 @@ const engine=createSyncEngine({api,store});
 const S={repo:null,tree:[],selected:new Set(),open:new Set(),active:null,configs:{},results:[],running:false,detailToken:0};
 
 function toast(t,type='success'){if(window.toast)window.toast(t,type);else console[type==='error'?'error':'log'](t)}
-function connectionLabel(){const st=api.status();if(!st.online)return '<span class="sync-connection offline">● GitHub API 离线 · 使用缓存</span>';if(st.usingCache)return '<span class="sync-connection cached">● GitHub API · ETag/缓存</span>';return '<span class="sync-connection online">● GitHub API 在线</span>'}
+function connectionLabel(){const st=api.status();if(st.tokenInvalid)return '<span class="sync-connection offline">● GitHub Token 已失效 · 请更新 Vercel 环境变量 GITHUB_TOKEN 后重新部署</span>';if(!st.online)return '<span class="sync-connection offline">● GitHub API 离线 · 使用缓存</span>';if(st.usingCache)return '<span class="sync-connection cached">● GitHub API · ETag/缓存</span>';return '<span class="sync-connection online">● GitHub API 在线</span>'}
 function lineDiff(a,b){
   const A=String(a||'').split('\n'),B=String(b||'').split('\n');
   if(A.length>2200||B.length>2200||A.length*B.length>4000000)return {large:true,rows:[...A.slice(0,120).map(x=>({type:'del',text:x})),{type:'meta',text:`文档较大，已省略中间内容（源 ${A.length} 行 / 本地 ${B.length} 行）`},...B.slice(-120).map(x=>({type:'add',text:x}))]};
@@ -36,13 +36,6 @@ async function showDiff(id){
 function closeDiff(){const m=$('sync-diff-modal');if(m)m.hidden=true}
 async function toggleRepository(key){const r=store.repositories[key];if(!r)return;r.enabled=r.enabled===false;try{await store.save();toast(r.enabled===false?'仓库已暂停':'仓库已恢复')}catch(e){toast('仓库状态保存失败：'+e.message,'error')}render()}
 async function rescanRepository(key){const r=store.repositories[key];if(!r)return;try{await discover('https://github.com/'+r.owner+'/'+r.repo);toast('已重新扫描 '+r.owner+'/'+r.repo)}catch(e){toast('重新扫描失败：'+e.message,'error')}}
-function renderRepositories(){
-  const v=$('sync-repositories');if(!v)return;const repos=Object.values(store.repositories);
-  if(!repos.length){v.innerHTML='';return}
-  v.innerHTML='<section class="sync-repositories panel"><div class="panel-head"><h2>Repository Management</h2><span>'+repos.length+' 个已注册仓库</span></div><div class="sync-repo-list">'+repos.map(r=>{const key=store.repoKey(r),docs=Object.values(r.documents||{}),mapped=docs.filter(x=>x.mapped).length,pending=S.results.filter(x=>x.owner===r.owner&&x.repo===r.repo&&['changed','conflict','local-modified','unmapped','source-deleted','error'].includes(x.status)).length;return '<article class="sync-repo-card"><div><span class="sync-kicker">GITHUB REPOSITORY</span><h3>'+esc(r.owner+'/'+r.repo)+'</h3><p>branch: '+esc(r.branch||'main')+' · '+docs.length+' 个 Registry 文档 · '+mapped+' 个已映射 · '+pending+' 个待处理</p></div><div class="sync-repo-card-meta"><span class="sync-status '+(r.enabled===false?'new':'unchanged')+'">'+(r.enabled===false?'已暂停':'运行中')+'</span><button class="secondary" data-repo-scan="'+esc(key)+'">重新扫描</button><button class="text-btn" data-repo-toggle="'+esc(key)+'">'+(r.enabled===false?'恢复':'暂停')+'</button></div></article>'}).join('')+'</div></section>';
-  v.querySelectorAll('[data-repo-scan]').forEach(b=>b.onclick=()=>rescanRepository(b.dataset.repoScan));
-  v.querySelectorAll('[data-repo-toggle]').forEach(b=>b.onclick=()=>toggleRepository(b.dataset.repoToggle));
-}
 function defaultTarget(title){return 'source/_posts/'+String(title).toLowerCase().replace(/[^\w\u4e00-\u9fff-]+/g,'-').replace(/^-+|-+$/g,'')+'.md'}
 function repoState(){return store.ensureRepository(S.repo)}
 function configFor(f){
@@ -219,6 +212,7 @@ function render(){
 }
 async function init(){
   if(!document.getElementById('view-sync')){const s=document.createElement('section');s.id='view-sync';s.className='view';document.querySelector('.main').appendChild(s)}
+  try{const me=await api.me();api.setTarget(me.repo)}catch(e){console.warn('target repo unavailable, using default:',e.message)}
   try{await store.load()}catch(e){console.warn(e)}
   render();
 }

@@ -9,11 +9,11 @@ export function createMappingStore({api,encode,decode}){
   async function load(){
     local();
     try{
-      const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-mappings.json');
+      const r=await api.request(api.targetPath()+'/contents/source/_data/sync-mappings.json');
       if(r){mappings=JSON.parse(decode(r.content));mapSha=r.sha;mapSnapshot=JSON.stringify(mappings,null,2)+'\n'}
     }catch{}
     try{
-      const r=await api.request('repos/emoeem/blog-source/contents/source/_data/sync-repositories.json');
+      const r=await api.request(api.targetPath()+'/contents/source/_data/sync-repositories.json');
       if(r){repositories=JSON.parse(decode(r.content));repoSha=r.sha;repoSnapshot=JSON.stringify(repositories,null,2)+'\n'}
     }catch{}
     for(const m of mappings){if(m.owner&&m.repo){const r=ensureRepository({owner:m.owner,repo:m.repo,branch:m.branch||'main'});if(!r.documents[m.path])r.documents[m.path]={path:m.path,title:m.name,mapped:true,status:'mapped',lastSeen:m.lastVerified||null}}}
@@ -22,7 +22,7 @@ export function createMappingStore({api,encode,decode}){
   async function put(path,data,sha,message){
     const body={message:message,content:encode(JSON.stringify(data,null,2)+'\n'),branch:'main'};
     if(sha)body.sha=sha;
-    return api.request('repos/emoeem/blog-source/contents/'+path,'PUT',body);
+    return api.request(api.targetPath()+'/contents/'+path,'PUT',body);
   }
   async function save(){
     const nextMap=JSON.stringify(mappings,null,2)+'\n';

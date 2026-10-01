@@ -8,7 +8,7 @@ export function createSyncEngine({api,store}){
     return {content:text,sha:r.sha,commit:commits?.[0]?.sha||r.sha,date:commits?.[0]?.commit?.committer?.date||new Date().toISOString()};
   }
   async function getTarget(path){
-    try{return await api.request('repos/emoeem/blog-source/contents/'+path)}catch(e){if(String(e.message).includes('404'))return null;throw e}
+    try{return await api.request(api.targetPath()+'/contents/'+path)}catch(e){if(String(e.message).includes('404'))return null;throw e}
   }
   function defaultTarget(title){return 'source/_posts/'+slug(title)+'.md'}
   function slug(s){return String(s).toLowerCase().replace(/[^\w\u4e00-\u9fff-]+/g,'-').replace(/^-+|-+$/g,'')||'github-doc'}
@@ -42,12 +42,12 @@ export function createSyncEngine({api,store}){
       for(const info of linkInfo.filter(x=>x.mapping)){info.url=(byTarget.get(info.target)||('/'+String(info.target).replace(/^source\/_posts\//,'').replace(/\.md$/i,'')))+info.anchor}
     }
     for(const info of linkInfo){if(info.url)body=body.split(']('+info.link.url+')').join(']('+info.url+')')}
-    for(const img of refs.images){if(!isRelativeAsset(img.url))continue;try{const ap=resolveRelative(m.path,img.url.split('#')[0].split('?')[0]),ar=await api.request('repos/'+m.owner+'/'+m.repo+'/contents/'+ap+'?ref='+encodeURIComponent(m.branch));if(!ar?.content)continue;const at='source/images/github/'+m.owner+'/'+m.repo+'/'+ap;let existing=null;try{existing=await api.request('repos/emoeem/blog-source/contents/'+at)}catch{}const put={message:'assets: sync '+ap,content:ar.content,branch:'main'};if(existing?.sha)put.sha=existing.sha;await api.request('repos/emoeem/blog-source/contents/'+at,'PUT',put);body=body.split(']('+img.url+')').join('](/images/github/'+m.owner+'/'+m.repo+'/'+ap+')')}catch{}}
+    for(const img of refs.images){if(!isRelativeAsset(img.url))continue;try{const ap=resolveRelative(m.path,img.url.split('#')[0].split('?')[0]),ar=await api.request('repos/'+m.owner+'/'+m.repo+'/contents/'+ap+'?ref='+encodeURIComponent(m.branch));if(!ar?.content)continue;const at='source/images/github/'+m.owner+'/'+m.repo+'/'+ap;let existing=null;try{existing=await api.request(api.targetPath()+'/contents/'+at)}catch{}const put={message:'assets: sync '+ap,content:ar.content,branch:'main'};if(existing?.sha)put.sha=existing.sha;await api.request(api.targetPath()+'/contents/'+at,'PUT',put);body=body.split(']('+img.url+')').join('](/images/github/'+m.owner+'/'+m.repo+'/'+ap+')')}catch{}}
     const articleDate=oldParsed?.meta?.date||parsed.meta?.date||src.date;
     const ownPermalink=oldParsed?.meta?.syncPermalink||oldParsed?.meta?.permalink||((await api.resolvePermalinks([{target:m.target,date:articleDate}]))[0]?.permalink);
     const meta={...(oldParsed?.meta||{}),...(m.metadata||{}),title:m.metadata?.title||parsed.meta.title||m.name,syncSource:m.owner+'/'+m.repo,syncPath:m.path,syncBranch:m.branch,syncCommit:src.commit,lastVerified:src.date,syncPermalink:ownPermalink,syncContentHash:await sha256(body),syncLinkCount:refs.links.length,syncImageCount:refs.images.length};
     if(!meta.date)meta.date=String(articleDate).slice(0,10);
-    const content=dumpFrontMatter(meta)+body.replace(/^\n+/,'');const put={message:'sync: '+meta.title,content:api.encode(content),branch:'main'};if(old)put.sha=old.sha;await api.request('repos/emoeem/blog-source/contents/'+m.target,'PUT',put);return {...m,status:'synced',commit:src.commit,date:src.date};
+    const content=dumpFrontMatter(meta)+body.replace(/^\n+/,'');const put={message:'sync: '+meta.title,content:api.encode(content),branch:'main'};if(old)put.sha=old.sha;await api.request(api.targetPath()+'/contents/'+m.target,'PUT',put);return {...m,status:'synced',commit:src.commit,date:src.date};
   }
   async function diffOne(m){
     const src=await getSource(m),target=await getTarget(m.target);

@@ -1,6 +1,7 @@
 export function createGithubApi() {
   const etags=new Map(JSON.parse(localStorage.getItem('blog_sync_etags')||'[]')); const payloads=new Map(JSON.parse(localStorage.getItem('blog_sync_payloads')||'[]'));
-  const state={online:true,lastSuccessAt:null,lastError:null,cacheHits:0,usingCache:false};
+  const state={online:true,lastSuccessAt:null,lastError:null,cacheHits:0,usingCache:false,tokenInvalid:false};
+  let target={owner:'emoeem',repo:'blog-source',branch:'main'};
   const save=()=>{localStorage.setItem('blog_sync_etags',JSON.stringify([...etags]));localStorage.setItem('blog_sync_payloads',JSON.stringify([...payloads]));};
   const request=async(path,method='GET',body)=>{
     const headers={Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'};
@@ -11,11 +12,21 @@ export function createGithubApi() {
     let r;try{r=await fetch(base+'/api/github?path='+encodeURIComponent(path),{method,headers,credentials:'include',body:body?JSON.stringify(body):undefined})}catch(e){state.online=false;state.usingCache=true;state.lastError=e.message;throw e}
     if(r.status===304){state.online=true;state.cacheHits++;state.usingCache=true;return payloads.get(key)||null;}
     if(r.headers.get('etag')&&method==='GET')etags.set(key,r.headers.get('etag'));
-    state.online=true;state.usingCache=false;state.lastSuccessAt=new Date().toISOString();state.lastError=null;
+    state.online=true;state.usingCache=false;state.lastSuccessAt=new Date().toISOString();state.lastError=null;state.tokenInvalid=false;
     if(!r.ok){state.online=true;state.lastError=r.status+' '+r.statusText;let e={};try{e=await r.json()}catch{};const reset=r.headers.get('x-ratelimit-reset');
-      throw Error((e.message||r.status+' '+r.statusText)+(reset?' · rate reset '+new Date(+reset*1000).toLocaleTimeString():''));}
+      const msg=e.message||r.status+' '+r.statusText;
+      if((r.status===401||r.status===403)&&/bad credentials/i.test(msg))state.tokenInvalid=true;
+      throw Error(msg+(reset?' · rate reset '+new Date(+reset*1000).toLocaleTimeString():''));}
     if(r.status===204)return null; const data=await r.json(); if(method==='GET'){payloads.set(key,data);save()} return data;
   };
+  const me=async()=>{
+    const r=await fetch((window.ADMIN_API_BASE||'')+'/api/auth/me',{credentials:'include',cache:'no-store'});
+    if(!r.ok)throw Error(r.status+' '+r.statusText);
+    return r.json();
+  };
+  const setTarget=t=>{if(t&&t.owner&&t.repo)target={branch:'main',...t}};
+  const targetRepo=()=>({...target});
+  const targetPath=()=>'repos/'+target.owner+'/'+target.repo;
   const encode=s=>btoa(String.fromCharCode(...new TextEncoder().encode(s)));
   const decode=s=>{const b=Uint8Array.from(atob(s.replace(/\n/g,'')),c=>c.charCodeAt(0));return new TextDecoder().decode(b)};
   const resolvePermalinks=async items=>{
@@ -25,7 +36,7 @@ export function createGithubApi() {
     return data.items||[];
   };
   const status=()=>({...state}); const setUsingCache=v=>{state.usingCache=!!v};
-  return {request,encode,decode,resolvePermalinks,status,setUsingCache};
+  return {request,encode,decode,resolvePermalinks,status,setUsingCache,me,setTarget,targetRepo,targetPath};
 }
 export function parseGithubUrl(input){
   const u=input.trim().replace(/\.git$/,'').replace(/\/$/,'');
