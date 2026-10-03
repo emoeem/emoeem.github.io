@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</title>
+      <link href="/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/"/>
+      <url>/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/</url>
+      
+        <content type="html"><![CDATA[<h1 id="Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱"><a href="#Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱" class="headerlink" title="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱"></a>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</h1><p>Toolbox Hub 最初解决的是一个很实际的问题：我有很多 CLI 工具和自己写的脚本，但每个工具都有不同的参数、输入方式和交互习惯。与其继续堆 fzf 菜单，不如把它们统一到一个真正的 TUI 工具箱里。</p><h2 id="现在它已经不只是-FFmpeg-菜单"><a href="#现在它已经不只是-FFmpeg-菜单" class="headerlink" title="现在它已经不只是 FFmpeg 菜单"></a>现在它已经不只是 FFmpeg 菜单</h2><p>当前注册表按领域组织：</p><ul><li>媒体 44</li><li>图像 3</li><li>系统 5</li><li>网络 2</li><li>开发 4</li><li>工具 2</li><li>包管理 13</li></ul><p>工具来源包括内置动作、本地脚本和 TOML Manifest。用户可以把自己的动作放进 <code>~/.config/toolbox-hub/tools.d/</code>，通过 <code>Ctrl-R</code> 重载，而不用重新编译。</p><h2 id="软件包中心"><a href="#软件包中心" class="headerlink" title="软件包中心"></a>软件包中心</h2><p>包管理是这一轮变化里比较重要的一部分。</p><p>Toolbox Hub 没有通过解析 <code>pacman</code> 的文本输出来做数据层，而是直接使用 Arch Linux 的 <strong>libalpm</strong>。在此基础上，包管理界面提供搜索、已安装、新闻、维护四个面板，并处理官方仓库、AUR、依赖、孤儿、缓存和更新等信息。</p><p>真正会修改系统的操作都会先显示最终命令，再进行二次确认，同时支持 dry-run。CLI 和 TUI 也共用同一套命令翻译逻辑。</p><h2 id="文件和鼠标交互"><a href="#文件和鼠标交互" class="headerlink" title="文件和鼠标交互"></a>文件和鼠标交互</h2><p>TUI 不再只是键盘菜单。</p><p>现在可以用鼠标选择、双击执行、滚轮滚动；文件视图可以直接过滤文件，并在终端右侧预览图片。根据终端能力，可以使用 kitty、sixel 或 iTerm2 图形协议，不能显示图片时再降级为字符预览。</p><p>表单还可以直接打开文件选择器，工作目录也可以交给 yazi 管理。</p><h2 id="CLI-与-TUI-是同一个工具"><a href="#CLI-与-TUI-是同一个工具" class="headerlink" title="CLI 与 TUI 是同一个工具"></a>CLI 与 TUI 是同一个工具</h2><p>Toolbox Hub 并不要求所有操作都进入界面：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">toolbox-hub <span class="token parameter variable">-s</span> fzftoolbox-hub <span class="token parameter variable">-i</span> fzf ripgreptoolbox-hub <span class="token parameter variable">-u</span>toolbox-hub <span class="token parameter variable">-n</span> <span class="token parameter variable">--unread</span>toolbox-hub <span class="token parameter variable">--orphans</span>toolbox-hub --clear-cache<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>同时还提供 <code>ui pick</code>、<code>ui confirm</code>、<code>ui pager</code> 三个可以被脚本复用的终端组件。它们把 UI 输出到 `/dev/tty)，stdout 留给脚本结果，因此可以继续组合进 shell 工作流。</p><h2 id="为什么坚持-Arch-libalpm"><a href="#为什么坚持-Arch-libalpm" class="headerlink" title="为什么坚持 Arch + libalpm"></a>为什么坚持 Arch + libalpm</h2><p>这是一个明确面向 Arch 系 Linux 的工具。</p><p>包管理依赖 libalpm，真正执行软件安装和系统修改时仍然交给 pacman / paru；FFmpeg 等媒体工具也继续调用成熟 CLI，而不是重新实现编解码器或包管理器。</p><p>这样做的边界比较清楚：Toolbox Hub 负责发现、参数组织、预览、交互、任务和状态；真正执行工作的工具继续保持独立。</p><h2 id="sing-box-也进入了统一动作模型"><a href="#sing-box-也进入了统一动作模型" class="headerlink" title="sing-box 也进入了统一动作模型"></a>sing-box 也进入了统一动作模型</h2><p>除了媒体和包管理，Toolbox Hub 还把本地 sing-box 运维脚本接入了同一套动作系统，包括体检、审计修复、TUN / eBPF 切换和容器代理。</p><p>涉及配置修改的动作采用：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">检查 → 备份 → 原子替换 → 重启 → 健康检查 → 失败回滚<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>因此它逐渐从「把很多脚本放在一起」变成了一个统一的本机工具工作台。</p><h2 id="当前架构"><a href="#当前架构" class="headerlink" title="当前架构"></a>当前架构</h2><p>核心职责大致分成：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">model  ↓providers → registry  ↓app → ui  ↓runtime / mediapackages  ├─ libalpm  ├─ AUR / Arch News  └─ package worker<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Provider 负责工具来源，registry 负责聚合和发现，app / ui 负责交互，runtime 负责执行，packages 独立处理 Arch 软件包数据和操作。</p><p>项目主页：<a href="/projects/toolbox-hub/">Toolbox Hub</a></p><p>源码：<a href="https://github.com/emoeem/toolbox-hub">GitHub</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+            <tag> Arch Linux </tag>
+            
+            <tag> FFmpeg </tag>
+            
+            <tag> ratatui </tag>
+            
+            <tag> libalpm </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Linux 上的 sing-box + eBPF 透明代理实践</title>
       <link href="/2026/10/03/linux-sing-box-ebpf-tou-ming-dai-li-shi-jian/"/>
       <url>/2026/10/03/linux-sing-box-ebpf-tou-ming-dai-li-shi-jian/</url>
@@ -119,9 +152,9 @@
             
             <tag> Rust </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> 使用指南 </tag>
             
@@ -152,9 +185,9 @@
             
             <tag> 快捷键 </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
         </tags>
       
@@ -181,9 +214,9 @@
             
             <tag> Rust </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> 配置 </tag>
             
@@ -245,9 +278,9 @@
             
             <tag> Rust </tag>
             
-            <tag> voicefox </tag>
-            
             <tag> TUI </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> 音乐播放器 </tag>
             
@@ -671,13 +704,13 @@
       
         <tags>
             
+            <tag> 日记 </tag>
+            
             <tag> 求职 </tag>
             
             <tag> 教育 </tag>
             
             <tag> 社会观察 </tag>
-            
-            <tag> 日记 </tag>
             
         </tags>
       
@@ -760,9 +793,9 @@
       
         <tags>
             
-            <tag> 求职 </tag>
-            
             <tag> 日记 </tag>
+            
+            <tag> 求职 </tag>
             
             <tag> 生活 </tag>
             

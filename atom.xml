@@ -10,7 +10,26 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考 · 开源项目与个人空间</subtitle>
   <title>emoeem</title>
-  <updated>2026-10-03T01:45:25.475Z</updated>
+  <updated>2026-10-03T01:48:30.161Z</updated>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="FFmpeg" scheme="https://emoeem.github.io/tags/FFmpeg/"/>
+    <category term="ratatui" scheme="https://emoeem.github.io/tags/ratatui/"/>
+    <category term="libalpm" scheme="https://emoeem.github.io/tags/libalpm/"/>
+    <id>https://emoeem.github.io/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/</id>
+    <link href="https://emoeem.github.io/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/"/>
+    <published>2026-10-03T19:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱"><a href="#Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱" class="headerlink" title="Toolbox Hub：从 fzf]]>
+    </summary>
+    <title>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</title>
+    <updated>2026-10-03T01:48:30.161Z</updated>
+  </entry>
   <entry>
     <author>
       <name>emoeem</name>
@@ -27,7 +46,7 @@
       <![CDATA[<h1 id="Linux-上的-sing-box-eBPF-透明代理实践"><a href="#Linux-上的-sing-box-eBPF-透明代理实践" class="headerlink" title="Linux 上的 sing-box + eBPF]]>
     </summary>
     <title>Linux 上的 sing-box + eBPF 透明代理实践</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.161Z</updated>
   </entry>
   <entry>
     <author>
@@ -44,7 +63,7 @@
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>基于 ~/.local/bin 当前脚本体系整理的 Linux 媒体处理工具箱，覆盖转码、字幕、音频、图片、混流、质量分析与 Fish 集成。</summary>
     <title>Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.161Z</updated>
   </entry>
   <entry>
     <author>
@@ -63,7 +82,7 @@
       <![CDATA[<h1 id="构建流水线与仓库维护"><a href="#构建流水线与仓库维护" class="headerlink" title="构建流水线与仓库维护"></a>构建流水线与仓库维护</h1><p>当前仓库采用四层流水线：Build Graph]]>
     </summary>
     <title>Arch Linux 私人仓库构建流水线与 CI 体系</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -71,15 +90,15 @@
     </author>
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
-    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="使用指南" scheme="https://emoeem.github.io/tags/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
     <id>https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/"/>
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>voicefox 当前页面、播放、歌词、下载、本地音乐、音源、通知和平台能力说明。</summary>
     <title>voicefox 使用与功能指南</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -88,14 +107,14 @@
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
     <category term="快捷键" scheme="https://emoeem.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
-    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <id>https://emoeem.github.io/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/</id>
     <link href="https://emoeem.github.io/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/"/>
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>voicefox 全局、队列、搜索、排行榜、歌单、收藏、历史、本地音乐、下载和设置页面的完整快捷键参考。</summary>
     <title>voicefox 0.3.15 快捷键完整参考</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -103,15 +122,15 @@
     </author>
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
-    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="配置" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE/"/>
     <id>https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/</id>
     <link href="https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/"/>
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>voicefox 配置文件、播放器、音源、歌词、界面、通知与本地音乐等配置说明。</summary>
     <title>voicefox 配置指南</title>
-    <updated>2026-10-03T01:45:25.476Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -128,7 +147,7 @@
     <published>2026-09-19T00:00:00.000Z</published>
     <summary>mpv-Emo 的 Stable/Development 构建轨道、Patch series、mpv-full 基线和 Arch CI 验证体系。</summary>
     <title>mpv-Emo 构建与 Patch 体系</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -136,15 +155,15 @@
     </author>
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
-    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
     <category term="音乐播放器" scheme="https://emoeem.github.io/tags/%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/"/>
     <id>https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/</id>
     <link href="https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/"/>
     <published>2026-09-19T00:00:00.000Z</published>
     <summary>Rust + ratatui + libmpv 的键盘优先终端音乐播放器，涵盖多音源、歌词、下载、本地音乐与跨平台能力。</summary>
     <title>voicefox：Rust 终端音乐播放器</title>
-    <updated>2026-10-03T01:45:25.476Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -159,7 +178,7 @@
       <![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code>]]>
     </summary>
     <title>mpv-Emo Stable 与 Development 构建轨道</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -175,7 +194,7 @@
     <published>2026-09-18T09:20:00.000Z</published>
     <summary>基于 Linux / Wayland 的现代 mpv 配置：直播自适应画质、播放进度恢复、系列媒体库、HDR/SDR 与 RIFE 自动策略，以及 Catppuccin uosc。</summary>
     <title>mpv配置</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -192,7 +211,7 @@
     <published>2026-09-18T00:00:00.000Z</published>
     <summary>私人 Arch Linux 软件仓库的构建、测试、依赖传播与 pacman 仓库发布体系。</summary>
     <title>Arch Linux 私人软件仓库与构建体系</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.161Z</updated>
   </entry>
   <entry>
     <author>
@@ -211,7 +230,7 @@
       <![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code>]]>
     </summary>
     <title>mpv-Emo Stable 与 Development 构建轨道</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -230,7 +249,7 @@
       <![CDATA[<h1 id="软件包管理与-fzf-TUI"><a href="#软件包管理与-fzf-TUI" class="headerlink" title="软件包管理与 fzf TUI"></a>软件包管理与 fzf]]>
     </summary>
     <title>Arch Linux 私人软件仓库管理与 fzf TUI</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -246,7 +265,7 @@
     <published>2026-09-01T00:00:00.000Z</published>
     <summary>基于当前 Neovim 配置整理的快捷键学习手册，覆盖窗口、文件、搜索、代码和日常编辑操作。</summary>
     <title>Neovim 快捷键学习手册</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -265,7 +284,7 @@
       <![CDATA[<h1 id="add-aur-package-sh-详细说明"><a href="#add-aur-package-sh-详细说明" class="headerlink" title="add-aur-package.sh]]>
     </summary>
     <title>Arch Linux 软件包导入与自动构建指南</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.161Z</updated>
   </entry>
   <entry>
     <author>
@@ -280,7 +299,7 @@
     <published>2026-08-17T02:18:34.000Z</published>
     <summary>基于 lazy.nvim 的模块化 Neovim 配置，涵盖 options、keymaps、LSP、cmp、gitsigns 全流程。</summary>
     <title>Neovim 配置</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -296,7 +315,7 @@
     <published>2026-08-04T09:06:12.000Z</published>
     <summary>Yazi 文件管理器插件生态全解，快捷键、主题、预览、与 Neovim/Fish 联动技巧。</summary>
     <title>Yazi 配置</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.161Z</updated>
   </entry>
   <entry>
     <author>
@@ -312,7 +331,7 @@
     <published>2026-07-19T13:01:52.000Z</published>
     <summary>Linux 下 Fish shell 的实用配置与脚本片段，提升日常终端效率。</summary>
     <title>linux的fish配置和脚本</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.162Z</updated>
   </entry>
   <entry>
     <author>
@@ -327,23 +346,6 @@
     <published>2026-07-16T07:02:55.000Z</published>
     <summary>Rust slice 切片类型详解，字符串切片、数组切片的用法与坑。</summary>
     <title>4.3 slice类型</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
-    <category term="rust学习" scheme="https://emoeem.github.io/tags/rust%E5%AD%A6%E4%B9%A0/"/>
-    <category term="借用" scheme="https://emoeem.github.io/tags/%E5%80%9F%E7%94%A8/"/>
-    <id>https://emoeem.github.io/2026/07/16/4-2-yin-yong-he-jie-yong/</id>
-    <link href="https://emoeem.github.io/2026/07/16/4-2-yin-yong-he-jie-yong/"/>
-    <published>2026-07-16T07:01:21.000Z</published>
-    <summary>
-      <![CDATA[Rust 引用与借用规则，& 与 &mut 的区别，生命周期标注入门。]]>
-    </summary>
-    <title>4.2 引用和借用</title>
-    <updated>2026-10-03T01:45:25.475Z</updated>
+    <updated>2026-10-03T01:48:30.161Z</updated>
   </entry>
 </feed>
