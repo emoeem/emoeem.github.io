@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考 · 开源项目与个人空间</subtitle>
   <title>emoeem</title>
-  <updated>2026-10-03T07:00:12.236Z</updated>
+  <updated>2026-10-03T07:00:49.002Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
@@ -28,7 +28,7 @@
       <![CDATA[<h1 id="VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制"><a href="#VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制" class="headerlink" title="VoiceFox]]>
     </summary>
     <title>VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</title>
-    <updated>2026-10-03T07:00:12.236Z</updated>
+    <updated>2026-10-03T07:00:49.002Z</updated>
   </entry>
   <entry>
     <author>
@@ -47,7 +47,7 @@
       <![CDATA[<h1 id="Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱"><a href="#Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱" class="headerlink" title="Toolbox Hub：从 fzf]]>
     </summary>
     <title>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</title>
-    <updated>2026-10-03T07:00:12.236Z</updated>
+    <updated>2026-10-03T07:00:49.002Z</updated>
   </entry>
   <entry>
     <author>
@@ -66,7 +66,7 @@
       <![CDATA[<h1 id="sing-box-现状审计（2026-10-02，真流量实测）"><a href="#sing-box-现状审计（2026-10-02，真流量实测）" class="headerlink" title="sing-box]]>
     </summary>
     <title>Singborg 01：sing-box 现状审计（2026-10-02）</title>
-    <updated>2026-10-03T07:00:12.237Z</updated>
+    <updated>2026-10-03T07:00:49.002Z</updated>
   </entry>
   <entry>
     <author>
@@ -84,7 +84,7 @@
       <![CDATA[<h1 id="sing-box-能不能用-eBPF（本机-CachyOS-现状实测）"><a href="#sing-box-能不能用-eBPF（本机-CachyOS-现状实测）" class="headerlink" title="sing-box 能不能用 eBPF（本机]]>
     </summary>
     <title>Singborg 02：eBPF 可行性验证与 A/B 试跑</title>
-    <updated>2026-10-03T07:00:12.237Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -101,25 +101,7 @@
       <![CDATA[<h1 id="sing-box-控制台（sing-box-panel）使用与设计"><a href="#sing-box-控制台（sing-box-panel）使用与设计" class="headerlink" title="sing-box]]>
     </summary>
     <title>Singborg 03：sing-box Panel 面板指南</title>
-    <updated>2026-10-03T07:00:12.237Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
-    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
-    <category term="DNS" scheme="https://emoeem.github.io/tags/DNS/"/>
-    <category term="网络测试" scheme="https://emoeem.github.io/tags/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95/"/>
-    <id>https://emoeem.github.io/2026/10/03/singborg-04-functional-test/</id>
-    <link href="https://emoeem.github.io/2026/10/03/singborg-04-functional-test/"/>
-    <published>2026-10-03T19:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="sing-box-功能实测报告（DNS-泄露-广告拦截-分流-Podman）"><a href="#sing-box-功能实测报告（DNS-泄露-广告拦截-分流-Podman）" class="headerlink" title="sing-box]]>
-    </summary>
-    <title>Singborg 04：sing-box 功能测试报告</title>
-    <updated>2026-10-03T07:00:12.237Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -136,7 +118,7 @@
       <![CDATA[<h1 id="sing-box-网络全面审计报告"><a href="#sing-box-网络全面审计报告" class="headerlink" title="sing-box 网络全面审计报告"></a>sing-box]]>
     </summary>
     <title>Singborg 05：网络层审计记录</title>
-    <updated>2026-10-03T07:00:12.237Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -154,7 +136,7 @@
       <![CDATA[<h1 id="sing-box-配置优化评审-参考项目分析-GUI-选型"><a href="#sing-box-配置优化评审-参考项目分析-GUI-选型" class="headerlink" title="sing-box 配置优化评审 + 参考项目分析 + GUI]]>
     </summary>
     <title>Singborg 06：透明代理优化评审</title>
-    <updated>2026-10-03T07:00:12.237Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -172,43 +154,7 @@
       <![CDATA[<h1 id="pacman-Syy-大面积失败：诊断与修复"><a href="#pacman-Syy-大面积失败：诊断与修复" class="headerlink" title="pacman -Syy 大面积失败：诊断与修复"></a><code>pacman]]>
     </summary>
     <title>Singborg 07：daed DNS 故障诊断（历史记录）</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
-    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
-    <category term="daed" scheme="https://emoeem.github.io/tags/daed/"/>
-    <category term="迁移" scheme="https://emoeem.github.io/tags/%E8%BF%81%E7%A7%BB/"/>
-    <id>https://emoeem.github.io/2026/10/03/singborg-08-daed-migration/</id>
-    <link href="https://emoeem.github.io/2026/10/03/singborg-08-daed-migration/"/>
-    <published>2026-10-03T19:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="从-daed-迁移：选型结论-落地方案（CachyOS-单-wlan0-机场订阅）"><a href="#从-daed-迁移：选型结论-落地方案（CachyOS-单-wlan0-机场订阅）" class="headerlink" title="从 daed]]>
-    </summary>
-    <title>Singborg 08：daed → sing-box 迁移计划（历史记录）</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
-    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
-    <category term="eBPF" scheme="https://emoeem.github.io/tags/eBPF/"/>
-    <category term="踩坑" scheme="https://emoeem.github.io/tags/%E8%B8%A9%E5%9D%91/"/>
-    <id>https://emoeem.github.io/2026/10/03/singborg-09-lessons/</id>
-    <link href="https://emoeem.github.io/2026/10/03/singborg-09-lessons/"/>
-    <published>2026-10-03T19:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="踩坑与经验"><a href="#踩坑与经验" class="headerlink" title="踩坑与经验"></a>踩坑与经验</h1><p>这篇是整份记录里最该先看的：<strong>结论会过时，踩过的方式不会</strong>。分四类]]>
-    </summary>
-    <title>Singborg 09：踩坑与经验</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -227,7 +173,7 @@
       <![CDATA[<h1 id="配置记录"><a href="#配置记录" class="headerlink" title="配置记录"></a>配置记录</h1><h2 id="config-sanitized-json-是什么"><a]]>
     </summary>
     <title>Singborg：脱敏配置快照与规则集结构</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -245,7 +191,7 @@
       <![CDATA[<h1 id="eBPF-试跑（A-B，可回滚）"><a href="#eBPF-试跑（A-B，可回滚）" class="headerlink" title="eBPF 试跑（A/B，可回滚）"></a>eBPF]]>
     </summary>
     <title>Singborg：eBPF A/B 试跑套件</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -264,7 +210,61 @@
 <pre]]>
     </summary>
     <title>Singborg：11 个 sing-box 运维脚本</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
+    <category term="daed" scheme="https://emoeem.github.io/tags/daed/"/>
+    <category term="迁移" scheme="https://emoeem.github.io/tags/%E8%BF%81%E7%A7%BB/"/>
+    <id>https://emoeem.github.io/2026/10/03/singborg-08-daed-migration/</id>
+    <link href="https://emoeem.github.io/2026/10/03/singborg-08-daed-migration/"/>
+    <published>2026-10-03T19:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="从-daed-迁移：选型结论-落地方案（CachyOS-单-wlan0-机场订阅）"><a href="#从-daed-迁移：选型结论-落地方案（CachyOS-单-wlan0-机场订阅）" class="headerlink" title="从 daed]]>
+    </summary>
+    <title>Singborg 08：daed → sing-box 迁移计划（历史记录）</title>
+    <updated>2026-10-03T07:00:49.003Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
+    <category term="eBPF" scheme="https://emoeem.github.io/tags/eBPF/"/>
+    <category term="踩坑" scheme="https://emoeem.github.io/tags/%E8%B8%A9%E5%9D%91/"/>
+    <id>https://emoeem.github.io/2026/10/03/singborg-09-lessons/</id>
+    <link href="https://emoeem.github.io/2026/10/03/singborg-09-lessons/"/>
+    <published>2026-10-03T19:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="踩坑与经验"><a href="#踩坑与经验" class="headerlink" title="踩坑与经验"></a>踩坑与经验</h1><p>这篇是整份记录里最该先看的：<strong>结论会过时，踩过的方式不会</strong>。分四类]]>
+    </summary>
+    <title>Singborg 09：踩坑与经验</title>
+    <updated>2026-10-03T07:00:49.003Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
+    <category term="DNS" scheme="https://emoeem.github.io/tags/DNS/"/>
+    <category term="网络测试" scheme="https://emoeem.github.io/tags/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95/"/>
+    <id>https://emoeem.github.io/2026/10/03/singborg-04-functional-test/</id>
+    <link href="https://emoeem.github.io/2026/10/03/singborg-04-functional-test/"/>
+    <published>2026-10-03T19:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="sing-box-功能实测报告（DNS-泄露-广告拦截-分流-Podman）"><a href="#sing-box-功能实测报告（DNS-泄露-广告拦截-分流-Podman）" class="headerlink" title="sing-box]]>
+    </summary>
+    <title>Singborg 04：sing-box 功能测试报告</title>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -282,7 +282,7 @@
       <![CDATA[<h1 id="Linux-上的-sing-box-eBPF-透明代理实践"><a href="#Linux-上的-sing-box-eBPF-透明代理实践" class="headerlink" title="Linux 上的 sing-box + eBPF]]>
     </summary>
     <title>Linux 上的 sing-box + eBPF 透明代理实践</title>
-    <updated>2026-10-03T07:00:12.235Z</updated>
+    <updated>2026-10-03T07:00:49.002Z</updated>
   </entry>
   <entry>
     <author>
@@ -299,7 +299,7 @@
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>基于 ~/.local/bin 当前脚本体系整理的 Linux 媒体处理工具箱，覆盖转码、字幕、音频、图片、混流、质量分析与 Fish 集成。</summary>
     <title>Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</title>
-    <updated>2026-10-03T07:00:12.236Z</updated>
+    <updated>2026-10-03T07:00:49.002Z</updated>
   </entry>
   <entry>
     <author>
@@ -318,7 +318,7 @@
       <![CDATA[<h1 id="构建流水线与仓库维护"><a href="#构建流水线与仓库维护" class="headerlink" title="构建流水线与仓库维护"></a>构建流水线与仓库维护</h1><p>当前仓库采用四层流水线：Build Graph]]>
     </summary>
     <title>Arch Linux 私人仓库构建流水线与 CI 体系</title>
-    <updated>2026-10-03T07:00:12.236Z</updated>
+    <updated>2026-10-03T07:00:49.002Z</updated>
   </entry>
   <entry>
     <author>
@@ -334,7 +334,7 @@
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>voicefox 当前页面、播放、歌词、下载、本地音乐、音源、通知和平台能力说明。</summary>
     <title>voicefox 使用与功能指南</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.003Z</updated>
   </entry>
   <entry>
     <author>
@@ -350,7 +350,7 @@
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>voicefox 全局、队列、搜索、排行榜、歌单、收藏、历史、本地音乐、下载和设置页面的完整快捷键参考。</summary>
     <title>VoiceFox 0.5.0 快捷键完整参考</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.004Z</updated>
   </entry>
   <entry>
     <author>
@@ -366,6 +366,6 @@
     <published>2026-09-20T00:00:00.000Z</published>
     <summary>voicefox 配置文件、播放器、音源、歌词、界面、通知与本地音乐等配置说明。</summary>
     <title>voicefox 配置指南</title>
-    <updated>2026-10-03T07:00:12.238Z</updated>
+    <updated>2026-10-03T07:00:49.004Z</updated>
   </entry>
 </feed>
