@@ -1,0 +1,1359 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Singborg 02：eBPF 可行性验证与 A/B 试跑 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="sing-box 能不能用 eBPF（本机 CachyOS 现状实测）结论时间：2026-10-02　方法：全部为本机真实二进制 &#x2F; 真实内核实测，不是推断。对象：当时正在跑的 sing-box 1.14.2（&#x2F;etc&#x2F;sing-box&#x2F;config.json，mixed-in + tun-in）。  📌 2026-10-02 晚复核（现状，先读这条）：本文开头几节的”用不了 eBPF”是自建包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Singborg 02：eBPF 可行性验证与 A&#x2F;B 试跑">
+<meta property="og:url" content="https://emoeem.github.io/2026/10/03/singborg-02-ebpf-validation/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="sing-box 能不能用 eBPF（本机 CachyOS 现状实测）结论时间：2026-10-02　方法：全部为本机真实二进制 &#x2F; 真实内核实测，不是推断。对象：当时正在跑的 sing-box 1.14.2（&#x2F;etc&#x2F;sing-box&#x2F;config.json，mixed-in + tun-in）。  📌 2026-10-02 晚复核（现状，先读这条）：本文开头几节的”用不了 eBPF”是自建包">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/covers/cover-4.jpg">
+<meta property="article:published_time" content="2026-10-03T19:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-03T06:54:26.196Z">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="Arch Linux">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="eBPF">
+<meta property="article:tag" content="sing-box">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://emoeem.github.io/img/covers/cover-4.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Singborg 02：eBPF 可行性验证与 A/B 试跑",
+  "url": "https://emoeem.github.io/2026/10/03/singborg-02-ebpf-validation/",
+  "image": "https://emoeem.github.io/img/covers/cover-4.jpg",
+  "datePublished": "2026-10-03T19:00:00.000Z",
+  "dateModified": "2026-10-03T06:54:26.196Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "emoeem",
+      "url": "https://emoeem.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/2026/10/03/singborg-02-ebpf-validation/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.1.260810"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":2,"unescape":false,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Singborg 02：eBPF 可行性验证与 A/B 试跑',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/covers/cover-4.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">Singborg 02：eBPF 可行性验证与 A/B 试跑</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Singborg 02：eBPF 可行性验证与 A/B 试跑<a class="post-edit-link" href="https://github.com/emoeem/blog-source/edit/main/source/_posts/singborg-02-eBPF可行性验证.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">5808</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="sing-box-能不能用-eBPF（本机-CachyOS-现状实测）"><a href="#sing-box-能不能用-eBPF（本机-CachyOS-现状实测）" class="headerlink" title="sing-box 能不能用 eBPF（本机 CachyOS 现状实测）"></a>sing-box 能不能用 eBPF（本机 CachyOS 现状实测）</h1><p>结论时间：2026-10-02　方法：全部为本机真实二进制 / 真实内核实测，不是推断。<br>对象：<strong>当时</strong>正在跑的 sing-box 1.14.2（<code>/etc/sing-box/config.json</code>，<code>mixed-in</code> + <code>tun-in</code>）。</p>
+<blockquote>
+<p>📌 <strong>2026-10-02 晚复核（现状，先读这条）</strong>：本文开头几节的”用不了 eBPF”是<strong>自建包之前</strong>的状态，<strong>已被推翻</strong>。<br>现在 <code>/usr/bin/sing-box</code> 就是 fork 构建（<code>sing-box-ebpf 1.14.2.ref1nd-2</code>，<code>Tags: …,with_ebpf</code>），<br>配置是 <code>mixed-in</code> + <strong><code>ebpf-in</code></strong>（<code>tun-in</code> 已移除），服务正跑在 eBPF 模式下：<br><code>local</code> = <code>cgroup</code> ✅、<code>shared</code> = <code>packet_rewrite</code> on <code>virbr0</code> ✅（共享附件以 <strong>TCX</strong> 挂载，<br><code>api ebpf</code> 实测 <code>role=shared mechanism=tcx framing=ethernet</code>）。<br>下面凡说”现在用不了 eBPF / 现在的二进制不行”的段落，都按这条读。</p>
+</blockquote>
+<h2 id="0-一句话结论"><a href="#0-一句话结论" class="headerlink" title="0. 一句话结论"></a>0. 一句话结论</h2><blockquote>
+<p><strong>你现在装的 sing-box 用不了 eBPF；不是配置问题，是二进制里没有这个入站。</strong></p>
+<p>❌ <strong>已被推翻（2026-10-02 晚）</strong>：上面这句说的是<strong>当时装的 Arch 官方包</strong>。现在装的是自建 <code>sing-box-ebpf</code><br>包（fork 构建，<code>Tags</code> 含 <code>with_ebpf</code>），eBPF 入站<strong>正在用</strong>。本节其余事实性描述仍然成立。<br>eBPF 入站是 <strong><code>reF1nd/sing-box</code> 分支的实验特性</strong>（编译标签 <code>with_ebpf</code>，仅 Linux / Android），<br><strong>上游 <code>SagerNet/sing-box</code> 没有这个功能</strong>。Android 上的 NetProxy 模块正是内置了这个分支内核。</p>
+<p>你这台机器的<strong>内核完全够用</strong>——我已经现场编译出带 <code>with_ebpf</code> 的 Linux 版二进制，<br>它能直接读你现有的 <code>/etc/sing-box</code> 配置（<code>check</code> exit=0），并对本机跑了内核能力预检。</p>
+<p><strong>而且不必用 alpha</strong>：分支在 stable 基线 <code>v1.14.2-reF1nd</code>（与你现装的 1.14.2 同基线）上同样带<br>eBPF，我也编好并验证过了（<code>check -C /etc/sing-box</code> exit=0，且没有 1.15 的 <code>tun.stack</code> 弃用告警）。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>目标</th>
+<th>能否用 eBPF</th>
+<th>依据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>当时的 sing-box 1.14.2（Arch 官方包，已卸）</td>
+<td>❌ <strong>不能</strong></td>
+<td>实测 <code>FATAL: unknown inbound type: ebpf</code>（exit=1）</td>
+</tr>
+<tr>
+<td><strong>现装的 <code>sing-box-ebpf 1.14.2.ref1nd-2</code>（自建包，fork 构建）</strong></td>
+<td>✅ <strong>已在用</strong></td>
+<td><code>sing-box version</code> 的 <code>Tags</code> 含 <code>with_ebpf</code>；<code>api ebpf</code> 显示 local(cgroup) + shared(tcx) 均已挂载（2026-10-02 晚实测）</td>
+</tr>
+<tr>
+<td>本机换用 reF1nd 分支二进制</td>
+<td>✅ <strong>可以</strong>（内核已具备，二进制已编好，见第 4 节）</td>
+<td>见第 4、5 节</td>
+</tr>
+<tr>
+<td>Android + NetProxy 模块</td>
+<td>✅ 设计如此（eBPF 是<strong>唯一</strong>数据面）</td>
+<td>模块无 TPROXY / REDIRECT 回退，内核不行就起不来</td>
+</tr>
+</tbody></table>
+<h2 id="1-为什么当时的二进制不行（实测）"><a href="#1-为什么当时的二进制不行（实测）" class="headerlink" title="1. 为什么当时的二进制不行（实测）"></a>1. 为什么<strong>当时</strong>的二进制不行（实测）</h2><blockquote>
+<p>📌 <strong>2026-10-02 晚追注（本节保留原文，属历史记录）</strong>：下面是 Arch 官方包的实测。现在装的 <code>sing-box-ebpf</code><br>包 <code>Tags</code> 里<strong>有</strong> <code>with_ebpf</code>（<code>sing-box version</code> 实测尾部 <code>…,badlinkname,tfogo_checklinkname0,with_ebpf</code>），<br>所以”<code>check</code> 报 unknown inbound type”这个故障在当前二进制上不会复现。</p>
+</blockquote>
+<pre class="line-numbers language-console" data-language="console"><code class="language-console">$ cat &gt; /tmp/ebpf-test.json   # 官方样例的 ebpf 入站
+$ sing-box check -c /tmp/ebpf-test.json
+FATAL[0000] decode config at /tmp/ebpf-test.json: inbounds[0]: unknown inbound type: ebpf
+exit=1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>当时（Arch 官方包）二进制的编译标签里没有 <code>with_ebpf</code>：</p>
+<pre class="line-numbers language-none"><code class="language-none">Tags: with_gvisor,with_quic,with_dhcp,with_wireguard,with_utls,with_acme,with_clash_api,
+      with_tailscale,with_ccm,with_ocm,with_cloudflared,with_naive_outbound,with_usbip,
+      with_openvpn,with_openconnect,badlinkname,tfogo_checklinkname0<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="2-eBPF-入站到底是谁的功能"><a href="#2-eBPF-入站到底是谁的功能" class="headerlink" title="2. eBPF 入站到底是谁的功能"></a>2. eBPF 入站到底是谁的功能</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>情况</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>上游 <a target="_blank" rel="noopener" href="https://github.com/SagerNet/sing-box">SagerNet/sing-box</a></td>
+<td>❌ 没有：<code>docs/configuration/inbound/</code> 下无 <code>ebpf.md</code>（404），入站列表只有 <code>tun / redirect / tproxy / mixed / socks / http …</code></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/reF1nd/sing-box"><code>reF1nd/sing-box</code></a>（分支 <code>reF1nd-testing</code>）</td>
+<td>✅ 有：<a target="_blank" rel="noopener" href="https://raw.githubusercontent.com/reF1nd/sing-box/reF1nd-testing/docs/configuration/inbound/ebpf.zh.md">eBPF 入站文档</a>，标注”sing-box 1.15.0 中的更改 / 实验功能”，<code>//go:build with_ebpf &amp;&amp; (linux || android)</code></td>
+</tr>
+<tr>
+<td>eBPF 程序本体</td>
+<td>在独立依赖 <a target="_blank" rel="noopener" href="https://github.com/CHIZI-0618/sing-ebpf"><code>CHIZI-0618/sing-ebpf</code></a> 里（<code>internal/bpfgen/*_bpfel.o</code>、<code>*_bpfeb.o</code> 预编译内嵌）→ <strong>普通构建不需要 NDK / clang，只要 Go</strong></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/Fanju6/NetProxy-Magisk">Fanju6/NetProxy-Magisk</a>（Android）</td>
+<td>内置的”sing-box 内核”就是上面这个分支，构建标签含 <code>with_ebpf</code>（见其 <code>.github/resources.json</code>）</td>
+</tr>
+<tr>
+<td>分支发布产物</td>
+<td>GitHub Releases <strong>为空</strong>（只有 tag；2026-10-02 晚复核仍为 0）→ Linux / Android 二进制都要<strong>自己编</strong>，Arch 仓库更没有（本机已用自建包 <code>~/pkgbuild-source/packages/sing-box-ebpf</code> 解决，见 4.1）</td>
+</tr>
+</tbody></table>
+<p>分支自述：<em>“本分支现已加入实验性的 eBPF 入站支持，可在 Linux 与 Root Android 上通过内核 eBPF 程序接管网络连接，<br>无需创建 TUN 设备，也不依赖传统的 iptables/nftables REDIRECT 或 TPROXY 规则”</em>。</p>
+<h3 id="2-1-“alpha-才有？有没有编好的二进制？”——逐条实测"><a href="#2-1-“alpha-才有？有没有编好的二进制？”——逐条实测" class="headerlink" title="2.1 “alpha 才有？有没有编好的二进制？”——逐条实测"></a>2.1 “alpha 才有？有没有编好的二进制？”——逐条实测</h3><table>
+<thead>
+<tr>
+<th>问题</th>
+<th>答案</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>eBPF 只在 alpha？</td>
+<td>❌ <strong>不是</strong>。1.14 stable 基线的分支 tag 一样有</td>
+<td><code>v1.14.0-reF1nd</code> / <code>v1.14.1-reF1nd</code> / <code>v1.14.2-reF1nd</code> 的 <code>include/ebpf.go</code> 全部 HTTP 200；<code>v1.14.2-reF1nd</code> 的 <code>option/ebpf.go</code> 里 <code>local</code>/<code>shared</code>/<code>cgroup</code>/<code>packet_rewrite</code>/<code>include_uid</code> 字段与新版一致，<code>protocol/ebpf/</code> 有 54 个文件</td>
+</tr>
+<tr>
+<td>上游 alpha 有预编译二进制？</td>
+<td>✅ 有，但<strong>装了也没 eBPF</strong></td>
+<td>上游 <code>v1.15.0-alpha.9</code> 是 prerelease，带 <strong>167 个资产</strong>（linux/darwin/windows 各架构、<code>SFA-*.apk</code>、deb/rpm…）；但 eBPF 入站源码在上游根本不存在（<code>docs/configuration/inbound/ebpf.md</code> → 404）</td>
+</tr>
+<tr>
+<td>分支（reF1nd）有预编译二进制？</td>
+<td>❌ <strong>一个都没有</strong></td>
+<td><code>GET /repos/reF1nd/sing-box/releases?per_page=100</code> → <code>count: 0</code>。只有 tag，无任何 asset</td>
+</tr>
+<tr>
+<td>NetProxy 模块的核是哪来的？</td>
+<td>它自己编的</td>
+<td>其 <code>.github/workflows/update-resources.yml</code> 用 <code>TAGS=${{ … }}</code> + <code>make -C .sing-box-source build</code>，然后 <code>go version -m .sing-box-source/sing-box | grep -q 'with_ebpf'</code> 自检</td>
+</tr>
+<tr>
+<td>分支自己的 Docker 镜像？</td>
+<td>❌ 不能用</td>
+<td><code>docker.yml</code> 用的标签集是 <code>release/DEFAULT_BUILD_TAGS*</code>（<strong>不含 with_ebpf</strong>），且只在 release 事件触发——而分支没有 release</td>
+</tr>
+<tr>
+<td>第三方 Docker Hub <code>eyaoyi/sing-box-ref1nd-stable</code></td>
+<td>⚠️ 别用</td>
+<td>最后更新 2026-08，停在 <code>v1.13.19</code>；非官方，且 eBPF 在容器里还要额外处理 cgroup/权限</td>
+</tr>
+</tbody></table>
+<p><strong>结论：想要 eBPF，二进制只能自己编（或自己打包）。</strong> 幸运的是构建只要 Go（BPF 对象是<br><a target="_blank" rel="noopener" href="https://github.com/CHIZI-0618/sing-ebpf"><code>CHIZI-0618/sing-ebpf</code></a> 模块里预编译内嵌的 <code>*_bpfel.o</code>），<br>不需要 NDK / clang / CGO。<strong>这正好适合你 <code>~/pkgbuild-source</code> 那套 CI。</strong></p>
+<h2 id="3-你这台机器的内核体检（全部实测通过）"><a href="#3-你这台机器的内核体检（全部实测通过）" class="headerlink" title="3. 你这台机器的内核体检（全部实测通过）"></a>3. 你这台机器的内核体检（全部实测通过）</h2><pre class="line-numbers language-none"><code class="language-none">Linux 7.2.8-1-cachyos-bore-lto #1 SMP PREEMPT_DYNAMIC x86_64<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>要求（来自分支的 eBPF 内核要求文档）</th>
+<th>你的机器</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>CONFIG_BPF</code> / <code>CONFIG_BPF_SYSCALL</code> / <code>CONFIG_BPF_JIT</code></td>
+<td>y / y / y</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>CONFIG_CGROUP_BPF</code>（local <code>cgroup</code> 数据面默认）</td>
+<td>y</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>CONFIG_NET_CLS_BPF</code> / <code>CONFIG_NET_SCH_INGRESS</code> / <code>CONFIG_NET_CLS_ACT</code></td>
+<td><code>=m</code> / <code>=m</code> / y</td>
+<td>✅（ko 在 <code>/lib/modules/…/net/sched/</code>，按需加载）</td>
+</tr>
+<tr>
+<td><code>CONFIG_VETH</code>（local <code>tc</code> 数据面才需要）</td>
+<td><code>=m</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>CONFIG_BPF_STREAM_PARSER</code>（SOCKMAP 加速）</td>
+<td>y</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>cgroup v2 统一挂载</td>
+<td><code>cgroup2 /sys/fs/cgroup cgroup2 rw,…</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>bpffs</td>
+<td><code>bpf /sys/fs/bpf bpf rw,…</code></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>LPM trie 内核缺陷（6.6.0–6.6.46）</td>
+<td>7.2.8，不在受影响区间</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>现有 tc 钩子冲突</td>
+<td><code>tc filter show</code> 所有网卡 <strong>无任何 filter</strong>（dae 残留早已清净）</td>
+<td>✅（2026-10-02 晚复核：<code>virbr0</code> 上有 libvirt 自己的 <code>htb</code> qdisc + 一条 u32 filter（csum 动作），不是 eBPF 钩子；shared 走的是 <strong>TCX</strong>，与这类 filter 不冲突）</td>
+</tr>
+</tbody></table>
+<h3 id="3-1-root-预检正式结果：全绿通过-✅"><a href="#3-1-root-预检正式结果：全绿通过-✅" class="headerlink" title="3.1 root 预检正式结果：全绿通过 ✅"></a>3.1 root 预检正式结果：<strong>全绿通过</strong> ✅</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> ~/.cache/sing-box-bin/sing-box-v1.14.2-reF1nd-with_ebpf <span class="token punctuation">\</span>
+     tools ebpf status <span class="token parameter variable">--mode</span> all <span class="token parameter variable">--interface</span> virbr0 <span class="token parameter variable">--json</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<pre class="line-numbers language-none"><code class="language-none">"result": "preflight_passed",
+"preflight": true, "exact_object_load": true,
+"summary": { "pass": 51, "warn": 0, "fail": 0, "unknown": 0,
+             "required_failures": 0, "required_unknowns": 0, "required_issues": 0 }<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>含义（不是”参数看着对”，是<strong>真的把对象喂给 verifier 并加载了</strong>）：</p>
+<table>
+<thead>
+<tr>
+<th>关键 PASS 项</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>selected cgroup eBPF object</code></td>
+<td>真加载了 cgroup 程序与其 map 规格（未挂 hook）；coarse-time UDP 变体可用</td>
+</tr>
+<tr>
+<td><code>selected packet-rewrite eBPF object</code></td>
+<td>真加载了 shared 报文改写程序（未挂 classifier）</td>
+</tr>
+<tr>
+<td><code>BPF map type Array / Hash / LRUHash / LPMTrie / PerCPUArray</code></td>
+<td>五类 map 全部可建</td>
+</tr>
+<tr>
+<td><code>CGroupSockAddr</code> + <code>bpf_get_current_uid_gid</code></td>
+<td><strong>本机 UID 级（分应用）接管能力就位</strong></td>
+</tr>
+<tr>
+<td>IPv4/IPv6 透明 TCP/UDP、original-dst、packet-info</td>
+<td>透明 socket 全套通过</td>
+</tr>
+<tr>
+<td><code>BPF JIT</code></td>
+<td><code>bpf_jit_enable=1</code></td>
+</tr>
+<tr>
+<td><code>locked-memory limit</code></td>
+<td>RLIMIT_MEMLOCK 自动调成 unlimited</td>
+</tr>
+<tr>
+<td><code>TC interface framing virbr0</code></td>
+<td><code>ether</code> 帧 ✅ → <strong>虚拟机共享路径可用</strong>（2026-10-02 晚已端到端实测通过，见 3.2 追注）</td>
+</tr>
+<tr>
+<td><code>LPM trie policy updates</code></td>
+<td>7.2.8 不在缺陷区间，PASS</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>⚠️ <strong>一个必须注意的细节</strong>：探测里那条 <code>cgroup path</code> 报的是<br><code>/sys/fs/cgroup/user.slice/…/kitty-30065-0.scope</code> —— 那是”<strong>探测进程自己</strong>“所在的 cgroup<br>（我从你终端里跑的），<strong>不是</strong>接管范围。真正全局接管要么<strong>省略 <code>local.cgroup_path</code></strong>（挂 cgroup v2 根层级），<br>要么显式写 <code>/sys/fs/cgroup</code>；写成上面那个 scope 就只会代理你终端里跑的程序。<br>官方也明说”<strong>attach permission and exclusivity are still checked during startup</strong>“——<br>挂载权限只在真实启动时校验，所以<strong>第一次起服务才是真考验</strong>（见 5.2 / 5.4 的兜底方案）。</p>
+</blockquote>
+<blockquote>
+<p>之前非 root 探测时看到的 <code>UNKNOWN</code> / <code>FATAL: map create: operation not permitted</code> <strong>不是内核不支持，是权限不够</strong>：<br><code>/proc/sys/kernel/unprivileged_bpf_disabled = 2</code>，非 root 连一个 map 都建不了。<br>即 <strong>eBPF 相关的 <code>check</code>、探测、启动都必须 root</strong>。</p>
+</blockquote>
+<h2 id="3-2-A-B-试跑结果（2026-10-02-08-54，同一套判据）"><a href="#3-2-A-B-试跑结果（2026-10-02-08-54，同一套判据）" class="headerlink" title="3.2 A/B 试跑结果（2026-10-02 08:54，同一套判据）"></a>3.2 A/B 试跑结果（2026-10-02 08:54，同一套判据）</h2><p>用 <code>trial/run-ebpf-trial.sh</code> 实测（脚本先停 TUN 服务、前台起 eBPF 核心、跑完恢复；脚本在仓库 <code>trial/</code> 下）：</p>
+<table>
+<thead>
+<tr>
+<th>判据</th>
+<th>TUN 基线</th>
+<th><strong>eBPF 阶段</strong></th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>tun0_state</code></td>
+<td>present</td>
+<td><strong>absent</strong></td>
+<td>真的没有 TUN 设备</td>
+</tr>
+<tr>
+<td><code>proxy_exit_ip</code></td>
+<td><proxy-exit-ip></proxy-exit-ip></td>
+<td><strong><proxy-exit-ip></proxy-exit-ip></strong></td>
+<td>无 TUN 仍在走代理 ✅</td>
+</tr>
+<tr>
+<td><code>ipv6_http_code</code></td>
+<td>200</td>
+<td><strong>200</strong></td>
+<td>IPv6 正常 ✅</td>
+</tr>
+<tr>
+<td><code>ipv6_blackhole</code></td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td>无黑洞规则 ✅</td>
+</tr>
+<tr>
+<td><code>direct_isp_ip</code></td>
+<td><home-ip> 电信</home-ip></td>
+<td><home-ip> 电信</home-ip></td>
+<td>国内仍直连 ✅</td>
+</tr>
+<tr>
+<td><code>resolve_github</code></td>
+<td>ok</td>
+<td>ok</td>
+<td>DNS 通 ✅</td>
+</tr>
+<tr>
+<td><code>ads_dns_answer</code></td>
+<td><code>[]</code>（被拦）</td>
+<td>⚠️ <code>127.0.0.53 timed out</code>（瞬时）</td>
+<td>见下</td>
+</tr>
+</tbody></table>
+<p><strong>结论：eBPF 数据面在这台机器上完整可用。</strong> 尤其重要的是，3.1 里唯一”没被预验证”的点<br>——<strong>root 挂 cgroup v2 根层级的权限/独占性</strong>——实际启动时通过了（日志 <code>sing-box started (0.13s)</code>，<br>且流量确实被接管）。分应用所需的 UID hook 也已在预检中确认就位。</p>
+<p><strong>两处尚需一次干净重跑才能定论</strong>：</p>
+<ol>
+<li><code>ads_dns_answer</code> 那次超时：切换瞬间 systemd-resolved 的上游（TUN 的 <code>172.19.0.2</code>）刚消失，<br>属于瞬时；且该判据当时还受 <strong>systemd-resolved 自身缓存</strong>干扰（脚本 v2 已改为 <code>dig @1.1.1.1</code> +<br>每轮 <code>flush-caches</code>）。</li>
+<li>第二轮 <code>SHARED_IFACE=virbr0</code> 的”基线”其实是<strong>无代理直连</strong>（因为第一轮恢复失败），<br>所以那份 diff 无参考价值；<strong>虚拟机共享路径仍未端到端验证</strong>（当时 <code>virbr0</code> 是 DOWN，没有虚拟机在跑）。</li>
+</ol>
+<blockquote>
+<p>✅ <strong>2026-10-02 晚追注：这一条已经补上了。</strong> <code>shared</code>（<code>packet_rewrite</code> on <code>virbr0</code>）已做端到端实测<br>（netns + veth 接到 <code>virbr0</code>）：<strong>直连与走代理两条路都通过</strong>——Clash API 命中<br><code>链路=Proxy → Auto → 新加坡Z02</code>，<code>virbr0</code> 抓包 11 SYN / 11 SYN-ACK，<code>curl</code> 200。<br>另外，<code>local</code> 的 <code>tc</code> 数据面实测<strong>不可用</strong>（<code>register TC eBPF TCP listener: operation not supported</code>），<br>所以 5.2 里”cgroup 被拒就换 tc”的兜底<strong>不成立</strong>（见 5.2 / 6 的追注）。<br>🔒 本节表格里 TUN 基线的出口 IP 原文是真实代理出口地址，公开仓库已脱敏为 <code>&lt;proxy-exit-ip&gt;</code>。</p>
+</blockquote>
+<h2 id="4-我现场编译出来的二进制（已放好）"><a href="#4-我现场编译出来的二进制（已放好）" class="headerlink" title="4. 我现场编译出来的二进制（已放好）"></a>4. 我现场编译出来的二进制（已放好）</h2><p>用 podman 里的 Go 1.26.8 编的分支 <code>reF1nd-testing</code>（HEAD <code>bccceeb</code>）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">podman</span> run <span class="token parameter variable">--rm</span> <span class="token parameter variable">-v</span> /tmp/sb-fork:/src <span class="token parameter variable">-v</span> gomodcache:/go/pkg/mod <span class="token parameter variable">-w</span> /src <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">CGO_ENABLED</span><span class="token operator">=</span><span class="token number">0</span> <span class="token parameter variable">-e</span> <span class="token assign-left variable">GOOS</span><span class="token operator">=</span>linux <span class="token parameter variable">-e</span> <span class="token assign-left variable">GOARCH</span><span class="token operator">=</span>amd64 <span class="token punctuation">\</span>
+  docker.io/library/golang:1.26 <span class="token function">sh</span> <span class="token parameter variable">-c</span> <span class="token string">"go build -trimpath -tags '<span class="token variable">$TAGS</span>' \
+  -ldflags <span class="token entity" title="\&quot;">\"</span>-s -w -X 'github.com/sagernet/sing-box/constant.Version=v1.15.0-alpha.9-reF1nd'<span class="token entity" title="\&quot;">\"</span> \
+  -o /src/sing-box-ebpf ./cmd/sing-box"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>产物（两个版本都编好并验证过，可任选；<strong>推荐 stable 基线的那个</strong>）：</p>
+<table>
+<thead>
+<tr>
+<th>路径</th>
+<th>版本</th>
+<th>sha256</th>
+<th>大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>~/.cache/sing-box-bin/sing-box-v1.14.2-reF1nd-with_ebpf</code></td>
+<td><code>v1.14.2-reF1nd</code>（<strong>与你现在同基线</strong>）</td>
+<td><code>87583b8695369f6a340fb1a4fe27dc652b59e02ff59d3a50d658fc2e632164f3</code></td>
+<td>86.8 MB</td>
+</tr>
+<tr>
+<td><code>~/.cache/sing-box-bin/sing-box-v1.15.0-alpha.9-reF1nd-with_ebpf</code></td>
+<td><code>v1.15.0-alpha.9-reF1nd</code></td>
+<td><code>8a55dfe9125164de26afb7a889bcf6458922fbfd76d34046f51a9695d2dee1e4</code></td>
+<td>88.5 MB</td>
+</tr>
+</tbody></table>
+<p>实测结果（都在你本机跑的）：</p>
+<table>
+<thead>
+<tr>
+<th>实测项</th>
+<th><code>v1.14.2-reF1nd</code></th>
+<th><code>v1.15.0-alpha.9-reF1nd</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>version</code></td>
+<td><code>go1.26.8 linux/amd64</code> ✅</td>
+<td><code>go1.26.8 linux/amd64</code> ✅</td>
+</tr>
+<tr>
+<td>编译标签含 <code>with_ebpf</code></td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td><code>check -C /etc/sing-box</code>（<strong>你现在的 TUN 配置</strong>）</td>
+<td><strong>exit=0，零告警</strong> ✅</td>
+<td><strong>exit=0</strong>，唯一告警：<code>tun.stack</code> 在 1.15 弃用</td>
+</tr>
+<tr>
+<td><code>check -c &lt;tun 换成 ebpf 入站的配置&gt;</code></td>
+<td>非 root 下 exit=1，原因是 <code>map create: operation not permitted</code> —— <strong>权限门，不是配置错误</strong>（官方样例配置在该权限下同样失败）</td>
+<td>同上</td>
+</tr>
+<tr>
+<td><code>tools ebpf status</code> 内核预检</td>
+<td>命令可用，能逐项报能力</td>
+<td>同左</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>注意一个反直觉点：<strong>这个分支的 <code>sing-box check</code> 遇到 ebpf 入站会真的去建 eBPF map</strong>，<br>所以”非 root 时 <code>check</code> 失败”≠ 配置写错。字段名我已对齐 <code>option/ebpf.go</code>，无 unknown field。</p>
+</blockquote>
+<h3 id="4-1-用你自己的-pkgbuild-source-打包（已完成）"><a href="#4-1-用你自己的-pkgbuild-source-打包（已完成）" class="headerlink" title="4.1 用你自己的 ~/pkgbuild-source 打包（已完成）"></a>4.1 用你自己的 <code>~/pkgbuild-source</code> 打包（<strong>已完成</strong>）</h3><blockquote>
+<p>✅ <strong>已落地</strong>：<code>~/pkgbuild-source/packages/sing-box-ebpf/</code>（PKGBUILD + .SRCINFO）。<br>容器内真实 <code>makepkg</code> 构建通过（产物 25.5 MB，含二进制 + 两个 systemd 单元 + license），<br>namcap 仅两条 Go 静态二进制常态告警（<code>lacks FULL RELRO</code> / <code>lacks PIE</code>，<strong>退出码 0，不会中断 CI</strong>）。<br>配套的管理界面见 <code>docs/03-面板指南.md</code>（源码在 <code>~/pkgbuild-source/packages/sing-box-panel/</code>）。</p>
+</blockquote>
+<p>你那个仓库（CI 从 <code>packages/&lt;name&gt;/{PKGBUILD,.SRCINFO}</code> 构建 → 发到 <code>repo</code> 分支 → pacman 直接装）<br>正好解决”没有预编译二进制”这件事：<strong>一次打包，以后 pacman 升级，不用手工编。</strong><br><code>packages/daed-emo/</code> 就是现成模板（同样是 Go 构建 + 自带 systemd 单元）。</p>
+<p>建议新增 <code>packages/sing-box-ebpf/</code>，要点：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">source</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'git+https://github.com/reF1nd/sing-box.git#tag=v1.14.2-reF1nd'</span><span class="token punctuation">)</span>   <span class="token comment"># stable 基线；要 1.15 特性再换 tag</span>
+<span class="token assign-left variable">makedepends</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'base-devel'</span> <span class="token string">'git'</span> <span class="token string">'go'</span><span class="token punctuation">)</span>
+<span class="token assign-left variable">provides</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'sing-box'</span><span class="token punctuation">)</span>          <span class="token comment"># 装的是 /usr/bin/sing-box，沿用发行版单元</span>
+<span class="token assign-left variable">conflicts</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token string">'sing-box'</span> <span class="token string">'sing-box-git'</span><span class="token punctuation">)</span>
+<span class="token comment"># 构建标签务必含 with_ebpf（否则就是普通的 sing-box，白装）：</span>
+<span class="token comment">#   with_gvisor,with_quic,with_dhcp,with_wireguard,with_utls,with_acme,with_clash_api,</span>
+<span class="token comment">#   with_tailscale,with_ccm,with_ocm,with_cloudflared,with_usbip,with_openvpn,</span>
+<span class="token comment">#   with_openconnect,badlinkname,tfogo_checklinkname0,with_ebpf</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><code>with_naive_outbound</code> <strong>不要带</strong>（Linux + <code>CGO_ENABLED=0</code> 编不过，见第 8 节）。</li>
+<li><code>conflicts=('sing-box')</code> 是刻意的：两个透明代理不能共存，装这个就等于顶掉官方包。</li>
+<li>打包时顺手把发行版单元的 capability 限制补上 <code>CAP_BPF CAP_PERFMON</code>（见 5.2），否则服务起不来。<br>（<strong>2026-10-02 晚实测</strong>：自建包最终用的是 <code>User=root</code> + <strong>不设</strong> <code>CapabilityBoundingSet</code> + <code>LimitMEMLOCK=infinity</code>，<br>这样最省事，不需要逐个补 CAP。）</li>
+</ul>
+<blockquote>
+<p>我没有直接改你的仓库——你说一声我就按仓库约定加上 <code>PKGBUILD</code> + <code>.SRCINFO</code>（并用 <code>makepkg --printsrcinfo</code> 自检）。</p>
+</blockquote>
+<h2 id="5-真要切到-eBPF，需要改什么"><a href="#5-真要切到-eBPF，需要改什么" class="headerlink" title="5. 真要切到 eBPF，需要改什么"></a>5. 真要切到 eBPF，需要改什么</h2><h3 id="5-1-配置：tun-in-→-ebpf-in（mixed-in-保留）"><a href="#5-1-配置：tun-in-→-ebpf-in（mixed-in-保留）" class="headerlink" title="5.1 配置：tun-in → ebpf-in（mixed-in 保留）"></a>5.1 配置：<code>tun-in</code> → <code>ebpf-in</code>（<code>mixed-in</code> 保留）</h3><pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"ebpf"</span><span class="token punctuation">,</span>
+  <span class="token property">"tag"</span><span class="token operator">:</span> <span class="token string">"ebpf-in"</span><span class="token punctuation">,</span>
+  <span class="token property">"network"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"tcp"</span><span class="token punctuation">,</span> <span class="token string">"udp"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"local"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"enabled"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"data_plane"</span><span class="token operator">:</span> <span class="token string">"cgroup"</span><span class="token punctuation">,</span>
+    <span class="token property">"dns_mode"</span><span class="token operator">:</span> <span class="token string">"respect_policy"</span><span class="token punctuation">,</span>
+    <span class="token property">"bypass_private_address"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"ipv6"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token property">"exclude_uid"</span><span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">"&lt;可选：不需要走代理的 UID&gt;"</span> <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"shared"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"enabled"</span><span class="token operator">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li><p><strong>端口 53</strong>：由 <code>dns_mode</code> 在内核侧接管（<code>hijack</code> 先接管再筛 UID，<code>respect_policy</code> 先筛再接管），<br>替代 TUN 时代的 <code>hijack-dns</code> 路由动作；原规则留着无害，可删。</p>
+</li>
+<li><p><strong>IPv6</strong>：由 <code>local.ipv6</code> 显式开关，不再需要为了 v6 去给 TUN 配地址，也不会再出现<br><code>ip -6 rule</code> 里那条 <code>unreachable</code> 黑洞（那是 TUN 模式的防泄露设计）。</p>
+</li>
+<li><p><strong>分应用</strong>（Linux 上 TUN 做不到的事）：<code>include_uid</code> / <code>exclude_uid</code> / <code>*_uid_range</code>；<br><code>include_package</code> / <code>exclude_package</code> 是 <strong>Android 专用</strong>，桌面别用。</p>
+</li>
+<li><p><strong>局域网 / 虚拟机共享</strong>：<code>shared</code> 填的是<strong>下游接口</strong>，不是上游！<br>你这台机器上默认出口是 <code>wlan0</code>，所以<strong>不要填 wlan0</strong>；要让 libvirt 的虚拟机也走代理，应填 <code>virbr0</code>：</p>
+<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token property">"shared"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"enabled"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token property">"data_plane"</span><span class="token operator">:</span> <span class="token string">"packet_rewrite"</span><span class="token punctuation">,</span> <span class="token property">"interface"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"virbr0"</span><span class="token punctuation">]</span> <span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>且 shared 模式自己<strong>不做 NAT / DHCP / IPv6 RA</strong>（那些仍由 libvirt dnsmasq 负责），<br>只支持以太网帧接口（raw-IP / PPP / 隧道链路要换 <code>socket_assign</code>）。</p>
+</li>
+<li><p>一个实例<strong>只能有一个</strong> ebpf 入站做 local 接管；<strong>绝对不要 TUN 与 eBPF 同时开</strong>（等于两个透明代理）。</p>
+</li>
+</ul>
+<h3 id="5-2-systemd：当时的发行版单元跑不了-eBPF"><a href="#5-2-systemd：当时的发行版单元跑不了-eBPF" class="headerlink" title="5.2 systemd：当时的发行版单元跑不了 eBPF"></a>5.2 systemd：<strong>当时</strong>的发行版单元跑不了 eBPF</h3><blockquote>
+<p>✅ <strong>2026-10-02 晚复核：这条建议已经落地了。</strong> 现在用的是自建包自带的单元<br>（<code>/usr/lib/systemd/system/sing-box.service</code>，来自 <code>sing-box-ebpf</code>），实测就是 <strong><code>User=root</code> + 完全不限制<br><code>CapabilityBoundingSet</code> + <code>LimitMEMLOCK=infinity</code></strong>；<code>systemctl show sing-box</code> 显示<br><code>ActiveState=active</code>、<code>NRestarts=0</code>，不需要逐个补 <code>CAP_BPF</code>/<code>CAP_PERFMON</code>。<br>下面这段是<strong>旧单元</strong>的体检记录（保留原文）。</p>
+</blockquote>
+<p>发行版单元是 <code>User=sing-box</code> + <code>CapabilityBoundingSet=CAP_NET_ADMIN CAP_NET_RAW CAP_NET_BIND_SERVICE CAP_SYS_PTRACE CAP_DAC_READ_SEARCH</code><br>——<strong>没有 <code>CAP_BPF</code>/<code>CAP_PERFMON</code></strong>，而且 local <code>cgroup</code> 数据面要挂到 cgroup v2 <strong>根层级</strong>（特权操作）。</p>
+<p>建议照 daed 的老路：<strong>用 root 跑</strong>（<code>User=root</code> 或干脆去掉 <code>User=</code>），capability 限制放宽或至少补<br><code>CAP_BPF CAP_PERFMON CAP_NET_ADMIN CAP_SYS_ADMIN</code>；<code>ExecStart</code> 的 <code>-D /var/lib/sing-box -C /etc/sing-box</code> 不用动。<br>若坚持非 root，<code>cgroup_path</code> 指到自己被 systemd 委派的子树，但那样<strong>只能接管该子树内的进程</strong>，不是全局透明。</p>
+<p><strong>兜底（root 挂根 cgroup 被拒时）</strong>：把 <code>local.data_plane</code> 从 <code>cgroup</code> 换成 <strong><code>tc</code></strong><br>（跟随默认接口，预检里 veth / 策略路由 / socket lookup 能力都已 PASS），代价是依赖默认接口、需要建 veth。</p>
+<blockquote>
+<p>❌ <strong>2026-10-02 晚推翻：这条兜底不成立。</strong> 本机 <code>local</code> 的 <code>tc</code> 数据面<strong>实测起不来</strong>：<br><code>FATAL start service: start inbound/ebpf[ebpf-in]: register TC eBPF TCP listener: operation not supported</code>。<br>教训：预检（不挂 hook 的加载探测）PASS <strong>不等于</strong>能挂上并跑通；<code>cgroup</code> 挂载若被拒，没有 <code>tc</code> 这条退路。</p>
+</blockquote>
+<h3 id="5-3-预检（已跑过：preflight-passed，51-PASS-0-fail）"><a href="#5-3-预检（已跑过：preflight-passed，51-PASS-0-fail）" class="headerlink" title="5.3 预检（已跑过：preflight_passed，51 PASS / 0 fail）"></a>5.3 预检（已跑过：<code>preflight_passed</code>，51 PASS / 0 fail）</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> ~/.cache/sing-box-bin/sing-box-v1.14.2-reF1nd-with_ebpf <span class="token punctuation">\</span>
+     tools ebpf status <span class="token parameter variable">--mode</span> all <span class="token parameter variable">--interface</span> virbr0 <span class="token parameter variable">--json</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>结果见 3.1。<code>FAIL</code> 才是真缺能力；<code>UNKNOWN</code> 表示探测被安全策略挡住，需要换权限重跑。<br><strong>注意删掉 <code>--interface virbr0</code> 就没探测虚拟机共享路径</strong>，反之不想要共享路径可只测 <code>--mode local</code>。</p>
+<h3 id="5-4-切换顺序与回滚（已于-2026-10-02-10-37-执行成功，脚本：switch-to-ebpf-sh）"><a href="#5-4-切换顺序与回滚（已于-2026-10-02-10-37-执行成功，脚本：switch-to-ebpf-sh）" class="headerlink" title="5.4 切换顺序与回滚（已于 2026-10-02 10:37 执行成功，脚本：switch-to-ebpf.sh）"></a>5.4 切换顺序与回滚（<strong>已于 2026-10-02 10:37 执行成功</strong>，脚本：<code>switch-to-ebpf.sh</code>）</h3><blockquote>
+<p>✅ 现成脚本（仓库 <code>scripts/</code> 目录）：<code>sudo scripts/switch-to-ebpf.sh</code>（可选 <code>--shared virbr0</code>、<br><code>--shared-plane packet_rewrite|socket_assign</code>）。<br>它做完整安全管线：内核预检 → tun→ebpf 改配置 → <code>check</code> → 备份 → 原子替换 → 重启 →<br><strong>eBPF 专属健康检查</strong>（<code>api ebpf</code> 附件状态 + 不经代理的请求是否走代理 + 国内是否仍直连 + DNS 是否仍拦）<br>→ 任一失败自动回滚到 TUN。下面是不用脚本时的等价手工步骤。</p>
+</blockquote>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">cp</span> <span class="token parameter variable">-a</span> /etc/sing-box/config.json /etc/sing-box/config.json.pre-ebpf.<span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y%m%d-%H%M%S<span class="token variable">)</span></span>   <span class="token comment"># 1 备份</span>
+<span class="token function">sudo</span> scripts/switch-to-local-rules.sh --dry-run                                                   <span class="token comment"># 2 仍用旧的 TUN 脚本预览</span>
+<span class="token function">sudo</span> systemctl stop sing-box                                                                      <span class="token comment"># 3 停服务</span>
+<span class="token comment">#   4 用新二进制 + ebpf 配置在前台手跑，盯日志；出问题 Ctrl-C 即回到无代理状态</span>
+<span class="token function">sudo</span> ~/.cache/sing-box-bin/sing-box-v1.15.0-alpha.9-reF1nd-with_ebpf <span class="token parameter variable">-D</span> /var/lib/sing-box <span class="token parameter variable">-C</span> /etc/sing-box run
+<span class="token comment">#   5 没问题再换 systemd 单元（第 5.2 节）并 systemctl start sing-box</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>验证四条（与现有审计报告同一套判据）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">curl</span> <span class="token parameter variable">-s</span> https://myip.ipip.net                                            <span class="token comment"># 期望：你的电信 IP（直连）</span>
+<span class="token function">curl</span> <span class="token parameter variable">-s</span> https://api.ipify.org                                            <span class="token comment"># 期望：代理节点 IP</span>
+<span class="token function">curl</span> <span class="token parameter variable">-6</span> <span class="token parameter variable">-s</span> <span class="token parameter variable">-o</span> /dev/null <span class="token parameter variable">-w</span> <span class="token string">'%{http_code}\n'</span> https://ipv6.google.com      <span class="token comment"># 期望 200</span>
+<span class="token function">ip</span> <span class="token parameter variable">-6</span> rule show <span class="token operator">|</span> <span class="token function">grep</span> <span class="token parameter variable">-c</span> unreachable                                    <span class="token comment"># 期望 0</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>回滚：<code>systemctl stop sing-box</code> → 把 <code>config.json.pre-ebpf.*</code> 覆盖回 <code>/etc/sing-box/config.json</code> →<br>换回 <code>/usr/bin/sing-box</code>（1.14.2 + TUN）与发行版单元 → <code>systemctl start sing-box</code>。</p>
+<h2 id="6-代价-什么时候值得"><a href="#6-代价-什么时候值得" class="headerlink" title="6. 代价 / 什么时候值得"></a>6. 代价 / 什么时候值得</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>⚠️ 版本</td>
+<td>分支基线的 tag 可选 stable（<code>v1.14.2-reF1nd</code>，与你现装同基线）或 alpha（<code>v1.15.0-alpha.9-reF1nd</code>）；<strong>eBPF 本身不是 alpha 专属</strong></td>
+</tr>
+<tr>
+<td>⚠️ 维护</td>
+<td>无 Linux release 产物、无 Arch 包 → 每次升级都要自己 <code>podman</code>/Go 重编；<strong>建议用 <code>~/pkgbuild-source</code> 打包解决</strong>（见 4.1）</td>
+</tr>
+<tr>
+<td>⚠️ 覆盖面</td>
+<td>local <code>cgroup</code> 只管<strong>本机 socket</strong>；<strong>转发流量（libvirt VM）不在内</strong>，那要 shared + <code>virbr0</code>（已端到端实测 ✅）。<strong>❌ 原文”含 rootless podman”是错的</strong>：2026-10-02 晚实测 rootless podman（pasta）容器<strong>仍走不了代理</strong>——境外失败、国内直连与 DNS 劫持正常、<code>--network=host</code> 可用；pasta 属<strong>用户态转发</strong>，local 与 shared 两条路都不覆盖它。而 TUN 的 <code>auto_route</code> 是一把全包住</td>
+</tr>
+<tr>
+<td>⚠️ 首次启动</td>
+<td>root 挂根 cgroup 的权限/独占性只在真启动时校验（3.1）——实际启动<strong>通过了</strong>（<code>api ebpf</code> 可见 <code>role=local mechanism=cgroup</code>，服务 <code>NRestarts=0</code>）；<del>被拒就换 <code>tc</code> 数据面</del> ❌ <strong><code>tc</code> 不可用</strong>（见 5.2 追注），没有这条退路</td>
+</tr>
+<tr>
+<td>✅ 收益 1</td>
+<td><strong>分应用分流</strong>（<code>include_uid</code>/<code>exclude_uid</code>）——这是 TUN 在 Linux 上给不了的，且预检确认 <code>bpf_get_current_uid_gid</code> 可用</td>
+</tr>
+<tr>
+<td>✅ 收益 2</td>
+<td>不建 TUN 设备、无 TUN 拷贝，理论上更省；不用 iptables/nftables REDIRECT/TPROXY</td>
+</tr>
+<tr>
+<td>✅ 收益 3</td>
+<td><del>alpha 那条基线（1.15）能让你评审里惦记的 DNS <code>type: "group"</code> 故障转移组用上</del> ❌ <strong>2026-10-02 晚更正</strong>：<code>type: "group"</code> 在 <strong>1.14.2-reF1nd</strong> 上就能用——线上配置的 <code>dns-proxy</code> / <code>dns-direct</code> 正是 <code>type: "group"</code>，不需要 1.15</td>
+</tr>
+<tr>
+<td>✅ 现状对比</td>
+<td>你这套 TUN 已经过完整审计：DNS 劫持完整、v6 已修、podman 透明、并发/大文件都过。<strong>没有刚需就别换</strong>；当年 daed 的 eBPF 正是把 DNS 和 IPv6 TCP 弄坏才被换掉的</td>
+</tr>
+</tbody></table>
+<p><strong>建议（预检通过后的版本）</strong>：</p>
+<blockquote>
+<p>能力门已经过了（51 PASS / 0 fail，连 cgroup 与 packet_rewrite 对象都真加载过），所以剩下的是<strong>行为风险</strong>，不是”能不能跑”。<br>顺序：<strong>先打包（4.1）→ 再备份/前台试跑/回滚（5.4）</strong>；只在你要”分应用”或”去掉 TUN”时才真正切。<br>只是想尝鲜的话，成本最低的试法是：<strong>不开机自启</strong>，前台跑一次、跑完立刻 Ctrl-C，然后用审计报告里那套判据（DNS 四源一致、<br>国内直连 IP、<code>curl -6</code> 200、<code>ip -6 rule</code> 无 unreachable、podman 出口 IP）打一遍分。</p>
+<p>✅ <strong>2026-10-02 晚复核</strong>：切换<strong>已经做了</strong>（见 5.4），当日晚又补完了 shared 的端到端验证；服务至今<br><code>ActiveState=active</code>、<code>NRestarts=0</code>。唯一没被”审计判据”覆盖的是 <strong>rootless podman（pasta）</strong>：<br>它在 eBPF 下仍走不了代理（见上表”覆盖面”行）。</p>
+</blockquote>
+<h2 id="7-Android（NetProxy-模块）怎么判断能不能用"><a href="#7-Android（NetProxy-模块）怎么判断能不能用" class="headerlink" title="7. Android（NetProxy 模块）怎么判断能不能用"></a>7. Android（NetProxy 模块）怎么判断能不能用</h2><ul>
+<li>模块<strong>只提供 eBPF 透明代理入站，没有 TPROXY/REDIRECT 回退</strong>：内核能力不足 → 透明代理根本起不来。</li>
+<li>厂商内核可能关掉/回移部分 BPF 能力，<strong>不能只看 Android 或内核版本号</strong>，要用模块自带探测：</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">su</span> <span class="token parameter variable">-c</span> <span class="token string">'/data/adb/modules/netproxy/netproxyctl ebpf status configured'</span>
+<span class="token function">su</span> <span class="token parameter variable">-c</span> <span class="token string">'/data/adb/modules/netproxy/netproxyctl ebpf status all --raw'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<ul>
+<li>默认数据面：本机 <code>cgroup</code>（<code>EBPF_LOCAL_DATA_PLANE=cgroup</code>），共享网络 <code>packet_rewrite</code>（<code>EBPF_SHARED_ENABLED=0</code> 默认关）。</li>
+<li>需要：Magisk / KernelSU / APatch + Root；内核支持 BPF、TC classifier、透明 socket、socket lookup；本机路径还要 veth 与策略路由（<strong>未复核</strong>：本机实测 <code>tc</code> 数据面在 7.2.8 上不可用、而 <code>cgroup</code> 路径不依赖 veth，这句是照模块文档转述的，没有实机验证）。</li>
+<li>它的”sing-box 配置”与你的 <code>/etc/sing-box/config.json</code> <strong>不是一份东西</strong>：它用 <code>runtime/</code> 现生成的 Provider + eBPF 配置，<br>静态主配置在 <code>config/singbox/config.json</code>。你的 TUN 配置思路（规则集、DoH、selector）可以照搬，但 <code>tun</code> 入站整段要去掉。</li>
+</ul>
+<h2 id="8-复现-清理"><a href="#8-复现-清理" class="headerlink" title="8. 复现 / 清理"></a>8. 复现 / 清理</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 重编（缓存已在 podman 卷里，所以很快；需要 podman，不需要装 Go）</span>
+<span class="token assign-left variable">TAGS</span><span class="token operator">=</span><span class="token string">"with_gvisor,with_quic,with_dhcp,with_wireguard,with_utls,with_acme,with_clash_api,with_tailscale,with_ccm,with_ocm,with_cloudflared,with_usbip,with_openvpn,with_openconnect,badlinkname,tfogo_checklinkname0,with_ebpf"</span>
+
+<span class="token comment"># stable 基线（推荐；/tmp/sb-fork-1142 已存在，可直接复用）</span>
+<span class="token function">git</span> clone <span class="token parameter variable">--depth</span> <span class="token number">1</span> <span class="token parameter variable">--branch</span> v1.14.2-reF1nd https://github.com/reF1nd/sing-box.git /tmp/sb-fork-1142
+<span class="token comment"># 或者最新分支：--branch reF1nd-testing</span>
+<span class="token builtin class-name">cd</span> /tmp/sb-fork-1142 <span class="token operator">&amp;&amp;</span> <span class="token function">podman</span> run <span class="token parameter variable">--rm</span> <span class="token parameter variable">-v</span> <span class="token string">"<span class="token environment constant">$PWD</span>"</span>:/src <span class="token parameter variable">-v</span> gomodcache:/go/pkg/mod <span class="token punctuation">\</span>
+  <span class="token parameter variable">-v</span> gomodcache-build:/root/.cache/go-build <span class="token parameter variable">-w</span> /src <span class="token punctuation">\</span>
+  <span class="token parameter variable">-e</span> <span class="token assign-left variable">CGO_ENABLED</span><span class="token operator">=</span><span class="token number">0</span> <span class="token parameter variable">-e</span> <span class="token assign-left variable">GOOS</span><span class="token operator">=</span>linux <span class="token parameter variable">-e</span> <span class="token assign-left variable">GOARCH</span><span class="token operator">=</span>amd64 <span class="token parameter variable">-e</span> <span class="token assign-left variable">GOTOOLCHAIN</span><span class="token operator">=</span>local <span class="token punctuation">\</span>
+  docker.io/library/golang:1.26 <span class="token function">sh</span> <span class="token parameter variable">-c</span> <span class="token string">"go build -trimpath -ldflags '-s -w' -tags '<span class="token variable">$TAGS</span>' -o /src/sing-box-ebpf ./cmd/sing-box"</span>
+
+<span class="token comment"># 清理我留下的构建缓存（约 2 GB，放着你下次重编会快很多）</span>
+<span class="token function">podman</span> volume <span class="token function">rm</span> gomodcache gomodcache-build
+<span class="token function">podman</span> rmi docker.io/library/golang:1.26<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>坑：<code>with_naive_outbound</code> 在 Linux 上 <code>CGO_ENABLED=0</code> <strong>编不过</strong><br>（<code>cronet-go/lib/linux_amd64: build constraints exclude all Go files</code>），所以标签里没带它——<br>你的订阅是 Shadowsocks，用不到 naive。</p>
+</blockquote>
+<h2 id="9-踩坑记录：cache-db-属主（试跑时踩到，已修）"><a href="#9-踩坑记录：cache-db-属主（试跑时踩到，已修）" class="headerlink" title="9. 踩坑记录：cache.db 属主（试跑时踩到，已修）"></a>9. 踩坑记录：<code>cache.db</code> 属主（试跑时踩到，已修）</h2><blockquote>
+<p>📌 <strong>2026-10-02 晚追注（本节保留原文，属历史记录）</strong>：现行单元是 <code>User=root</code>（自建 <code>sing-box-ebpf</code> 包），<br><code>/var/lib/sing-box/cache.db</code> 现为 <code>root:root 644</code>，所以”被改成 emo 属主导致服务写不了”这个具体故障<br>在当前单元下不会复现；但下面两条铁律（别拿线上配置跑非 root <code>check</code>、<code>active</code> ≠ 就绪）仍然成立。<br>⚠️ 另：<strong>本次没能复现”<code>check</code> 初始化 cache-file”这一步</strong>——把 <code>cache_file.path</code> 指到可写临时目录后<br><code>sing-box check</code> exit=0 且<strong>没有生成文件</strong>；带 <code>ebpf</code> 入站时则更早地在 <code>map create: operation not permitted</code><br>失败。所以”<code>check</code> 走到服务初始化”是真的（会去建 eBPF map），但”它顺手重建了 <code>cache.db</code>“这一环<strong>存疑</strong>。</p>
+</blockquote>
+<p><strong>症状</strong>：<code>systemctl restart sing-box</code> 后服务 active 一秒即挂，无限重启循环，<code>tun0</code> 消失：</p>
+<pre class="line-numbers language-none"><code class="language-none">FATAL[0000] start service: initialize cache-file: open /var/lib/sing-box/cache.db: permission denied<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p><strong>根因</strong>：<code>/etc/sing-box/config.json</code> 里 <code>experimental.cache_file.path</code> 是绝对路径<br><code>/var/lib/sing-box/cache.db</code>，而<strong>非 root 身份跑 <code>sing-box check -c/-C &lt;线上配置&gt;</code> 也会真的初始化<br>cache-file</strong>（这个 fork 的 <code>check</code> 会走到服务初始化）。于是该文件被<strong>重建为 <code>emo:emo</code> 644</strong>，<br>而服务用户是 <code>sing-box</code>（目录 755，只有属主可写）→ 服务再也写不了自己的缓存。<br>当时老进程还握着旧 inode，所以表面无恙，<strong>直到重启才炸</strong>。</p>
+<p><strong>修复</strong>（一条命令，缓存可丢弃）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">chown</span> sing-box:sing-box /var/lib/sing-box/cache.db <span class="token operator">&amp;&amp;</span> <span class="token function">sudo</span> systemctl restart sing-box
+<span class="token comment"># 或者干脆：sudo rm -f /var/lib/sing-box/cache.db &amp;&amp; sudo systemctl restart sing-box</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p><strong>两条铁律</strong>：</p>
+<ol>
+<li><strong>不要用非 root 对线上配置跑 <code>sing-box check</code> / <code>run</code></strong>。要验证就先复制一份，并把<br><code>experimental.cache_file.path</code> 改到 <code>/tmp</code>（试跑脚本 v2 已内置这个隔离）。</li>
+<li><strong><code>systemctl</code> 报 <code>active</code> ≠ TUN 已就绪</strong>：实测有 1 秒级竞态，<code>is-active</code> 为真时 <code>tun0</code><br>可能还没建出来。判断健康要 <code>is-active</code> + <code>ip link show tun0</code> 一起看（脚本 v2 已改成轮询 10s）。<br>（<strong>eBPF 模式下没有 <code>tun0</code></strong>，判据要换成 <code>api ebpf</code> 的附件状态 + “不设代理的出口 == 经代理的出口”，见 09 文档 §9。）</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/10/03/singborg-02-ebpf-validation/">https://emoeem.github.io/2026/10/03/singborg-02-ebpf-validation/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Arch-Linux/">Arch Linux</a><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/sing-box/">sing-box</a><a class="post-meta__tags" href="/tags/eBPF/">eBPF</a></div><div class="post-share"><div class="social-share" data-image="/img/covers/cover-4.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/" title="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制"><picture><source type="image/avif" srcset="/img/optimized/featureimages/23.avif"><source type="image/webp" srcset="/img/optimized/featureimages/23.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/featureimages/23.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</div></div><div class="info-2"><div class="info-item-1">VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制VoiceFox 这一轮更新的重点，不是继续增加一个音源，而是把终端音乐播放器里几个长期缺失的能力补完整。 0.5.0 主要加入了频谱可视化、睡眠定时器、Windows SMTC、歌单导入导出、网易云只追加推送，以及远程歌单缓存，同时修复了拖拽列宽和频谱断流等影响日常使用的问题。 频谱可视化按 w 可以打开频谱。 Linux 下优先从 PipeWire 的默认输出 monitor 流采集系统实际声音，没有时回退到 PulseAudio monitor。采集和 FFT 分析放在独立线程，UI 每帧只读取最新的频谱快照。 分析链路大致是： 系统输出 PCM     ↓ 4096 点 FFT     ↓ 50Hz–12kHz 对数频带     ↓ dB 归一化     ↓ 相邻频带平滑     ↓ attack / decay + 峰值保持     ↓ ratatui 柱状渲染  底层使用 realfft 做 FFT、colorgrad 做颜色插值。 这里还有一个容易被忽略的细节：频谱采集进程退出并不会让界面永久冻结。PipeW...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-03-panel-guide/" title="Singborg 03：sing-box Panel 面板指南"><picture><source type="image/avif" srcset="/img/optimized/featureimages/4.avif"><source type="image/webp" srcset="/img/optimized/featureimages/4.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/4.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Singborg 03：sing-box Panel 面板指南</div></div><div class="info-2"><div class="info-item-1">sing-box 控制台（sing-box-panel）使用与设计 ~/pkgbuild-source/packages/sing-box-panel/，包名 sing-box-panel，与 sing-box-ebpf 解耦（TUN / eBPF 两种模式都能用）。后端 Python3 标准库，前端 单页无构建，运行状态页 内嵌 zashboard（MIT，随包分发，不联网加载）。  1. 它解决什么问题MetaCubeXD / zashboard 这类面板只能读 Clash API，也就是”看”运行状态。你自己的需求里有三件事它们做不到：    需求 Clash 类面板 本面板    运行状态（连接/流量/延迟/日志） ✅ 内嵌 zashboard + 自己的服务卡片与 eBPF 探针   节点 / 订阅 ❌ 抓取 → 解析 → 写入 outbounds → 校验 → 重启   分应用策略 ❌ 写 eBPF 入站的 include_uid / exclude_uid   服务控制 / eBPF 能力预检 ❌ systemd + sing-box tools ebpf stat...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/03/linux-sing-box-ebpf-tou-ming-dai-li-shi-jian/" title="Linux 上的 sing-box + eBPF 透明代理实践"><picture><source type="image/avif" srcset="/img/optimized/featureimages/2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/2.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/2.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Linux 上的 sing-box + eBPF 透明代理实践</div></div><div class="info-2"><div class="info-item-1">Linux 上的 sing-box + eBPF 透明代理实践这不是只有最终配置的一篇教程，而是 Singborg 整套实验记录的总览：从 daed 时代的 DNS 故障开始，到 sing-box 网络审计、功能验收、eBPF 预检与 A/B 试跑，再到面板、安全配置管线、规则集维护、脚本化运维和最终收尾。 最终状态截至 2026-10-02：  eBPF local.cgroup 接管本机流量 shared.packet_rewrite / TCX 接管 virbr0 上的共享流量 国内域名/IP 直连，海外流量进入 Proxy → Auto DNS 53 端口全部劫持 海外 DNS 使用代理侧 DoH，国内 DNS 使用阿里 / 腾讯 DoH DNS 广告拦截使用 predefined + NXDOMAIN 连接层继续使用规则集拦截，覆盖浏览器自带 DoH 等绕过 DNS 劫持的情况 15 份规则集，其中 6 份来自自建 sing-box-rule-sets 自研 sing-box-panel 提供订阅、节点、分应用策略和安全配置 配置变更统一走 check → 备份 → 原...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-06-optimization-review/" title="Singborg 06：透明代理优化评审"><picture><source type="image/avif" srcset="/img/optimized/featureimages/7.avif"><source type="image/webp" srcset="/img/optimized/featureimages/7.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/7.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 06：透明代理优化评审</div></div><div class="info-2"><div class="info-item-1">sing-box 配置优化评审 + 参考项目分析 + GUI 选型 本文所有改动都用 sing-box 1.14.2 真二进制 验证过（sing-box check exit=0，无弃用告警）。参考项目：Fanju6/NetProxy-Magisk（Magisk 模块，内置sing-box 1.15.0-alpha.8 + eBPF 透明代理 + Android App + WebUI，维护很积极）。   🕓 2026-10-02 复核追注本文写于 TUN 时代。当天中午起本机已切到 eBPF 模式：现役 sing-box-ebpf 1.14.2.ref1nd-2（fork 构建），入站是 local.cgroup + shared: packet_rewrite（挂 virbr0），配置里已没有 TUN 入站（sing-box api ebpf 实测 role=local/mechanism=cgroup +role=shared/mechanism=tcx）。所以文中凡以「你用 TUN」为前提的表述（第二节末行、第四节 tun.stack 一项、第六节）都已过时；另有两处结...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-ebpf-trial/" title="Singborg：eBPF A&#x2F;B 试跑套件"><picture><source type="image/avif" srcset="/img/optimized/featureimages/23.avif"><source type="image/webp" srcset="/img/optimized/featureimages/23.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/23.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg：eBPF A&#x2F;B 试跑套件</div></div><div class="info-2"><div class="info-item-1">eBPF 试跑（A/B，可回滚） 最终结论以 2026-10-02 晚间复核后的 01 审计报告 与 09 踩坑与经验 为准。 本文保留试跑过程中较早的记录，其中“shared 不可用 / 最终回到 TUN”的判断后来已被 root 逐条探测推翻：当前确认 shared packet_rewrite / TCX 可用，local 的 TC 数据面才是内核限制。   早期试跑记录（2026-10-02）：当时确认 eBPF 能接管本机流量，DNS 劫持与 IPv6 也正常；随后曾把“TC 数据面与 shared 都不可用”作为结论并回到 TUN。这部分后来已经被 2026-10-02 晚间的 root 级逐条探测修正：local TC 确实不可用，但 shared packet_rewrite / TCX 实测可用，VM / bridge 流量可以接管。本文保留这个历史判断，最终结论请看 01 审计报告 与 09 踩坑与经验。  预检已通过（preflight_passed，51 PASS / 0 fail，见 /2026/10/03/singborg-02-ebpf-valida...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-09-lessons/" title="Singborg 09：踩坑与经验"><picture><source type="image/avif" srcset="/img/optimized/featureimages/0.avif"><source type="image/webp" srcset="/img/optimized/featureimages/0.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/0.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 09：踩坑与经验</div></div><div class="info-2"><div class="info-item-1">踩坑与经验这篇是整份记录里最该先看的：结论会过时，踩过的方式不会。分四类 ——sing-box 与内核、工具链、测量方法（我在这里犯过错）、以及流程上的经验。  一、sing-box / 内核1. ebpf 入站只存在于某个 fork，上游没有上游 SagerNet 的 sing-box 没有 ebpf 入站（文档 404）：这个入站在 reF1nd/sing-box 分支里（with_ebpf 构建标签，Linux/Android）。而那个 fork 0 个 release → 想要就得自己编。判断依据不是”文档说有”，而是：拿一个带 ebpf 入站的配置去 check，上游二进制直接报unknown inbound type: ebpf。 2. 内核数据面要逐条探测，不能互相推断（我在这里推断错过一次）先看结论：官方文档写得很清楚 ——  这四条路径（local cgroup、local tc、shared packet_rewrite、shared socket_assign）不是按内核版本递进的能力层级。厂商内核可能支持其中一条，却在另一条的对象加载或挂载阶段拒绝。  实...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-01-audit/" title="Singborg 01：sing-box 现状审计（2026-10-02）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-5.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-5.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/covers/cover-5.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 01：sing-box 现状审计（2026-10-02）</div></div><div class="info-2"><div class="info-item-1">sing-box 现状审计（2026-10-02，真流量实测） 对象：正在运行的 sing-box v1.14.2-reF1nd（审计当时是 TUN 模式，/etc/sing-box/config.json，22 出站 / 9 规则集）方法：全部为实测——DNS 回显、DoH 绕行基准、Clash API chains+rule、规则集反编译、真实 IP 连接归因。 追注（2026-10-02 23:01 全篇复核，实测）：本文按时间分段保留当天记录，但运行状态已经不是 TUN——以本追注为准：inbounds[0].type = "ebpf"（local.data_plane=cgroup + shared.data_plane=packet_rewrite，interface:["virbr0"]，共享附件以 TCX 挂载）；规则集 15 份（其中 6 份来自自建包 /usr/share/sing-box-rule-sets/）；出站 22 未变。各节中已过时/被推翻的结论，均在该处加了带日期的追注（原记录保留，不改写历史）。  0. 结论速览   检查项 结果    DNS...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-07-daed-dns/" title="Singborg 07：daed DNS 故障诊断（历史记录）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-6.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-6.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/covers/cover-6.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 07：daed DNS 故障诊断（历史记录）</div></div><div class="info-2"><div class="info-item-1">pacman -Syy 大面积失败：诊断与修复 🕓 历史文档（2026-10-02 追注）daed 已经不在用了。 现役透明代理是 sing-box —— fork 构建 sing-box-ebpf 1.14.2.ref1nd-2，走 eBPF（local.cgroup + shared: packet_rewrite 挂 virbr0），不是 TUN、更不是 dae。实测：pacman -Q daed dae → 两个包都**”未找到”**；systemctl status daed → 无此 unit；tc qdisc show dev wlan0 → 只剩 noqueue（没有 clsact，tc filter show 为空）→ dae 的eBPF 钩子已清干净；ip -brief link 无 dae0、ip netns list 为空。 所以本文是 daed 时代的一次故障定位记录，保留它的价值在于”当时是怎么判的”：文中的结论、命令、面板地址（127.0.0.1:2023）都已不是现状。第 2 节的”立刻验证”（sudo systemctl stop daed）现...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+  <strong>正在做什么</strong>
+  <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
+  <a href="/now/">查看 Now →</a>
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#sing-box-%E8%83%BD%E4%B8%8D%E8%83%BD%E7%94%A8-eBPF%EF%BC%88%E6%9C%AC%E6%9C%BA-CachyOS-%E7%8E%B0%E7%8A%B6%E5%AE%9E%E6%B5%8B%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">sing-box 能不能用 eBPF（本机 CachyOS 现状实测）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E4%B8%80%E5%8F%A5%E8%AF%9D%E7%BB%93%E8%AE%BA"><span class="toc-number">1.1.</span> <span class="toc-text">0. 一句话结论</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BD%93%E6%97%B6%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%E4%B8%8D%E8%A1%8C%EF%BC%88%E5%AE%9E%E6%B5%8B%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">1. 为什么当时的二进制不行（实测）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-eBPF-%E5%85%A5%E7%AB%99%E5%88%B0%E5%BA%95%E6%98%AF%E8%B0%81%E7%9A%84%E5%8A%9F%E8%83%BD"><span class="toc-number">1.3.</span> <span class="toc-text">2. eBPF 入站到底是谁的功能</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E2%80%9Calpha-%E6%89%8D%E6%9C%89%EF%BC%9F%E6%9C%89%E6%B2%A1%E6%9C%89%E7%BC%96%E5%A5%BD%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%EF%BC%9F%E2%80%9D%E2%80%94%E2%80%94%E9%80%90%E6%9D%A1%E5%AE%9E%E6%B5%8B"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1 “alpha 才有？有没有编好的二进制？”——逐条实测</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BD%A0%E8%BF%99%E5%8F%B0%E6%9C%BA%E5%99%A8%E7%9A%84%E5%86%85%E6%A0%B8%E4%BD%93%E6%A3%80%EF%BC%88%E5%85%A8%E9%83%A8%E5%AE%9E%E6%B5%8B%E9%80%9A%E8%BF%87%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">3. 你这台机器的内核体检（全部实测通过）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-root-%E9%A2%84%E6%A3%80%E6%AD%A3%E5%BC%8F%E7%BB%93%E6%9E%9C%EF%BC%9A%E5%85%A8%E7%BB%BF%E9%80%9A%E8%BF%87-%E2%9C%85"><span class="toc-number">1.4.1.</span> <span class="toc-text">3.1 root 预检正式结果：全绿通过 ✅</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-2-A-B-%E8%AF%95%E8%B7%91%E7%BB%93%E6%9E%9C%EF%BC%882026-10-02-08-54%EF%BC%8C%E5%90%8C%E4%B8%80%E5%A5%97%E5%88%A4%E6%8D%AE%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">3.2 A&#x2F;B 试跑结果（2026-10-02 08:54，同一套判据）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E6%88%91%E7%8E%B0%E5%9C%BA%E7%BC%96%E8%AF%91%E5%87%BA%E6%9D%A5%E7%9A%84%E4%BA%8C%E8%BF%9B%E5%88%B6%EF%BC%88%E5%B7%B2%E6%94%BE%E5%A5%BD%EF%BC%89"><span class="toc-number">1.6.</span> <span class="toc-text">4. 我现场编译出来的二进制（已放好）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E7%94%A8%E4%BD%A0%E8%87%AA%E5%B7%B1%E7%9A%84-pkgbuild-source-%E6%89%93%E5%8C%85%EF%BC%88%E5%B7%B2%E5%AE%8C%E6%88%90%EF%BC%89"><span class="toc-number">1.6.1.</span> <span class="toc-text">4.1 用你自己的 ~&#x2F;pkgbuild-source 打包（已完成）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%9C%9F%E8%A6%81%E5%88%87%E5%88%B0-eBPF%EF%BC%8C%E9%9C%80%E8%A6%81%E6%94%B9%E4%BB%80%E4%B9%88"><span class="toc-number">1.7.</span> <span class="toc-text">5. 真要切到 eBPF，需要改什么</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#5-1-%E9%85%8D%E7%BD%AE%EF%BC%9Atun-in-%E2%86%92-ebpf-in%EF%BC%88mixed-in-%E4%BF%9D%E7%95%99%EF%BC%89"><span class="toc-number">1.7.1.</span> <span class="toc-text">5.1 配置：tun-in → ebpf-in（mixed-in 保留）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-2-systemd%EF%BC%9A%E5%BD%93%E6%97%B6%E7%9A%84%E5%8F%91%E8%A1%8C%E7%89%88%E5%8D%95%E5%85%83%E8%B7%91%E4%B8%8D%E4%BA%86-eBPF"><span class="toc-number">1.7.2.</span> <span class="toc-text">5.2 systemd：当时的发行版单元跑不了 eBPF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-3-%E9%A2%84%E6%A3%80%EF%BC%88%E5%B7%B2%E8%B7%91%E8%BF%87%EF%BC%9Apreflight-passed%EF%BC%8C51-PASS-0-fail%EF%BC%89"><span class="toc-number">1.7.3.</span> <span class="toc-text">5.3 预检（已跑过：preflight_passed，51 PASS &#x2F; 0 fail）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-4-%E5%88%87%E6%8D%A2%E9%A1%BA%E5%BA%8F%E4%B8%8E%E5%9B%9E%E6%BB%9A%EF%BC%88%E5%B7%B2%E4%BA%8E-2026-10-02-10-37-%E6%89%A7%E8%A1%8C%E6%88%90%E5%8A%9F%EF%BC%8C%E8%84%9A%E6%9C%AC%EF%BC%9Aswitch-to-ebpf-sh%EF%BC%89"><span class="toc-number">1.7.4.</span> <span class="toc-text">5.4 切换顺序与回滚（已于 2026-10-02 10:37 执行成功，脚本：switch-to-ebpf.sh）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E4%BB%A3%E4%BB%B7-%E4%BB%80%E4%B9%88%E6%97%B6%E5%80%99%E5%80%BC%E5%BE%97"><span class="toc-number">1.8.</span> <span class="toc-text">6. 代价 &#x2F; 什么时候值得</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-Android%EF%BC%88NetProxy-%E6%A8%A1%E5%9D%97%EF%BC%89%E6%80%8E%E4%B9%88%E5%88%A4%E6%96%AD%E8%83%BD%E4%B8%8D%E8%83%BD%E7%94%A8"><span class="toc-number">1.9.</span> <span class="toc-text">7. Android（NetProxy 模块）怎么判断能不能用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%A4%8D%E7%8E%B0-%E6%B8%85%E7%90%86"><span class="toc-number">1.10.</span> <span class="toc-text">8. 复现 &#x2F; 清理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%9Acache-db-%E5%B1%9E%E4%B8%BB%EF%BC%88%E8%AF%95%E8%B7%91%E6%97%B6%E8%B8%A9%E5%88%B0%EF%BC%8C%E5%B7%B2%E4%BF%AE%EF%BC%89"><span class="toc-number">1.11.</span> <span class="toc-text">9. 踩坑记录：cache.db 属主（试跑时踩到，已修）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/" title="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制"><picture><source type="image/avif" srcset="/img/optimized/featureimages/23.avif"><source type="image/webp" srcset="/img/optimized/featureimages/23.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制" loading='lazy'/ decoding="async" src="/img/featureimages/23.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/" title="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制">VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</a><time datetime="2026-10-03T20:00:00.000Z" title="发表于 2026-10-03 20:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/" title="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱" loading='lazy'/ decoding="async" src="/img/featureimages/12.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/" title="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱">Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/singborg-01-audit/" title="Singborg 01：sing-box 现状审计（2026-10-02）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-5.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-5.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Singborg 01：sing-box 现状审计（2026-10-02）" loading='lazy'/ decoding="async" src="/img/covers/cover-5.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/singborg-01-audit/" title="Singborg 01：sing-box 现状审计（2026-10-02）">Singborg 01：sing-box 现状审计（2026-10-02）</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/singborg-04-functional-test/" title="Singborg 04：sing-box 功能测试报告"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-3.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-3.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Singborg 04：sing-box 功能测试报告" loading='lazy'/ decoding="async" src="/img/covers/cover-3.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/singborg-04-functional-test/" title="Singborg 04：sing-box 功能测试报告">Singborg 04：sing-box 功能测试报告</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/singborg-05-network-audit/" title="Singborg 05：网络层审计记录"><picture><source type="image/avif" srcset="/img/optimized/featureimages/21.avif"><source type="image/webp" srcset="/img/optimized/featureimages/21.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Singborg 05：网络层审计记录" loading='lazy'/ decoding="async" src="/img/featureimages/21.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/singborg-05-network-audit/" title="Singborg 05：网络层审计记录">Singborg 05：网络层审计记录</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners and stale content before re-rendering
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      const oldError = item.querySelector('.mermaid-error')
+      if (oldError) oldError.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (theme in value) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const destroyChart = canvas => {
+    const chart = canvas && window.Chart && Chart.getChart(canvas)
+    if (chart) chart.destroy()
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, destroy its chart and remove it to avoid rendering duplicates
+      if (existingCanvas) {
+        destroyChart(existingCanvas)
+        existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Destroy all charts before navigating away to avoid leaks
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    document.querySelectorAll('.chartjs-wrap canvas').forEach(destroyChart)
+  }, 'chartjs')
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><script src="/js/custom.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox]):not([href="/music/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.1.260810"></script></div></div></body></html>

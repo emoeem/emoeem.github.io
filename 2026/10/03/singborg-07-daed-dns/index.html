@@ -1,0 +1,918 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Singborg 07：daed DNS 故障诊断（历史记录） | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="pacman -Syy 大面积失败：诊断与修复 🕓 历史文档（2026-10-02 追注）daed 已经不在用了。 现役透明代理是 sing-box —— fork 构建 sing-box-ebpf 1.14.2.ref1nd-2，走 eBPF（local.cgroup + shared: packet_rewrite 挂 virbr0），不是 TUN、更不是 dae。实测：pacman -Q">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Singborg 07：daed DNS 故障诊断（历史记录）">
+<meta property="og:url" content="https://emoeem.github.io/2026/10/03/singborg-07-daed-dns/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="pacman -Syy 大面积失败：诊断与修复 🕓 历史文档（2026-10-02 追注）daed 已经不在用了。 现役透明代理是 sing-box —— fork 构建 sing-box-ebpf 1.14.2.ref1nd-2，走 eBPF（local.cgroup + shared: packet_rewrite 挂 virbr0），不是 TUN、更不是 dae。实测：pacman -Q">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/covers/cover-6.jpg">
+<meta property="article:published_time" content="2026-10-03T19:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-03T06:54:26.197Z">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="DNS">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="daed">
+<meta property="article:tag" content="sing-box">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://emoeem.github.io/img/covers/cover-6.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Singborg 07：daed DNS 故障诊断（历史记录）",
+  "url": "https://emoeem.github.io/2026/10/03/singborg-07-daed-dns/",
+  "image": "https://emoeem.github.io/img/covers/cover-6.jpg",
+  "datePublished": "2026-10-03T19:00:00.000Z",
+  "dateModified": "2026-10-03T06:54:26.197Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "emoeem",
+      "url": "https://emoeem.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/2026/10/03/singborg-07-daed-dns/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.1.260810"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":2,"unescape":false,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Singborg 07：daed DNS 故障诊断（历史记录）',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/covers/cover-6.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">Singborg 07：daed DNS 故障诊断（历史记录）</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Singborg 07：daed DNS 故障诊断（历史记录）<a class="post-edit-link" href="https://github.com/emoeem/blog-source/edit/main/source/_posts/singborg-07-daed-DNS故障诊断.md" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1144</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="pacman-Syy-大面积失败：诊断与修复"><a href="#pacman-Syy-大面积失败：诊断与修复" class="headerlink" title="pacman -Syy 大面积失败：诊断与修复"></a><code>pacman -Syy</code> 大面积失败：诊断与修复</h1><blockquote>
+<h2 id="🕓-历史文档（2026-10-02-追注）"><a href="#🕓-历史文档（2026-10-02-追注）" class="headerlink" title="🕓 历史文档（2026-10-02 追注）"></a>🕓 历史文档（2026-10-02 追注）</h2><p><strong>daed 已经不在用了。</strong> 现役透明代理是 <strong>sing-box</strong> —— fork 构建 <code>sing-box-ebpf 1.14.2.ref1nd-2</code>，<br>走 <strong>eBPF</strong>（<code>local.cgroup</code> + <code>shared: packet_rewrite</code> 挂 <code>virbr0</code>），<strong>不是 TUN、更不是 dae</strong>。<br>实测：<code>pacman -Q daed dae</code> → 两个包都**”未找到”**；<code>systemctl status daed</code> → <strong>无此 unit</strong>；<br><code>tc qdisc show dev wlan0</code> → 只剩 <code>noqueue</code>（<strong>没有</strong> <code>clsact</code>，<code>tc filter show</code> 为空）→ dae 的<br>eBPF 钩子已清干净；<code>ip -brief link</code> 无 <code>dae0</code>、<code>ip netns list</code> 为空。</p>
+<p>所以本文是 <strong>daed 时代的一次故障定位记录</strong>，保留它的价值在于”当时是怎么判的”：<br>文中的<strong>结论、命令、面板地址（<code>127.0.0.1:2023</code>）都已不是现状</strong>。第 2 节的”立刻验证”<br>（<code>sudo systemctl stop daed</code>）现在已无从执行 —— 实际的处置是<strong>整体弃用 daed、迁到 sing-box</strong><br>（见 <a href="/2026/10/03/singborg-08-daed-migration/">08-daed-迁移计划</a>，那份计划已执行完毕，文首有待办核对表）。</p>
+</blockquote>
+<blockquote>
+<p>结论：<strong>是 daed（<code>daed-emo</code> 1.27.0.r19.gb3043aa）的 DNS 劫持链路在失败</strong>，不是镜像源、也不是 IPv6 单独造成的。<br>你新配的 emoeem 多代理<strong>是好的</strong> —— 本次 <code>emoeem 4.0 KiB 100%</code> 已成功下载。</p>
+</blockquote>
+<h2 id="1-证据链"><a href="#1-证据链" class="headerlink" title="1. 证据链"></a>1. 证据链</h2><table>
+<thead>
+<tr>
+<th>观测</th>
+<th>数据</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>daed 服务</td>
+<td><code>active (running)</code>，PID 1344，<code>/usr/bin/daed run -c /etc/daed/</code></td>
+<td>透明代理在运行</td>
+</tr>
+<tr>
+<td>eBPF 钩子</td>
+<td><code>wlan0 ingress/egress</code> 挂 <code>daed_wan_ingress_l2</code> / <code>daed_wan_egress_l2</code>；<code>dae0</code>（netkit L3，netns <code>daens</code>）</td>
+<td>dae 在网络层拦截所有流量</td>
+</tr>
+<tr>
+<td>DNS 被劫持</td>
+<td>日志中 <code>dst="192.168.31.1:53"</code> 19 次、<code>dst="[fd00:6868:6868::1]:53"</code> 17 次</td>
+<td>连<strong>路由器 DNS</strong> 都被 dae 接管</td>
+</tr>
+<tr>
+<td>DNS 直接失败</td>
+<td><code>DNS ingress fast path failed; sending SERVFAIL response</code>（36 次/约 1 分钟）</td>
+<td>客户端收到 SERVFAIL → <code>Could not resolve host</code></td>
+</tr>
+<tr>
+<td>根因</td>
+<td><code>bootstrap resolver returned no usable address for "&lt;节点域名&gt;"</code>（<strong>183 次</strong>）</td>
+<td>dae 解析不了代理节点域名</td>
+</tr>
+<tr>
+<td>节点不可达</td>
+<td><code>[StickyIP] All proxy IPs failed</code>（95 次）、<code>dial ... i/o timeout</code></td>
+<td>节点拨号超时 → 上游全挂</td>
+</tr>
+<tr>
+<td>抖动实测</td>
+<td>连续 10 次 <code>curl -4 https://mirror.krfoss.org/</code> → <strong>7 成功 / 3 失败</strong></td>
+<td>间歇性失败，符合拦截层丢弃/回绝</td>
+</tr>
+<tr>
+<td>本地立即失败</td>
+<td><code>curl -6 ... total=0.000004s code=000</code></td>
+<td>被本地组件瞬时回绝，而非网络慢</td>
+</tr>
+<tr>
+<td>版本来源</td>
+<td><code>daed-emo 1.27.0.r19.gb3043aa</code>，打包者 <code>Unknown Packager</code>，URL 指向 daeuniverse/daed</td>
+<td>这是<strong>第三方打包</strong>的变体（来自 emoeem 仓库），非官方二进制</td>
+</tr>
+</tbody></table>
+<h3 id="为什么症状看起来是”TLS-错误”"><a href="#为什么症状看起来是”TLS-错误”" class="headerlink" title="为什么症状看起来是”TLS 错误”"></a>为什么症状看起来是”TLS 错误”</h3><ol>
+<li>pacman → DNS 查询被 dae 拦下；</li>
+<li>dae 要把查询转发到 <code>tcp+udp://8.8.8.8:53</code>，但<strong>经代理节点转发</strong>（<code>outbound=proxy</code>）；</li>
+<li>节点域名的 bootstrap 解析失败 / 节点拨号超时；</li>
+<li>dae 回 <code>SERVFAIL</code> → pacman 报 <code>Resolving timed out</code> / <code>Could not resolve host</code>；</li>
+<li>已建连的会话在等待上游时被打断 → OpenSSL 报 <code>unexpected eof while reading</code>。</li>
+</ol>
+<p><code>Group re-selects dialer ... min_moving_avg=1.94s→2.498s</code> 显示 daed 正在节点之间反复抖动，说明<strong>当前订阅节点大面积不可用</strong>。</p>
+<h2 id="2-立刻验证（决定性实验）"><a href="#2-立刻验证（决定性实验）" class="headerlink" title="2. 立刻验证（决定性实验）"></a>2. 立刻验证（决定性实验）</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> systemctl stop daed     <span class="token comment"># 临时停掉</span>
+<span class="token function">sudo</span> pacman <span class="token parameter variable">-Syy</span>             <span class="token comment"># 若全部变绿 → 100% 确认是 daed</span>
+<span class="token function">sudo</span> systemctl start daed    <span class="token comment"># 验证完再启回来</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<p>应急时也可以用这个办法先把系统更新做完。</p>
+<h2 id="3-修复-daed-侧（根因）"><a href="#3-修复-daed-侧（根因）" class="headerlink" title="3. 修复 daed 侧（根因）"></a>3. 修复 daed 侧（根因）</h2><p>在 daed 面板（<code>http://127.0.0.1:2023</code>）按顺序检查：</p>
+<ol>
+<li><p><strong>DNS 上游不要走代理</strong>：把 DNS upstream 从 <code>8.8.8.8</code>（当前经代理转发）改成国内可直连的<br><code>223.5.5.5</code> / <code>119.29.29.29</code>，并设为 <strong>direct / 直连</strong>；顺带配置 <strong>bootstrap resolver 为直连 IP</strong>，<br>避免”解析节点域名又依赖节点”的循环。</p>
+</li>
+<li><p><strong>刷新/更换订阅</strong>：183 次节点域名解析失败 + 95 次拨号超时说明节点大面积失效，更新订阅或换机场。</p>
+</li>
+<li><p><strong>换掉 <code>daed-emo</code></strong>：它是 emoeem 仓库里的第三方打包变体（<code>Unknown Packager</code>），<br>与上游 <code>daed</code> 行为可能有差异。可换官方发布版对比，能立刻排除”打包/版本 bug”。</p>
+</li>
+<li><p><strong>让系统别用被劫持的 DNS</strong>（减少影响面）：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">nmcli con mod <span class="token operator">&lt;</span>wifi-ssid<span class="token operator">&gt;</span> ipv4.ignore-auto-dns <span class="token function">yes</span> ipv4.dns <span class="token number">223.5</span>.5.5
+nmcli con mod <span class="token operator">&lt;</span>wifi-ssid<span class="token operator">&gt;</span> ipv6.ignore-auto-dns <span class="token function">yes</span>
+nmcli con up <span class="token operator">&lt;</span>wifi-ssid<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre></li>
+</ol>
+<h2 id="4-顺带修-IPv6（独立问题，会叠加放大故障）"><a href="#4-顺带修-IPv6（独立问题，会叠加放大故障）" class="headerlink" title="4. 顺带修 IPv6（独立问题，会叠加放大故障）"></a>4. 顺带修 IPv6（独立问题，会叠加放大故障）</h2><p><code>wlan0</code> 只有 ULA <code>fd00:6868:6868::/64</code> + 一条 RA 默认路由，<strong>没有可用全局 IPv6</strong>；<br>而 IPv6 DNS <code>fd00:6868:6868::1</code> 响应要 <strong>1261 ms</strong>（IPv4 路由器 DNS 仅 11 ms），<br>但 AAAA 记录让程序优先走 IPv6。二选一：</p>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 方案 A：全局让 glibc 优先 IPv4（推荐，最省事）</span>
+<span class="token builtin class-name">echo</span> <span class="token string">'precedence ::ffff:0:0/96  100'</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">tee</span> <span class="token parameter variable">-a</span> /etc/gai.conf
+
+<span class="token comment"># 方案 B：直接关掉这张卡的 IPv6</span>
+nmcli con mod <span class="token operator">&lt;</span>wifi-ssid<span class="token operator">&gt;</span> ipv6.method disabled <span class="token operator">&amp;&amp;</span> nmcli con up <span class="token operator">&lt;</span>wifi-ssid<span class="token operator">&gt;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<h2 id="5-pacman-侧加固（抗抖动，可选）"><a href="#5-pacman-侧加固（抗抖动，可选）" class="headerlink" title="5. pacman 侧加固（抗抖动，可选）"></a>5. pacman 侧加固（抗抖动，可选）</h2><p><code>/etc/pacman.conf</code> 里启用带重试的下载器：</p>
+<pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">XferCommand</span> <span class="token punctuation">=</span> <span class="token value attr-value">/usr/bin/curl -4 --retry 3 --retry-delay 2 --connect-timeout 10 -L -C - -f -o %o %u</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>再配合已有的 emoeem 多代理段，单点故障就不会让 <code>-Syy</code> 整片报错。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/10/03/singborg-07-daed-dns/">https://emoeem.github.io/2026/10/03/singborg-07-daed-dns/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/sing-box/">sing-box</a><a class="post-meta__tags" href="/tags/DNS/">DNS</a><a class="post-meta__tags" href="/tags/daed/">daed</a></div><div class="post-share"><div class="social-share" data-image="/img/covers/cover-6.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/03/singborg-08-daed-migration/" title="Singborg 08：daed → sing-box 迁移计划（历史记录）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-5.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-5.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/covers/cover-5.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Singborg 08：daed → sing-box 迁移计划（历史记录）</div></div><div class="info-2"><div class="info-item-1">从 daed 迁移：选型结论 + 落地方案（CachyOS / 单 wlan0 / 机场订阅） 🕓 历史文档 + 待办核对（2026-10-02 追注）这是 daed 时代的迁移方案，已执行完毕 —— 但最终落地方式与文中不同：没有用 TUN，用的是 eBPF（现役 sing-box-ebpf 1.14.2.ref1nd-2，local.cgroup + shared: packet_rewrite 挂 virbr0）。逐条核对本文的待办（2026-10-02 实测）：    本文的待办 现状 证据    停用 / 卸载 daed ✅ 已完成 pacman -Q daed dae → 两个包都”未找到”；systemctl status daed → 无此 unit；systemctl list-unit-files | grep -i dae → 只有 accounts-daemon 等同名干扰项   清 wlan0 上的 daed_* tc 钩子（第 3 节） ✅ 已完成 tc qdisc show dev wlan0 → 只有 noqueue（无 clsact）；tc f...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-06-optimization-review/" title="Singborg 06：透明代理优化评审"><picture><source type="image/avif" srcset="/img/optimized/featureimages/7.avif"><source type="image/webp" srcset="/img/optimized/featureimages/7.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/7.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Singborg 06：透明代理优化评审</div></div><div class="info-2"><div class="info-item-1">sing-box 配置优化评审 + 参考项目分析 + GUI 选型 本文所有改动都用 sing-box 1.14.2 真二进制 验证过（sing-box check exit=0，无弃用告警）。参考项目：Fanju6/NetProxy-Magisk（Magisk 模块，内置sing-box 1.15.0-alpha.8 + eBPF 透明代理 + Android App + WebUI，维护很积极）。   🕓 2026-10-02 复核追注本文写于 TUN 时代。当天中午起本机已切到 eBPF 模式：现役 sing-box-ebpf 1.14.2.ref1nd-2（fork 构建），入站是 local.cgroup + shared: packet_rewrite（挂 virbr0），配置里已没有 TUN 入站（sing-box api ebpf 实测 role=local/mechanism=cgroup +role=shared/mechanism=tcx）。所以文中凡以「你用 TUN」为前提的表述（第二节末行、第四节 tun.stack 一项、第六节）都已过时；另有两处结...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/03/singborg-04-functional-test/" title="Singborg 04：sing-box 功能测试报告"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-3.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-3.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/covers/cover-3.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 04：sing-box 功能测试报告</div></div><div class="info-2"><div class="info-item-1">sing-box 功能实测报告（DNS 泄露 / 广告拦截 / 分流 / Podman）测试时间：2026-10-01 20:4x　环境：CachyOS，sing-box 1.14.2，TUN(stack: system)，规则集全部本地化测试方式：全部为真实流量实测（dig / curl / podman 容器），非推断。  追注（2026-10-02 晚）：本文全部在 TUN 模式下完成，属于当时快照。当前运行模式已是 eBPF（local.data_plane: cgroup + shared.data_plane: packet_rewrite on virbr0，TCX 挂载；本机没有 tun0）。下文凡依赖 tun0/TUN 接管路径的结论都只在 TUN 模式下成立，各节末尾的”追注”给出 eBPF 模式复测结果。  一、DNS 泄露 —— 53 端口已完全劫持 ✅判据：同一个域名问 4 个不同 DNS 服务器，看答案是否被统一。    域名 @192.168.31.1（路由器/电信） @223.5.5.5（阿里） @1.1.1.1（CF） 系统 resolved  ...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-06-optimization-review/" title="Singborg 06：透明代理优化评审"><picture><source type="image/avif" srcset="/img/optimized/featureimages/7.avif"><source type="image/webp" srcset="/img/optimized/featureimages/7.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/7.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 06：透明代理优化评审</div></div><div class="info-2"><div class="info-item-1">sing-box 配置优化评审 + 参考项目分析 + GUI 选型 本文所有改动都用 sing-box 1.14.2 真二进制 验证过（sing-box check exit=0，无弃用告警）。参考项目：Fanju6/NetProxy-Magisk（Magisk 模块，内置sing-box 1.15.0-alpha.8 + eBPF 透明代理 + Android App + WebUI，维护很积极）。   🕓 2026-10-02 复核追注本文写于 TUN 时代。当天中午起本机已切到 eBPF 模式：现役 sing-box-ebpf 1.14.2.ref1nd-2（fork 构建），入站是 local.cgroup + shared: packet_rewrite（挂 virbr0），配置里已没有 TUN 入站（sing-box api ebpf 实测 role=local/mechanism=cgroup +role=shared/mechanism=tcx）。所以文中凡以「你用 TUN」为前提的表述（第二节末行、第四节 tun.stack 一项、第六节）都已过时；另有两处结...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-01-audit/" title="Singborg 01：sing-box 现状审计（2026-10-02）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-5.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-5.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/covers/cover-5.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 01：sing-box 现状审计（2026-10-02）</div></div><div class="info-2"><div class="info-item-1">sing-box 现状审计（2026-10-02，真流量实测） 对象：正在运行的 sing-box v1.14.2-reF1nd（审计当时是 TUN 模式，/etc/sing-box/config.json，22 出站 / 9 规则集）方法：全部为实测——DNS 回显、DoH 绕行基准、Clash API chains+rule、规则集反编译、真实 IP 连接归因。 追注（2026-10-02 23:01 全篇复核，实测）：本文按时间分段保留当天记录，但运行状态已经不是 TUN——以本追注为准：inbounds[0].type = "ebpf"（local.data_plane=cgroup + shared.data_plane=packet_rewrite，interface:["virbr0"]，共享附件以 TCX 挂载）；规则集 15 份（其中 6 份来自自建包 /usr/share/sing-box-rule-sets/）；出站 22 未变。各节中已过时/被推翻的结论，均在该处加了带日期的追注（原记录保留，不改写历史）。  0. 结论速览   检查项 结果    DNS...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-config/" title="Singborg：脱敏配置快照与规则集结构"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_5.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_5.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_5.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg：脱敏配置快照与规则集结构</div></div><div class="info-2"><div class="info-item-1">配置记录config.sanitized.json 是什么本机 /etc/sing-box/config.json 的脱敏快照，作用是看懂结构。  ✅ 2026-10-02 23:0x 已按现役配置重新生成，与线上一致：15 份规则集（含 adblockfilters）、inbounds[ebpf].shared = {enabled: true, data_plane: packet_rewrite, interface: ["virbr0"]}、local.bypass_rule_set = ["geoip/cn", "geoip/cn-fresh", "cncidr-mihomo"]。（早先那份 20:03 的快照缺这三项，已替换；配置一改就请重新生成，别让快照落后于线上。）   保留：inbounds / outbounds 的结构与协议字段 / dns / route / experimental，以及每个 rule_set 的 path（路径本身是最有信息量的部分：一眼看出哪几份是自建的）； 换掉：代理节点的 server → &lt;node-server&gt;、...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-08-daed-migration/" title="Singborg 08：daed → sing-box 迁移计划（历史记录）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-5.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-5.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/covers/cover-5.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 08：daed → sing-box 迁移计划（历史记录）</div></div><div class="info-2"><div class="info-item-1">从 daed 迁移：选型结论 + 落地方案（CachyOS / 单 wlan0 / 机场订阅） 🕓 历史文档 + 待办核对（2026-10-02 追注）这是 daed 时代的迁移方案，已执行完毕 —— 但最终落地方式与文中不同：没有用 TUN，用的是 eBPF（现役 sing-box-ebpf 1.14.2.ref1nd-2，local.cgroup + shared: packet_rewrite 挂 virbr0）。逐条核对本文的待办（2026-10-02 实测）：    本文的待办 现状 证据    停用 / 卸载 daed ✅ 已完成 pacman -Q daed dae → 两个包都”未找到”；systemctl status daed → 无此 unit；systemctl list-unit-files | grep -i dae → 只有 accounts-daemon 等同名干扰项   清 wlan0 上的 daed_* tc 钩子（第 3 节） ✅ 已完成 tc qdisc show dev wlan0 → 只有 noqueue（无 clsact）；tc f...</div></div></div></a><a class="pagination-related" href="/2026/10/03/singborg-09-lessons/" title="Singborg 09：踩坑与经验"><picture><source type="image/avif" srcset="/img/optimized/featureimages/0.avif"><source type="image/webp" srcset="/img/optimized/featureimages/0.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/0.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-03</div><div class="info-item-2">Singborg 09：踩坑与经验</div></div><div class="info-2"><div class="info-item-1">踩坑与经验这篇是整份记录里最该先看的：结论会过时，踩过的方式不会。分四类 ——sing-box 与内核、工具链、测量方法（我在这里犯过错）、以及流程上的经验。  一、sing-box / 内核1. ebpf 入站只存在于某个 fork，上游没有上游 SagerNet 的 sing-box 没有 ebpf 入站（文档 404）：这个入站在 reF1nd/sing-box 分支里（with_ebpf 构建标签，Linux/Android）。而那个 fork 0 个 release → 想要就得自己编。判断依据不是”文档说有”，而是：拿一个带 ebpf 入站的配置去 check，上游二进制直接报unknown inbound type: ebpf。 2. 内核数据面要逐条探测，不能互相推断（我在这里推断错过一次）先看结论：官方文档写得很清楚 ——  这四条路径（local cgroup、local tc、shared packet_rewrite、shared socket_assign）不是按内核版本递进的能力层级。厂商内核可能支持其中一条，却在另一条的对象加载或挂载阶段拒绝。  实...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">43</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">61</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+  <strong>正在做什么</strong>
+  <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
+  <a href="/now/">查看 Now →</a>
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#pacman-Syy-%E5%A4%A7%E9%9D%A2%E7%A7%AF%E5%A4%B1%E8%B4%A5%EF%BC%9A%E8%AF%8A%E6%96%AD%E4%B8%8E%E4%BF%AE%E5%A4%8D"><span class="toc-number">1.</span> <span class="toc-text">pacman -Syy 大面积失败：诊断与修复</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%95%93-%E5%8E%86%E5%8F%B2%E6%96%87%E6%A1%A3%EF%BC%882026-10-02-%E8%BF%BD%E6%B3%A8%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">🕓 历史文档（2026-10-02 追注）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E8%AF%81%E6%8D%AE%E9%93%BE"><span class="toc-number">1.2.</span> <span class="toc-text">1. 证据链</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%97%87%E7%8A%B6%E7%9C%8B%E8%B5%B7%E6%9D%A5%E6%98%AF%E2%80%9DTLS-%E9%94%99%E8%AF%AF%E2%80%9D"><span class="toc-number">1.2.1.</span> <span class="toc-text">为什么症状看起来是”TLS 错误”</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E7%AB%8B%E5%88%BB%E9%AA%8C%E8%AF%81%EF%BC%88%E5%86%B3%E5%AE%9A%E6%80%A7%E5%AE%9E%E9%AA%8C%EF%BC%89"><span class="toc-number">1.3.</span> <span class="toc-text">2. 立刻验证（决定性实验）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E4%BF%AE%E5%A4%8D-daed-%E4%BE%A7%EF%BC%88%E6%A0%B9%E5%9B%A0%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">3. 修复 daed 侧（根因）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%A1%BA%E5%B8%A6%E4%BF%AE-IPv6%EF%BC%88%E7%8B%AC%E7%AB%8B%E9%97%AE%E9%A2%98%EF%BC%8C%E4%BC%9A%E5%8F%A0%E5%8A%A0%E6%94%BE%E5%A4%A7%E6%95%85%E9%9A%9C%EF%BC%89"><span class="toc-number">1.5.</span> <span class="toc-text">4. 顺带修 IPv6（独立问题，会叠加放大故障）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-pacman-%E4%BE%A7%E5%8A%A0%E5%9B%BA%EF%BC%88%E6%8A%97%E6%8A%96%E5%8A%A8%EF%BC%8C%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.6.</span> <span class="toc-text">5. pacman 侧加固（抗抖动，可选）</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/" title="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制"><picture><source type="image/avif" srcset="/img/optimized/featureimages/23.avif"><source type="image/webp" srcset="/img/optimized/featureimages/23.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制" loading='lazy'/ decoding="async" src="/img/featureimages/23.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/" title="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制">VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</a><time datetime="2026-10-03T20:00:00.000Z" title="发表于 2026-10-03 20:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/" title="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱"><picture><source type="image/avif" srcset="/img/optimized/featureimages/12.avif"><source type="image/webp" srcset="/img/optimized/featureimages/12.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱" loading='lazy'/ decoding="async" src="/img/featureimages/12.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/" title="Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱">Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/singborg-01-audit/" title="Singborg 01：sing-box 现状审计（2026-10-02）"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-5.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-5.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Singborg 01：sing-box 现状审计（2026-10-02）" loading='lazy'/ decoding="async" src="/img/covers/cover-5.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/singborg-01-audit/" title="Singborg 01：sing-box 现状审计（2026-10-02）">Singborg 01：sing-box 现状审计（2026-10-02）</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/singborg-04-functional-test/" title="Singborg 04：sing-box 功能测试报告"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-3.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-3.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Singborg 04：sing-box 功能测试报告" loading='lazy'/ decoding="async" src="/img/covers/cover-3.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/singborg-04-functional-test/" title="Singborg 04：sing-box 功能测试报告">Singborg 04：sing-box 功能测试报告</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/03/singborg-05-network-audit/" title="Singborg 05：网络层审计记录"><picture><source type="image/avif" srcset="/img/optimized/featureimages/21.avif"><source type="image/webp" srcset="/img/optimized/featureimages/21.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Singborg 05：网络层审计记录" loading='lazy'/ decoding="async" src="/img/featureimages/21.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/03/singborg-05-network-audit/" title="Singborg 05：网络层审计记录">Singborg 05：网络层审计记录</a><time datetime="2026-10-03T19:00:00.000Z" title="发表于 2026-10-03 19:00:00">2026-10-03</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners and stale content before re-rendering
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      const oldError = item.querySelector('.mermaid-error')
+      if (oldError) oldError.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (theme in value) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const destroyChart = canvas => {
+    const chart = canvas && window.Chart && Chart.getChart(canvas)
+    if (chart) chart.destroy()
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, destroy its chart and remove it to avoid rendering duplicates
+      if (existingCanvas) {
+        destroyChart(existingCanvas)
+        existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Destroy all charts before navigating away to avoid leaks
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    document.querySelectorAll('.chartjs-wrap canvas').forEach(destroyChart)
+  }, 'chartjs')
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><script src="/js/custom.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox]):not([href="/music/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.1.260810"></script></div></div></body></html>
