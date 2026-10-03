@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</title>
+      <link href="/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/"/>
+      <url>/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/</url>
+      
+        <content type="html"><![CDATA[<h1 id="VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制"><a href="#VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制" class="headerlink" title="VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制"></a>VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</h1><p>VoiceFox 这一轮更新的重点，不是继续增加一个音源，而是把终端音乐播放器里几个长期缺失的能力补完整。</p><p>0.5.0 主要加入了<strong>频谱可视化、睡眠定时器、Windows SMTC、歌单导入导出、网易云只追加推送，以及远程歌单缓存</strong>，同时修复了拖拽列宽和频谱断流等影响日常使用的问题。</p><h2 id="频谱可视化"><a href="#频谱可视化" class="headerlink" title="频谱可视化"></a>频谱可视化</h2><p>按 w 可以打开频谱。</p><p>Linux 下优先从 PipeWire 的默认输出 monitor 流采集系统实际声音，没有时回退到 PulseAudio monitor。采集和 FFT 分析放在独立线程，UI 每帧只读取最新的频谱快照。</p><p>分析链路大致是：</p><pre><code>系统输出 PCM    ↓4096 点 FFT    ↓50Hz–12kHz 对数频带    ↓dB 归一化    ↓相邻频带平滑    ↓attack / decay + 峰值保持    ↓ratatui 柱状渲染</code></pre><p>底层使用 realfft 做 FFT、colorgrad 做颜色插值。</p><p>这里还有一个容易被忽略的细节：频谱采集进程退出并不会让界面永久冻结。PipeWire 重启、切换输出设备等情况发生后会自动重连；超过 1 秒没有新数据时也不会继续画最后一帧。</p><h2 id="睡眠定时器"><a href="#睡眠定时器" class="headerlink" title="睡眠定时器"></a>睡眠定时器</h2><p>按 t 可以选择 15、30、45、60、90、120 分钟，或者关闭定时器。</p><p>到时间后不会直接切断声音，而是复用 libmpv 的音量淡出，在最长约 10 秒的窗口内逐渐降低音量，然后暂停。恢复播放时音量会恢复。</p><h2 id="Windows-SMTC"><a href="#Windows-SMTC" class="headerlink" title="Windows SMTC"></a>Windows SMTC</h2><p>Windows 现在通过 System Media Transport Controls 接入系统媒体控制。</p><p>因此硬件媒体键、蓝牙耳机按键和系统媒体浮层可以控制播放、暂停、上一首、下一首和进度，同时显示当前歌曲和封面。</p><p>媒体控制代码也从原先散落在主循环和平台实现里的逻辑抽成统一的 media_controls / media_session 层，Linux MPRIS 与 Windows SMTC 分别负责协议适配。</p><h2 id="歌单互通"><a href="#歌单互通" class="headerlink" title="歌单互通"></a>歌单互通</h2><p>这一版开始，VoiceFox 的歌单已经不再局限于程序自己的数据库。</p><h3 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h3><p>支持：</p><ul><li>M3U / M3U8</li><li>LX Music JSON</li><li>网易云歌单 JSON</li></ul><h3 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h3><p>自建歌单可以导出 M3U8。</p><p>本地歌曲写绝对路径，在线歌曲则写 voicefox:<source>:<id> 标识，让外部工具至少能够识别 VoiceFox 的来源和歌曲 ID。</id></p><h3 id="推送网易云"><a href="#推送网易云" class="headerlink" title="推送网易云"></a>推送网易云</h3><p>自建歌单和收藏可以推送到网易云。</p><p>这里采用的是<strong>只追加策略</strong>：</p><pre><code>登录预检   ↓选择远端目标   ↓五级匹配   ↓生成追加 Diff   ↓用户确认   ↓分批写入</code></pre><p>已经存在的远端歌曲不会删除，无法可靠匹配的歌曲也不会强行写入，而是明确列出原因。</p><h2 id="网易云远程歌单缓存"><a href="#网易云远程歌单缓存" class="headerlink" title="网易云远程歌单缓存"></a>网易云远程歌单缓存</h2><p>这是这一轮里另一个比较重要的架构调整。</p><p>网易云歌单现在作为<strong>远程集合的只读镜像</strong>保存，而不是复制成本地歌单。</p><p>缓存保存：</p><ul><li>歌单 ID</li><li>歌单信息</li><li>歌曲元数据</li><li>「我喜欢的音乐」特殊歌单标识</li></ul><p>播放时仍然走网易云音源自己的地址解析。</p><p>远端请求出现部分失败时，缓存按歌单 ID 增量合并。这样即使网易云因为频控导致某一个歌单暂时拉取失败，也不会把之前已经缓存好的其它歌单一起清空。</p><p>缓存跨进程落盘，所以 VoiceFox 重启后仍然能够看到自己的远程歌单。</p><h2 id="交互修复"><a href="#交互修复" class="headerlink" title="交互修复"></a>交互修复</h2><p>这一版也处理了两个很明显的手感问题。</p><p>第一是<strong>表头列宽拖拽</strong>。</p><p>以前队列处在左右分栏布局时，拖动列边界有机会被错误判断成「拖动表头换列」，导致相邻列卡顿或意外切换。现在命中测试使用表头实际宽度，不再把整个内容区域当成表头。</p><p>第二是<strong>频谱断流冻结</strong>。</p><p>采集子进程结束后现在会自动重新建立采集连接；没有新帧超过 1 秒也不会继续显示旧频谱。</p><h2 id="当前-VoiceFox"><a href="#当前-VoiceFox" class="headerlink" title="当前 VoiceFox"></a>当前 VoiceFox</h2><p>现在的 VoiceFox 已经形成比较明确的结构：</p><pre><code>ratatui   ↓application / services   ↓core   ├─ player   ├─ lyric   └─ sync   ↓source providers   ├─ 在线音源   ├─ JS 自定义音源   └─ localmedia   ├─ Linux MPRIS   └─ Windows SMTC</code></pre><p>同步层独立于具体音源，通过 SyncProvider 扩展新的平台；播放器仍然由 libmpv 负责实际音频输出。</p><p>项目主页：<a href="/projects/voicefox/">VoiceFox</a></p><p>源码：<a href="https://github.com/emoeem/voicefox">GitHub</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Rust </tag>
+            
+            <tag> ratatui </tag>
+            
+            <tag> VoiceFox </tag>
+            
+            <tag> libmpv </tag>
+            
+            <tag> realfft </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</title>
       <link href="/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/"/>
       <url>/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/</url>
@@ -152,9 +185,9 @@
             
             <tag> Rust </tag>
             
-            <tag> TUI </tag>
-            
             <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
             
             <tag> 使用指南 </tag>
             
@@ -185,9 +218,9 @@
             
             <tag> 快捷键 </tag>
             
-            <tag> TUI </tag>
-            
             <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
             
         </tags>
       
@@ -214,9 +247,9 @@
             
             <tag> Rust </tag>
             
-            <tag> TUI </tag>
-            
             <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
             
             <tag> 配置 </tag>
             
@@ -278,9 +311,9 @@
             
             <tag> Rust </tag>
             
-            <tag> TUI </tag>
-            
             <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
             
             <tag> 音乐播放器 </tag>
             
