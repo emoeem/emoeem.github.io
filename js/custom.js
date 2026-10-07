@@ -1,6 +1,11 @@
 (() => {
   'use strict'
 
+  // Butterfly's subtitle PJAX cleanup references the global typed symbol
+  // before Typed.js is necessarily loaded. Keep the symbol defined so a
+  // navigation during that window cannot raise ReferenceError.
+  if (typeof window.typed === 'undefined') window.typed = null
+
   const ready = (fn) => {
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn, { once: true })
     else fn()
@@ -153,6 +158,92 @@
     })
   }
 
+  const setupHomepageExperience = () => {
+    if (location.pathname !== '/') return
+
+    const content = document.querySelector('#content-inner')
+    const recent = document.querySelector('#recent-posts')
+    if (!content || !recent || document.querySelector('#emo-home-experience')) return
+
+    const panel = document.createElement('section')
+    panel.id = 'emo-home-experience'
+    panel.className = 'emo-home-experience'
+    panel.innerHTML = `
+      <div class="emo-home-intro emo-reveal">
+        <div>
+          <span class="emo-kicker">PERSONAL WORKSPACE</span>
+          <h2>代码、开源项目与正在发生的事情。</h2>
+          <p>这里是 emoeem 的个人技术空间：记录 Linux、Rust、AI Coding、音视频，以及正在持续打磨的开源项目。</p>
+          <div class="emo-home-links">
+            <a href="/projects/">查看项目 →</a>
+            <a href="/now/">现在在做什么 →</a>
+            <a href="/about/">了解我 →</a>
+          </div>
+        </div>
+        <div class="emo-home-intro__side">
+          <span class="emo-home-label">CURRENT FOCUS</span>
+          <strong>Build · Audit · Iterate</strong>
+          <span>把工具做出来，也把过程留下来。</span>
+        </div>
+      </div>
+
+      <div class="emo-home-section-head emo-reveal">
+        <div>
+          <span class="emo-kicker">SELECTED WORK</span>
+          <h2>正在持续构建</h2>
+        </div>
+        <a href="/projects/">全部项目 →</a>
+      </div>
+
+      <div class="emo-project-grid emo-home-projects">
+        <a class="emo-card emo-project-card emo-home-project emo-reveal" href="/projects/voicefox/">
+          <span class="emo-kicker">MUSIC · RUST · TUI</span>
+          <h3>VoiceFox</h3>
+          <p>围绕 libmpv、音频分析与歌单互通持续开发的终端音乐播放器。</p>
+          <div class="emo-meta"><span class="emo-chip">Rust</span><span class="emo-chip">Ratatui</span><span class="emo-chip">libmpv</span></div>
+          <span class="emo-status">持续开发 →</span>
+        </a>
+        <a class="emo-card emo-project-card emo-home-project emo-reveal" href="/projects/toolbox-hub/">
+          <span class="emo-kicker">TOOLS · RUST · TUI</span>
+          <h3>Toolbox Hub</h3>
+          <p>把本地工具、脚本与配置组织成统一入口，持续推进原生 TUI 体验。</p>
+          <div class="emo-meta"><span class="emo-chip">Rust</span><span class="emo-chip">Ratatui</span><span class="emo-chip">Tooling</span></div>
+          <span class="emo-status">持续开发 →</span>
+        </a>
+        <a class="emo-card emo-project-card emo-home-project emo-reveal" href="/projects/pkgbuild/">
+          <span class="emo-kicker">LINUX · PACKAGING</span>
+          <h3>Arch / PKGBUILD</h3>
+          <p>维护面向 CachyOS 与 Zen3 / RTX 环境的个人软件仓库与构建体系。</p>
+          <div class="emo-meta"><span class="emo-chip">Arch Linux</span><span class="emo-chip">PKGBUILD</span><span class="emo-chip">CI</span></div>
+          <span class="emo-status">查看项目 →</span>
+        </a>
+      </div>
+    `
+    const recentItems = recent.querySelector('.recent-post-items')
+    if (recentItems) recent.insertBefore(panel, recentItems)
+    else recent.insertBefore(panel, recent.firstChild)
+
+    const reveal = () => {
+      const items = panel.querySelectorAll('.emo-reveal')
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        items.forEach(el => el.classList.add('is-visible'))
+        return
+      }
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return
+          entry.target.classList.add('is-visible')
+          obs.unobserve(entry.target)
+        })
+      }, { threshold: 0.08, rootMargin: '0px 0px -30px' })
+      items.forEach((el, index) => {
+        el.style.setProperty('--emo-reveal-delay', Math.min(index * 30, 90) + 'ms')
+        observer.observe(el)
+      })
+    }
+    reveal()
+  }
+
   const setupPwa = () => {
     if ('serviceWorker' in navigator && location.protocol === 'https:') {
       navigator.serviceWorker.register('/sw.js').catch(() => {})
@@ -163,6 +254,7 @@
     setupProgress()
     setupCodeCopy()
     setupCommandPalette()
+    setupHomepageExperience()
   }
   ready(() => {
     setup()
