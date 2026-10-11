@@ -1,4 +1,4 @@
-import {parseFrontMatter,dumpFrontMatter,parseReferences,resolveRelative,isRelativeAsset,isMarkdownReference,sha256} from './document-parser.js';
+import {parseFrontMatter,dumpFrontMatter,parseReferences,resolveRelative,isRelativeAsset,sha256} from './document-parser.js';
 
 export function createSyncEngine({api,store}){
   async function getSource(m){
@@ -27,15 +27,24 @@ export function createSyncEngine({api,store}){
     const parsed=parseFrontMatter(src.content),refs=parseReferences(parsed.body); let body=parsed.body;
     const linkTargets=[],linkInfo=[];
     for(const link of refs.links){
-      if(!isMarkdownReference(link.url)||(link.url.startsWith('http://')||link.url.startsWith('https://')))continue;
-      const clean=link.url.split('#')[0].split('?')[0],tp=resolveRelative(m.path,clean),tm=store.find(m.owner,m.repo,tp);
-      if(!tm){linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+clean});continue;}
+      const rawUrl=link.url;
+      if(/^(?:https?:|mailto:|tel:|data:|#|\/)/i.test(rawUrl))continue;
+      const clean=rawUrl.split('#')[0].split('?')[0];
+      if(!clean)continue;
+      const tp=resolveRelative(m.path,clean),anchor=rawUrl.includes('#')?'#'+rawUrl.split('#').slice(1).join('#'):'';
+      if(!/\.md$/i.test(clean)){
+        const isDirectory=/\/$/.test(clean)||!/[.][a-z0-9]{1,8}$/i.test(clean);
+        linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/'+(isDirectory?'tree':'blob')+'/'+m.branch+'/'+tp+anchor});
+        continue;
+      }
+      const tm=store.find(m.owner,m.repo,tp);
+      if(!tm){linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+tp+anchor});continue;}
       const tf=await getTarget(tm.target);
-      if(!tf){linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+tp});continue;}
+      if(!tf){linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+tp+anchor});continue;}
       const tfm=parseFrontMatter(api.decode(tf.content));
       const permalink=tfm.meta.syncPermalink||tfm.meta.permalink;
-      if(permalink){linkInfo.push({link,url:String(permalink)});continue;}
-      linkTargets.push({target:tm.target,date:tfm.meta.date||src.date});linkInfo.push({link,mapping:tm,target:tm.target,anchor:link.url.includes('#')?'#'+link.url.split('#')[1]:''});
+      if(permalink){linkInfo.push({link,url:String(permalink)+anchor});continue;}
+      linkTargets.push({target:tm.target,date:tfm.meta.date||src.date});linkInfo.push({link,mapping:tm,target:tm.target,anchor});
     }
     if(linkTargets.length){
       const resolved=await api.resolvePermalinks(linkTargets),byTarget=new Map(resolved.map(x=>[x.target,x.permalink]));
