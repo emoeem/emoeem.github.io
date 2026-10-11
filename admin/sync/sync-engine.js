@@ -12,33 +12,63 @@ export function createSyncEngine({api,store}){
   }
   function defaultTarget(title){return 'source/_posts/'+slug(title)+'.md'}
   function slug(s){return String(s).toLowerCase().replace(/[^\w\u4e00-\u9fff-]+/g,'-').replace(/^-+|-+$/g,'')||'github-doc'}
+  async function resolveGithubPath(owner,repo,branch,sourcePath,isDirectory=false){
+    try{await api.request('repos/'+owner+'/'+repo+'/contents/'+sourcePath+'?ref='+encodeURIComponent(branch));return sourcePath}
+    catch(error){
+      if(!/404|not found/i.test(String(error.message)))return sourcePath;
+      try{
+        const tree=await api.request('repos/'+owner+'/'+repo+'/git/trees/'+encodeURIComponent(branch)+'?recursive=1');
+        if(isDirectory&&(tree?.tree||[]).some(x=>x.path.startsWith(sourcePath.replace(/\/$/,'')+'/')))return sourcePath;
+        const base=sourcePath.split('/').pop(),matches=(tree?.tree||[]).filter(x=>x.type==='blob'&&x.path.split('/').pop()===base);
+        if(matches.length===1)return matches[0].path;
+      }catch{}
+      return sourcePath;
+    }
+  }
   async function inspect(m){
     const old=await getTarget(m.target); let src;
     try{src=await getSource(m)}catch(e){if(/404|not found/i.test(String(e.message)))return {...m,status:'source-deleted'};throw e}
-    if(old){const parsed=parseFrontMatter(api.decode(old.content)); if(parsed.meta.syncContentHash){const h=await sha256(parsed.body);if(h!==parsed.meta.syncContentHash)return {...m,status:parsed.meta.syncCommit===src.commit?'local-modified':'conflict',commit:src.commit,date:src.date}} if(parsed.meta.syncCommit===src.commit)return {...m,status:'unchanged',commit:src.commit,date:src.date}}
+    if(old){const parsed=parseFrontMatter(api.decode(old.content)); if(parsed.meta.syncContentHash){const h=await sha256(parsed.body.replace(/^\n+/,''));if(h!==parsed.meta.syncContentHash)return {...m,status:parsed.meta.syncCommit===src.commit?'local-modified':'conflict',commit:src.commit,date:src.date}} if(parsed.meta.syncCommit===src.commit)return {...m,status:'unchanged',commit:src.commit,date:src.date}}
     return {...m,status:'changed',commit:src.commit,date:src.date};
   }
   async function syncOne(m,force=false){
     const old=await getTarget(m.target); let src;
     try{src=await getSource(m)}catch(e){if(/404|not found/i.test(String(e.message)))return {...m,status:'source-deleted'};throw e}
     const oldParsed=old?parseFrontMatter(api.decode(old.content)):null;
-    if(oldParsed?.meta.syncContentHash&&!force){const h=await sha256(oldParsed.body);if(h!==oldParsed.meta.syncContentHash)return {...m,status:oldParsed.meta.syncCommit===src.commit?'local-modified':'conflict',commit:src.commit,date:src.date}}
+    if(oldParsed?.meta.syncContentHash&&!force){const h=await sha256(oldParsed.body.replace(/^\n+/,''));if(h!==oldParsed.meta.syncContentHash)return {...m,status:oldParsed.meta.syncCommit===src.commit?'local-modified':'conflict',commit:src.commit,date:src.date}}
     if(oldParsed?.meta.syncCommit===src.commit)return {...m,status:'unchanged',commit:src.commit,date:src.date};
     const parsed=parseFrontMatter(src.content),refs=parseReferences(parsed.body); let body=parsed.body;
     const linkTargets=[],linkInfo=[];
     for(const link of refs.links){
       const rawUrl=link.url;
+      const githubPath=rawUrl.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(blob|tree)\/([^/]+)\/([^?#]+)(?:[?#].*)?$/i);
+      if(githubPath&&githubPath[1].toLowerCase()===m.owner.toLowerCase()&&githubPath[2].toLowerCase()===m.repo.toLowerCase()){
+        const [,owner,repo,kind,branch,repoPath]=githubPath;
+        const anchor=rawUrl.includes('#')?'#'+rawUrl.split('#').slice(1).join('#'):'';
+        try{await api.request('repos/'+owner+'/'+repo+'/contents/'+repoPath+'?ref='+encodeURIComponent(branch));}
+        catch(error){
+          if(/404|not found/i.test(String(error.message))){
+            try{
+              const tree=await api.request('repos/'+owner+'/'+repo+'/git/trees/'+encodeURIComponent(branch)+'?recursive=1');
+              const base=repoPath.split('/').pop(),matches=(tree?.tree||[]).filter(x=>x.type==='blob'&&x.path.split('/').pop()===base);
+              if(matches.length===1)linkInfo.push({link,url:'https://github.com/'+owner+'/'+repo+'/blob/'+branch+'/'+matches[0].path+anchor});
+            }catch{}
+          }
+        }
+        continue;
+      }
       if(/^(?:https?:|mailto:|tel:|data:|#|\/)/i.test(rawUrl))continue;
       const clean=rawUrl.split('#')[0].split('?')[0];
       if(!clean)continue;
       const tp=resolveRelative(m.path,clean),anchor=rawUrl.includes('#')?'#'+rawUrl.split('#').slice(1).join('#'):'';
       if(!/\.md$/i.test(clean)){
         const isDirectory=/\/$/.test(clean)||!/[.][a-z0-9]{1,8}$/i.test(clean);
-        linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/'+(isDirectory?'tree':'blob')+'/'+m.branch+'/'+tp+anchor});
+        const resolvedPath=await resolveGithubPath(m.owner,m.repo,m.branch,tp,isDirectory);
+        linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/'+(isDirectory?'tree':'blob')+'/'+m.branch+'/'+resolvedPath+anchor});
         continue;
       }
       const tm=store.find(m.owner,m.repo,tp);
-      if(!tm){linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+tp+anchor});continue;}
+      if(!tm){const resolvedPath=await resolveGithubPath(m.owner,m.repo,m.branch,tp,false);linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+resolvedPath+anchor});continue;}
       const tf=await getTarget(tm.target);
       if(!tf){linkInfo.push({link,url:'https://github.com/'+m.owner+'/'+m.repo+'/blob/'+m.branch+'/'+tp+anchor});continue;}
       const tfm=parseFrontMatter(api.decode(tf.content));
@@ -54,7 +84,7 @@ export function createSyncEngine({api,store}){
     for(const img of refs.images){if(!isRelativeAsset(img.url))continue;try{const ap=resolveRelative(m.path,img.url.split('#')[0].split('?')[0]),ar=await api.request('repos/'+m.owner+'/'+m.repo+'/contents/'+ap+'?ref='+encodeURIComponent(m.branch));if(!ar?.content)continue;const at='source/images/github/'+m.owner+'/'+m.repo+'/'+ap;let existing=null;try{existing=await api.request(api.targetPath()+'/contents/'+at)}catch{}const put={message:'assets: sync '+ap,content:ar.content,branch:'main'};if(existing?.sha)put.sha=existing.sha;await api.request(api.targetPath()+'/contents/'+at,'PUT',put);body=body.split(']('+img.url+')').join('](/images/github/'+m.owner+'/'+m.repo+'/'+ap+')')}catch{}}
     const articleDate=oldParsed?.meta?.date||parsed.meta?.date||src.date;
     const ownPermalink=oldParsed?.meta?.syncPermalink||oldParsed?.meta?.permalink||((await api.resolvePermalinks([{target:m.target,date:articleDate}]))[0]?.permalink);
-    const meta={...(oldParsed?.meta||{}),...(m.metadata||{}),title:m.metadata?.title||parsed.meta.title||m.name,syncSource:m.owner+'/'+m.repo,syncPath:m.path,syncBranch:m.branch,syncCommit:src.commit,lastVerified:src.date,syncPermalink:ownPermalink,syncContentHash:await sha256(body),syncLinkCount:refs.links.length,syncImageCount:refs.images.length};
+    const meta={...(oldParsed?.meta||{}),...(m.metadata||{}),title:m.metadata?.title||parsed.meta.title||m.name,syncSource:m.owner+'/'+m.repo,syncPath:m.path,syncBranch:m.branch,syncCommit:src.commit,lastVerified:src.date,syncPermalink:ownPermalink,syncContentHash:await sha256(body.replace(/^\n+/,'')),syncLinkCount:refs.links.length,syncImageCount:refs.images.length};
     if(!meta.date)meta.date=String(articleDate).slice(0,10);
     const content=dumpFrontMatter(meta)+body.replace(/^\n+/,'');const put={message:'sync: '+meta.title,content:api.encode(content),branch:'main'};if(old)put.sha=old.sha;await api.request(api.targetPath()+'/contents/'+m.target,'PUT',put);return {...m,status:'synced',commit:src.commit,date:src.date};
   }
