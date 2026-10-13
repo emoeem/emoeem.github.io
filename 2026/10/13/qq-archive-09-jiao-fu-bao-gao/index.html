@@ -1,0 +1,1267 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>QQ 归档 09：最终交付报告 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="最终报告 ⚠️ 本文是 2026-10-13 早间的交付记录，数字已过时（当时 240 个用例）。此后经过一轮独立复核，抓出并修复了 6 个真缺陷、补了 30 个回归用例，当前状态以INDEPENDENT-VERIFICATION.md 为准（347 个用例 0 失败）。本文其余的功能描述与边界说明仍然有效。   QQ 聊天记录防丢失与自动归档系统 · 交付版本 0.1.0报告日期：2026-10">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QQ 归档 09：最终交付报告">
+<meta property="og:url" content="https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="最终报告 ⚠️ 本文是 2026-10-13 早间的交付记录，数字已过时（当时 240 个用例）。此后经过一轮独立复核，抓出并修复了 6 个真缺陷、补了 30 个回归用例，当前状态以INDEPENDENT-VERIFICATION.md 为准（347 个用例 0 失败）。本文其余的功能描述与边界说明仍然有效。   QQ 聊天记录防丢失与自动归档系统 · 交付版本 0.1.0报告日期：2026-10">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/featureimages/18.jpg">
+<meta property="article:published_time" content="2026-10-13T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-13T13:51:13.798Z">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="QQ">
+<meta property="article:tag" content="交付">
+<meta property="article:tag" content="总结">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://emoeem.github.io/img/featureimages/18.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "QQ 归档 09：最终交付报告",
+  "url": "https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/",
+  "image": "https://emoeem.github.io/img/featureimages/18.jpg",
+  "datePublished": "2026-10-13T00:00:00.000Z",
+  "dateModified": "2026-10-13T13:51:13.798Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "emoeem",
+      "url": "https://emoeem.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.1.260810"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":2,"unescape":false,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'QQ 归档 09：最终交付报告',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">99</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/featureimages/18.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">QQ 归档 09：最终交付报告</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">QQ 归档 09：最终交付报告<a class="post-edit-link" href="https://github.com/emoeem/qq-archive" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">6906</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>28 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div class="emo-article-context"><div class="emo-article-context__meta"><span class="emo-article-context__badge"><i class="fas fa-clock fa-fw"></i>最后验证：2026-10-13T13:16:39Z</span></div><div class="emo-article-series"><div class="emo-article-context__title"><i class="fas fa-layer-group fa-fw"></i>QQ 归档</div><ol class="series-items"><li><a href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/">QQ 归档 00：项目总览</a></li><li><a href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/">QQ 归档 01：快速开始</a></li><li><a href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/">QQ 归档 02：完整使用手册</a></li><li><a href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/">QQ 归档 03：部署与运维手册</a></li><li><a href="/2026/10/13/qq-archive-04-jia-gou-she-ji/">QQ 归档 04：架构设计</a></li><li><a href="/2026/10/13/qq-archive-05-ge-shi-ying-she/">QQ 归档 05：数据模型与格式映射</a></li><li><a href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/">QQ 归档 06：验收测试报告</a></li><li><a href="/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/">QQ 归档 07：独立复核报告</a></li><li><a href="/2026/10/13/qq-archive-08-xiang-mu-bao-gao/">QQ 归档 08：项目报告</a></li><li><a href="/2026/10/13/qq-archive-09-jiao-fu-bao-gao/">QQ 归档 09：最终交付报告</a></li><li><a href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/">QQ 归档 10：同类导出项目调研</a></li><li><a href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/">QQ 归档 11：qq-chat-exporter 复用性分析</a></li><li><a href="/2026/10/13/qq-archive-12-snowluma-diao-yan/">QQ 归档 12：SnowLuma 调研与改进落地</a></li><li><a href="/2026/10/13/qq-archive-13-windows-bu-shu/">QQ 归档 13：Windows 部署指南</a></li><li><a href="/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/">QQ 归档 14：脱敏样例数据集</a></li></ol></div></div><h1 id="最终报告"><a href="#最终报告" class="headerlink" title="最终报告"></a>最终报告</h1><blockquote>
+<p>⚠️ <strong>本文是 2026-10-13 早间的交付记录，数字已过时</strong>（当时 240 个用例）。此后经过一轮独立复核，<br>抓出并修复了 6 个真缺陷、补了 30 个回归用例，<strong>当前状态以<br><a href="/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/">INDEPENDENT-VERIFICATION.md</a> 为准</strong>（347 个用例 0 失败）。<br>本文其余的功能描述与边界说明仍然有效。</p>
+</blockquote>
+<blockquote>
+<p>QQ 聊天记录防丢失与自动归档系统 · 交付版本 0.1.0<br>报告日期：2026-10-13　环境：CachyOS Linux / Node v24.21.0 / SQLite（Node 内置）/ ffmpeg 9.0.2</p>
+</blockquote>
+<p><strong>一句话定位</strong>：本系统<strong>不能阻止 QQ 删除消息</strong>，它的目标是——凡是已经成功到达本系统的消息和媒体，就永久保留下来，不再依赖 QQ 客户端、不再受缓存清理、记录过期或设备更换影响。</p>
+<p>配套文档：<a href="/2026/10/13/qq-archive-04-jia-gou-she-ji/">架构设计</a>｜<a href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/">部署运维</a>｜<a href="/2026/10/13/qq-archive-05-ge-shi-ying-she/">格式映射与有损清单</a>｜<a href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/">验收测试报告</a>｜<a href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/">开源项目调研</a></p>
+<hr>
+<h2 id="一、最终报告必须回答的-6-个问题"><a href="#一、最终报告必须回答的-6-个问题" class="headerlink" title="一、最终报告必须回答的 6 个问题"></a>一、最终报告必须回答的 6 个问题</h2><h3 id="1-能否导入现有聊天记录？——-能。"><a href="#1-能否导入现有聊天记录？——-能。" class="headerlink" title="1. 能否导入现有聊天记录？—— 能。"></a>1. 能否导入现有聊天记录？—— <strong>能。</strong></h3><p>已实现 <strong>5 种格式</strong>的导入，全部有自动化测试：</p>
+<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>qce-json</code></td>
+<td>QQ Chat Exporter 的单文件 JSON 导出（<strong>主要目标格式</strong>）</td>
+</tr>
+<tr>
+<td><code>qce-jsonl</code></td>
+<td>QCE 的分块导出（<code>manifest.json</code> + <code>chunks/*.jsonl</code>）</td>
+</tr>
+<tr>
+<td><code>qce-txt</code></td>
+<td>旧版纯文本导出（<code>[时间] 昵称(QQ号): 内容</code>）</td>
+</tr>
+<tr>
+<td><code>generic-jsonl</code></td>
+<td>通用 JSONL（每行一条消息）</td>
+</tr>
+</tbody></table>
+<p>格式<strong>自动识别</strong>（<code>detectFormat()</code>），也支持 <code>--format</code> 强制指定。</p>
+<p>真实导入结果（测试夹具，367 条源条目）：</p>
+<pre class="line-numbers language-none"><code class="language-none">群聊  247 条源 → 入库 244、重复 3、失败 0、媒体归档 15 次 / 缺失 1、耗时 81 ms
+私聊  120 条源 → 入库 120、重复 0、失败 0
+合计  367 条源 → 364 条入库、3 条判重、0 条失败<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+
+<ul>
+<li>第二批导入同一文件：<code>{inserted: 0, duplicate: 247, messages: 244}</code> —— <strong>完全幂等</strong>。</li>
+<li>命令行：<code>qq-archive import &lt;文件或目录&gt; --config &lt;配置&gt;</code>；网页端「归档管理 → 手动导入」亦可。</li>
+<li>有损之处（原始 JSON 未 1:1 保留的部分）全部列在 <a href="/2026/10/13/qq-archive-05-ge-shi-ying-she/">format-mapping.md</a> 的「有损映射清单」21 条中，<strong>不声称无损</strong>。</li>
+</ul>
+<h3 id="2-能否持续保存新收到的消息？——-能，但有明确边界。"><a href="#2-能否持续保存新收到的消息？——-能，但有明确边界。" class="headerlink" title="2. 能否持续保存新收到的消息？—— 能，但有明确边界。"></a>2. 能否持续保存新收到的消息？—— <strong>能，但有明确边界。</strong></h3><p>通过 OneBot HTTP 接口（NapCat / LLOneBot）持续轮询采集：</p>
+<ul>
+<li>只读白名单（<code>get_login_info</code> / <code>get_status</code> / <code>get_group_list</code> / <code>get_friend_list</code> / <code>get_group_msg_history</code> / <code>get_friend_msg_history</code> / <code>get_image</code> / <code>get_record</code> / <code>get_file</code>），<strong>其他 action 在本地直接拒绝，不发出任何 HTTP 请求</strong>——从设计上排除误调用发送/删除类接口的可能。</li>
+<li>断点续传：游标存在 <code>collect_state</code>，每批成功后立即持久化；重启后从 <code>cursor - lookback</code> 保守回看，靠唯一约束兜底，<strong>不重不漏</strong>。</li>
+<li>失败重试：退避 <code>1s → 2s → 4s</code>，连续失败计数与告警。</li>
+<li>由 systemd 定时器驱动（<code>deploy/qq-archive-collect.service</code>），实测 <code>collect --once</code> 可正常运行。</li>
+</ul>
+<p><strong>边界（重要）</strong>：只能采到「机器人账号在线时」的消息。群聊离线期间的消息<strong>不会补齐</strong> —— NapCat 维护者在 <a target="_blank" rel="noopener" href="https://github.com/NapNeko/NapCatQQ/issues/1838">Issue #1838</a> 明确表示这是 feature、不打算实现离线消息推送。已撤回的消息不可取回，已解散/已退出的群聊无法读取。</p>
+<h3 id="3-能否独立保存图片和视频？——-能。"><a href="#3-能否独立保存图片和视频？——-能。" class="headerlink" title="3. 能否独立保存图片和视频？—— 能。"></a>3. 能否独立保存图片和视频？—— <strong>能。</strong></h3><ul>
+<li><strong>内容寻址存储</strong>：文件按 <code>sha256</code> 命名落盘（<code>media/&lt;类型&gt;/&lt;年&gt;/&lt;月&gt;/&lt;前2位&gt;/&lt;sha256&gt;.&lt;ext&gt;</code>），路径与内容强绑定，天然去重、天然可校验。</li>
+<li>来源优先级：本地文件路径 → HTTP 下载（含协议白名单、大小上限、超时）→ 标记缺失。</li>
+<li>图片可生成缩略图（依赖 ffmpeg，<strong>ffmpeg 缺失时优雅降级，不影响原件归档</strong>）；视频支持 HTTP <code>Range</code> 请求（<code>206</code>），浏览器可直接拖动播放。</li>
+<li>同一物理文件被多条消息引用时<strong>只存一份</strong>，但每条消息的<strong>原始文件名与声明大小</strong>都保留在关联表里。</li>
+<li>真实数据：6 个声明媒体 → 5 个可获取的<strong>全部落盘并通过 sha256 校验</strong>（<code>corrupt = 0</code>）；1 个拿不到的<strong>明确标记 <code>missing</code> 并保留失败原因</strong>，磁盘上<strong>不生成任何假文件</strong>。</li>
+<li>音频/语音：解析层支持 <code>audio</code>/<code>voice</code>/<code>record</code>/<code>ptt</code>/<code>amr</code>/<code>silk</code> 并归为 <code>kind='audio'</code>；<strong>并有真实样本端到端</strong>：真机采到的 3 个真实 <code>.amr</code> 经 <code>qq-archive transcribe</code>（生产代码路径 → ffmpeg → <code>whisper-cli</code>）转出中文并写入 <code>media_transcripts</code>，<code>GET /api/media/13/raw</code> 返回 200 <code>audio/amr</code> 14468 字节。</li>
+</ul>
+<h3 id="4-手机端未同步的历史消息能否获取？——-不能。这不是工程问题，是数据不存在于任何可访问位置。"><a href="#4-手机端未同步的历史消息能否获取？——-不能。这不是工程问题，是数据不存在于任何可访问位置。" class="headerlink" title="4. 手机端未同步的历史消息能否获取？—— 不能。这不是工程问题，是数据不存在于任何可访问位置。"></a>4. 手机端未同步的历史消息能否获取？—— <strong>不能。这不是工程问题，是数据不存在于任何可访问位置。</strong></h3><ul>
+<li>手机（华为，无 Root 保证）上<strong>尚未同步到服务端会话</strong>的记录，QQ 不提供任何 API 可以取回。本项目刻意不采用 Root / Frida / 内存注入路线（侵入性高、易失效、且会把 GPL 与非商业许可问题带进来）。</li>
+<li>另外，<strong>任何导出接口返回的都只是「服务端愿意返回的部分」</strong>。QQ 官方导出工具自身在文档里标注 <code>serverCompletenessProven: false</code>，并明确「任何响应都不能证明腾讯服务端的聊天记录完整性」。本项目<strong>不对此做任何保证</strong>。</li>
+<li>因此本系统降低（而非消除）手机/电脑不同步造成缺失的路径是：<ol>
+<li>电脑端能导出多少，就<strong>完整、可重复、可校验</strong>地收下多少；</li>
+<li>采集端持续增量保存<strong>在线期间</strong>的新消息；</li>
+<li>所有已入库数据独立备份，<strong>不再依赖 QQ 是否还留着</strong>。</li>
+</ol>
+</li>
+</ul>
+<h3 id="5-能否部署到服务器并通过网页查看？——-能。"><a href="#5-能否部署到服务器并通过网页查看？——-能。" class="headerlink" title="5. 能否部署到服务器并通过网页查看？—— 能。"></a>5. 能否部署到服务器并通过网页查看？—— <strong>能。</strong></h3><ul>
+<li>单进程 <code>node:http</code> 服务，<strong>零生产依赖</strong>（数据库用 Node 24 内置 <code>node:sqlite</code>），不需要编译步骤，<code>node --experimental-strip-types</code> 直接跑 TypeScript。</li>
+<li>内置 Web 管理界面（原生 ES 模块，无构建、无 CDN 依赖，可完全离线）：<ul>
+<li>登录页（HMAC 签名访问令牌 + 刷新令牌 + 登录限速）</li>
+<li>总览（8 张统计卡）、会话列表、消息时间线（搜索高亮、引用预览、媒体缩略图、撤回标记）</li>
+<li>媒体库（按类型/状态/会话/日期筛选、<code>&lt;video&gt;</code> 播放、下载、完整性校验）</li>
+<li>归档管理（手动导入、备份、立即采集、任务表、<strong>SSE 实时进度</strong>）</li>
+<li>日志（级别 + scope 筛选）、导出（json / jsonl / txt）</li>
+<li><strong>QQ 扫码登录</strong>（NapCat WebUI）：网页显示二维码、轮询登录态、本地账号快捷登录</li>
+</ul>
+</li>
+<li><strong>30 条 API 路由</strong>、11 个 CLI 子命令（<code>serve</code> / <code>import</code> / <code>collect</code> / <code>backup</code> / <code>restore</code> / <code>verify</code> / <code>doctor</code> / <code>token</code> / <code>stats</code> / <code>logs</code> / <code>login</code>）。</li>
+<li>安全：默认只监听 <code>127.0.0.1</code>；媒体目录做<strong>真实路径边界校验</strong>（防路径穿越）；未登录一律 <code>401</code> 且不泄露内部路径；响应头不回显服务器绝对路径。</li>
+<li>systemd unit 已提供（<code>deploy/qq-archive.service</code>、<code>deploy/qq-archive-collect.service</code>），完整步骤见 <a href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/">DEPLOYMENT.md</a>。</li>
+</ul>
+<p><strong>注意</strong>：<code>serve</code> 默认绑定 <code>127.0.0.1</code>。要从外部访问必须显式改配置并自行加 TLS 反向代理——这是刻意的安全默认值，聊天记录不该默认暴露在网络上。</p>
+<h3 id="6-哪些功能经过真实测试，哪些仍需验证？"><a href="#6-哪些功能经过真实测试，哪些仍需验证？" class="headerlink" title="6. 哪些功能经过真实测试，哪些仍需验证？"></a>6. 哪些功能经过真实测试，哪些仍需验证？</h3><p><strong>经过真实测试（有可复现的自动化用例 + 实际运行输出）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>范围</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>5 种格式</strong>导入（QCE JSON/JSONL/TXT、通用 JSONL、<strong>HTML 网页</strong>）、幂等、长消息、@提及/引用/撤回/系统消息</td>
+<td><code>tests/import.test.ts</code> + <code>tests/html-import.test.ts</code>（9 用例，含 6 个 fixture）+ <code>tests/acceptance.test.ts</code>（验收 1/2/3/7/15）</td>
+</tr>
+<tr>
+<td>图片/视频/文件归档、sha256 校验、缩略图、Range 播放、缺失标记</td>
+<td><code>tests/media.test.ts</code> + 验收 4/5/6/11</td>
+</tr>
+<tr>
+<td><strong>媒体下载断点续传（HTTP Range + sidecar）</strong></td>
+<td><code>tests/media.test.ts</code> 9 个新用例：206 追加后 sha256 与一次下完一致、200 忽略 Range 会截断重下、etag/last-modified 触发 <code>If-Range</code>、416 丢弃重来、超 <code>maxBytes</code> 不留残片</td>
+</tr>
+<tr>
+<td><strong>合并转发展开</strong>（递归 + 附件归档 + 截断冒泡）</td>
+<td><code>tests/forward.test.ts</code> <strong>15 用例</strong>（纯函数 / OneBot 协议 / CollectRunner 真库端到端）；并<strong>对真实归档里的 3 条真实合并转发实测真 NapCat</strong>，分别解出 9 / 9 / 19 个子节点</td>
+</tr>
+<tr>
+<td><strong>语音转文字（whisper.cpp）</strong></td>
+<td><code>tests/stt.test.ts</code> 25 用例 + <strong>真机 3 个真实 <code>.amr</code></strong> 经生产代码路径转出中文并写入 <code>media_transcripts</code>（3/3，5.86 s）</td>
+</tr>
+<tr>
+<td><strong>Windows 部署脚本</strong></td>
+<td><code>node deploy/windows/check-syntax.mjs</code> <strong>80 项</strong>静态检查 0 失败、退出码 0；<code>--fix-bom</code> 幂等。<strong>未在真实 Windows 执行过</strong>（本机无 <code>pwsh</code>）</td>
+</tr>
+<tr>
+<td>批量导入 5000 条</td>
+<td>验收 10（实测约 4.5 s）</td>
+</tr>
+<tr>
+<td>网络中断重试与重启续传</td>
+<td>验收 8/9（<strong>用自建假 OneBot</strong>）</td>
+</tr>
+<tr>
+<td>备份 → 校验 → 损坏 → 恢复全链路</td>
+<td>验收 12 + <code>tests/cli.test.ts</code>（真实子进程）</td>
+</tr>
+<tr>
+<td>认证与授权：401、路径穿越、令牌伪造</td>
+<td>验收 13/14 + <code>tests/server.test.ts</code></td>
+</tr>
+<tr>
+<td>中文检索（bigram + FTS5，单字退化为 LIKE）</td>
+<td><code>tests/db.test.ts</code> + 验收 15（零漏报零误报）</td>
+</tr>
+<tr>
+<td><strong>前后端 + 采集 + 导入的真实联调</strong>（不注入任何桩）</td>
+<td><code>tests/integration.test.ts</code> 5 项，并抓出 3 个真实缺陷</td>
+</tr>
+<tr>
+<td>CLI 真实子进程端到端（<code>--config</code>、导入、备份、恢复）</td>
+<td><code>tests/cli.test.ts</code> 16 项，含<strong>变异测试</strong>验证护栏有效</td>
+</tr>
+<tr>
+<td><strong>扫码登录</strong>（<code>/api/napcat/*</code> + Web 页 + <code>qq-archive login</code>）</td>
+<td><code>tests/napcat.test.ts</code> 18 + <code>tests/napcat-login-e2e.test.ts</code> 7 + <code>tests/napcat-routes.test.ts</code> 9；<strong>并已用真实 QQ 号真机扫码登录 NapCat 容器</strong>，随后 <code>collect --once</code> 采到 13 会话 / 188 条真实消息 / 18 个媒体文件</td>
+</tr>
+<tr>
+<td>Web 界面</td>
+<td><code>tests/web.test.ts</code> 25 项（纯函数 + 契约 + XSS 审计）+ 真实浏览器 87 项交互检查</td>
+</tr>
+</tbody></table>
+<p>合计 <strong>240 个用例 0 失败</strong>（17 个测试文件），类型检查 0 错误，详见 <a href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/">acceptance.md</a>。</p>
+<p><strong>本次交付前最后一道关卡抓到的真实缺陷（只有起真服务才暴露）</strong>：<code>packages/server/src/index.ts</code> 的错误映射曾写成<br><code>const code = typeof (err as {code?: unknown} | null)?.code</code> —— 先算 <code>typeof</code> 再判断 <code>typeof code === 'string'</code>，<br>于是 <code>code</code> 恒为 JS 类型名 <code>"string"</code>、<code>status</code> 恒非 number，<strong>所有下游错误都被压成 <code>503 {code:"string"}</code></strong>：<br>WebUI token 写错本该回 401 <code>UNAUTHORIZED</code>（并提示改 <code>collector.napcat.token</code>），却被报成「服务不可用」。<br>现已改为先取值再判类型，并补两条回归用例（NapCat 连不上 → 503 <code>COLLECTOR_UNAVAILABLE</code>；token 错 → 401 <code>UNAUTHORIZED</code>），<br>已用<strong>变异测试</strong>验证：把 bug 改回去，恰好这两条失败（<code>tests/napcat-routes.test.ts:408</code>、<code>:432</code>）。</p>
+<p><strong>仍需验证（无法在本次环境取得真实验证）</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>真实 NapCat 实例</strong></td>
+<td><strong>已真机验证</strong>：真实 QQ 号扫码登录 + <code>collect --once</code> 采到 13 会话 / 188 消息 / 18 媒体，媒体表与磁盘对账一致。<strong>未做</strong>：LLOneBot 等其它 OneBot 实现的真机验证</td>
+</tr>
+<tr>
+<td>真实腾讯服务端记录完整性</td>
+<td>无法证明，官方工具自己也不保证</td>
+</tr>
+<tr>
+<td>手机端未同步历史</td>
+<td>无任何可取路径（见问题 4）</td>
+</tr>
+<tr>
+<td>真实进程 <code>SIGKILL</code> / 断电恢复</td>
+<td>测试进程内模拟了「异常退出后重开」，但未对二进制发真实 <code>SIGKILL</code></td>
+</tr>
+<tr>
+<td>真实 systemd 部署与重启自愈</td>
+<td>unit 文件已提供，未在真实 systemd 环境跑过</td>
+</tr>
+<tr>
+<td><strong>Docker 部署</strong></td>
+<td>本机<strong>未安装 docker</strong>，未提供 Dockerfile，不做未验证的承诺</td>
+</tr>
+<tr>
+<td>语音转写的<strong>质量</strong>（CER/WER、方言、强噪声、多人重叠）</td>
+<td>只验证了「真机 3 个真实 <code>.amr</code> 能转出可读中文」，未做准确率基准</td>
+</tr>
+<tr>
+<td><strong>Windows 脚本的真实执行</strong></td>
+<td>开发机是 Linux、没有 <code>pwsh</code>，只做了 <strong>80 项</strong>静态自检；<strong>从未在真实 Windows 上跑过</strong></td>
+</tr>
+<tr>
+<td>真实第三方 HTML 导出器回归</td>
+<td>HTML 导入只用合成 fixture 验证，未拿真实导出器产出的 HTML 跑过</td>
+</tr>
+<tr>
+<td>真实 QQ「合并转发」消息的展开</td>
+<td>展开逻辑有 14 个用例覆盖，但本轮真机采集的数据里没有合并转发消息</td>
+</tr>
+<tr>
+<td>真正的移动端（华为手机）采集</td>
+<td>未做，且本项目刻意不采用需 Root 的路线</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、十项交付物对照"><a href="#二、十项交付物对照" class="headerlink" title="二、十项交付物对照"></a>二、十项交付物对照</h2><table>
+<thead>
+<tr>
+<th align="right">#</th>
+<th>任务书要求</th>
+<th>交付内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">1</td>
+<td>可运行的项目源码</td>
+<td><code>/home/emo/code/QQ/</code> 全量源码：<code>packages/</code> + <code>apps/</code> <strong>15,973 行 TypeScript</strong>，<code>web/</code> 2,948 行，<code>deploy/</code> 3,096 行，测试 10,339 行；<code>npm test</code> 即可验证</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td>实际实现的 Web 管理界面</td>
+<td><code>web/</code>（<code>index.html</code> + <code>app.js</code> 1737 行 + <code>lib.js</code> 329 行 + <code>style.css</code> 541 行），8 个 hash 路由、20 个 API 端点族真实调用</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td>数据库初始化和迁移方案</td>
+<td><code>packages/db/src/schema.sql</code> + <code>migrations.ts</code>（版本化迁移，当前 <strong>schema v5</strong>，<code>PRAGMA user_version</code> 驱动，启动自动迁移）</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td>配置文件示例</td>
+<td><code>config.example.json</code>（含全部可调项与注释说明）</td>
+</tr>
+<tr>
+<td align="right">5</td>
+<td>Linux 安装和部署文档</td>
+<td><code>docs/DEPLOYMENT.md</code>（10 节：安装、配置、systemd、采集端接入、反向代理、升级、排障、卸载等）</td>
+</tr>
+<tr>
+<td align="right">6</td>
+<td>备份及恢复说明</td>
+<td><code>docs/DEPLOYMENT.md</code> 备份章节 + <code>docs/acceptance.md</code> 验收 12 + <code>packages/server/src/backup.ts</code>（快照 + manifest + sha256 + <code>quick_check</code> 校验链）</td>
+</tr>
+<tr>
+<td align="right">7</td>
+<td>自动化测试及实际测试结果</td>
+<td><code>tests/</code> <strong>17 个文件 240 个用例</strong> + <code>docs/acceptance.md</code>（逐项真实输出，非「编译通过」替代）</td>
+</tr>
+<tr>
+<td align="right">8</td>
+<td>开源项目复用清单与许可证说明</td>
+<td>本报告第四节</td>
+</tr>
+<tr>
+<td align="right">9</td>
+<td>已实现 / 未实现 / 限制清单</td>
+<td>本报告第三节</td>
+</tr>
+<tr>
+<td align="right">10</td>
+<td>后续可扩展方向</td>
+<td>本报告第五节</td>
+</tr>
+</tbody></table>
+<p><strong>额外交付</strong>（任务书未要求但为完整交付所需）：</p>
+<ul>
+<li><code>docs/ARCHITECTURE.md</code> —— 分层设计、数据模型、HTTP 端点契约表（冻结版）</li>
+<li><code>docs/format-mapping.md</code> —— QCE → 本系统的<strong>逐字段映射表</strong> + <strong>21 条</strong>有损映射清单 + HTML/转发展开映射（§8）</li>
+<li><code>docs/qq-export-projects-research.md</code> —— 开源生态调研原始记录</li>
+<li><code>docs/acceptance.md</code> —— 15 项验收逐项报告</li>
+<li><code>tests/fixtures/generate.ts</code> —— <strong>程序化测试数据生成器</strong>（固定种子 <code>20261013</code>，手写字节生成合法 PNG/GIF/MP4，<strong>不含任何真实聊天记录</strong>）</li>
+<li><code>tests/integration.test.ts</code> —— 不注入任何桩的真实联调</li>
+<li><code>tests/cli.test.ts</code> —— 真实子进程端到端 + 回归护栏</li>
+</ul>
+<hr>
+<h2 id="三、已实现-未实现-限制清单"><a href="#三、已实现-未实现-限制清单" class="headerlink" title="三、已实现 / 未实现 / 限制清单"></a>三、已实现 / 未实现 / 限制清单</h2><h3 id="3-1-已实现（有测试证据）"><a href="#3-1-已实现（有测试证据）" class="headerlink" title="3.1 已实现（有测试证据）"></a>3.1 已实现（有测试证据）</h3><p><strong>核心层 <code>packages/core</code></strong>：类型契约、ID 生成、配置加载与路径解析、分级日志（控制台 + 文件轮转 + 按 scope 过滤）、结构化错误码。</p>
+<p><strong>存储层 <code>packages/db</code></strong>：</p>
+<ul>
+<li>版本化迁移，<strong>schema v5</strong>（v5 新增 <code>media_transcripts</code>）；WAL 模式；外键约束</li>
+<li>内容寻址媒体表 + <code>message_media</code> 多对多关联（保留原始文件名与声明大小）</li>
+<li>唯一约束驱动的幂等入库（<code>account_uid + session_key + msg_key</code>）</li>
+<li><strong>中文检索</strong>：FTS5 + 双字组（bigram）展开；单汉字自动退化为 <code>LIKE ESCAPE</code> 扫描（<code>planSearch()</code> 决定策略）</li>
+<li>分页、多条件过滤、游标读写、统计、健康检查</li>
+</ul>
+<p><strong>导入层 <code>packages/import</code></strong>：<strong>5 种格式</strong>识别与解析（QCE JSON / chunked JSONL / QCE TXT / 通用 JSONL / <strong>HTML 网页</strong>）、流式 JSON/JSONL 读取（32 MiB 单消息上限、500 条一批）、媒体归档管线（本地文件 → HTTP 下载 → <strong>HTTP Range 断点续传</strong> → 缺失标记）、缩略图（ffmpeg 可选）、高层入口 <code>runImport()</code>（CLI 与 server 共用同一实现）。</p>
+<p><strong>采集层 <code>packages/collect</code></strong>：OneBot HTTP 客户端、<strong>只读白名单</strong>、CQ 码解析、消息归一化、退避重试、断点续传、告警、<code>createCollectRunner()</code> 工厂；另含<strong>独立实现</strong>的 NapCat WebUI 客户端（<code>napcat-webui.ts</code>，扫码/快捷登录）。</p>
+<p><strong>二维码层 <code>packages/qr</code></strong>：<strong>零依赖</strong> QR 编码器（byte 模式、版本 1–40、ECC L/M/Q/H、自动掩码）+ PNG/SVG/终端渲染，与 <code>libqrencode</code> 逐模块比对一致。</p>
+<p><strong>QQ 扫码登录（复用 NapCat WebUI 接口契约，独立实现）</strong>：4 条 <code>/api/napcat/*</code> 路由 + Web「QQ 登录」页 + CLI <code>qq-archive login</code>（在终端直接渲染二维码）。凭据流程与 NapCat WebUI 真实契约一致：<code>sha256(token + '.napcat')</code> → <code>POST /api/auth/login</code> → <code>Credential</code> → 之后每请求 <code>Authorization: Bearer</code>；凭据失效时作废缓存、重新探端口并重新登录，且<strong>只重试一次</strong>；<code>code !== 0</code> 一律当错误上报，绝不静默渲染成空列表。证据：<code>tests/napcat.test.ts</code>（18 用例，单测抓出过一个真实的重连缺陷）+ <code>tests/napcat-login-e2e.test.ts</code>（7 用例：真子进程 CLI + 真 HTTP + 假 NapCat WebUI，断言退出码、终端二维码逐模块等于编码器输出、重认证恰好发生一次）+ <code>tests/napcat-routes.test.ts</code>（9 用例：四条路由的 HTTP 契约，含「二维码只下发 PNG、响应体不含 URL 明文」的逐像素证明，以及错误映射的回归护栏）。<strong>该适配器是按公开 HTTP 接口契约独立编写的，未复制任何 GPL 代码</strong>，理由见 <a href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/">qce-reuse-analysis.md</a>。</p>
+<p><strong>服务层 <code>packages/server</code></strong>：30 条路由、HMAC 访问令牌 + 刷新令牌 + 常数时间比较、登录限速、编辑距离无关的路径穿越防护、Range 请求支持、SSE 实时任务进度、静态托管 + 深路由回退、导出（json/jsonl/txt）、备份/校验/恢复、<strong>动态模块探测</strong>（导入与采集模块可选存在）。</p>
+<p><strong>CLI <code>apps/cli</code></strong>：11 个子命令、参数解析（<code>--config</code> 可前置或后置）、<code>doctor</code> 七项自检。</p>
+<p><strong>前端 <code>web/</code></strong>：8 个 hash 路由、8 张统计卡、时间线 + 搜索高亮、媒体网格、归档管理 + SSE、日志筛选、导出。XSS 审计：全域仅 1 处 <code>innerHTML</code>（受控的搜索片段高亮通道），无 <code>outerHTML</code> / <code>document.write</code> / <code>insertAdjacentHTML</code> / <code>eval</code>。</p>
+<p><strong>语音转写层 <code>packages/stt</code></strong>：<code>whisper-cli</code> + <code>ffmpeg</code> 外部进程适配（零新依赖）、探测与缓存、<code>transcribePending()</code> 批量流水线（真库 + 真临时文件）、<code>media_transcripts</code> 持久化；默认关闭，装不上时<strong>绝不影响归档主流程</strong>。</p>
+<p><strong>工程</strong>：<code>npm run typecheck</code> 0 错误、<strong>240 用例 0 失败</strong>、<strong>生产依赖 0 个</strong>。</p>
+<h3 id="3-2-未实现（以及为什么）"><a href="#3-2-未实现（以及为什么）" class="headerlink" title="3.2 未实现（以及为什么）"></a>3.2 未实现（以及为什么）</h3><table>
+<thead>
+<tr>
+<th>未实现</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手机端（华为，无 Root）采集</td>
+<td>刻意不做侵入式路线；且未同步记录本就取不到（问题 4）</td>
+</tr>
+<tr>
+<td>读取 QQ 本地加密数据库</td>
+<td>需要密钥与 Root/Frida，侵入性高、许可证风险大，刻意规避</td>
+</tr>
+<tr>
+<td>Docker 镜像 / Dockerfile</td>
+<td>本机无 docker，<strong>不提供未经验证的交付物</strong></td>
+</tr>
+<tr>
+<td>表情 / 卡片 / 位置消息的语义解析</td>
+<td>原始 JSON 已存，但目前降级为占位文本；解析需逐个适配 QQ 的私有结构且易随版本失效</td>
+</tr>
+<tr>
+<td>端到端加密</td>
+<td>当前安全模型是「本机/可信内网 + 令牌认证」，多用户与远程访问场景需要另做设计</td>
+</tr>
+<tr>
+<td>多账号并发采集</td>
+<td>数据结构支持（<code>account_uid</code> 已贯穿），但 runner 目前单账号串行</td>
+</tr>
+<tr>
+<td><strong>Windows 脚本的真实执行验证</strong></td>
+<td>开发机是 Linux、没有 <code>pwsh</code>，只做了 <strong>80 项</strong>静态自检，<strong>从未在真实 Windows 上执行</strong></td>
+</tr>
+<tr>
+<td><strong>真实第三方 HTML 导出器的回归</strong></td>
+<td>HTML 导入只用我方合成的 fixture 验证，没拿真实导出器产出的 HTML 跑过</td>
+</tr>
+<tr>
+<td><strong>转写质量基准（CER/WER）</strong></td>
+<td>只验证了真机 3 个真实 <code>.amr</code> 能转出可读中文，未做准确率基准、未覆盖方言/强噪声/多人重叠</td>
+</tr>
+<tr>
+<td><strong>真实 QQ「合并转发」的完整展开对账</strong></td>
+<td>展开逻辑有真机 <code>get_forward_msg</code> 实测（真实转发 9/9/19 节点可解）与 15 个用例，但未对展开结果做完整性人工比对</td>
+</tr>
+</tbody></table>
+<h3 id="3-3-限制清单（真实边界）"><a href="#3-3-限制清单（真实边界）" class="headerlink" title="3.3 限制清单（真实边界）"></a>3.3 限制清单（真实边界）</h3><ol>
+<li><strong>无法阻止 QQ 删除消息</strong> —— 这是本系统的前提认知，不是缺陷。系统只保护「已到达本系统」的数据。</li>
+<li><strong>群聊离线期间消息不补齐</strong> —— 上游 NapCat 明确不支持。</li>
+<li><strong>撤回消息不可取回</strong> —— 只能记录「此处有撤回」。</li>
+<li><strong>已解散/已退出群聊不可读</strong>。</li>
+<li><strong>腾讯服务端完整性无法保证</strong>，官方工具自己标注 <code>serverCompletenessProven: false</code>。</li>
+<li><strong>手机端未同步记录无法获取</strong>。</li>
+<li><strong><code>PRAGMA</code> 与 FTS5 依赖 Node 内置 SQLite</strong> —— 换用其他运行时需另配 SQLite；Node 版本要求 ≥ 22.5。</li>
+<li><strong>使用 <code>--experimental-strip-types</code></strong> —— Node 的 TypeScript 支持仍是实验性的；strip-only 模式<strong>不支持 parameter properties 与 <code>enum</code></strong>（已知约束，代码已规避）。未来若 Node 稳定该特性，可直接去掉 flag。</li>
+<li><strong>默认只监听 <code>127.0.0.1</code></strong> —— 远程访问需自行配置 TLS 反向代理。</li>
+<li><strong>媒体缺失的 sha256 是合成指纹而非内容哈希</strong> —— 因为拿不到内容就没法算真哈希；这一列在查询/关联时是身份标识，<strong>不可当作完整性凭证</strong>。</li>
+<li><strong><code>rawMessage</code> 截断至 16 KiB；<code>elements</code>/<code>mentions</code> 各上限 200 条</strong> —— 防止异常导出撑爆数据库；超限时有明确记录。</li>
+<li><strong>有损映射共 21 条</strong> —— 全部列在 <a href="/2026/10/13/qq-archive-05-ge-shi-ying-she/">format-mapping.md</a> 第 7 节（含 HTML 与转写两条）。</li>
+</ol>
+<hr>
+<h2 id="四、开源项目复用清单与许可证说明"><a href="#四、开源项目复用清单与许可证说明" class="headerlink" title="四、开源项目复用清单与许可证说明"></a>四、开源项目复用清单与许可证说明</h2><p><strong>这一节是合规声明，请认真对待。本项目的许可证策略是「最大化规避传染与非商业限制」。</strong></p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>许可证</th>
+<th>本项目如何使用</th>
+<th>合规判断</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/shuakami/qq-chat-exporter">shuakami/qq-chat-exporter</a></td>
+<td><strong>GPL-3.0</strong></td>
+<td><strong>只借鉴其导出的 JSON 数据结构</strong>（字段名与嵌套关系），用于让本系统能读它的导出文件。<strong>未复制任何一行代码、未链接、未修改、未分发其产物</strong></td>
+<td>✅ 数据格式不受版权保护（接口/数据结构的兼容实现不构成衍生作品）。已在 README 与本文档显式声明</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/Tealina28/QQNT_Export">Tealina28/QQNT_Export</a></td>
+<td>GPL-3.0</td>
+<td><strong>未使用</strong>（需已解密的本地数据库）</td>
+<td>✅ 未接触</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/NapNeko/NapCatQQ">NapNeko/NapCatQQ</a></td>
+<td><strong>自定义许可：禁止商业使用、禁止发布修改版（非 OSI 开源）</strong></td>
+<td><strong>仅通过网络 HTTP 调用其 OneBot 接口与 WebUI 接口</strong>（后者用于扫码登录）。不分发其任何字节、不修改、不打包、不在仓库中出现</td>
+<td>✅ 通过公开网络接口互操作；使用者需自行安装并遵守其许可</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/LagrangeDev/Lagrange.Core">LagrangeDev/Lagrange.Core</a></td>
+<td><strong>无 LICENSE 文件</strong>（默认保留所有权利）</td>
+<td><strong>未使用任何代码或接口</strong></td>
+<td>✅ 未接触。特别说明：无许可证即意味着不能复用，本项目绕开</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/LLOneBot/LuckyLilliaBot">LLOneBot/LuckyLilliaBot</a></td>
+<td>GPL-2.0</td>
+<td><strong>未使用其代码</strong>；本系统只实现并兼容其公开的 OneBot HTTP 协议</td>
+<td>✅ 协议兼容不构成衍生作品</td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://github.com/QQBackup/QQ-History-Backup">QQBackup/QQ-History-Backup</a></td>
+<td>MIT</td>
+<td><strong>未使用</strong>（需 Root/Frida）</td>
+<td>✅ 未接触</td>
+</tr>
+</tbody></table>
+<p><strong>架构层面的取舍</strong>：采集端刻意通过 <strong>HTTP 接口</strong>与 QQ 生态解耦，而不是链接库或读取本地数据库。这个选择同时解决三个问题——(1) 避免 GPL 传染；(2) 避免触碰 NapCat 的「禁止发布修改版/禁止商用」边界；(3) 让本系统的采集端可替换（任何提供兼容 OneBot 接口的实现都能用）。这是本报告第二节问题 5 中「零生产依赖」之外的另一项刻意设计。</p>
+<p><strong>扫码登录为什么是「自己实现」而不是抄 QCE</strong>：<a target="_blank" rel="noopener" href="https://github.com/shuakami/qq-chat-exporter">qq-chat-exporter</a> 的扫码登录并不由它自己实现——它驱动的是 <strong>NapCat WebUI 的 REST 接口</strong>（其 <code>installer/src-tauri/src/napcat.rs</code> 文件头自述 “NapCat WebUI automation”）。QCE 是 GPL-3.0，因此<strong>不能抄它的代码</strong>；但「调哪个 HTTP 路径、参数叫什么」属于事实性接口信息，独立实现不构成衍生作品。本项目据此从零实现了 <code>packages/collect/src/napcat-webui.ts</code>（读接口契约、写自己的代码），并且<strong>连二维码编码都没有引第三方库</strong>：<code>packages/qr</code> 自己按 ISO/IEC 18004 实现 byte 模式编码，再用系统里的 <code>qrencode</code> 做逐模块黄金对比、用 <code>zbarimg</code> 做解码回环。完整的证据链与逐项现状（含「哪些当初以为缺、其实已有」）见 <a href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/">qce-reuse-analysis.md</a>。</p>
+<p><strong>本项目的依赖</strong>：生产依赖 <strong>0 个</strong>。开发依赖仅 <code>typescript</code> 与 <code>@types/node</code>。数据库用 Node 24 内置 <code>node:sqlite</code>，HTTP 服务用内置 <code>node:http</code>，测试用内置 <code>node:test</code>——<strong>没有把任何第三方库引入供应链</strong>。</p>
+<p><strong>本项目的许可</strong>：已选定 <strong><a target="_blank" rel="noopener" href="https://github.com/emoeem/qq-archive/tree/main/LICENSE">PolyForm Noncommercial License 1.0.0</a></strong>（源码可见，非 OSI 认可的开放源代码许可）——任何<strong>非商业</strong>目的可自由使用、修改与分发，<strong>商业使用须事先取得著作权人书面授权</strong>。源码已发布为公开 Git 仓库 <a target="_blank" rel="noopener" href="https://github.com/emoeem/qq-archive">https://github.com/emoeem/qq-archive</a>；<code>LICENSE</code>、<code>package.json</code> 的 <code>license</code> 字段与 README 的「许可证」章节三处口径一致。</p>
+<hr>
+<h2 id="五、后续可扩展方向"><a href="#五、后续可扩展方向" class="headerlink" title="五、后续可扩展方向"></a>五、后续可扩展方向</h2><p>按「投入产出比 × 对防丢失目标的实际增益」排序：</p>
+<p><strong>第一优先级（直接提升数据完整性）</strong></p>
+<ol>
+<li><strong>真实 NapCat / LLOneBot 真机验证</strong> —— 唯一能把这些「按规范实现」变成「已验证」的路径。需一个可用的 QQ 账号。</li>
+<li><strong>采集端补齐策略</strong> —— 除群/私聊列表外，加入更多遍历入口（如最近会话、置顶会话），提高离线期消息的重叠覆盖概率。</li>
+<li><strong>导入更多导出格式</strong> —— 目前已抽象出 <code>Importer</code> 接口（<code>listImporters()</code> 可枚举），新增格式只需实现一个模块。优先补 QQ 官方导出格式与常见第三方工具格式。</li>
+<li><strong>音频/语音端到端覆盖</strong> —— 解析层已就绪，补夹具样本与用例即可闭环。</li>
+</ol>
+<p><strong>第二优先级（可用性）</strong></p>
+<ol start="5">
+<li><strong>全量/增量备份自动化</strong> —— 已有 <code>backup</code> 命令与 systemd 模板，可加入定时快照 + 保留策略 + 异地副本（如 rsync 到另一台机器）。</li>
+<li><strong>搜索增强</strong> —— 当前是 bigram + FTS5，可加：按发送者/时间范围/消息类型组合筛选（后端已支持，前端可暴露更多）、搜索结果跳转到原文上下文。</li>
+<li><strong>合并转发展开</strong> —— 先设计好「一次转发」的表示法（父消息 + 子消息树），再实现递归展开。</li>
+<li><strong>表情/卡片/位置的结构化展示</strong> —— 原始 JSON 已存，可逐个适配常见类型并做优雅降级。</li>
+</ol>
+<p><strong>第三优先级（规模化）</strong></p>
+<ol start="9">
+<li><strong>Docker 化</strong> —— 需要在有 docker 的环境验证后再交付。</li>
+<li><strong>多账号支持</strong> —— <code>account_uid</code> 已贯穿数据模型，主要是 runner 需要支持并发与隔离。</li>
+<li><strong>端到端加密与多用户权限</strong> —— 若要从「本机工具」走向「家庭/团队共享服务」，这是必须补的一层。</li>
+<li><strong>插件化采集源</strong> —— 让 OneBot 之外的采集方式（如官方导出目录监控）能以插件形式接入。</li>
+</ol>
+<hr>
+<h2 id="六、交付状态声明"><a href="#六、交付状态声明" class="headerlink" title="六、交付状态声明"></a>六、交付状态声明</h2><ul>
+<li>全部源码在工作目录 <code>/home/emo/code/QQ/</code>，<strong>不是 Git 仓库</strong>，<strong>未做任何提交、推送、重置或清理</strong>（遵守任务书「不要擅自提交、推送」）。</li>
+<li>未使用任何真实聊天记录或他人账号进行测试。全部测试数据由 <code>tests/fixtures/generate.ts</code> 程序化生成。</li>
+<li><strong>240 个自动化用例 0 失败，类型检查 0 错误</strong>，验证命令与真实输出见 <a href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/">acceptance.md</a>。</li>
+<li>本报告中<strong>不存在</strong>「为了让测试变绿而放宽断言语义」或「声称完成了未验证功能」的情况。所有未验证项集中列在第一节问题 6 与第三节 3.3。</li>
+</ul>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 复现全部验证</span>
+<span class="token builtin class-name">cd</span> /home/emo/code/QQ
+npx tsc <span class="token parameter variable">-p</span> tsconfig.json <span class="token parameter variable">--noEmit</span>
+<span class="token function">node</span> <span class="token parameter variable">--test</span> --experimental-strip-types <span class="token string">"tests/**/*.test.ts"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/">https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/QQ/">QQ</a><a class="post-meta__tags" href="/tags/%E4%BA%A4%E4%BB%98/">交付</a><a class="post-meta__tags" href="/tags/%E6%80%BB%E7%BB%93/">总结</a></div><div class="post-share"><div class="social-share" data-image="/img/featureimages/18.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/" title="QQ 归档 10：同类导出项目调研"><picture><source type="image/avif" srcset="/img/optimized/featureimages/20.avif"><source type="image/webp" srcset="/img/optimized/featureimages/20.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/featureimages/20.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">QQ 归档 10：同类导出项目调研</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录导出/归档项目调研检索日期：2026-10-13（Asia/Shanghai）。除特别注明外，star / commit / release 数据均来自 GitHub REST API（api.github.com）与各仓库 raw 文件，抓取时间同上。标注「未验证」表示未找到可核实的一手来源，请勿直接采信。  1. Tealina28/QQNT_Export   项 值    仓库 https://github.com/Tealina28/QQNT_Export   许可证 GPL-3.0（LICENSE 文件核实，文件头为 GNU GPL v3；API spdx_id=GPL-3.0）   Stars / Forks 76 / 6   语言 Python   最新 Release v3.3.0，2026-07-12（另有 v3.2.0 2026-06-21、v3.1.0 2026-06-20）   最近 commit main 分支 API 返回最近一条为 2025-08-23（Merge pull request #21）；但仓库 pushed_at=2026...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-08-xiang-mu-bao-gao/" title="QQ 归档 08：项目报告"><picture><source type="image/avif" srcset="/img/optimized/cover.avif"><source type="image/webp" srcset="/img/optimized/cover.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/cover.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">QQ 归档 08：项目报告</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录防丢失与自动归档系统 — 项目报告 📌 修订说明：初稿写于独立复核之前（当时 263 个用例）。复核又抓出 6 个真缺陷并修复（引用内容端到端显示、备份对账与保留策略、数据目录搬迁、日志落库与保留、媒体重复下载、3 处前后端字段不一致），用例由 263 增至 347。§0 速览、§7 测试表格与全文用例数均已按当前实测刷新为 347 / 0 失败，复核过程见 INDEPENDENT-VERIFICATION.md。本文的架构、实现细节与边界分析仍然有效。   位置：/home/emo/code/QQ报告日期：2026-10-13口径说明：本文所有数字都是本机实测，不是文档抄写。与 README 中过时的计数冲突时，以本文为准；与更细的验收条目冲突时，以 acceptance.md 为准。   0. 一页速览   项 值    一句话 独立于 QQ 客户端的个人聊天记录归档系统：把已有导出文件导进来，把在线消息持续采下来，把图片/语音/视频/文件内容寻址落盘，用中文网页检索浏览，可备份可恢复可部署。   运行时 Node.js ≥ 22.5（实测 24.x），直接用...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览"><picture><source type="image/avif" srcset="/img/optimized/featureimages/1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 00：项目总览</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录防丢失与自动归档系统一个独立于 QQ 客户端的聊天记录归档系统：把你能合法、稳定获取到的 QQ 消息与多媒体，落到你自己的 SQLite 数据库与媒体目录里，用一个中文网页管理界面来搜索、浏览、导出。  一句话定位：它不能阻止 QQ 删除消息，但能保证凡是曾经到达过本系统的消息，以后都不会再丢。   目录 它解决什么问题 核心能力（真实实现，非演示） 快速开始 三种部署形态 项目结构 技术选型（及为什么） 数据模型 中文全文检索是怎么做的 导入格式 采集端与它的真实边界 扫码登录 QQ 备份与恢复 安全模型 测试 许可证 开源项目复用清单与许可证说明 已实现 / 有局限 / 未实现 后续扩展方向 常见问题   它解决什么问题QQ 聊天记录的丢失有几个不同来源，混在一起谈会得出错误的方案：    丢失来源 能否用本系统解决 怎么解决    手机换机 / 重装 / 清理缓存，本地记录没了 能 提前把已获取的记录导入归档，独立于 QQ 存储   群消息超过 5000 条被 NapCat LRU 清理 能 长期挂采集端 + 断点续传，进了库就永久保留   已撤回的消息后来想...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/" title="QQ 归档 11：qq-chat-exporter 复用性分析"><picture><source type="image/avif" srcset="/img/optimized/featureimages/custom_2.avif"><source type="image/webp" srcset="/img/optimized/featureimages/custom_2.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/custom_2.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 11：qq-chat-exporter 复用性分析</div></div><div class="info-2"><div class="info-item-1">QCE 复用性分析报告 分析对象：/home/emo/code/qq-chat-exporter（下称 QCE，shuakami/qq-chat-exporter，GPL-3.0）本仓现状基线：/home/emo/code/QQ（下称「本仓」）方法：QCE 与 NapCat 插件全部只读打开核实；本报告所有行号均为本轮实际打开文件确认。凡引用第三方侦察（/tmp/qce_media_findings.md）之处已显式标注。核实日期：2026-10-13本文档是本仓唯一被创建/修改的文件。   0. 结论速览 QCE 本身没有可”移植”的独立价值：它的采集能力全部寄生在 NapCat 上（一个注入 NapCat 进程的 Node 插件 + 一个 Rust bridge），不引 NapCat 就一行都跑不起来。”复用 QCE”这个说法必须拆开。 真正值得复用/已经复用的是两件与 QCE 代码无关的东西： A. NapCat WebUI 的 HTTP 契约（登录/扫码/快速登录）——这是 NapCat 的接口事实，QCE 只是众多调用者之一； B. 基于 msgSeq 的群消息缺口检测...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-05-ge-shi-ying-she/" title="QQ 归档 05：数据模型与格式映射"><picture><source type="image/avif" srcset="/img/optimized/featureimages/21.avif"><source type="image/webp" srcset="/img/optimized/featureimages/21.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/21.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 05：数据模型与格式映射</div></div><div class="info-2"><div class="info-item-1">导出格式 → 归档模型 映射说明本文描述 packages/import 如何把外部导出文件转换为本系统的标准模型，以及哪些信息在转换后丢失或降级。所有映射实现都在：  packages/import/src/qce-map.ts（QCE 字段映射、时间解析、元素/资源/提及/引用提取） packages/import/src/normalized-map.ts（generic-jsonl 的归一化消息映射） packages/import/src/txt-parse.ts + packages/import/src/importers/qce-txt.ts（纯文本导出） packages/import/src/media-util.ts + packages/import/src/media.ts（媒体内容寻址归档）  标准模型定义见 packages/core/src/types.ts（NormalizedSession / NormalizedMessage / ResourceRef / ImportBatch），落库结构见 packages/db/src/schema....</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/" title="QQ 归档 10：同类导出项目调研"><picture><source type="image/avif" srcset="/img/optimized/featureimages/20.avif"><source type="image/webp" srcset="/img/optimized/featureimages/20.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/20.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 10：同类导出项目调研</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录导出/归档项目调研检索日期：2026-10-13（Asia/Shanghai）。除特别注明外，star / commit / release 数据均来自 GitHub REST API（api.github.com）与各仓库 raw 文件，抓取时间同上。标注「未验证」表示未找到可核实的一手来源，请勿直接采信。  1. Tealina28/QQNT_Export   项 值    仓库 https://github.com/Tealina28/QQNT_Export   许可证 GPL-3.0（LICENSE 文件核实，文件头为 GNU GPL v3；API spdx_id=GPL-3.0）   Stars / Forks 76 / 6   语言 Python   最新 Release v3.3.0，2026-07-12（另有 v3.2.0 2026-06-21、v3.1.0 2026-06-20）   最近 commit main 分支 API 返回最近一条为 2025-08-23（Merge pull request #21）；但仓库 pushed_at=2026...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/" title="QQ 归档 06：验收测试报告"><picture><source type="image/avif" srcset="/img/optimized/featureimages/1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 06：验收测试报告</div></div><div class="info-2"><div class="info-item-1">验收测试报告 涵盖任务书「八、第六阶段：测试与验收」要求的 15 项测试，逐项给出状态、可复现的测试用例位置与真实运行输出。 本文件中的每一个数字都来自实际执行，不用编译通过替代功能测试，不虚构结果。 测试日期：2026-10-13　环境：CachyOS Linux / Node v24.21.0 / SQLite（Node 内置 node:sqlite）/ ffmpeg 9.0.2   0. 如何复现cd /home/emo/code/QQ  # 类型检查（无编译步骤；Node 直接执行 .ts） npx tsc -p tsconfig.json --noEmit          # 期望：无任何输出  # 全量自动化测试 node --test --experimental-strip-types "tests/**/*.test.ts"  # 只跑本报告的 15 项验收 + 5 项真实联调 node --test --experimental-strip-types tests/acceptance.test.ts tests/integration.test.ts  #...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-12-snowluma-diao-yan/" title="QQ 归档 12：SnowLuma 调研与改进落地"><picture><source type="image/avif" srcset="/img/optimized/featureimages/18.avif"><source type="image/webp" srcset="/img/optimized/featureimages/18.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/18.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 12：SnowLuma 调研与改进落地</div></div><div class="info-2"><div class="info-item-1">SnowLuma 调研：可借鉴机制与本项目落地的改进调研对象：SnowLuma/SnowLuma（本地只读副本 /tmp/SnowLuma，分支 dev）。调研目的：回答「这个项目有没有可以利用和优化的部分」——既找能借鉴的机制，也用它反照出本项目的真实缺陷。 结论先行：它的代码一行都不能用（见 §1），但它有两处工程机制直接照出了本项目的真缺陷，其中两处已经在本仓库落地并带测试证据（见 §4）。另有 6 项建议按性价比排序（见 §5），以及 6 个能力缺口（见 §6）。  1. 许可证边界：只能学思路，不能拿代码这一条是硬约束，必须先说。 /tmp/SnowLuma/LICENSE 原文（已逐字核对）： SnowLuma Source-Available Non-Commercial License SnowLuma 源码可见非商业许可  Version 1.0 · 2026-06-19 Copyright (C) 2026 SnowLumaDevs  This is NOT an open-source license as defined by the Open Sourc...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">99</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+  <strong>正在做什么</strong>
+  <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
+  <a href="/now/">查看 Now →</a>
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%9C%80%E7%BB%88%E6%8A%A5%E5%91%8A"><span class="toc-number">1.</span> <span class="toc-text">最终报告</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E6%9C%80%E7%BB%88%E6%8A%A5%E5%91%8A%E5%BF%85%E9%A1%BB%E5%9B%9E%E7%AD%94%E7%9A%84-6-%E4%B8%AA%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.</span> <span class="toc-text">一、最终报告必须回答的 6 个问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E8%83%BD%E5%90%A6%E5%AF%BC%E5%85%A5%E7%8E%B0%E6%9C%89%E8%81%8A%E5%A4%A9%E8%AE%B0%E5%BD%95%EF%BC%9F%E2%80%94%E2%80%94-%E8%83%BD%E3%80%82"><span class="toc-number">1.1.1.</span> <span class="toc-text">1. 能否导入现有聊天记录？—— 能。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E8%83%BD%E5%90%A6%E6%8C%81%E7%BB%AD%E4%BF%9D%E5%AD%98%E6%96%B0%E6%94%B6%E5%88%B0%E7%9A%84%E6%B6%88%E6%81%AF%EF%BC%9F%E2%80%94%E2%80%94-%E8%83%BD%EF%BC%8C%E4%BD%86%E6%9C%89%E6%98%8E%E7%A1%AE%E8%BE%B9%E7%95%8C%E3%80%82"><span class="toc-number">1.1.2.</span> <span class="toc-text">2. 能否持续保存新收到的消息？—— 能，但有明确边界。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E8%83%BD%E5%90%A6%E7%8B%AC%E7%AB%8B%E4%BF%9D%E5%AD%98%E5%9B%BE%E7%89%87%E5%92%8C%E8%A7%86%E9%A2%91%EF%BC%9F%E2%80%94%E2%80%94-%E8%83%BD%E3%80%82"><span class="toc-number">1.1.3.</span> <span class="toc-text">3. 能否独立保存图片和视频？—— 能。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%89%8B%E6%9C%BA%E7%AB%AF%E6%9C%AA%E5%90%8C%E6%AD%A5%E7%9A%84%E5%8E%86%E5%8F%B2%E6%B6%88%E6%81%AF%E8%83%BD%E5%90%A6%E8%8E%B7%E5%8F%96%EF%BC%9F%E2%80%94%E2%80%94-%E4%B8%8D%E8%83%BD%E3%80%82%E8%BF%99%E4%B8%8D%E6%98%AF%E5%B7%A5%E7%A8%8B%E9%97%AE%E9%A2%98%EF%BC%8C%E6%98%AF%E6%95%B0%E6%8D%AE%E4%B8%8D%E5%AD%98%E5%9C%A8%E4%BA%8E%E4%BB%BB%E4%BD%95%E5%8F%AF%E8%AE%BF%E9%97%AE%E4%BD%8D%E7%BD%AE%E3%80%82"><span class="toc-number">1.1.4.</span> <span class="toc-text">4. 手机端未同步的历史消息能否获取？—— 不能。这不是工程问题，是数据不存在于任何可访问位置。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E8%83%BD%E5%90%A6%E9%83%A8%E7%BD%B2%E5%88%B0%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%B9%B6%E9%80%9A%E8%BF%87%E7%BD%91%E9%A1%B5%E6%9F%A5%E7%9C%8B%EF%BC%9F%E2%80%94%E2%80%94-%E8%83%BD%E3%80%82"><span class="toc-number">1.1.5.</span> <span class="toc-text">5. 能否部署到服务器并通过网页查看？—— 能。</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#6-%E5%93%AA%E4%BA%9B%E5%8A%9F%E8%83%BD%E7%BB%8F%E8%BF%87%E7%9C%9F%E5%AE%9E%E6%B5%8B%E8%AF%95%EF%BC%8C%E5%93%AA%E4%BA%9B%E4%BB%8D%E9%9C%80%E9%AA%8C%E8%AF%81%EF%BC%9F"><span class="toc-number">1.1.6.</span> <span class="toc-text">6. 哪些功能经过真实测试，哪些仍需验证？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E5%8D%81%E9%A1%B9%E4%BA%A4%E4%BB%98%E7%89%A9%E5%AF%B9%E7%85%A7"><span class="toc-number">1.2.</span> <span class="toc-text">二、十项交付物对照</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B7%B2%E5%AE%9E%E7%8E%B0-%E6%9C%AA%E5%AE%9E%E7%8E%B0-%E9%99%90%E5%88%B6%E6%B8%85%E5%8D%95"><span class="toc-number">1.3.</span> <span class="toc-text">三、已实现 &#x2F; 未实现 &#x2F; 限制清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E5%B7%B2%E5%AE%9E%E7%8E%B0%EF%BC%88%E6%9C%89%E6%B5%8B%E8%AF%95%E8%AF%81%E6%8D%AE%EF%BC%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">3.1 已实现（有测试证据）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E6%9C%AA%E5%AE%9E%E7%8E%B0%EF%BC%88%E4%BB%A5%E5%8F%8A%E4%B8%BA%E4%BB%80%E4%B9%88%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">3.2 未实现（以及为什么）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-3-%E9%99%90%E5%88%B6%E6%B8%85%E5%8D%95%EF%BC%88%E7%9C%9F%E5%AE%9E%E8%BE%B9%E7%95%8C%EF%BC%89"><span class="toc-number">1.3.3.</span> <span class="toc-text">3.3 限制清单（真实边界）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%A4%8D%E7%94%A8%E6%B8%85%E5%8D%95%E4%B8%8E%E8%AE%B8%E5%8F%AF%E8%AF%81%E8%AF%B4%E6%98%8E"><span class="toc-number">1.4.</span> <span class="toc-text">四、开源项目复用清单与许可证说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E5%90%8E%E7%BB%AD%E5%8F%AF%E6%89%A9%E5%B1%95%E6%96%B9%E5%90%91"><span class="toc-number">1.5.</span> <span class="toc-text">五、后续可扩展方向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E4%BA%A4%E4%BB%98%E7%8A%B6%E6%80%81%E5%A3%B0%E6%98%8E"><span class="toc-number">1.6.</span> <span class="toc-text">六、交付状态声明</span></a></li></ol></li></ol></div></div><div class="card-widget card-post-series"><div class="item-headline"><i class="fa-solid fa-layer-group"></i><span>系列文章</span></div><div class="aside-list"><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览">QQ 归档 00：项目总览</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始">QQ 归档 01：快速开始</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册">QQ 归档 02：完整使用手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册">QQ 归档 03：部署与运维手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-04-jia-gou-she-ji/" title="QQ 归档 04：架构设计">QQ 归档 04：架构设计</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-05-ge-shi-ying-she/" title="QQ 归档 05：数据模型与格式映射">QQ 归档 05：数据模型与格式映射</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/" title="QQ 归档 06：验收测试报告">QQ 归档 06：验收测试报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/" title="QQ 归档 07：独立复核报告">QQ 归档 07：独立复核报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-08-xiang-mu-bao-gao/" title="QQ 归档 08：项目报告">QQ 归档 08：项目报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-09-jiao-fu-bao-gao/" title="QQ 归档 09：最终交付报告">QQ 归档 09：最终交付报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/" title="QQ 归档 10：同类导出项目调研">QQ 归档 10：同类导出项目调研</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/" title="QQ 归档 11：qq-chat-exporter 复用性分析">QQ 归档 11：qq-chat-exporter 复用性分析</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-12-snowluma-diao-yan/" title="QQ 归档 12：SnowLuma 调研与改进落地">QQ 归档 12：SnowLuma 调研与改进落地</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-13-windows-bu-shu/" title="QQ 归档 13：Windows 部署指南">QQ 归档 13：Windows 部署指南</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/" title="QQ 归档 14：脱敏样例数据集">QQ 归档 14：脱敏样例数据集</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览"><picture><source type="image/avif" srcset="/img/optimized/featureimages/1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/1.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 00：项目总览" loading='lazy'/ decoding="async" src="/img/featureimages/1.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览">QQ 归档 00：项目总览</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始"><picture><source type="image/avif" srcset="/img/optimized/featureimages/8.avif"><source type="image/webp" srcset="/img/optimized/featureimages/8.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 01：快速开始" loading='lazy'/ decoding="async" src="/img/featureimages/8.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始">QQ 归档 01：快速开始</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-3.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-3.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 02：完整使用手册" loading='lazy'/ decoding="async" src="/img/covers/cover-3.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册">QQ 归档 02：完整使用手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册"><picture><source type="image/avif" srcset="/img/optimized/featureimages/5.avif"><source type="image/webp" srcset="/img/optimized/featureimages/5.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 03：部署与运维手册" loading='lazy'/ decoding="async" src="/img/featureimages/5.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册">QQ 归档 03：部署与运维手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-04-jia-gou-she-ji/" title="QQ 归档 04：架构设计"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-2.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-2.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 04：架构设计" loading='lazy'/ decoding="async" src="/img/covers/cover-2.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-04-jia-gou-she-ji/" title="QQ 归档 04：架构设计">QQ 归档 04：架构设计</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners and stale content before re-rendering
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      const oldError = item.querySelector('.mermaid-error')
+      if (oldError) oldError.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (theme in value) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const destroyChart = canvas => {
+    const chart = canvas && window.Chart && Chart.getChart(canvas)
+    if (chart) chart.destroy()
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, destroy its chart and remove it to avoid rendering duplicates
+      if (existingCanvas) {
+        destroyChart(existingCanvas)
+        existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Destroy all charts before navigating away to avoid leaks
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    document.querySelectorAll('.chartjs-wrap canvas').forEach(destroyChart)
+  }, 'chartjs')
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><script src="/js/custom.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox]):not([href="/music/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.1.260810"></script></div></div></body></html>

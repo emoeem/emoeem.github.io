@@ -1,0 +1,1295 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>QQ 归档 13：Windows 部署指南 | emoeem</title><meta name="author" content="emoeem"><meta name="copyright" content="emoeem"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Windows 部署（任务计划程序）本目录把 QQ 归档系统部署到 Windows。只用 Windows 自带的任务计划程序（ScheduledTasks 模块，Windows 8 &#x2F; Server 2012 起随系统提供），不依赖NSSM、不需要下载任何东西、不写注册表服务项。 Node 本体是跨平台的（只用内置模块），Windows 与 Linux 的差别只在于进程守护方式：Linux 用 s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="QQ 归档 13：Windows 部署指南">
+<meta property="og:url" content="https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/index.html">
+<meta property="og:site_name" content="emoeem">
+<meta property="og:description" content="Windows 部署（任务计划程序）本目录把 QQ 归档系统部署到 Windows。只用 Windows 自带的任务计划程序（ScheduledTasks 模块，Windows 8 &#x2F; Server 2012 起随系统提供），不依赖NSSM、不需要下载任何东西、不写注册表服务项。 Node 本体是跨平台的（只用内置模块），Windows 与 Linux 的差别只在于进程守护方式：Linux 用 s">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://emoeem.github.io/img/featureimages/13.jpg">
+<meta property="article:published_time" content="2026-10-13T00:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-13T13:51:13.798Z">
+<meta property="article:author" content="emoeem">
+<meta property="article:tag" content="PowerShell">
+<meta property="article:tag" content="QQ">
+<meta property="article:tag" content="Windows">
+<meta property="article:tag" content="部署">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://emoeem.github.io/img/featureimages/13.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "QQ 归档 13：Windows 部署指南",
+  "url": "https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/",
+  "image": "https://emoeem.github.io/img/featureimages/13.jpg",
+  "datePublished": "2026-10-13T00:00:00.000Z",
+  "dateModified": "2026-10-13T13:51:13.798Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "emoeem",
+      "url": "https://emoeem.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.1.260810"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        try {
+          const data = { value }
+
+          if (ttl != null) {
+            data.expiry = Date.now() + ttl * 86400000
+          }
+
+          localStorage.setItem(key, JSON.stringify(data))
+        } catch (e) {
+          console.error(e)
+        }
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const mediaQueryDark = window.matchMedia('(prefers-color-scheme: dark)')
+          const mediaQueryLight = window.matchMedia('(prefers-color-scheme: light)')
+
+          if (theme === undefined) {
+            if (mediaQueryLight.matches) activateLightMode()
+            else if (mediaQueryDark.matches) activateDarkMode()
+            else {
+              const hour = new Date().getHours()
+              const start = 6
+              const end = 18
+              const isNight =
+                start < end
+                    ? hour < start || hour >= end
+                    : hour >= start || hour < end
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            mediaQueryDark.addEventListener('change', e => {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else {
+            theme === 'light' ? activateLightMode() : activateDarkMode()
+          }
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":2,"unescape":false,"pagination":{"enable":true,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  highlight: {"plugin":"prismjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":500,"highlightFullpage":true,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'medium_zoom',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'QQ 归档 13：Windows 部署指南',
+  isHighlightShrink: true,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="emoeem" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">99</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/featureimages/13.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">emoeem</span></a><a class="nav-page-title" href="/"><span class="site-name">QQ 归档 13：Windows 部署指南</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-pen-nib"></i><span> Blog</span></a></div><div class="menus_item"><a class="site-page" href="/projects/"><i class="fa-fw fas fa-code-branch"></i><span> Projects</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> About</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fas fa-ellipsis-h"></i><span> More</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></li><li><a class="site-page child" href="/now/"><i class="fa-fw fas fa-bolt"></i><span> Now</span></a></li><li><a class="site-page child" href="/uses/"><i class="fa-fw fas fa-toolbox"></i><span> Uses</span></a></li><li><a class="site-page child" href="/timeline/"><i class="fa-fw fas fa-clock"></i><span> Timeline</span></a></li><li><a class="site-page child" href="/gallery/"><i class="fa-fw fas fa-images"></i><span> Gallery</span></a></li><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li><li><a class="site-page child" href="/moments/"><i class="fa-fw fas fa-comment-dots"></i><span> Moments</span></a></li><li><a class="site-page child" href="/friends/"><i class="fa-fw fas fa-link"></i><span> Friends</span></a></li><li><a class="site-page child" href="/contact/"><i class="fa-fw fas fa-envelope"></i><span> Contact</span></a></li></ul></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">QQ 归档 13：Windows 部署指南<a class="post-edit-link" href="https://github.com/emoeem/qq-archive" title="编辑" target="_blank"><i class="fas fa-pencil-alt"></i></a></h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="fa-fw post-meta-icon far fa-calendar-alt"></i><span class="post-meta-label">发表于</span><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">4506</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>18 分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><div class="emo-article-context"><div class="emo-article-context__meta"><span class="emo-article-context__badge"><i class="fas fa-clock fa-fw"></i>最后验证：2026-10-13T13:06:08Z</span></div><div class="emo-article-series"><div class="emo-article-context__title"><i class="fas fa-layer-group fa-fw"></i>QQ 归档</div><ol class="series-items"><li><a href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/">QQ 归档 00：项目总览</a></li><li><a href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/">QQ 归档 01：快速开始</a></li><li><a href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/">QQ 归档 02：完整使用手册</a></li><li><a href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/">QQ 归档 03：部署与运维手册</a></li><li><a href="/2026/10/13/qq-archive-04-jia-gou-she-ji/">QQ 归档 04：架构设计</a></li><li><a href="/2026/10/13/qq-archive-05-ge-shi-ying-she/">QQ 归档 05：数据模型与格式映射</a></li><li><a href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/">QQ 归档 06：验收测试报告</a></li><li><a href="/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/">QQ 归档 07：独立复核报告</a></li><li><a href="/2026/10/13/qq-archive-08-xiang-mu-bao-gao/">QQ 归档 08：项目报告</a></li><li><a href="/2026/10/13/qq-archive-09-jiao-fu-bao-gao/">QQ 归档 09：最终交付报告</a></li><li><a href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/">QQ 归档 10：同类导出项目调研</a></li><li><a href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/">QQ 归档 11：qq-chat-exporter 复用性分析</a></li><li><a href="/2026/10/13/qq-archive-12-snowluma-diao-yan/">QQ 归档 12：SnowLuma 调研与改进落地</a></li><li><a href="/2026/10/13/qq-archive-13-windows-bu-shu/">QQ 归档 13：Windows 部署指南</a></li><li><a href="/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/">QQ 归档 14：脱敏样例数据集</a></li></ol></div></div><h1 id="Windows-部署（任务计划程序）"><a href="#Windows-部署（任务计划程序）" class="headerlink" title="Windows 部署（任务计划程序）"></a>Windows 部署（任务计划程序）</h1><p>本目录把 QQ 归档系统部署到 Windows。<strong>只用 Windows 自带的任务计划程序<br>（ScheduledTasks 模块，Windows 8 / Server 2012 起随系统提供）</strong>，不依赖<br><a target="_blank" rel="noopener" href="https://nssm.cc/">NSSM</a>、不需要下载任何东西、不写注册表服务项。</p>
+<p>Node 本体是跨平台的（只用内置模块），Windows 与 Linux 的差别<strong>只在于进程守护方式</strong>：<br>Linux 用 systemd，Windows 用计划任务。归档的数据库、媒体、备份格式完全一致。</p>
+<hr>
+<h2 id="0-文件清单"><a href="#0-文件清单" class="headerlink" title="0. 文件清单"></a>0. 文件清单</h2><table>
+<thead>
+<tr>
+<th>文件</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>install.ps1</code></td>
+<td>幂等安装器：检查 Node、建目录、生成配置、注册两个计划任务</td>
+</tr>
+<tr>
+<td><code>uninstall.ps1</code></td>
+<td>移除计划任务；默认保留数据，<code>-PurgeData</code> 才删</td>
+</tr>
+<tr>
+<td><code>status.ps1</code></td>
+<td>只读状态：任务状态 / 上次运行结果 / 日志尾部 / 配置与目录</td>
+</tr>
+<tr>
+<td><code>run-collect.ps1</code></td>
+<td>计划任务调用：跑一轮 <code>collect --once</code>，带日志与轮转</td>
+</tr>
+<tr>
+<td><code>run-serve.ps1</code></td>
+<td>计划任务调用：常驻 <code>serve</code>（网页 + API），带日志与轮转</td>
+</tr>
+<tr>
+<td><code>check-syntax.mjs</code></td>
+<td>纯 Node 静态自检器（本机没有 pwsh 时唯一能跑的门禁）</td>
+</tr>
+<tr>
+<td><code>README.md</code></td>
+<td>本文档</td>
+</tr>
+</tbody></table>
+<p>两个计划任务：</p>
+<table>
+<thead>
+<tr>
+<th>任务名（默认）</th>
+<th>触发</th>
+<th>运行内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>QQArchive-Collect</code></td>
+<td>每 15 分钟（<code>-CollectIntervalMinutes</code> 可改）</td>
+<td><code>qq-archive collect --once</code></td>
+</tr>
+<tr>
+<td><code>QQArchive-Serve</code></td>
+<td>用户登录后 30 秒</td>
+<td><code>qq-archive serve</code>（常驻）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="1-前置条件"><a href="#1-前置条件" class="headerlink" title="1. 前置条件"></a>1. 前置条件</h2><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>要求</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Windows</td>
+<td>Windows 10 / 11、Windows Server 2016+（需要 <code>ScheduledTasks</code> 模块与 PowerShell 5.1）</td>
+</tr>
+<tr>
+<td>PowerShell</td>
+<td><strong>Windows PowerShell 5.1</strong>（系统自带）。脚本刻意没有用 PowerShell 7 专属语法</td>
+</tr>
+<tr>
+<td>Node.js</td>
+<td><strong>≥ 22.5</strong>（需要 <code>node:sqlite</code> 与 TypeScript 类型剥离）。推荐 24.x LTS</td>
+</tr>
+<tr>
+<td>磁盘</td>
+<td>建议按媒体总量的 2 倍预留（备份需要空间）</td>
+</tr>
+<tr>
+<td>可选</td>
+<td><code>ffmpeg</code>（视频缩略图）。缺失不影响归档</td>
+</tr>
+</tbody></table>
+<p>装 Node.js：到 <a target="_blank" rel="noopener" href="https://nodejs.org/">https://nodejs.org/</a> 下载 LTS 版 <code>.msi</code> 安装，<strong>勾选</strong>「Add to PATH」，<br>然后<strong>重开一个 PowerShell 窗口</strong>再验证：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">node <span class="token operator">--</span>version      <span class="token comment"># 应输出 v22.5.0 或更高</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<blockquote>
+<p>为什么必须重开窗口：PATH 是进程启动时读取的，安装程序改了系统 PATH，<br>但已经打开的终端不会自动刷新。这是「明明装了 node 却提示找不到」的最常见原因。</p>
+</blockquote>
+<hr>
+<h2 id="2-安装"><a href="#2-安装" class="headerlink" title="2. 安装"></a>2. 安装</h2><h3 id="2-1-最短路径（推荐：当前用户，不需要管理员）"><a href="#2-1-最短路径（推荐：当前用户，不需要管理员）" class="headerlink" title="2.1 最短路径（推荐：当前用户，不需要管理员）"></a>2.1 最短路径（推荐：当前用户，不需要管理员）</h3><p>把仓库放到任意位置（<strong>路径可以含空格</strong>，脚本会正确加引号），然后用<strong>普通权限</strong>的<br>PowerShell 执行：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">cd &lt;仓库根目录&gt;
+powershell<span class="token punctuation">.</span>exe <span class="token operator">-</span>NoProfile <span class="token operator">-</span>ExecutionPolicy Bypass <span class="token operator">-</span>File <span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>想先看会做什么、不真正改动系统：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span>\deploy\windows\run-collect<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>DryRun
+<span class="token punctuation">.</span>\deploy\windows\run-serve<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>DryRun<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<p>安装器依次做这些事（顺序固定，任一步失败就整体停下，不留半套安装）：</p>
+<ol>
+<li>从 <code>$PSScriptRoot</code> 向上两层推导仓库根目录，校验 <code>apps\cli\src\main.ts</code> 存在；</li>
+<li>解析 <code>node.exe</code> 的<strong>完整路径</strong>并校验版本 ≥ 22.5（低于就 <code>throw</code>，不会装完再失败）；</li>
+<li>创建 <code>data\</code>、<code>data\logs\</code>、<code>data\backups\</code>、<code>data\media\</code>；</li>
+<li><code>config.json</code> 不存在时从 <code>config.example.json</code> 复制一份（<strong>已存在则保留不动</strong>）；</li>
+<li>注册两个计划任务（同名旧任务先移除，所以重复执行是安全的）；</li>
+<li>立刻跑一轮采集做验收，并在结束时打印路径与下一步命令。</li>
+</ol>
+<h3 id="2-2-常用参数"><a href="#2-2-常用参数" class="headerlink" title="2.2 常用参数"></a>2.2 常用参数</h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 换配置文件位置</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>ConfigPath D:\qq-config\config<span class="token punctuation">.</span>json
+
+<span class="token comment"># 换任务名与采集间隔</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>TaskName MyArchive-Collect <span class="token operator">-</span>ServeTaskName MyArchive-Serve <span class="token operator">-</span>CollectIntervalMinutes 5
+
+<span class="token comment"># 仓库不在推导出来的位置（例如脚本被复制到别处）</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>RepoRoot D:\code\QQ
+
+<span class="token comment"># 以 SYSTEM 身份运行（需管理员）：注销后仍持续采集</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>RunAsSystem<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>-Action</code></td>
+<td><code>Install</code></td>
+<td><code>Install</code> / <code>Uninstall</code> / <code>Status</code></td>
+</tr>
+<tr>
+<td><code>-ConfigPath</code></td>
+<td><code>&lt;仓库根&gt;\config.json</code></td>
+<td>配置文件路径</td>
+</tr>
+<tr>
+<td><code>-RepoRoot</code></td>
+<td><code>$PSScriptRoot\..\..</code></td>
+<td>仓库根目录</td>
+</tr>
+<tr>
+<td><code>-InstallPath</code></td>
+<td>等于 <code>-RepoRoot</code></td>
+<td>计划任务的「起始位置」</td>
+</tr>
+<tr>
+<td><code>-TaskName</code></td>
+<td><code>QQArchive-Collect</code></td>
+<td>定时采集任务名</td>
+</tr>
+<tr>
+<td><code>-ServeTaskName</code></td>
+<td><code>QQArchive-Serve</code></td>
+<td>网页服务任务名</td>
+</tr>
+<tr>
+<td><code>-CollectIntervalMinutes</code></td>
+<td><code>15</code></td>
+<td>采集间隔（分钟，最小 1）</td>
+</tr>
+<tr>
+<td><code>-MinNodeMajor</code></td>
+<td><code>22</code></td>
+<td>最低 Node 主版本（同时要求 ≥ 22.5）</td>
+</tr>
+<tr>
+<td><code>-KeepCollectLogs</code> / <code>-KeepServeLogs</code></td>
+<td><code>30</code> / <code>8</code></td>
+<td>保留日志份数</td>
+</tr>
+<tr>
+<td><code>-RunAsSystem</code></td>
+<td>关</td>
+<td>以 SYSTEM 注册任务（需管理员）</td>
+</tr>
+</tbody></table>
+<h3 id="2-3-管理员-vs-当前用户"><a href="#2-3-管理员-vs-当前用户" class="headerlink" title="2.3 管理员 vs 当前用户"></a>2.3 管理员 vs 当前用户</h3><table>
+<thead>
+<tr>
+<th></th>
+<th>当前用户（默认）</th>
+<th><code>-RunAsSystem</code></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>需要管理员权限</td>
+<td><strong>不需要</strong></td>
+<td>需要</td>
+</tr>
+<tr>
+<td>注销后是否继续</td>
+<td><strong>停止</strong>（登录时任务也消失）</td>
+<td>继续</td>
+</tr>
+<tr>
+<td>能访问映射的网络驱动器</td>
+<td>能（在同一个登录会话里）</td>
+<td><strong>不能</strong>（服务账户无法访问映射驱动器）</td>
+</tr>
+<tr>
+<td>适合谁</td>
+<td>个人电脑，自己登录着用</td>
+<td>想 7×24 采集的机器</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="3-配置"><a href="#3-配置" class="headerlink" title="3. 配置"></a>3. 配置</h2><p>配置文件默认在<strong>仓库根目录的 <code>config.json</code></strong>（相对路径 <code>dataDir</code> / <code>logDir</code> 等<br>以<strong>配置文件所在目录</strong>为基准解析）。安装器只负责复制模板，<strong>不会</strong>改写你已经改过的文件。</p>
+<p>关键字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>默认</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>server.host</code></td>
+<td><code>127.0.0.1</code></td>
+<td><strong>默认只允许本机访问</strong>。改成 <code>0.0.0.0</code> 前请先读安全说明</td>
+</tr>
+<tr>
+<td><code>server.port</code></td>
+<td><code>8787</code></td>
+<td>网页端口</td>
+</tr>
+<tr>
+<td><code>server.token</code></td>
+<td>空</td>
+<td>留空即可：首次运行会自动生成随机令牌并写回 <code>config.json</code></td>
+</tr>
+<tr>
+<td><code>storage.dataDir</code></td>
+<td><code>./data</code></td>
+<td>数据根目录</td>
+</tr>
+<tr>
+<td><code>storage.backupDir</code></td>
+<td><code>&lt;dataDir&gt;/backups</code></td>
+<td>备份目录，建议放另一块磁盘</td>
+</tr>
+<tr>
+<td><code>collector.kind</code></td>
+<td><code>none</code></td>
+<td>改成 <code>onebot</code> 才会真正采集</td>
+</tr>
+<tr>
+<td><code>collector.baseUrl</code></td>
+<td><code>http://127.0.0.1:3000</code></td>
+<td>OneBot（NapCat / LLOneBot）地址</td>
+</tr>
+<tr>
+<td><code>collector.token</code></td>
+<td>空</td>
+<td>OneBot 侧的 access token</td>
+</tr>
+</tbody></table>
+<p>查看登录令牌（在仓库根目录执行，任选一种）：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">node bin\qq-archive<span class="token punctuation">.</span>mjs token
+node <span class="token operator">--</span>experimental-strip-types apps\<span class="token function">cli</span>\src\main<span class="token punctuation">.</span>ts token<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+
+<blockquote>
+<p>如果安装后马上 <code>serve</code>，而 <code>config.json</code> 里的 <code>token</code> 是空的，CLI 会自动生成一个<br>并写回文件。用上面的命令读到的就是它。</p>
+</blockquote>
+<h3 id="3-1-让采集真正开始工作"><a href="#3-1-让采集真正开始工作" class="headerlink" title="3.1 让采集真正开始工作"></a>3.1 让采集真正开始工作</h3><ol>
+<li><p>先在本机跑起一个提供 OneBot v11 HTTP 接口的实现（NapCat / LLOneBot）。</p>
+</li>
+<li><p>改 <code>config.json</code>：<code>collector.kind</code> → <code>"onebot"</code>，填好 <code>baseUrl</code> 与 <code>token</code>。</p>
+</li>
+<li><p>手动验证一轮：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span>\deploy\windows\run-collect<span class="token punctuation">.</span>ps1<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>退出码 <code>0</code> = 成功，<code>2</code> = 采集未启用（<code>kind</code> 不是 <code>onebot</code>），<br><code>3</code> = 连不上采集端（OneBot 没跑，或 URL/token 不对）。</p>
+</li>
+<li><p>之后计划任务每 15 分钟自动跑一轮。</p>
+</li>
+</ol>
+<h3 id="3-2-采集端的真实边界（Windows-不改变这一点）"><a href="#3-2-采集端的真实边界（Windows-不改变这一点）" class="headerlink" title="3.2 采集端的真实边界（Windows 不改变这一点）"></a>3.2 采集端的真实边界（Windows 不改变这一点）</h3><ul>
+<li><strong>离线期间的消息不会补齐</strong> —— QQ 服务端不提供，NapCat 维护者已明确说明这是设计行为。</li>
+<li><strong>已撤回的消息取不回</strong>。</li>
+<li><strong>手机端没同步到电脑端的记录，任何 API 都拿不到</strong>。</li>
+</ul>
+<p>所以本系统的保证是「<strong>一旦消息到达过采集端，就再也不会丢</strong>」，<br>而不是「QQ 删了也能救回来」。采集端要尽量长期挂着，离线窗口越短越好。</p>
+<hr>
+<h2 id="4-验证"><a href="#4-验证" class="headerlink" title="4. 验证"></a>4. 验证</h2><h3 id="4-1-静态自检（任何平台都能跑，本项目-CI-用这个）"><a href="#4-1-静态自检（任何平台都能跑，本项目-CI-用这个）" class="headerlink" title="4.1 静态自检（任何平台都能跑，本项目 CI 用这个）"></a>4.1 静态自检（任何平台都能跑，本项目 CI 用这个）</h3><p>本目录自带一个<strong>零依赖</strong>的检查器，逐文件校验 <code>{}</code> / <code>()</code> / <code>[]</code> 配对、引号与<br>here-string 闭合、必需参数是否声明、调用的 <code>qq-archive</code> 子命令与选项是否真实存在、<br>是否硬编码绝对路径、是否误用 PowerShell 7 专属语法：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">node deploy\windows\check-syntax<span class="token punctuation">.</span>mjs<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>（在 Linux/macOS 上同样可以跑：<code>node deploy/windows/check-syntax.mjs</code>。）</p>
+<blockquote>
+<p><strong>UTF-8 BOM 是硬要求。</strong> Windows PowerShell 5.1 对「没有 BOM 的 UTF-8」会按系统<br>ANSI 代码页解码：脚本里的中文注释和中文字符串会变乱码，严重时连引号都被拆开而直接<br>语法报错。本目录的 5 个 <code>.ps1</code> 都已带 BOM，检查器里也有对应断言。如果编辑工具把 BOM<br>去掉了，跑这条幂等的修复命令补回来（已有 BOM 的文件一个字节都不动）：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">node deploy\windows\check-syntax<span class="token punctuation">.</span>mjs <span class="token operator">--</span>fix-bom<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre></blockquote>
+<h3 id="4-2-Windows-上的手工验收清单"><a href="#4-2-Windows-上的手工验收清单" class="headerlink" title="4.2 Windows 上的手工验收清单"></a>4.2 Windows 上的手工验收清单</h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 1) 任务是否注册、上次运行结果是什么</span>
+<span class="token punctuation">.</span>\deploy\windows\status<span class="token punctuation">.</span>ps1
+
+<span class="token comment"># 2) 立即跑一轮采集（前台，能直接看到完整输出）</span>
+<span class="token punctuation">.</span>\deploy\windows\run-collect<span class="token punctuation">.</span>ps1
+
+<span class="token comment"># 3) 环境自检（配置 / 依赖 / 权限 / 磁盘 / ffmpeg）</span>
+node bin\qq-archive<span class="token punctuation">.</span>mjs doctor
+
+<span class="token comment"># 4) 打开网页，用 `token` 命令打印的令牌登录</span>
+<span class="token function">start</span> http:<span class="token operator">/</span><span class="token operator">/</span>127<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>1:8787/
+
+<span class="token comment"># 5) 手动验证网页任务是否能起来（前台 5 秒即可）</span>
+<span class="token punctuation">.</span>\deploy\windows\run-serve<span class="token punctuation">.</span>ps1<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>任务计划程序图形界面里也能看：<code>taskschd.msc</code> → 任务计划程序库 →<br><code>QQArchive-Collect</code> / <code>QQArchive-Serve</code> → 「上次运行结果」。</p>
+<hr>
+<h2 id="5-升级"><a href="#5-升级" class="headerlink" title="5. 升级"></a>5. 升级</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 1) 先备份（升级前必备）</span>
+node bin\qq-archive<span class="token punctuation">.</span>mjs backup <span class="token operator">--</span>label <span class="token string">"升级前-<span class="token function">$<span class="token punctuation">(</span><span class="token function">Get-Date</span> <span class="token operator">-</span>Format yyyyMMdd<span class="token punctuation">)</span></span>"</span>
+
+<span class="token comment"># 2) 停掉网页任务（如果它正在跑）</span>
+<span class="token function">Stop-ScheduledTask</span> <span class="token operator">-</span>TaskName QQArchive-Serve
+
+<span class="token comment"># 3) 更新代码（git pull / 覆盖文件）</span>
+
+<span class="token comment"># 4) 重跑安装器：它会重建任务，但**保留** config.json 与全部数据</span>
+powershell<span class="token punctuation">.</span>exe <span class="token operator">-</span>NoProfile <span class="token operator">-</span>ExecutionPolicy Bypass <span class="token operator">-</span>File <span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1
+
+<span class="token comment"># 5) 验证</span>
+<span class="token punctuation">.</span>\deploy\windows\status<span class="token punctuation">.</span>ps1
+node bin\qq-archive<span class="token punctuation">.</span>mjs doctor<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>数据库迁移是<strong>自动</strong>的：启动时对比 <code>schema_migrations</code>，只执行未应用的版本，<br>每个版本在事务里完成。迁移<strong>只做向后兼容的新增</strong>（加表 / 加索引 / 加可空列），<br>不会删除你的数据。</p>
+<h3 id="回滚"><a href="#回滚" class="headerlink" title="回滚"></a>回滚</h3><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token function">Stop-ScheduledTask</span> <span class="token operator">-</span>TaskName QQArchive-Serve
+<span class="token comment"># 切回上一版代码</span>
+node bin\qq-archive<span class="token punctuation">.</span>mjs restore &lt;升级前的备份目录&gt;          <span class="token comment"># 先 dry-run</span>
+node bin\qq-archive<span class="token punctuation">.</span>mjs restore &lt;升级前的备份目录&gt; <span class="token operator">--</span>apply  <span class="token comment"># 确认无误再真恢复</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+
+<hr>
+<h2 id="6-卸载"><a href="#6-卸载" class="headerlink" title="6. 卸载"></a>6. 卸载</h2><pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 默认：只移除两个计划任务，保留 config.json 与 data\（数据库 / 媒体 / 备份）</span>
+<span class="token punctuation">.</span>\deploy\windows\uninstall<span class="token punctuation">.</span>ps1
+
+<span class="token comment"># 连数据一起删（会二次确认，输入 yes 才执行）</span>
+<span class="token punctuation">.</span>\deploy\windows\uninstall<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>PurgeData
+
+<span class="token comment"># 无人值守（跳过确认）</span>
+<span class="token punctuation">.</span>\deploy\windows\uninstall<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>PurgeData <span class="token operator">-</span>Force<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p><code>uninstall.ps1</code> <strong>不会删除 <code>config.json</code></strong> —— 它含登录令牌，而且是用户自己改过的文件，<br>卸载器擅自删除风险太大。要删请自己确认后手动删。</p>
+<p>如果任务名改过，卸载时也要带上同样的名字，否则会找不到：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token punctuation">.</span>\deploy\windows\uninstall<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>TaskName MyArchive-Collect <span class="token operator">-</span>ServeTaskName MyArchive-Serve<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<hr>
+<h2 id="7-坑点（都是-Windows-计划任务特有的，逐条踩过才写在这里）"><a href="#7-坑点（都是-Windows-计划任务特有的，逐条踩过才写在这里）" class="headerlink" title="7. 坑点（都是 Windows 计划任务特有的，逐条踩过才写在这里）"></a>7. 坑点（都是 Windows 计划任务特有的，逐条踩过才写在这里）</h2><h3 id="7-1-计划任务的「起始位置」必须显式设置"><a href="#7-1-计划任务的「起始位置」必须显式设置" class="headerlink" title="7.1 计划任务的「起始位置」必须显式设置"></a>7.1 计划任务的「起始位置」必须显式设置</h3><p>计划任务默认的工作目录是 <code>C:\Windows\System32</code>。而本项目的 <code>config.json</code> 里<br><code>dataDir: "./data"</code> 是<strong>相对配置文件所在目录</strong>解析的（配置路径本身如果是相对的，<br>才会按当前工作目录找）。听起来好像没事——但 <strong><code>--config</code> 传相对路径时就是按 CWD 找的</strong>，<br>在 <code>System32</code> 下会找不到配置，然后按默认值启动、把 <code>data\</code> 建到 <code>System32</code> 里（通常还因<br>权限失败）。</p>
+<p>所以：<code>install.ps1</code> 会把 <code>-WorkingDirectory</code> 显式设为仓库根目录，<br>且传给 CLI 的 <code>--config</code> 一律是<strong>绝对路径</strong>（<code>Resolve-AbsolutePath</code> 做的这件事）。<br>你自己手写计划任务时，也要保证这两点。</p>
+<h3 id="7-2-ExecutionPolicy-Bypass-不是可选项"><a href="#7-2-ExecutionPolicy-Bypass-不是可选项" class="headerlink" title="7.2 -ExecutionPolicy Bypass 不是可选项"></a>7.2 <code>-ExecutionPolicy Bypass</code> 不是可选项</h3><p>Windows 默认执行策略是 <code>Restricted</code>（客户端）或 <code>RemoteSigned</code>（服务器）。<br>从别人机器/压缩包复制过来的 <code>.ps1</code> 带「来自 Internet」的标记，<code>RemoteSigned</code> 会直接拒绝。<br>表现是<strong>任务一闪而过、退出码非 0、但没有任何输出</strong>——非常难查。</p>
+<p>所以计划任务的动作里必须带：</p>
+<pre class="line-numbers language-none"><code class="language-none">powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File "…\run-collect.ps1"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<p>手动执行时也要带（README 里所有示例都带了）。</p>
+<h3 id="7-3-服务账户看不到「映射的网络驱动器」"><a href="#7-3-服务账户看不到「映射的网络驱动器」" class="headerlink" title="7.3 服务账户看不到「映射的网络驱动器」"></a>7.3 服务账户看不到「映射的网络驱动器」</h3><p>映射驱动器（<code>net use Z: \\server\share</code>）是<strong>每个登录会话</strong>的，存在于<br><code>HKEY_CURRENT_USER\Network</code>。以 <code>SYSTEM</code> 或其它服务账户运行的计划任务：<br><strong>看不到任何你在资源管理器里映射的盘符</strong>。</p>
+<p>正确做法是用 <strong>UNC 路径</strong>（<code>\\server\share\...</code>）而不是盘符，并且让任务账户对该共享<br>有显式权限（共享权限 + NTFS 权限两层都要给）。或者干脆用默认的「当前用户」任务，<br>和你的登录会话在同一环境里。</p>
+<p>另外：本项目的 <code>backupDir</code> 建议放<strong>另一块物理磁盘</strong>（例如 <code>D:\qq-backup</code>），<br>如果非要放网络共享，请确保上面这条前提成立。</p>
+<h3 id="7-4-路径含空格要加引号"><a href="#7-4-路径含空格要加引号" class="headerlink" title="7.4 路径含空格要加引号"></a>7.4 路径含空格要加引号</h3><p><code>C:\Program Files\...</code> 这类路径如果没有引号，<code>node</code> 会把 <code>C:\Program</code> 当成入口文件。<br>本目录的脚本对<strong>每一个</strong>进入命令行的路径都做了引号处理（<code>ConvertTo-ArgToken</code>），<br>包括结尾带反斜杠的特殊情况（<code>\"</code> 会被当成转义引号，所以要把连续反斜杠翻倍）。</p>
+<p>你自己在计划任务里手填「程序或脚本」时也要注意：<strong>参数框里</strong>的路径必须加引号，<br>而「程序或脚本」框<strong>不要</strong>加引号。</p>
+<h3 id="7-5-后台作业在注销时会停止"><a href="#7-5-后台作业在注销时会停止" class="headerlink" title="7.5 后台作业在注销时会停止"></a>7.5 后台作业在注销时会停止</h3><ul>
+<li>默认（当前用户）的 <code>QQArchive-Serve</code> 任务绑定在<strong>登录会话</strong>上：注销后进程被结束。</li>
+<li><code>QQArchive-Collect</code> 是一次性进程，即使绑定当前用户，也只在触发时必须有一个会话<br>（配 <code>-RunAsSystem</code> 才能在没有登录时也跑）。</li>
+<li>计划任务在「停止任务 / 注销 / 关机」时用的是 <code>TerminateProcess</code>，<br><strong>不会</strong>给进程发 SIGTERM —— 也就是说 <code>run-serve.ps1</code> 里那句「优雅关闭」实际上不成立。<br>对本项目影响可控：数据是 SQLite + WAL，被杀掉一般不会损坏，<br>未 checkpoint 的 WAL 会在下次启动时合并。但<strong>不要</strong>依赖它做严格的关闭前备份。</li>
+</ul>
+<h3 id="7-6-注销-关机前手动备份"><a href="#7-6-注销-关机前手动备份" class="headerlink" title="7.6 注销/关机前手动备份"></a>7.6 注销/关机前手动备份</h3><p>因为没有优雅关闭，建议养成习惯（或另建一个「关机前」触发器的任务）：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">node bin\qq-archive<span class="token punctuation">.</span>mjs backup <span class="token operator">--</span>label <span class="token string">"关机前"</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+
+<h3 id="7-7-任务「正在运行」不等于业务正常"><a href="#7-7-任务「正在运行」不等于业务正常" class="headerlink" title="7.7 任务「正在运行」不等于业务正常"></a>7.7 任务「正在运行」不等于业务正常</h3><p>判定标准是「<strong>上次运行结果</strong>」那一列，不是状态列。注意区分这几个常见值：</p>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>0x0</code></td>
+<td>成功</td>
+</tr>
+<tr>
+<td><code>0x2</code></td>
+<td>找不到文件（多数是 Node 不在任务账户的 PATH 里）</td>
+</tr>
+<tr>
+<td><code>0x41303</code></td>
+<td>任务尚未运行</td>
+</tr>
+<tr>
+<td><code>0x41301</code></td>
+<td>正在运行</td>
+</tr>
+<tr>
+<td><code>0x41306</code></td>
+<td>被用户终止</td>
+</tr>
+</tbody></table>
+<p><code>status.ps1</code> 会把这些翻译成人话。另外本项目特意把采集拆成 <code>collect --once</code><br>每 15 分钟一轮（而不是常驻），就是为了让「进程悄悄死了但任务还显示正在运行」<br>这种情况不存在——每一轮的退出码都直接反映这一轮的成败。</p>
+<h3 id="7-8-Node-的-PATH-问题"><a href="#7-8-Node-的-PATH-问题" class="headerlink" title="7.8 Node 的 PATH 问题"></a>7.8 Node 的 PATH 问题</h3><p>计划任务不加载你的 PowerShell 配置文件，用的是<strong>任务账户</strong>的环境。如果你用<br><code>nvm-windows</code> 之类动态切 PATH 的工具，任务启动时可能找不到 <code>node</code>。</p>
+<p><code>install.ps1</code> 的做法是：安装时解析出 <code>node.exe</code> 的<strong>绝对路径</strong>写进任务动作，<br>所以之后不再依赖 PATH。但升级 Node 之后路径可能变化（例如 nvm 切换版本），<br>需要重跑 <code>install.ps1</code>。</p>
+<hr>
+<h2 id="8-已验证-未验证（诚实说明）"><a href="#8-已验证-未验证（诚实说明）" class="headerlink" title="8. 已验证 / 未验证（诚实说明）"></a>8. 已验证 / 未验证（诚实说明）</h2><h3 id="已在本环境实际验证"><a href="#已在本环境实际验证" class="headerlink" title="已在本环境实际验证"></a>已在本环境实际验证</h3><table>
+<thead>
+<tr>
+<th>项目</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>check-syntax.mjs</code> 自身可运行、能通过</td>
+<td><code>node deploy/windows/check-syntax.mjs</code> 实跑，输出见仓库提交记录 / 下方命令</td>
+</tr>
+<tr>
+<td>静态检查覆盖 <code>{}</code>/<code>()</code>/<code>[]</code> 配对、引号与 here-string 闭合</td>
+<td>检查器按词法逐字符扫描（含注释、here-string、<code>''</code> 与 <code>`"</code> 转义）</td>
+</tr>
+<tr>
+<td>必需参数声明齐全</td>
+<td>5 个 <code>.ps1</code> 的 <code>param()</code> 参数名逐一比对清单</td>
+</tr>
+<tr>
+<td><code>qq-archive</code> 子命令与选项名真实存在</td>
+<td>与 <code>apps/cli/src/main.ts</code> 的 <code>usage()</code> 逐字比对（<code>collect --once</code>、<code>serve --config</code> 等）</td>
+</tr>
+<tr>
+<td>脚本调用的其它 <code>.ps1</code> 都存在</td>
+<td>交叉引用检查</td>
+</tr>
+<tr>
+<td>没有硬编码绝对路径</td>
+<td>只允许 <code>$PSScriptRoot</code> 推导</td>
+</tr>
+</tbody></table>
+<h3 id="未验证（必须在真实-Windows-上跑一遍才能确认）"><a href="#未验证（必须在真实-Windows-上跑一遍才能确认）" class="headerlink" title="未验证（必须在真实 Windows 上跑一遍才能确认）"></a><strong>未验证</strong>（必须在真实 Windows 上跑一遍才能确认）</h3><p>以下内容<strong>一行都没有在真实 PowerShell 上执行过</strong>，因为开发环境是 Linux，<br>没有 <code>pwsh</code>（已用 <code>which pwsh powershell</code> 确认不存在）：</p>
+<ol>
+<li><strong><code>install.ps1</code> / <code>uninstall.ps1</code> / <code>status.ps1</code> / <code>run-*.ps1</code> 全部未执行</strong>——<br>连语法都没有经过 <code>powershell.exe -Command</code> 或 AST 解析器验证，只有上述静态检查。</li>
+<li><strong>计划任务是否能成功注册</strong>未验证：<code>New-ScheduledTaskTrigger -Once -RepetitionInterval</code><br>的接受度、<code>-RestartCount</code> 在当前 Windows 版本上是否存在、<code>Interactive</code> 主体<br>对当前用户是否可用，都只是按文档写的，没有实机证据。</li>
+<li><strong><code>-RunAsSystem</code> 路径</strong>未验证：管理员权限判定、SYSTEM 身份、UNC 路径访问都未实测。</li>
+<li><strong>首轮采集验收</strong>（安装器最后自动跑的那一次）未验证：退出码 0/2/3 的分支只在<br>代码里存在，没有在 Windows 上看到过真实输出。</li>
+<li><strong>日志轮转</strong>未验证：<code>Get-ChildItem -Filter</code> 的匹配、<code>Sort-Object LastWriteTime</code><br>的稳定性、被占用文件删除失败的降级路径，都没有实机跑过。</li>
+<li><strong><code>Start-Process -RedirectStandardOutput</code> 的中文输出编码</strong>未验证：<br>Node 在 Windows 控制台的输出编码与重定向文件的编码可能不一致，<br>中文日志可能出现乱码（<strong>这是最可能出问题的一点</strong>）。</li>
+<li><strong><code>config.json</code> 权限加固</strong>未验证：脚本只做了「提示」，没有自动改 ACL。</li>
+<li><strong>卸载的数据删除护栏</strong>（只允许删 <code>&lt;仓库根&gt;\data</code>）未验证。</li>
+</ol>
+<h3 id="验证方式"><a href="#验证方式" class="headerlink" title="验证方式"></a>验证方式</h3><p>在一台真实 Windows 上依次执行：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell">node deploy\windows\check-syntax<span class="token punctuation">.</span>mjs                          <span class="token comment"># 静态门禁</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1                                  <span class="token comment"># 安装</span>
+<span class="token punctuation">.</span>\deploy\windows\status<span class="token punctuation">.</span>ps1                                   <span class="token comment"># 看任务与日志</span>
+<span class="token punctuation">.</span>\deploy\windows\run-collect<span class="token punctuation">.</span>ps1                              <span class="token comment"># 手动一轮采集</span>
+node bin\qq-archive<span class="token punctuation">.</span>mjs doctor                                <span class="token comment"># 环境自检</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>Action Status                   <span class="token comment"># 安装器的 status 分支</span>
+<span class="token punctuation">.</span>\deploy\windows\uninstall<span class="token punctuation">.</span>ps1                                <span class="token comment"># 卸载（保留数据）</span>
+<span class="token punctuation">.</span>\deploy\windows\install<span class="token punctuation">.</span>ps1 <span class="token operator">-</span>Action Install <span class="token operator">-</span>RunAsSystem     <span class="token comment"># 管理员：SYSTEM 路径</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<p>任何一步失败，请把<strong>完整输出</strong>（不是截图）贴回仓库 issue。</p>
+<hr>
+<h2 id="9-安全提醒"><a href="#9-安全提醒" class="headerlink" title="9. 安全提醒"></a>9. 安全提醒</h2><ol>
+<li><p>归档里是你的<strong>全部聊天记录</strong>。默认只听 <code>127.0.0.1</code>，<strong>不要</strong>直接暴露到公网。</p>
+</li>
+<li><p>需要远程访问时推荐 SSH 隧道，或 Windows 自带的端口转发 + 反向代理 + HTTPS：</p>
+<pre class="line-numbers language-powershell" data-language="powershell"><code class="language-powershell"><span class="token comment"># 只在本机可用，然后自己想办法安全地访问本机</span>
+ssh <span class="token operator">-</span>N <span class="token operator">-</span>L 8787:127<span class="token punctuation">.</span>0<span class="token punctuation">.</span>0<span class="token punctuation">.</span>1:8787 user@windows-host<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>要监听公网地址时<strong>必须</strong>：<code>server.token</code> ≥ 32 位随机、用反向代理加 HTTPS、<br>并把 <code>server.trustProxy</code> 设为 <code>true</code>（否则登录限速按代理 IP 统计），<br>同时用防火墙只放行你自己的 IP。</p>
+</li>
+<li><p><code>config.json</code> 含令牌，<strong>不要</strong>提交到 git。建议在文件属性 → 安全里关闭继承，<br>只保留你自己的账户。</p>
+</li>
+<li><p>数据库、媒体、备份目录都含隐私内容，备份目录也要限制访问。</p>
+</li>
+<li><p>日志已做脱敏（token / 密钥 / base64 会替换为 <code>&lt;redacted&gt;</code>），但仍不要公开。</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://emoeem.github.io">emoeem</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/">https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://emoeem.github.io" target="_blank">emoeem</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/QQ/">QQ</a><a class="post-meta__tags" href="/tags/%E9%83%A8%E7%BD%B2/">部署</a><a class="post-meta__tags" href="/tags/Windows/">Windows</a><a class="post-meta__tags" href="/tags/PowerShell/">PowerShell</a></div><div class="post-share"><div class="social-share" data-image="/img/featureimages/13.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/" title="QQ 归档 14：脱敏样例数据集"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-2.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-2.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post" loading='lazy' decoding="async" src="/img/covers/cover-2.jpg"></picture><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">QQ 归档 14：脱敏样例数据集</div></div><div class="info-2"><div class="info-item-1">脱敏示例数据（samples/demo-export）这里没有任何真实聊天记录。 全部内容由固定种子的伪随机数生成，可逐字节复现。 数据由本仓自带的生成器产出： node --experimental-strip-types tests/fixtures/generate.ts samples/demo-export  生成器源码见 tests/fixtures/generate.ts：消息正文、昵称、QQ 号、群号全部来自固定 seed 的 mulberry32 伪随机序列；媒体文件是真实可解码的 PNG/GIF/MP4（PNG 由代码手写字节生成，不依赖任何外部库）。 内容   路径 说明    group-export.json QCE 单文件 JSON 导出（群聊，覆盖图片/视频/文件/引用/长消息/撤回/系统消息）   private-export.json QCE 单文件 JSON 导出（私聊）   chunked/manifest.json + chunked/chunks/*.jsonl QCE 分块导出（清单 + JSONL 分块）   legacy.txt T...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-12-snowluma-diao-yan/" title="QQ 归档 12：SnowLuma 调研与改进落地"><picture><source type="image/avif" srcset="/img/optimized/featureimages/18.avif"><source type="image/webp" srcset="/img/optimized/featureimages/18.webp"><img class="cover"  onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post" loading='lazy' decoding="async" src="/img/featureimages/18.jpg"></picture><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">QQ 归档 12：SnowLuma 调研与改进落地</div></div><div class="info-2"><div class="info-item-1">SnowLuma 调研：可借鉴机制与本项目落地的改进调研对象：SnowLuma/SnowLuma（本地只读副本 /tmp/SnowLuma，分支 dev）。调研目的：回答「这个项目有没有可以利用和优化的部分」——既找能借鉴的机制，也用它反照出本项目的真实缺陷。 结论先行：它的代码一行都不能用（见 §1），但它有两处工程机制直接照出了本项目的真缺陷，其中两处已经在本仓库落地并带测试证据（见 §4）。另有 6 项建议按性价比排序（见 §5），以及 6 个能力缺口（见 §6）。  1. 许可证边界：只能学思路，不能拿代码这一条是硬约束，必须先说。 /tmp/SnowLuma/LICENSE 原文（已逐字核对）： SnowLuma Source-Available Non-Commercial License SnowLuma 源码可见非商业许可  Version 1.0 · 2026-06-19 Copyright (C) 2026 SnowLumaDevs  This is NOT an open-source license as defined by the Open Sourc...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册"><picture><source type="image/avif" srcset="/img/optimized/featureimages/5.avif"><source type="image/webp" srcset="/img/optimized/featureimages/5.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/5.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 03：部署与运维手册</div></div><div class="info-2"><div class="info-item-1">部署与运维手册本文档覆盖两种目标环境（Debian/Ubuntu 与 Arch Linux），以及三种部署形态：    形态 适用场景 说明    A. 单机全量 个人电脑 / 已登录 QQ 的机器 归档服务器 + 采集端在同一台机器   B. 服务器 + 采集端分离 有 Linux 服务器 服务器只存归档、跑网页；采集端在个人电脑   C. 纯离线导入 完全不装采集端 只用 import 导入导出文件，网页查看    重要前提：本系统的采集端不依赖任何第三方 QQ 协议实现的内置代码，只通过 HTTP 调用OneBot v11 的只读接口。OneBot 实现的安装与登录属于你自己负责的部分，见第 6 节。   1. 系统要求   项目 要求    操作系统 Debian 11+ / Ubuntu 20.04+ / Arch Linux / 其他现代 Linux；macOS 与 Windows 也可运行（Windows 有一键脚本，见 §9.1）   架构 x86_64 / arm64 均可（无原生编译依赖）   Node.js ≥ 22.5（需要 node:sqlite 与 T...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始"><picture><source type="image/avif" srcset="/img/optimized/featureimages/8.avif"><source type="image/webp" srcset="/img/optimized/featureimages/8.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/8.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 01：快速开始</div></div><div class="info-2"><div class="info-item-1">怎么把它跑起来用（照着做即可） 本文的每一条命令都在本机实际跑过，输出就是下面贴的那些。最小的那一步只需要 Node.js ≥ 22.5，不需要 npm install（本项目生产依赖为 0）。  它由两个独立的部分组成，先分清这一点，后面就不会乱：    部分 是什么 跑在哪 必须吗    归档服务器 数据库 + 网页 + API + 媒体存储（本项目） 你的电脑或 Linux 服务器 必须   采集端 通过 OneBot 接口读到 QQ 消息的东西（NapCat） 需要一台能跑 QQ 客户端的机器 只有”持续采新消息”才需要    只想把已有的导出文件存起来 + 网页看？只做 Part A 就够了。   Part A：把归档服务器跑起来（约 3 分钟）A1. 前置检查node --version        # 需要 &gt;= 22.5（实测 24.21 可用）  A2. 拿到源码并配置源码目录里唯一需要动的文件是 config.json： cd /path/to/QQ cp config.example.json config.json chmod 600 config...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-09-jiao-fu-bao-gao/" title="QQ 归档 09：最终交付报告"><picture><source type="image/avif" srcset="/img/optimized/featureimages/18.avif"><source type="image/webp" srcset="/img/optimized/featureimages/18.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/18.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 09：最终交付报告</div></div><div class="info-2"><div class="info-item-1">最终报告 ⚠️ 本文是 2026-10-13 早间的交付记录，数字已过时（当时 240 个用例）。此后经过一轮独立复核，抓出并修复了 6 个真缺陷、补了 30 个回归用例，当前状态以INDEPENDENT-VERIFICATION.md 为准（347 个用例 0 失败）。本文其余的功能描述与边界说明仍然有效。   QQ 聊天记录防丢失与自动归档系统 · 交付版本 0.1.0报告日期：2026-10-13　环境：CachyOS Linux / Node v24.21.0 / SQLite（Node 内置）/ ffmpeg 9.0.2  一句话定位：本系统不能阻止 QQ 删除消息，它的目标是——凡是已经成功到达本系统的消息和媒体，就永久保留下来，不再依赖 QQ 客户端、不再受缓存清理、记录过期或设备更换影响。 配套文档：架构设计｜部署运维｜格式映射与有损清单｜验收测试报告｜开源项目调研  一、最终报告必须回答的 6 个问题1. 能否导入现有聊天记录？—— 能。已实现 5 种格式的导入，全部有自动化测试：    格式 说明    qce-json QQ Chat Exporter 的单...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/" title="QQ 归档 10：同类导出项目调研"><picture><source type="image/avif" srcset="/img/optimized/featureimages/20.avif"><source type="image/webp" srcset="/img/optimized/featureimages/20.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/20.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 10：同类导出项目调研</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录导出/归档项目调研检索日期：2026-10-13（Asia/Shanghai）。除特别注明外，star / commit / release 数据均来自 GitHub REST API（api.github.com）与各仓库 raw 文件，抓取时间同上。标注「未验证」表示未找到可核实的一手来源，请勿直接采信。  1. Tealina28/QQNT_Export   项 值    仓库 https://github.com/Tealina28/QQNT_Export   许可证 GPL-3.0（LICENSE 文件核实，文件头为 GNU GPL v3；API spdx_id=GPL-3.0）   Stars / Forks 76 / 6   语言 Python   最新 Release v3.3.0，2026-07-12（另有 v3.2.0 2026-06-21、v3.1.0 2026-06-20）   最近 commit main 分支 API 返回最近一条为 2025-08-23（Merge pull request #21）；但仓库 pushed_at=2026...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览"><picture><source type="image/avif" srcset="/img/optimized/featureimages/1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/1.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/featureimages/1.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 00：项目总览</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录防丢失与自动归档系统一个独立于 QQ 客户端的聊天记录归档系统：把你能合法、稳定获取到的 QQ 消息与多媒体，落到你自己的 SQLite 数据库与媒体目录里，用一个中文网页管理界面来搜索、浏览、导出。  一句话定位：它不能阻止 QQ 删除消息，但能保证凡是曾经到达过本系统的消息，以后都不会再丢。   目录 它解决什么问题 核心能力（真实实现，非演示） 快速开始 三种部署形态 项目结构 技术选型（及为什么） 数据模型 中文全文检索是怎么做的 导入格式 采集端与它的真实边界 扫码登录 QQ 备份与恢复 安全模型 测试 许可证 开源项目复用清单与许可证说明 已实现 / 有局限 / 未实现 后续扩展方向 常见问题   它解决什么问题QQ 聊天记录的丢失有几个不同来源，混在一起谈会得出错误的方案：    丢失来源 能否用本系统解决 怎么解决    手机换机 / 重装 / 清理缓存，本地记录没了 能 提前把已获取的记录导入归档，独立于 QQ 存储   群消息超过 5000 条被 NapCat LRU 清理 能 长期挂采集端 + 断点续传，进了库就永久保留   已撤回的消息后来想...</div></div></div></a><a class="pagination-related" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-3.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-3.webp"><img class="cover"  alt="cover" loading='lazy' decoding="async" src="/img/covers/cover-3.jpg"></picture><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-10-13</div><div class="info-item-2">QQ 归档 02：完整使用手册</div></div><div class="info-2"><div class="info-item-1">QQ 聊天记录归档系统 · 完整使用手册 这份文档是给使用者看的：它把这套工具”能做什么、怎么用、遇到问题怎么办”全写在了一起。面向实施细节的文档另有 ARCHITECTURE.md（架构）、DEPLOYMENT.md（部署运维）、format-mapping.md（导入格式映射与有损清单）、INDEPENDENT-VERIFICATION.md（独立复核：哪些验证过、哪些没有）。   目录 这是什么，能做什么 它做不到什么（先看这一节，避免误解） 需要什么前提 五分钟上手 完整使用手册 5.1 导入已有的聊天记录 5.2 持续采集新消息（接 NapCat） 5.2.1 采集控制面板（看状态、开始、停止） 5.3 网页界面每一页能干什么 5.4 找消息：搜索与筛选 5.5 图片、视频、语音、文件 5.6 导出 5.7 撤回、以及”清除内容” 5.8 新消息会自动出现（自动刷新） 5.9 过滤：不想看的怎么少看点 5.10 备份与恢复 5.11 语音转文字 5.12 扫码登录 QQ   部署：本机、Linux 服务器、Windows 命令速查表 常见问题（FAQ） 安全与隐私（必读...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="twikoo-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><picture><source type="image/avif" srcset="/img/optimized/avatar.avif"><source type="image/webp" srcset="/img/optimized/avatar.webp"><img  onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar" loading='lazy'/ decoding="async" src="/img/avatar.png"></picture></div><div class="author-info-name">emoeem</div><div class="author-info-description">技术博客 · 开源项目 · Linux · Rust · AI Coding · 音视频</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">60</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">99</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/emoeem"><i class="fab fa-github"></i><span>GitHub</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/emoeem" target="_blank" title="GitHub"><i class="fab fa-github"></i></a><a class="social-icon" href="/contact/" target="_blank" title="Contact"><i class="fas fa-envelope"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fas fa-rss"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">代码、Linux、Rust、AI、音视频与开源项目。记录正在做的事情。</div></div><div class="card-widget emo-sidebar-now" id="emo-sidebar-now"><div class="item-headline"><i class="fas fa-bolt"></i><span>Now</span></div><div class="item-content"><div class="emo-widget-status">
+  <strong>正在做什么</strong>
+  <p>一苇 · Yiwei、VoiceFox，以及 Linux / Rust 工具链。</p>
+  <a href="/now/">查看 Now →</a>
+</div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Windows-%E9%83%A8%E7%BD%B2%EF%BC%88%E4%BB%BB%E5%8A%A1%E8%AE%A1%E5%88%92%E7%A8%8B%E5%BA%8F%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Windows 部署（任务计划程序）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-%E6%96%87%E4%BB%B6%E6%B8%85%E5%8D%95"><span class="toc-number">1.1.</span> <span class="toc-text">0. 文件清单</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%89%8D%E7%BD%AE%E6%9D%A1%E4%BB%B6"><span class="toc-number">1.2.</span> <span class="toc-text">1. 前置条件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%AE%89%E8%A3%85"><span class="toc-number">1.3.</span> <span class="toc-text">2. 安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84%EF%BC%88%E6%8E%A8%E8%8D%90%EF%BC%9A%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7%EF%BC%8C%E4%B8%8D%E9%9C%80%E8%A6%81%E7%AE%A1%E7%90%86%E5%91%98%EF%BC%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">2.1 最短路径（推荐：当前用户，不需要管理员）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.2 常用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E7%AE%A1%E7%90%86%E5%91%98-vs-%E5%BD%93%E5%89%8D%E7%94%A8%E6%88%B7"><span class="toc-number">1.3.3.</span> <span class="toc-text">2.3 管理员 vs 当前用户</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE"><span class="toc-number">1.4.</span> <span class="toc-text">3. 配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-%E8%AE%A9%E9%87%87%E9%9B%86%E7%9C%9F%E6%AD%A3%E5%BC%80%E5%A7%8B%E5%B7%A5%E4%BD%9C"><span class="toc-number">1.4.1.</span> <span class="toc-text">3.1 让采集真正开始工作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-%E9%87%87%E9%9B%86%E7%AB%AF%E7%9A%84%E7%9C%9F%E5%AE%9E%E8%BE%B9%E7%95%8C%EF%BC%88Windows-%E4%B8%8D%E6%94%B9%E5%8F%98%E8%BF%99%E4%B8%80%E7%82%B9%EF%BC%89"><span class="toc-number">1.4.2.</span> <span class="toc-text">3.2 采集端的真实边界（Windows 不改变这一点）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#4-%E9%AA%8C%E8%AF%81"><span class="toc-number">1.5.</span> <span class="toc-text">4. 验证</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-%E9%9D%99%E6%80%81%E8%87%AA%E6%A3%80%EF%BC%88%E4%BB%BB%E4%BD%95%E5%B9%B3%E5%8F%B0%E9%83%BD%E8%83%BD%E8%B7%91%EF%BC%8C%E6%9C%AC%E9%A1%B9%E7%9B%AE-CI-%E7%94%A8%E8%BF%99%E4%B8%AA%EF%BC%89"><span class="toc-number">1.5.1.</span> <span class="toc-text">4.1 静态自检（任何平台都能跑，本项目 CI 用这个）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-Windows-%E4%B8%8A%E7%9A%84%E6%89%8B%E5%B7%A5%E9%AA%8C%E6%94%B6%E6%B8%85%E5%8D%95"><span class="toc-number">1.5.2.</span> <span class="toc-text">4.2 Windows 上的手工验收清单</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E5%8D%87%E7%BA%A7"><span class="toc-number">1.6.</span> <span class="toc-text">5. 升级</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9E%E6%BB%9A"><span class="toc-number">1.6.1.</span> <span class="toc-text">回滚</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#6-%E5%8D%B8%E8%BD%BD"><span class="toc-number">1.7.</span> <span class="toc-text">6. 卸载</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#7-%E5%9D%91%E7%82%B9%EF%BC%88%E9%83%BD%E6%98%AF-Windows-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E7%89%B9%E6%9C%89%E7%9A%84%EF%BC%8C%E9%80%90%E6%9D%A1%E8%B8%A9%E8%BF%87%E6%89%8D%E5%86%99%E5%9C%A8%E8%BF%99%E9%87%8C%EF%BC%89"><span class="toc-number">1.8.</span> <span class="toc-text">7. 坑点（都是 Windows 计划任务特有的，逐条踩过才写在这里）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#7-1-%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E7%9A%84%E3%80%8C%E8%B5%B7%E5%A7%8B%E4%BD%8D%E7%BD%AE%E3%80%8D%E5%BF%85%E9%A1%BB%E6%98%BE%E5%BC%8F%E8%AE%BE%E7%BD%AE"><span class="toc-number">1.8.1.</span> <span class="toc-text">7.1 计划任务的「起始位置」必须显式设置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-2-ExecutionPolicy-Bypass-%E4%B8%8D%E6%98%AF%E5%8F%AF%E9%80%89%E9%A1%B9"><span class="toc-number">1.8.2.</span> <span class="toc-text">7.2 -ExecutionPolicy Bypass 不是可选项</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-3-%E6%9C%8D%E5%8A%A1%E8%B4%A6%E6%88%B7%E7%9C%8B%E4%B8%8D%E5%88%B0%E3%80%8C%E6%98%A0%E5%B0%84%E7%9A%84%E7%BD%91%E7%BB%9C%E9%A9%B1%E5%8A%A8%E5%99%A8%E3%80%8D"><span class="toc-number">1.8.3.</span> <span class="toc-text">7.3 服务账户看不到「映射的网络驱动器」</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-4-%E8%B7%AF%E5%BE%84%E5%90%AB%E7%A9%BA%E6%A0%BC%E8%A6%81%E5%8A%A0%E5%BC%95%E5%8F%B7"><span class="toc-number">1.8.4.</span> <span class="toc-text">7.4 路径含空格要加引号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-5-%E5%90%8E%E5%8F%B0%E4%BD%9C%E4%B8%9A%E5%9C%A8%E6%B3%A8%E9%94%80%E6%97%B6%E4%BC%9A%E5%81%9C%E6%AD%A2"><span class="toc-number">1.8.5.</span> <span class="toc-text">7.5 后台作业在注销时会停止</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-6-%E6%B3%A8%E9%94%80-%E5%85%B3%E6%9C%BA%E5%89%8D%E6%89%8B%E5%8A%A8%E5%A4%87%E4%BB%BD"><span class="toc-number">1.8.6.</span> <span class="toc-text">7.6 注销&#x2F;关机前手动备份</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-7-%E4%BB%BB%E5%8A%A1%E3%80%8C%E6%AD%A3%E5%9C%A8%E8%BF%90%E8%A1%8C%E3%80%8D%E4%B8%8D%E7%AD%89%E4%BA%8E%E4%B8%9A%E5%8A%A1%E6%AD%A3%E5%B8%B8"><span class="toc-number">1.8.7.</span> <span class="toc-text">7.7 任务「正在运行」不等于业务正常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#7-8-Node-%E7%9A%84-PATH-%E9%97%AE%E9%A2%98"><span class="toc-number">1.8.8.</span> <span class="toc-text">7.8 Node 的 PATH 问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#8-%E5%B7%B2%E9%AA%8C%E8%AF%81-%E6%9C%AA%E9%AA%8C%E8%AF%81%EF%BC%88%E8%AF%9A%E5%AE%9E%E8%AF%B4%E6%98%8E%EF%BC%89"><span class="toc-number">1.9.</span> <span class="toc-text">8. 已验证 &#x2F; 未验证（诚实说明）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%B2%E5%9C%A8%E6%9C%AC%E7%8E%AF%E5%A2%83%E5%AE%9E%E9%99%85%E9%AA%8C%E8%AF%81"><span class="toc-number">1.9.1.</span> <span class="toc-text">已在本环境实际验证</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9C%AA%E9%AA%8C%E8%AF%81%EF%BC%88%E5%BF%85%E9%A1%BB%E5%9C%A8%E7%9C%9F%E5%AE%9E-Windows-%E4%B8%8A%E8%B7%91%E4%B8%80%E9%81%8D%E6%89%8D%E8%83%BD%E7%A1%AE%E8%AE%A4%EF%BC%89"><span class="toc-number">1.9.2.</span> <span class="toc-text">未验证（必须在真实 Windows 上跑一遍才能确认）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%AA%8C%E8%AF%81%E6%96%B9%E5%BC%8F"><span class="toc-number">1.9.3.</span> <span class="toc-text">验证方式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#9-%E5%AE%89%E5%85%A8%E6%8F%90%E9%86%92"><span class="toc-number">1.10.</span> <span class="toc-text">9. 安全提醒</span></a></li></ol></li></ol></div></div><div class="card-widget card-post-series"><div class="item-headline"><i class="fa-solid fa-layer-group"></i><span>系列文章</span></div><div class="aside-list"><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览">QQ 归档 00：项目总览</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始">QQ 归档 01：快速开始</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册">QQ 归档 02：完整使用手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册">QQ 归档 03：部署与运维手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-04-jia-gou-she-ji/" title="QQ 归档 04：架构设计">QQ 归档 04：架构设计</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-05-ge-shi-ying-she/" title="QQ 归档 05：数据模型与格式映射">QQ 归档 05：数据模型与格式映射</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/" title="QQ 归档 06：验收测试报告">QQ 归档 06：验收测试报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/" title="QQ 归档 07：独立复核报告">QQ 归档 07：独立复核报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-08-xiang-mu-bao-gao/" title="QQ 归档 08：项目报告">QQ 归档 08：项目报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-09-jiao-fu-bao-gao/" title="QQ 归档 09：最终交付报告">QQ 归档 09：最终交付报告</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/" title="QQ 归档 10：同类导出项目调研">QQ 归档 10：同类导出项目调研</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/" title="QQ 归档 11：qq-chat-exporter 复用性分析">QQ 归档 11：qq-chat-exporter 复用性分析</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-12-snowluma-diao-yan/" title="QQ 归档 12：SnowLuma 调研与改进落地">QQ 归档 12：SnowLuma 调研与改进落地</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-13-windows-bu-shu/" title="QQ 归档 13：Windows 部署指南">QQ 归档 13：Windows 部署指南</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/" title="QQ 归档 14：脱敏样例数据集">QQ 归档 14：脱敏样例数据集</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览"><picture><source type="image/avif" srcset="/img/optimized/featureimages/1.avif"><source type="image/webp" srcset="/img/optimized/featureimages/1.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 00：项目总览" loading='lazy'/ decoding="async" src="/img/featureimages/1.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-00-xiang-mu-zong-lan/" title="QQ 归档 00：项目总览">QQ 归档 00：项目总览</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始"><picture><source type="image/avif" srcset="/img/optimized/featureimages/8.avif"><source type="image/webp" srcset="/img/optimized/featureimages/8.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 01：快速开始" loading='lazy'/ decoding="async" src="/img/featureimages/8.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-01-kuai-su-kai-shi/" title="QQ 归档 01：快速开始">QQ 归档 01：快速开始</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-3.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-3.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 02：完整使用手册" loading='lazy'/ decoding="async" src="/img/covers/cover-3.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/" title="QQ 归档 02：完整使用手册">QQ 归档 02：完整使用手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册"><picture><source type="image/avif" srcset="/img/optimized/featureimages/5.avif"><source type="image/webp" srcset="/img/optimized/featureimages/5.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 03：部署与运维手册" loading='lazy'/ decoding="async" src="/img/featureimages/5.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/" title="QQ 归档 03：部署与运维手册">QQ 归档 03：部署与运维手册</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/10/13/qq-archive-04-jia-gou-she-ji/" title="QQ 归档 04：架构设计"><picture><source type="image/avif" srcset="/img/optimized/covers/cover-2.avif"><source type="image/webp" srcset="/img/optimized/covers/cover-2.webp"><img  onerror="this.onerror=null;this.src='/img/404.jpg'" alt="QQ 归档 04：架构设计" loading='lazy'/ decoding="async" src="/img/covers/cover-2.jpg"></picture></a><div class="content"><a class="title" href="/2026/10/13/qq-archive-04-jia-gou-she-ji/" title="QQ 归档 04：架构设计">QQ 归档 04：架构设计</a><time datetime="2026-10-13T00:00:00.000Z" title="发表于 2026-10-13 00:00:00">2026-10-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By emoeem</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.1.260810</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.1.260810"></script><script src="/js/main.js?v=5.7.1.260810"></script><script src="/js/tw_cn.js?v=5.7.1.260810"></script><script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@5.2.0/instantpage.min.js" type="module"></script><div class="js-pjax"><script>(() => {
+  const parseViewBox = viewBox => {
+    if (!viewBox) return null
+    const parts = viewBox.trim().split(/[\s,]+/).map(n => Number(n))
+    if (parts.length !== 4 || parts.some(n => Number.isNaN(n))) return null
+    return parts
+  }
+
+  const getSvgViewBox = svg => {
+    const attr = parseViewBox(svg.getAttribute('viewBox'))
+    if (attr) return attr
+
+    // Fallback: use bbox to build a viewBox
+    try {
+      const bbox = svg.getBBox()
+      if (bbox && bbox.width && bbox.height) return [bbox.x, bbox.y, bbox.width, bbox.height]
+    } catch (e) {
+      // getBBox may fail on some edge cases; ignore
+    }
+
+    const w = Number(svg.getAttribute('width')) || 0
+    const h = Number(svg.getAttribute('height')) || 0
+    if (w > 0 && h > 0) return [0, 0, w, h]
+    return [0, 0, 100, 100]
+  }
+
+  const setSvgViewBox = (svg, vb) => {
+    svg.setAttribute('viewBox', `${vb[0]} ${vb[1]} ${vb[2]} ${vb[3]}`)
+  }
+
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+  const openSvgInNewTab = ({ source, initViewBox }) => {
+    const getClonedSvg = () => {
+      if (typeof source === 'string') {
+        const template = document.createElement('template')
+        template.innerHTML = source.trim()
+        const svg = template.content.querySelector('svg')
+        return svg ? svg.cloneNode(true) : null
+      }
+      if (source && typeof source.cloneNode === 'function') {
+        return source.cloneNode(true)
+      }
+      return null
+    }
+
+    const clone = getClonedSvg()
+    if (!clone) return
+    if (initViewBox && initViewBox.length === 4) {
+      clone.setAttribute('viewBox', initViewBox.join(' '))
+    }
+    if (!clone.getAttribute('xmlns')) clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+    if (!clone.getAttribute('xmlns:xlink') && clone.innerHTML.includes('xlink:')) {
+      clone.setAttribute('xmlns:xlink', 'http://www.w3.org/1999/xlink')
+    }
+    // inject background to match current theme
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark'
+    const bg = getComputedStyle(document.body).backgroundColor || (isDark ? '#1e1e1e' : '#ffffff')
+    if (!clone.style.background) clone.style.background = bg
+
+    const serializer = new XMLSerializer()
+    const svgSource = serializer.serializeToString(clone)
+    const htmlSource = `<!doctype html><html><head><meta charset="utf-8" />
+      <style>
+        html, body { width: 100%; height: 100%; margin: 0; display: flex; align-items: center; justify-content: center; background: ${bg}; }
+        svg { max-width: 100%; max-height: 100%; height: auto; width: auto; }
+      </style>
+      </head><body>${svgSource}</body></html>`
+    const blob = new Blob([htmlSource], { type: 'text/html;charset=utf-8' })
+    const url = URL.createObjectURL(blob)
+    window.open(url, '_blank', 'noopener')
+
+    setTimeout(() => URL.revokeObjectURL(url), 5000)
+  }
+
+  const attachMermaidViewerButton = wrap => {
+    let btn = wrap.querySelector('.mermaid-open-btn')
+    if (!btn) {
+      btn = document.createElement('button')
+      btn.type = 'button'
+      btn.className = 'mermaid-open-btn'
+      wrap.appendChild(btn)
+    }
+
+    btn.innerHTML = '<i class="fa fa-search fa-fw" aria-hidden="true"></i>'
+
+    if (!btn.__mermaidViewerBound) {
+      btn.addEventListener('click', e => {
+        e.preventDefault()
+        e.stopPropagation()
+        const svg = wrap.__mermaidOriginalSvg || wrap.querySelector('svg')
+        if (!svg) return
+        const initViewBox = wrap.__mermaidInitViewBox
+        openSvgInNewTab({ source: svg, initViewBox })
+      })
+      btn.__mermaidViewerBound = true
+    }
+  }
+
+  // Zoom around a point (px, py) in the SVG viewport (in viewBox coordinates)
+  const zoomAtPoint = (vb, factor, px, py) => {
+    const w = vb[2] * factor
+    const h = vb[3] * factor
+    const nx = px - (px - vb[0]) * factor
+    const ny = py - (py - vb[1]) * factor
+    return [nx, ny, w, h]
+  }
+
+  const initMermaidGestures = wrap => {
+    // Clean up previous event listeners and pending frames
+    if (wrap.__mermaidAbortController) {
+      wrap.__mermaidAbortController.abort()
+      if (wrap.__mermaidRafId) cancelAnimationFrame(wrap.__mermaidRafId)
+    }
+    const ac = new AbortController()
+    wrap.__mermaidAbortController = ac
+    const svg = wrap.querySelector('svg')
+    if (!svg) return
+
+    // Ensure viewBox exists so gestures always work
+    const initVb = getSvgViewBox(svg)
+    wrap.__mermaidInitViewBox = initVb
+    wrap.__mermaidCurViewBox = initVb.slice()
+    setSvgViewBox(svg, initVb)
+    // Disable default gestures to prevent scroll chaining and pinch-zoom penetration in Chrome
+    svg.style.touchAction = 'none'
+
+    // Cache BoundingClientRect, throttled on scroll to reduce reflow
+    let cachedRect = svg.getBoundingClientRect()
+    let rectDirty = false
+    const markRectDirty = () => { rectDirty = true }
+    window.addEventListener('resize', markRectDirty, { signal: ac.signal })
+    window.addEventListener('scroll', markRectDirty, { signal: ac.signal, capture: true })
+    const getRect = () => {
+      if (rectDirty) {
+        cachedRect = svg.getBoundingClientRect()
+        rectDirty = false
+      }
+      return cachedRect
+    }
+
+    // Precompute clamp bounds from initial viewBox
+    const minW = initVb[2] * 0.1
+    const maxW = initVb[2] * 10
+    const minH = initVb[3] * 0.1
+    const maxH = initVb[3] * 10
+    const clampVb = vb => {
+      const out = vb.slice()
+      out[2] = clamp(out[2], minW, maxW)
+      out[3] = clamp(out[3], minH, maxH)
+      return out
+    }
+
+    // Throttle DOM updates using requestAnimationFrame
+    let pendingVb = null
+    let rafId = null
+    const applyVb = () => {
+      if (pendingVb) {
+        wrap.__mermaidCurViewBox = pendingVb
+        setSvgViewBox(svg, pendingVb)
+        pendingVb = null
+      }
+      rafId = null
+      wrap.__mermaidRafId = null
+    }
+    const setCurVb = vb => {
+      pendingVb = clampVb(vb)
+      if (!rafId) {
+        rafId = requestAnimationFrame(applyVb)
+        wrap.__mermaidRafId = rafId
+      }
+    }
+
+    const state = {
+      pointers: new Map(),
+      startVb: null,
+      startDist: 0,
+      lastPointerX: 0,
+      lastPointerY: 0
+    }
+
+    const onPointerDown = e => {
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      svg.setPointerCapture(e.pointerId)
+      const curVb = wrap.__mermaidCurViewBox
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      if (state.pointers.size === 1) {
+        state.startVb = curVb.slice()
+        state.lastPointerX = e.clientX
+        state.lastPointerY = e.clientY
+      } else if (state.pointers.size === 2) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        state.startDist = Math.hypot(dx, dy)
+        state.startVb = curVb.slice()
+      }
+    }
+
+    const onPointerMove = e => {
+      if (!state.pointers.has(e.pointerId)) return
+      state.pointers.set(e.pointerId, { x: e.clientX, y: e.clientY })
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      if (state.pointers.size === 1 && state.startVb) {
+        const p = state.pointers.values().next().value
+        const dxClient = p.x - state.lastPointerX
+        const dyClient = p.y - state.lastPointerY
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+        const dx = dxClient * (curVb[2] / rect.width)
+        const dy = dyClient * (curVb[3] / rect.height)
+        setCurVb([curVb[0] - dx, curVb[1] - dy, curVb[2], curVb[3]])
+        return
+      }
+      if (state.pointers.size === 2 && state.startVb && state.startDist > 0) {
+        const pts = [...state.pointers.values()]
+        const dx = pts[0].x - pts[1].x
+        const dy = pts[0].y - pts[1].y
+        const dist = Math.hypot(dx, dy)
+        if (!dist) return
+        const factor = state.startDist / dist
+        const cx = (pts[0].x + pts[1].x) / 2
+        const cy = (pts[0].y + pts[1].y) / 2
+        const px = curVb[0] + (cx - rect.left) * (curVb[2] / rect.width)
+        const py = curVb[1] + (cy - rect.top) * (curVb[3] / rect.height)
+        setCurVb(zoomAtPoint(state.startVb, factor, px, py))
+      }
+    }
+
+    const onPointerUpOrCancel = e => {
+      // Release PointerCapture to avoid event capture anomalies
+      if (svg.hasPointerCapture && svg.hasPointerCapture(e.pointerId)) {
+        svg.releasePointerCapture(e.pointerId)
+      }
+      state.pointers.delete(e.pointerId)
+      if (state.pointers.size === 0) {
+        state.startVb = null
+        state.startDist = 0
+      } else if (state.pointers.size === 1) {
+        const p = state.pointers.values().next().value
+        state.lastPointerX = p.x
+        state.lastPointerY = p.y
+      }
+    }
+
+    const onWheel = e => {
+      // Prevent event bubbling from triggering external scroll
+      e.preventDefault()
+      e.stopPropagation()
+      // Normalize deltaY across deltaMode (Chrome uses pixels, Safari uses lines)
+      let delta = e.deltaY
+      if (e.deltaMode === 1) delta *= 16
+      else if (e.deltaMode === 2) delta *= 400
+
+      // Continuous zoom factor: smoother than fixed 1.1/0.9 steps
+      const zoomFactor = Math.pow(1.001, delta)
+
+      const curVb = wrap.__mermaidCurViewBox
+      const rect = getRect()
+      const px = curVb[0] + (e.clientX - rect.left) * (curVb[2] / rect.width)
+      const py = curVb[1] + (e.clientY - rect.top) * (curVb[3] / rect.height)
+      setCurVb(zoomAtPoint(curVb, zoomFactor, px, py))
+    }
+
+    const onDblClick = () => {
+      const init = wrap.__mermaidInitViewBox
+      if (init) setCurVb(init)
+    }
+
+    svg.addEventListener('pointerdown', onPointerDown, { signal: ac.signal })
+    svg.addEventListener('pointermove', onPointerMove, { signal: ac.signal })
+    svg.addEventListener('pointerup', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('pointercancel', onPointerUpOrCancel, { signal: ac.signal })
+    svg.addEventListener('wheel', onWheel, { passive: false, signal: ac.signal })
+    svg.addEventListener('dblclick', onDblClick, { signal: ac.signal })
+  }
+
+  const runMermaid = ele => {
+    window.loadMermaid = true
+    const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default'
+    ele.forEach((item, index) => {
+      const mermaidSrc = item.firstElementChild
+      // Clean up event listeners and stale content before re-rendering
+      if (item.__mermaidAbortController) {
+        item.__mermaidAbortController.abort()
+      }
+      const oldSvg = item.querySelector('svg')
+      if (oldSvg) oldSvg.remove()
+      const oldError = item.querySelector('.mermaid-error')
+      if (oldError) oldError.remove()
+      let config = {}
+      try {
+        config = mermaidSrc.dataset.config ? JSON.parse(mermaidSrc.dataset.config) : {}
+      } catch (e) {
+        console.warn('[mermaid] failed to parse dataset.config:', e)
+      }
+      if (!config.theme) {
+        config.theme = theme
+      }
+      const mermaidThemeConfig = `%%{init: ${JSON.stringify(config)}}%%\n`
+      const mermaidID = `mermaid-${index}`
+      const mermaidDefinition = mermaidThemeConfig + mermaidSrc.textContent
+
+      const renderMermaid = svg => {
+        mermaidSrc.insertAdjacentHTML('afterend', svg)
+        if (true) initMermaidGestures(item)
+        item.__mermaidOriginalSvg = svg
+        if (true) attachMermaidViewerButton(item)
+      }
+
+      const handleError = err => {
+        console.error(`[mermaid] render failed for block #${index}:`, err)
+        const errorEl = document.createElement('div')
+        errorEl.className = 'mermaid-error'
+        errorEl.textContent = `Mermaid render error: ${err.message || err}`
+        mermaidSrc.insertAdjacentElement('afterend', errorEl)
+      }
+
+      try {
+        const renderFn = mermaid.render(mermaidID, mermaidDefinition)
+        // mermaid v9 and v10 compatibility
+        if (typeof renderFn === 'string') {
+          renderMermaid(renderFn)
+        } else {
+          renderFn.then(({ svg }) => renderMermaid(svg)).catch(handleError)
+        }
+      } catch (err) {
+        handleError(err)
+      }
+    })
+  }
+
+  const codeToMermaid = $article => {
+    const codeMermaidEle = $article.querySelectorAll('pre > code.mermaid')
+    if (codeMermaidEle.length === 0) return
+
+    codeMermaidEle.forEach(ele => {
+      const preEle = document.createElement('pre')
+      preEle.className = 'mermaid-src'
+      preEle.hidden = true
+      preEle.textContent = ele.textContent
+      const newEle = document.createElement('div')
+      newEle.className = 'mermaid-wrap'
+      newEle.appendChild(preEle)
+      ele.parentNode.replaceWith(newEle)
+    })
+  }
+
+  const loadMermaid = () => {
+    const $article = document.getElementById('article-container')
+    if (!$article) return
+
+    if (true) codeToMermaid($article)
+    const $mermaid = $article.querySelectorAll('.mermaid-wrap')
+    if ($mermaid.length === 0) return
+
+    const runMermaidFn = () => runMermaid($mermaid)
+    btf.addGlobalFn('themeChange', runMermaidFn, 'mermaid')
+    window.loadMermaid ? runMermaidFn() : btf.getScript('https://cdn.jsdelivr.net/npm/mermaid@11.16.0/dist/mermaid.min.js').then(runMermaidFn)
+  }
+
+  btf.addGlobalFn('encrypt', loadMermaid, 'mermaid')
+  window.pjax ? loadMermaid() : document.addEventListener('DOMContentLoaded', loadMermaid)
+})()</script><script>(() => {
+  const applyThemeDefaultsConfig = theme => {
+    if (theme === 'dark-mode') {
+      Chart.defaults.color = "rgba(255, 255, 255, 0.8)"
+      Chart.defaults.borderColor = "rgba(255, 255, 255, 0.2)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    } else {
+      Chart.defaults.color = "rgba(0, 0, 0, 0.8)"
+      Chart.defaults.borderColor = "rgba(0, 0, 0, 0.1)"
+      Chart.defaults.scale.ticks.backdropColor = "transparent"
+    }
+  }
+
+  // Recursively traverse the config object and automatically apply theme-specific color schemes
+  const applyThemeConfig = (obj, theme) => {
+    if (typeof obj !== 'object' || obj === null) return
+
+    Object.keys(obj).forEach(key => {
+      const value = obj[key]
+      // If the property is an object and has theme-specific options, apply them
+      if (typeof value === 'object' && value !== null) {
+        if (theme in value) {
+          obj[key] = value[theme] // Apply the value for the current theme
+        } else {
+          // Recursively process child objects
+          applyThemeConfig(value, theme)
+        }
+      }
+    })
+  }
+
+  const destroyChart = canvas => {
+    const chart = canvas && window.Chart && Chart.getChart(canvas)
+    if (chart) chart.destroy()
+  }
+
+  const runChartJS = ele => {
+    window.loadChartJS = true
+
+    Array.from(ele).forEach((item, index) => {
+      const chartSrc = item.firstElementChild
+      const chartID = item.getAttribute('data-chartjs-id') || ('chartjs-' + index) // Use custom ID or default ID
+      const width = item.getAttribute('data-width')
+      const existingCanvas = document.getElementById(chartID)
+
+      // If a canvas already exists, destroy its chart and remove it to avoid rendering duplicates
+      if (existingCanvas) {
+        destroyChart(existingCanvas)
+        existingCanvas.parentNode.remove()
+      }
+
+      const chartDefinition = chartSrc.textContent
+      const canvas = document.createElement('canvas')
+      canvas.id = chartID
+
+      const div = document.createElement('div')
+      div.className = 'chartjs-wrap'
+
+      if (width) {
+        div.style.width = width
+      }
+
+      div.appendChild(canvas)
+      chartSrc.insertAdjacentElement('afterend', div)
+
+      const ctx = document.getElementById(chartID).getContext('2d')
+
+      const config = JSON.parse(chartDefinition)
+
+      const theme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark-mode' : 'light-mode'
+
+      // Set default styles (initial setup)
+      applyThemeDefaultsConfig(theme)
+
+      // Automatically traverse the config and apply dual-mode color schemes
+      applyThemeConfig(config, theme)
+
+      new Chart(ctx, config)
+    })
+  }
+
+  const loadChartJS = () => {
+    const chartJSEle = document.querySelectorAll('#article-container .chartjs-container')
+    if (chartJSEle.length === 0) return
+
+    window.loadChartJS ? runChartJS(chartJSEle) : btf.getScript('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js').then(() => runChartJS(chartJSEle))
+  }
+
+  // Destroy all charts before navigating away to avoid leaks
+  btf.addGlobalFn('pjaxSendOnce', () => {
+    document.querySelectorAll('.chartjs-wrap canvas').forEach(destroyChart)
+  }, 'chartjs')
+
+  // Listen for theme change events
+  btf.addGlobalFn('themeChange', loadChartJS, 'chartjs')
+  btf.addGlobalFn('encrypt', loadChartJS, 'chartjs')
+
+  window.pjax ? loadChartJS() : document.addEventListener('DOMContentLoaded', loadChartJS)
+})()</script><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getCount = () => {
+    const countELement = document.getElementById('twikoo-count')
+    if(!countELement) return
+    twikoo.getCommentsCount({
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      urls: [window.location.pathname],
+      includeReply: false
+    }).then(res => {
+      countELement.textContent = res[0].count
+    }).catch(err => {
+      console.error(err)
+    })
+  }
+
+  const init = (el = document, path = location.pathname) => {
+    twikoo.init({
+      el: el.querySelector('#twikoo-wrap'),
+      envId: 'https://blog-comments-nine-eta.vercel.app',
+      region: '',
+      onCommentLoaded: () => {
+        btf.loadLightbox(document.querySelectorAll('#twikoo .tk-content img:not(.tk-owo-emotion)'))
+      },
+      ...option,
+      path: isShuoshuo ? path : (option && option.path) || path
+    })
+
+    
+
+    isShuoshuo && (window.shuoshuoComment.destroyTwikoo = () => {
+      if (el.children.length) {
+        el.innerHTML = ''
+        el.classList.add('no-comment')
+      }
+    })
+  }
+
+  const loadTwikoo = (el, path) => {
+    if (typeof twikoo === 'object') setTimeout(() => init(el, path), 0)
+    else btf.getScript('https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.all.min.js').then(() => init(el, path))
+  }
+
+  if (isShuoshuo) {
+    'Twikoo' === 'Twikoo'
+      ? window.shuoshuoComment = { loadComment: loadTwikoo }
+      : window.loadOtherComment = loadTwikoo
+    return
+  }
+
+  if ('Twikoo' === 'Twikoo' || !true) {
+    if (true) btf.loadComment(document.getElementById('twikoo-wrap'), loadTwikoo)
+    else loadTwikoo()
+  } else {
+    window.loadOtherComment = loadTwikoo
+  }
+})()</script></div><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script><script src="/js/custom.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"]):not([data-fancybox]):not([href="/music/"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      if (!item.parentNode) return
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || ''
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    const responseURL = e.request && e.request.responseURL
+    if (e.request && e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : responseURL && (window.location.href = responseURL)
+    } else if (responseURL) {
+      window.location.href = responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.7.1.260810"></script></div></div></body></html>
