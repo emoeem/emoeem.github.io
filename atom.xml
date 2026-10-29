@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考 · 开源项目与个人空间</subtitle>
   <title>emoeem</title>
-  <updated>2026-10-13T13:51:13.797Z</updated>
+  <updated>2026-10-29T12:36:23.319Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
@@ -28,7 +28,7 @@
       <![CDATA[<h1 id="QQ-聊天记录防丢失与自动归档系统"><a href="#QQ-聊天记录防丢失与自动归档系统" class="headerlink" title="QQ 聊天记录防丢失与自动归档系统"></a>QQ]]>
     </summary>
     <title>QQ 归档 00：项目总览</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.319Z</updated>
   </entry>
   <entry>
     <author>
@@ -46,7 +46,7 @@
       <![CDATA[<h1 id="怎么把它跑起来用（照着做即可）"><a href="#怎么把它跑起来用（照着做即可）" class="headerlink"]]>
     </summary>
     <title>QQ 归档 01：快速开始</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.319Z</updated>
   </entry>
   <entry>
     <author>
@@ -64,7 +64,7 @@
       <![CDATA[<h1 id="QQ-聊天记录归档系统-·-完整使用手册"><a href="#QQ-聊天记录归档系统-·-完整使用手册" class="headerlink" title="QQ 聊天记录归档系统 · 完整使用手册"></a>QQ 聊天记录归档系统 ·]]>
     </summary>
     <title>QQ 归档 02：完整使用手册</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.320Z</updated>
   </entry>
   <entry>
     <author>
@@ -82,7 +82,7 @@
       <![CDATA[<h1 id="部署与运维手册"><a href="#部署与运维手册" class="headerlink" title="部署与运维手册"></a>部署与运维手册</h1><p>本文档覆盖两种目标环境（Debian/Ubuntu 与 Arch]]>
     </summary>
     <title>QQ 归档 03：部署与运维手册</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.320Z</updated>
   </entry>
   <entry>
     <author>
@@ -100,7 +100,7 @@
       <![CDATA[<h1 id="架构契约（冻结版-v1）"><a href="#架构契约（冻结版-v1）" class="headerlink" title="架构契约（冻结版 v1）"></a>架构契约（冻结版]]>
     </summary>
     <title>QQ 归档 04：架构设计</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.320Z</updated>
   </entry>
   <entry>
     <author>
@@ -118,7 +118,7 @@
       <![CDATA[<h1 id="导出格式-→-归档模型-映射说明"><a href="#导出格式-→-归档模型-映射说明" class="headerlink" title="导出格式 → 归档模型 映射说明"></a>导出格式 → 归档模型 映射说明</h1><p>本文描述]]>
     </summary>
     <title>QQ 归档 05：数据模型与格式映射</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.320Z</updated>
   </entry>
   <entry>
     <author>
@@ -137,7 +137,7 @@
 <p>涵盖任务书「八、第六阶段：测试与验收」要求的 15]]>
     </summary>
     <title>QQ 归档 06：验收测试报告</title>
-    <updated>2026-10-13T13:51:13.797Z</updated>
+    <updated>2026-10-29T12:36:23.321Z</updated>
   </entry>
   <entry>
     <author>
@@ -155,7 +155,7 @@
       <![CDATA[<h1 id="独立复核报告：这些功能到底完成没有"><a href="#独立复核报告：这些功能到底完成没有" class="headerlink"]]>
     </summary>
     <title>QQ 归档 07：独立复核报告</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.321Z</updated>
   </entry>
   <entry>
     <author>
@@ -172,7 +172,7 @@
       <![CDATA[<h1 id="QQ-聊天记录防丢失与自动归档系统-—-项目报告"><a href="#QQ-聊天记录防丢失与自动归档系统-—-项目报告" class="headerlink" title="QQ 聊天记录防丢失与自动归档系统 — 项目报告"></a>QQ]]>
     </summary>
     <title>QQ 归档 08：项目报告</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.321Z</updated>
   </entry>
   <entry>
     <author>
@@ -190,7 +190,7 @@
 <p>⚠️ <strong>本文是 2026-10-13]]>
     </summary>
     <title>QQ 归档 09：最终交付报告</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.321Z</updated>
   </entry>
   <entry>
     <author>
@@ -208,7 +208,7 @@
       <![CDATA[<h1 id="QQ-聊天记录导出-归档项目调研"><a href="#QQ-聊天记录导出-归档项目调研" class="headerlink" title="QQ 聊天记录导出/归档项目调研"></a>QQ]]>
     </summary>
     <title>QQ 归档 10：同类导出项目调研</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.322Z</updated>
   </entry>
   <entry>
     <author>
@@ -226,7 +226,7 @@
       <![CDATA[<h1 id="QCE-复用性分析报告"><a href="#QCE-复用性分析报告" class="headerlink" title="QCE 复用性分析报告"></a>QCE]]>
     </summary>
     <title>QQ 归档 11：qq-chat-exporter 复用性分析</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.322Z</updated>
   </entry>
   <entry>
     <author>
@@ -244,7 +244,7 @@
       <![CDATA[<h1 id="SnowLuma-调研：可借鉴机制与本项目落地的改进"><a href="#SnowLuma-调研：可借鉴机制与本项目落地的改进" class="headerlink" title="SnowLuma]]>
     </summary>
     <title>QQ 归档 12：SnowLuma 调研与改进落地</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.322Z</updated>
   </entry>
   <entry>
     <author>
@@ -262,7 +262,7 @@
       <![CDATA[<h1 id="Windows-部署（任务计划程序）"><a href="#Windows-部署（任务计划程序）" class="headerlink" title="Windows 部署（任务计划程序）"></a>Windows 部署（任务计划程序）</h1><p>本目录把]]>
     </summary>
     <title>QQ 归档 13：Windows 部署指南</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.322Z</updated>
   </entry>
   <entry>
     <author>
@@ -280,7 +280,7 @@
       <![CDATA[<h1 id="脱敏示例数据（samples-demo-export）"><a href="#脱敏示例数据（samples-demo-export）" class="headerlink"]]>
     </summary>
     <title>QQ 归档 14：脱敏样例数据集</title>
-    <updated>2026-10-13T13:51:13.798Z</updated>
+    <updated>2026-10-29T12:36:23.322Z</updated>
   </entry>
   <entry>
     <author>
@@ -298,7 +298,7 @@
       <![CDATA[<h1 id="sing-box-完整审计与优化报告"><a href="#sing-box-完整审计与优化报告" class="headerlink" title="sing-box 完整审计与优化报告"></a>sing-box]]>
     </summary>
     <title>Singborg 10：sing-box 完整审计与优化报告（2026-10-08）</title>
-    <updated>2026-10-13T13:51:13.800Z</updated>
+    <updated>2026-10-29T12:36:23.324Z</updated>
   </entry>
   <entry>
     <author>
@@ -317,7 +317,7 @@
       <![CDATA[<h1 id="配置记录"><a href="#配置记录" class="headerlink" title="配置记录"></a>配置记录</h1><h2 id="config-sanitized-json-是什么"><a]]>
     </summary>
     <title>Singborg：规则集与配置文档</title>
-    <updated>2026-10-13T13:51:13.800Z</updated>
+    <updated>2026-10-29T12:36:23.324Z</updated>
   </entry>
   <entry>
     <author>
@@ -336,7 +336,7 @@
       <![CDATA[<h1 id="VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制"><a href="#VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制" class="headerlink" title="VoiceFox]]>
     </summary>
     <title>VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</title>
-    <updated>2026-10-13T13:51:13.796Z</updated>
+    <updated>2026-10-29T12:36:23.317Z</updated>
   </entry>
   <entry>
     <author>
@@ -355,7 +355,7 @@
       <![CDATA[<h1 id="Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱"><a href="#Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱" class="headerlink" title="Toolbox Hub：从 fzf]]>
     </summary>
     <title>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</title>
-    <updated>2026-10-13T13:51:13.796Z</updated>
+    <updated>2026-10-29T12:36:23.317Z</updated>
   </entry>
   <entry>
     <author>
@@ -374,6 +374,6 @@
       <![CDATA[<h1 id="sing-box-现状审计（2026-10-02，真流量实测）"><a href="#sing-box-现状审计（2026-10-02，真流量实测）" class="headerlink" title="sing-box]]>
     </summary>
     <title>Singborg 01：sing-box 现状审计</title>
-    <updated>2026-10-13T13:51:13.799Z</updated>
+    <updated>2026-10-29T12:36:23.323Z</updated>
   </entry>
 </feed>
