@@ -10,7 +10,7 @@
   <rights>All rights reserved 2026, emoeem</rights>
   <subtitle>代码与生活，技术与思考 · 开源项目与个人空间</subtitle>
   <title>emoeem</title>
-  <updated>2026-10-29T12:53:46.182Z</updated>
+  <updated>2026-10-29T13:20:51.792Z</updated>
   <entry>
     <author>
       <name>emoeem</name>
@@ -28,7 +28,7 @@
       <![CDATA[<h1 id="Telegram-投稿机器人（跑在-Cloudflare-Workers-上）"><a href="#Telegram-投稿机器人（跑在-Cloudflare-Workers-上）" class="headerlink" title="Telegram]]>
     </summary>
     <title>Telegram 投稿机器人：Cloudflare Workers + D1 实践</title>
-    <updated>2026-10-29T12:53:46.182Z</updated>
+    <updated>2026-10-29T13:20:51.792Z</updated>
   </entry>
   <entry>
     <author>
@@ -47,7 +47,7 @@
       <![CDATA[<h1 id="DracPanel"><a href="#DracPanel" class="headerlink" title="DracPanel"></a>DracPanel</h1><p><strong>English summary:</strong>]]>
     </summary>
     <title>DracPanel：sing-box 的 Dracula 主题桌面面板</title>
-    <updated>2026-10-29T12:53:46.177Z</updated>
+    <updated>2026-10-29T13:20:51.788Z</updated>
   </entry>
   <entry>
     <author>
@@ -55,307 +55,16 @@
     </author>
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
+    <category term="NapCat" scheme="https://emoeem.github.io/tags/NapCat/"/>
     <category term="数据备份" scheme="https://emoeem.github.io/tags/%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/"/>
     <category term="SQLite" scheme="https://emoeem.github.io/tags/SQLite/"/>
-    <category term="NapCat" scheme="https://emoeem.github.io/tags/NapCat/"/>
     <category term="自托管" scheme="https://emoeem.github.io/tags/%E8%87%AA%E6%89%98%E7%AE%A1/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-00-xiang-mu-zong-lan/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-00-xiang-mu-zong-lan/"/>
+    <id>https://emoeem.github.io/qq-archive/</id>
+    <link href="https://emoeem.github.io/qq-archive/"/>
     <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="QQ-聊天记录防丢失与自动归档系统"><a href="#QQ-聊天记录防丢失与自动归档系统" class="headerlink" title="QQ 聊天记录防丢失与自动归档系统"></a>QQ]]>
-    </summary>
-    <title>QQ 归档 00：项目总览</title>
-    <updated>2026-10-29T12:53:46.178Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="NapCat" scheme="https://emoeem.github.io/tags/NapCat/"/>
-    <category term="快速开始" scheme="https://emoeem.github.io/tags/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/"/>
-    <category term="部署" scheme="https://emoeem.github.io/tags/%E9%83%A8%E7%BD%B2/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-01-kuai-su-kai-shi/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-01-kuai-su-kai-shi/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="怎么把它跑起来用（照着做即可）"><a href="#怎么把它跑起来用（照着做即可）" class="headerlink"]]>
-    </summary>
-    <title>QQ 归档 01：快速开始</title>
-    <updated>2026-10-29T12:53:46.178Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="命令行" scheme="https://emoeem.github.io/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="使用手册" scheme="https://emoeem.github.io/tags/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
-    <category term="Web界面" scheme="https://emoeem.github.io/tags/Web%E7%95%8C%E9%9D%A2/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-02-wan-zheng-shi-yong-shou-ce/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="QQ-聊天记录归档系统-·-完整使用手册"><a href="#QQ-聊天记录归档系统-·-完整使用手册" class="headerlink" title="QQ 聊天记录归档系统 · 完整使用手册"></a>QQ 聊天记录归档系统 ·]]>
-    </summary>
-    <title>QQ 归档 02：完整使用手册</title>
-    <updated>2026-10-29T12:53:46.179Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="TypeScript" scheme="https://emoeem.github.io/tags/TypeScript/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="架构" scheme="https://emoeem.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
-    <category term="设计" scheme="https://emoeem.github.io/tags/%E8%AE%BE%E8%AE%A1/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-04-jia-gou-she-ji/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-04-jia-gou-she-ji/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="架构契约（冻结版-v1）"><a href="#架构契约（冻结版-v1）" class="headerlink" title="架构契约（冻结版 v1）"></a>架构契约（冻结版]]>
-    </summary>
-    <title>QQ 归档 04：架构设计</title>
-    <updated>2026-10-29T12:53:46.179Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="SQLite" scheme="https://emoeem.github.io/tags/SQLite/"/>
-    <category term="数据模型" scheme="https://emoeem.github.io/tags/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/"/>
-    <category term="格式映射" scheme="https://emoeem.github.io/tags/%E6%A0%BC%E5%BC%8F%E6%98%A0%E5%B0%84/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-05-ge-shi-ying-she/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-05-ge-shi-ying-she/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="导出格式-→-归档模型-映射说明"><a href="#导出格式-→-归档模型-映射说明" class="headerlink" title="导出格式 → 归档模型 映射说明"></a>导出格式 → 归档模型 映射说明</h1><p>本文描述]]>
-    </summary>
-    <title>QQ 归档 05：数据模型与格式映射</title>
-    <updated>2026-10-29T12:53:46.179Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="测试" scheme="https://emoeem.github.io/tags/%E6%B5%8B%E8%AF%95/"/>
-    <category term="验收" scheme="https://emoeem.github.io/tags/%E9%AA%8C%E6%94%B6/"/>
-    <category term="质量保证" scheme="https://emoeem.github.io/tags/%E8%B4%A8%E9%87%8F%E4%BF%9D%E8%AF%81/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-06-yan-shou-ce-shi-bao-gao/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="验收测试报告"><a href="#验收测试报告" class="headerlink" title="验收测试报告"></a>验收测试报告</h1><blockquote>
-<p>涵盖任务书「八、第六阶段：测试与验收」要求的 15]]>
-    </summary>
-    <title>QQ 归档 06：验收测试报告</title>
-    <updated>2026-10-29T12:53:46.179Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="测试" scheme="https://emoeem.github.io/tags/%E6%B5%8B%E8%AF%95/"/>
-    <category term="独立复核" scheme="https://emoeem.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%A4%8D%E6%A0%B8/"/>
-    <category term="证据链" scheme="https://emoeem.github.io/tags/%E8%AF%81%E6%8D%AE%E9%93%BE/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-07-du-li-fu-he-bao-gao/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="独立复核报告：这些功能到底完成没有"><a href="#独立复核报告：这些功能到底完成没有" class="headerlink"]]>
-    </summary>
-    <title>QQ 归档 07：独立复核报告</title>
-    <updated>2026-10-29T12:53:46.179Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="部署" scheme="https://emoeem.github.io/tags/%E9%83%A8%E7%BD%B2/"/>
-    <category term="运维" scheme="https://emoeem.github.io/tags/%E8%BF%90%E7%BB%B4/"/>
-    <category term="systemd" scheme="https://emoeem.github.io/tags/systemd/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-03-bu-shu-yu-yun-wei/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="部署与运维手册"><a href="#部署与运维手册" class="headerlink" title="部署与运维手册"></a>部署与运维手册</h1><p>本文档覆盖两种目标环境（Debian/Ubuntu 与 Arch]]>
-    </summary>
-    <title>QQ 归档 03：部署与运维手册</title>
-    <updated>2026-10-29T12:53:46.179Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="交付" scheme="https://emoeem.github.io/tags/%E4%BA%A4%E4%BB%98/"/>
-    <category term="总结" scheme="https://emoeem.github.io/tags/%E6%80%BB%E7%BB%93/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-09-jiao-fu-bao-gao/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="最终报告"><a href="#最终报告" class="headerlink" title="最终报告"></a>最终报告</h1><blockquote>
-<p>⚠️ <strong>本文是 2026-10-13]]>
-    </summary>
-    <title>QQ 归档 09：最终交付报告</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="调研" scheme="https://emoeem.github.io/tags/%E8%B0%83%E7%A0%94/"/>
-    <category term="开源项目" scheme="https://emoeem.github.io/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
-    <category term="导出工具" scheme="https://emoeem.github.io/tags/%E5%AF%BC%E5%87%BA%E5%B7%A5%E5%85%B7/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-10-tong-lei-xiang-mu-diao-yan/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="QQ-聊天记录导出-归档项目调研"><a href="#QQ-聊天记录导出-归档项目调研" class="headerlink" title="QQ 聊天记录导出/归档项目调研"></a>QQ]]>
-    </summary>
-    <title>QQ 归档 10：同类导出项目调研</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="qq-chat-exporter" scheme="https://emoeem.github.io/tags/qq-chat-exporter/"/>
-    <category term="许可证" scheme="https://emoeem.github.io/tags/%E8%AE%B8%E5%8F%AF%E8%AF%81/"/>
-    <category term="独立实现" scheme="https://emoeem.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%AE%9E%E7%8E%B0/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-11-qce-fu-yong-xing-fen-xi/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="QCE-复用性分析报告"><a href="#QCE-复用性分析报告" class="headerlink" title="QCE 复用性分析报告"></a>QCE]]>
-    </summary>
-    <title>QQ 归档 11：qq-chat-exporter 复用性分析</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="项目报告" scheme="https://emoeem.github.io/tags/%E9%A1%B9%E7%9B%AE%E6%8A%A5%E5%91%8A/"/>
-    <category term="实现" scheme="https://emoeem.github.io/tags/%E5%AE%9E%E7%8E%B0/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-08-xiang-mu-bao-gao/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-08-xiang-mu-bao-gao/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="QQ-聊天记录防丢失与自动归档系统-—-项目报告"><a href="#QQ-聊天记录防丢失与自动归档系统-—-项目报告" class="headerlink" title="QQ 聊天记录防丢失与自动归档系统 — 项目报告"></a>QQ]]>
-    </summary>
-    <title>QQ 归档 08：项目报告</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="SnowLuma" scheme="https://emoeem.github.io/tags/SnowLuma/"/>
-    <category term="许可证边界" scheme="https://emoeem.github.io/tags/%E8%AE%B8%E5%8F%AF%E8%AF%81%E8%BE%B9%E7%95%8C/"/>
-    <category term="性能优化" scheme="https://emoeem.github.io/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-12-snowluma-diao-yan/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-12-snowluma-diao-yan/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="SnowLuma-调研：可借鉴机制与本项目落地的改进"><a href="#SnowLuma-调研：可借鉴机制与本项目落地的改进" class="headerlink" title="SnowLuma]]>
-    </summary>
-    <title>QQ 归档 12：SnowLuma 调研与改进落地</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="样例数据" scheme="https://emoeem.github.io/tags/%E6%A0%B7%E4%BE%8B%E6%95%B0%E6%8D%AE/"/>
-    <category term="脱敏" scheme="https://emoeem.github.io/tags/%E8%84%B1%E6%95%8F/"/>
-    <category term="测试夹具" scheme="https://emoeem.github.io/tags/%E6%B5%8B%E8%AF%95%E5%A4%B9%E5%85%B7/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-14-tuo-min-yang-li-shu-ju/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="脱敏示例数据（samples-demo-export）"><a href="#脱敏示例数据（samples-demo-export）" class="headerlink"]]>
-    </summary>
-    <title>QQ 归档 14：脱敏样例数据集</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="部署" scheme="https://emoeem.github.io/tags/%E9%83%A8%E7%BD%B2/"/>
-    <category term="Windows" scheme="https://emoeem.github.io/tags/Windows/"/>
-    <category term="PowerShell" scheme="https://emoeem.github.io/tags/PowerShell/"/>
-    <id>https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/</id>
-    <link href="https://emoeem.github.io/2026/10/13/qq-archive-13-windows-bu-shu/"/>
-    <published>2026-10-13T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="Windows-部署（任务计划程序）"><a href="#Windows-部署（任务计划程序）" class="headerlink" title="Windows 部署（任务计划程序）"></a>Windows 部署（任务计划程序）</h1><p>本目录把]]>
-    </summary>
-    <title>QQ 归档 13：Windows 部署指南</title>
-    <updated>2026-10-29T12:53:46.180Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
-    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
-    <category term="eBPF" scheme="https://emoeem.github.io/tags/eBPF/"/>
-    <category term="安全审计" scheme="https://emoeem.github.io/tags/%E5%AE%89%E5%85%A8%E5%AE%A1%E8%AE%A1/"/>
-    <id>https://emoeem.github.io/2026/10/08/singborg-10-shen-ji-bao-gao-2026-10-08/</id>
-    <link href="https://emoeem.github.io/2026/10/08/singborg-10-shen-ji-bao-gao-2026-10-08/"/>
-    <published>2026-10-08T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="sing-box-完整审计与优化报告"><a href="#sing-box-完整审计与优化报告" class="headerlink" title="sing-box 完整审计与优化报告"></a>sing-box]]>
-    </summary>
-    <title>Singborg 10：sing-box 完整审计与优化报告（2026-10-08）</title>
-    <updated>2026-10-29T12:53:46.182Z</updated>
-  </entry>
-  <entry>
-    <author>
-      <name>emoeem</name>
-    </author>
-    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
-    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
-    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
-    <category term="DNS" scheme="https://emoeem.github.io/tags/DNS/"/>
-    <category term="配置" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE/"/>
-    <category term="规则集" scheme="https://emoeem.github.io/tags/%E8%A7%84%E5%88%99%E9%9B%86/"/>
-    <id>https://emoeem.github.io/2026/10/08/singborg-rule-sets/</id>
-    <link href="https://emoeem.github.io/2026/10/08/singborg-rule-sets/"/>
-    <published>2026-10-08T00:00:00.000Z</published>
-    <summary>
-      <![CDATA[<h1 id="配置记录"><a href="#配置记录" class="headerlink" title="配置记录"></a>配置记录</h1><h2 id="config-sanitized-json-是什么"><a]]>
-    </summary>
-    <title>Singborg：规则集与配置文档</title>
-    <updated>2026-10-29T12:53:46.182Z</updated>
+    <summary>一个独立于 QQ 客户端的聊天记录归档系统：项目总览、快速开始、使用手册、部署运维、架构、数据模型、验收报告和调研记录合并为一份完整文档。</summary>
+    <title>QQ 归档：完整文档</title>
+    <updated>2026-10-29T13:20:51.790Z</updated>
   </entry>
   <entry>
     <author>
@@ -363,8 +72,8 @@
     </author>
     <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
     <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
-    <category term="VoiceFox" scheme="https://emoeem.github.io/tags/VoiceFox/"/>
     <category term="ratatui" scheme="https://emoeem.github.io/tags/ratatui/"/>
+    <category term="VoiceFox" scheme="https://emoeem.github.io/tags/VoiceFox/"/>
     <category term="libmpv" scheme="https://emoeem.github.io/tags/libmpv/"/>
     <category term="realfft" scheme="https://emoeem.github.io/tags/realfft/"/>
     <id>https://emoeem.github.io/2026/10/03/voicefox-0.5.0-pin-pu-yu-ge-dan-hu-tong/</id>
@@ -374,6 +83,279 @@
       <![CDATA[<h1 id="VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制"><a href="#VoiceFox-0-5-0：频谱、歌单互通与桌面媒体控制" class="headerlink" title="VoiceFox]]>
     </summary>
     <title>VoiceFox 0.5.0：频谱、歌单互通与桌面媒体控制</title>
-    <updated>2026-10-29T12:53:46.176Z</updated>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
+    <category term="ratatui" scheme="https://emoeem.github.io/tags/ratatui/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="libalpm" scheme="https://emoeem.github.io/tags/libalpm/"/>
+    <category term="FFmpeg" scheme="https://emoeem.github.io/tags/FFmpeg/"/>
+    <id>https://emoeem.github.io/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/</id>
+    <link href="https://emoeem.github.io/2026/10/03/toolbox-hub-rust-tui-gong-ju-xiang/"/>
+    <published>2026-10-03T19:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱"><a href="#Toolbox-Hub：从-fzf-脚本集合到-Rust-TUI-工具箱" class="headerlink" title="Toolbox Hub：从 fzf]]>
+    </summary>
+    <title>Toolbox Hub：从 fzf 脚本集合到 Rust TUI 工具箱</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
+    <category term="eBPF" scheme="https://emoeem.github.io/tags/eBPF/"/>
+    <id>https://emoeem.github.io/2026/10/03/linux-sing-box-ebpf-tou-ming-dai-li-shi-jian/</id>
+    <link href="https://emoeem.github.io/2026/10/03/linux-sing-box-ebpf-tou-ming-dai-li-shi-jian/"/>
+    <published>2026-10-03T18:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="Linux-上的-sing-box-eBPF-透明代理实践"><a href="#Linux-上的-sing-box-eBPF-透明代理实践" class="headerlink" title="Linux 上的 sing-box + eBPF]]>
+    </summary>
+    <title>Linux 上的 sing-box + eBPF 透明代理实践</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="sing-box" scheme="https://emoeem.github.io/tags/sing-box/"/>
+    <category term="eBPF" scheme="https://emoeem.github.io/tags/eBPF/"/>
+    <category term="DNS" scheme="https://emoeem.github.io/tags/DNS/"/>
+    <category term="透明代理" scheme="https://emoeem.github.io/tags/%E9%80%8F%E6%98%8E%E4%BB%A3%E7%90%86/"/>
+    <id>https://emoeem.github.io/singborg/</id>
+    <link href="https://emoeem.github.io/singborg/"/>
+    <published>2026-10-03T00:00:00.000Z</published>
+    <summary>sing-box 透明代理与 eBPF 数据面实践：审计、可行性验证、面板、功能测试、优化评审、daed 历史、踩坑记录、运维脚本、试跑套件、配置与规则集合并为一份完整文档。</summary>
+    <title>Singborg：完整实践文档</title>
+    <updated>2026-10-29T13:20:51.792Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="FFmpeg" scheme="https://emoeem.github.io/tags/FFmpeg/"/>
+    <category term="fzf" scheme="https://emoeem.github.io/tags/fzf/"/>
+    <category term="Shell" scheme="https://emoeem.github.io/tags/Shell/"/>
+    <category term="媒体处理" scheme="https://emoeem.github.io/tags/%E5%AA%92%E4%BD%93%E5%A4%84%E7%90%86/"/>
+    <id>https://emoeem.github.io/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/</id>
+    <link href="https://emoeem.github.io/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/"/>
+    <published>2026-09-20T00:00:00.000Z</published>
+    <summary>基于 ~/.local/bin 当前脚本体系整理的 Linux 媒体处理工具箱，覆盖转码、字幕、音频、图片、混流、质量分析与 Fish 集成。</summary>
+    <title>Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="CachyOS" scheme="https://emoeem.github.io/tags/CachyOS/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="PKGBUILD" scheme="https://emoeem.github.io/tags/PKGBUILD/"/>
+    <category term="CI" scheme="https://emoeem.github.io/tags/CI/"/>
+    <id>https://emoeem.github.io/2026/09/20/build-pipeline/</id>
+    <link href="https://emoeem.github.io/2026/09/20/build-pipeline/"/>
+    <published>2026-09-20T00:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="构建流水线与仓库维护"><a href="#构建流水线与仓库维护" class="headerlink" title="构建流水线与仓库维护"></a>构建流水线与仓库维护</h1><p>当前仓库采用四层流水线：Build Graph]]>
+    </summary>
+    <title>Arch Linux 私人仓库构建流水线与 CI 体系</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
+    <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
+    <category term="使用指南" scheme="https://emoeem.github.io/tags/%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
+    <id>https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/</id>
+    <link href="https://emoeem.github.io/2026/09/20/voicefox-shi-yong-zhi-nan/"/>
+    <published>2026-09-20T00:00:00.000Z</published>
+    <summary>voicefox 当前页面、播放、歌词、下载、本地音乐、音源、通知和平台能力说明。</summary>
+    <title>voicefox 使用与功能指南</title>
+    <updated>2026-10-29T13:20:51.792Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
+    <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="快捷键" scheme="https://emoeem.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
+    <id>https://emoeem.github.io/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/</id>
+    <link href="https://emoeem.github.io/2026/09/20/voicefox-kuai-jie-jian-wan-zheng-can-kao/"/>
+    <published>2026-09-20T00:00:00.000Z</published>
+    <summary>voicefox 全局、队列、搜索、排行榜、歌单、收藏、历史、本地音乐、下载和设置页面的完整快捷键参考。</summary>
+    <title>VoiceFox 0.5.0 快捷键完整参考</title>
+    <updated>2026-10-29T13:20:51.792Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
+    <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="配置" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
+    <id>https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/</id>
+    <link href="https://emoeem.github.io/2026/09/20/voicefox-pei-zhi-zhi-nan/"/>
+    <published>2026-09-20T00:00:00.000Z</published>
+    <summary>voicefox 配置文件、播放器、音源、歌词、界面、通知与本地音乐等配置说明。</summary>
+    <title>voicefox 配置指南</title>
+    <updated>2026-10-29T13:20:51.792Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="PKGBUILD" scheme="https://emoeem.github.io/tags/PKGBUILD/"/>
+    <category term="mpv" scheme="https://emoeem.github.io/tags/mpv/"/>
+    <category term="Omniphony" scheme="https://emoeem.github.io/tags/Omniphony/"/>
+    <id>https://emoeem.github.io/2026/09/19/mpv-emo-gou-jian-zhi-nan/</id>
+    <link href="https://emoeem.github.io/2026/09/19/mpv-emo-gou-jian-zhi-nan/"/>
+    <published>2026-09-19T00:00:00.000Z</published>
+    <summary>mpv-Emo 的 Stable/Development 构建轨道、Patch series、mpv-full 基线和 Arch CI 验证体系。</summary>
+    <title>mpv-Emo 构建与 Patch 体系</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Rust" scheme="https://emoeem.github.io/tags/Rust/"/>
+    <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <category term="voicefox" scheme="https://emoeem.github.io/tags/voicefox/"/>
+    <category term="音乐播放器" scheme="https://emoeem.github.io/tags/%E9%9F%B3%E4%B9%90%E6%92%AD%E6%94%BE%E5%99%A8/"/>
+    <id>https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/</id>
+    <link href="https://emoeem.github.io/2026/09/19/voicefox-zhong-duan-yin-le-bo-fang-qi/"/>
+    <published>2026-09-19T00:00:00.000Z</published>
+    <summary>Rust + ratatui + libmpv 的键盘优先终端音乐播放器，涵盖多音源、歌词、下载、本地音乐与跨平台能力。</summary>
+    <title>VoiceFox：Rust 终端音乐播放器（0.5.0）</title>
+    <updated>2026-10-29T13:20:51.792Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="mpv\n- Arch Linux\n- PKGBUILD\n- Omniphony\n- Linux" scheme="https://emoeem.github.io/tags/mpv-n-Arch-Linux-n-PKGBUILD-n-Omniphony-n-Linux/"/>
+    <id>https://emoeem.github.io/2026/09/18/mpv-tracks/</id>
+    <link href="https://emoeem.github.io/2026/09/18/mpv-tracks/"/>
+    <published>2026-09-18T10:15:08.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code>]]>
+    </summary>
+    <title>mpv-Emo Stable 与 Development 构建轨道</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="配置优化" scheme="https://emoeem.github.io/tags/%E9%85%8D%E7%BD%AE%E4%BC%98%E5%8C%96/"/>
+    <category term="mpv" scheme="https://emoeem.github.io/tags/mpv/"/>
+    <category term="音视频" scheme="https://emoeem.github.io/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/"/>
+    <id>https://emoeem.github.io/2026/09/18/mpv-pei-zhi-jiang-jie/</id>
+    <link href="https://emoeem.github.io/2026/09/18/mpv-pei-zhi-jiang-jie/"/>
+    <published>2026-09-18T09:20:00.000Z</published>
+    <summary>基于 Linux / Wayland 的现代 mpv 配置：直播自适应画质、播放进度恢复、系列媒体库、HDR/SDR 与 RIFE 自动策略，以及 Catppuccin uosc。</summary>
+    <title>mpv配置</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="CachyOS" scheme="https://emoeem.github.io/tags/CachyOS/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="PKGBUILD" scheme="https://emoeem.github.io/tags/PKGBUILD/"/>
+    <category term="CI" scheme="https://emoeem.github.io/tags/CI/"/>
+    <id>https://emoeem.github.io/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/</id>
+    <link href="https://emoeem.github.io/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/"/>
+    <published>2026-09-18T00:00:00.000Z</published>
+    <summary>私人 Arch Linux 软件仓库的构建、测试、依赖传播与 pacman 仓库发布体系。</summary>
+    <title>Arch Linux 私人软件仓库与构建体系</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="PKGBUILD" scheme="https://emoeem.github.io/tags/PKGBUILD/"/>
+    <category term="mpv" scheme="https://emoeem.github.io/tags/mpv/"/>
+    <category term="Omniphony" scheme="https://emoeem.github.io/tags/Omniphony/"/>
+    <id>https://emoeem.github.io/2026/09/18/mpv-emo-tracks/</id>
+    <link href="https://emoeem.github.io/2026/09/18/mpv-emo-tracks/"/>
+    <published>2026-09-18T00:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="mpv-Emo-tracks"><a href="#mpv-Emo-tracks" class="headerlink" title="mpv-Emo tracks"></a>mpv-Emo tracks</h1><p><code>mpv-Emo</code>]]>
+    </summary>
+    <title>mpv-Emo Stable 与 Development 构建轨道</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="Arch Linux" scheme="https://emoeem.github.io/tags/Arch-Linux/"/>
+    <category term="fzf" scheme="https://emoeem.github.io/tags/fzf/"/>
+    <category term="PKGBUILD" scheme="https://emoeem.github.io/tags/PKGBUILD/"/>
+    <category term="TUI" scheme="https://emoeem.github.io/tags/TUI/"/>
+    <id>https://emoeem.github.io/2026/09/18/package-management/</id>
+    <link href="https://emoeem.github.io/2026/09/18/package-management/"/>
+    <published>2026-09-18T00:00:00.000Z</published>
+    <summary>
+      <![CDATA[<h1 id="软件包管理与-fzf-TUI"><a href="#软件包管理与-fzf-TUI" class="headerlink" title="软件包管理与 fzf TUI"></a>软件包管理与 fzf]]>
+    </summary>
+    <title>Arch Linux 私人软件仓库管理与 fzf TUI</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
+  </entry>
+  <entry>
+    <author>
+      <name>emoeem</name>
+    </author>
+    <category term="技术" scheme="https://emoeem.github.io/categories/%E6%8A%80%E6%9C%AF/"/>
+    <category term="Linux" scheme="https://emoeem.github.io/tags/Linux/"/>
+    <category term="Neovim" scheme="https://emoeem.github.io/tags/Neovim/"/>
+    <category term="开发工具" scheme="https://emoeem.github.io/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="快捷键" scheme="https://emoeem.github.io/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/"/>
+    <id>https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/</id>
+    <link href="https://emoeem.github.io/2026/09/01/neovim-kuai-jie-jian-xue-xi-shou-ce/"/>
+    <published>2026-09-01T00:00:00.000Z</published>
+    <summary>基于当前 Neovim 配置整理的快捷键学习手册，覆盖窗口、文件、搜索、代码和日常编辑操作。</summary>
+    <title>Neovim 快捷键学习手册</title>
+    <updated>2026-10-29T13:20:51.788Z</updated>
   </entry>
 </feed>
