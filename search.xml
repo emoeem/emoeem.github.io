@@ -121,9 +121,9 @@
             
             <tag> Rust </tag>
             
-            <tag> VoiceFox </tag>
-            
             <tag> ratatui </tag>
+            
+            <tag> VoiceFox </tag>
             
             <tag> libmpv </tag>
             
@@ -156,11 +156,11 @@
             
             <tag> Arch Linux </tag>
             
-            <tag> FFmpeg </tag>
-            
             <tag> ratatui </tag>
             
             <tag> libalpm </tag>
+            
+            <tag> FFmpeg </tag>
             
         </tags>
       
@@ -233,39 +233,6 @@
     
     
     <entry>
-      <title>Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</title>
-      <link href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/"/>
-      <url>/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/</url>
-      
-        <content type="html"><![CDATA[<h1 id="local-bin-媒体工具箱"><a href="#local-bin-媒体工具箱" class="headerlink" title="~/.local/bin 媒体工具箱"></a><code>~/.local/bin</code> 媒体工具箱</h1><p>一组基于 <strong>fzf + ffmpeg</strong> 的命令行媒体处理脚本，编码参数数据库移植自 FFmpegFreeUI (3FUI) v6。</p><h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul><li>所有媒体脚本使用 Bash，并优先采用 <code>set -euo pipefail</code>。</li><li>共享逻辑集中在 <code>fzf-fftools-lib</code>，避免重复实现选择器、编码器、日志和预览。</li><li>文件名统一按 Shell-safe 方式传递，支持空格与中文路径。</li><li>输出避免意外覆盖，任务与错误日志写入 XDG state 目录。</li><li>fzf 是交互入口；非交互参数优先提供给脚本自动化使用。</li></ul><h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>必备：<code>bash ffmpeg ffprobe fzf fd</code></p><p>按需：<code>whisper-cli</code>、<code>ollama</code>、<code>chafa</code>、<code>yt-dlp</code>、<code>libplacebo/zscale</code>。</p><p>运行 <code>fzf-fftools</code> 主菜单中的环境诊断可检查依赖和编码器。</p><h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><table><thead><tr><th>组件</th><th>作用</th></tr></thead><tbody><tr><td><code>fzf-fftools</code></td><td>总入口与环境诊断</td></tr><tr><td><code>fzf-fftools-lib</code></td><td>文件选择、编码器、滤镜、日志、队列、预览等共享库</td></tr><tr><td><code>fzf-preview-video</code></td><td>fzf 视频/图片/音频预览与缓存</td></tr><tr><td><code>fzf-ffmpeg-batch</code></td><td>批量编码与可恢复队列</td></tr><tr><td><code>fzf-ffmpeg-preset</code></td><td>内置与用户压制预设</td></tr></tbody></table><h2 id="工具分类"><a href="#工具分类" class="headerlink" title="工具分类"></a>工具分类</h2><h3 id="转码-编码"><a href="#转码-编码" class="headerlink" title="转码 / 编码"></a>转码 / 编码</h3><p><code>fzf-convert-media</code>、<code>fzf-ffmpeg-batch</code>、<code>fzf-ffmpeg-builder</code>、<code>fzf-ffmpeg-color</code>、<code>fzf-ffmpeg-preset</code>、<code>fzf-speed-video</code>、<code>fzf-target-size</code>、<code>fzf-trim-video</code></p><h3 id="字幕"><a href="#字幕" class="headerlink" title="字幕"></a>字幕</h3><p><code>fzf-generate-subs</code>、<code>fzf-translate-subs</code>、<code>fzf-burn-subs</code>、<code>fzf-shift-subs</code>、<code>fzf-convert-subs</code></p><h3 id="音频-图片"><a href="#音频-图片" class="headerlink" title="音频 / 图片"></a>音频 / 图片</h3><p><code>fzf-audio-tools</code>、<code>fzf-image-batch</code>、<code>fzf-add-watermark</code>、<code>fzf-mute-video</code>、<code>fzf-video-to-gif</code></p><h3 id="合并-混流-抽流"><a href="#合并-混流-抽流" class="headerlink" title="合并 / 混流 / 抽流"></a>合并 / 混流 / 抽流</h3><p><code>fzf-merge-av</code>、<code>fzf-concat-video</code>、<code>fzf-mux-media</code>、<code>fzf-extract-streams</code>、<code>fzf-swap-audio</code></p><h3 id="质量-分析"><a href="#质量-分析" class="headerlink" title="质量 / 分析"></a>质量 / 分析</h3><p><code>fzf-quality-eval</code>、<code>fzf-validate-media</code>、<code>fzf-media-report</code>、<code>fzf-screenshot-video</code></p><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p><code>fzf-download</code>、<code>fzf-pkg</code>、<code>battery-monitor</code>、<code>backlight</code>、<code>set-wallpapers</code>、<code>omarchy-show-done</code></p><h2 id="Fish-集成"><a href="#Fish-集成" class="headerlink" title="Fish 集成"></a>Fish 集成</h2><p>所有用户可直接调用的 <code>fzf-*</code> 工具都有对应的 Fish completion，文件位于 <code>~/.config/fish/completions/</code>。</p><p>已清理已经合并/删除的旧 completion：<code>fzf-compress-video</code>、<code>fzf-extract-audio</code>。</p><p><code>fzf-fftools-lib</code>、<code>fzf-preview</code>、<code>fzf-preview-video</code> 是内部库/预览回调，不提供普通命令补全。</p><h2 id="状态与日志"><a href="#状态与日志" class="headerlink" title="状态与日志"></a>状态与日志</h2><ul><li>运行日志：<code>~/.local/state/fzf-fftools/logs/</code></li><li>任务日志：<code>~/.local/state/fzf-fftools/tasks.log</code></li><li>编码队列：<code>~/.local/state/fzf-fftools/queue.tsv</code></li><li>预览缓存：<code>~/.cache/fzf-media-preview</code></li><li>字体缓存：<code>~/.cache/fzf-fftools/fonts.tsv</code></li></ul><h2 id="用户预设"><a href="#用户预设" class="headerlink" title="用户预设"></a>用户预设</h2><p>用户预设位于 <code>~/.config/fzf-fftools/presets/*.preset</code>，格式示例：</p><pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">desc</span><span class="token punctuation">=</span><span class="token value attr-value">我的压制方案</span><span class="token key attr-name">args</span><span class="token punctuation">=</span><span class="token value attr-value">-c:v libx265 -preset slow -crf 24 -pix_fmt yuv420p10le -c:a aac -b:a 192k</span><span class="token key attr-name">passes</span><span class="token punctuation">=</span><span class="token value attr-value">1</span><span class="token key attr-name">ext</span><span class="token punctuation">=</span><span class="token value attr-value">mp4</span><span class="token key attr-name">decode</span><span class="token punctuation">=</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><table><thead><tr><th>变量</th><th>说明</th></tr></thead><tbody><tr><td><code>FZF_SUBTITLE_FONT_SIZE</code> / <code>FZF_SUBTITLE_FONT_NAME</code> / <code>FZF_SUBTITLE_FONTS_DIR</code></td><td>字幕默认样式</td></tr><tr><td><code>FZF_TRANSLATE_MODEL</code> / <code>FZF_TRANSLATE_BATCH</code></td><td>Ollama 翻译模型与批量大小</td></tr><tr><td><code>FZF_VMAF_THREADS</code> / <code>FZF_VMAF_MODEL</code> / <code>FZF_VMAF_POOL</code></td><td>VMAF 线程、模型和 pooling</td></tr></tbody></table><h2 id="Shell-配置"><a href="#Shell-配置" class="headerlink" title="Shell 配置"></a>Shell 配置</h2><p>Fish 主配置为 <code>~/.config/fish/config.fish</code>，负责 CachyOS 默认层之上的用户覆盖、Starship、zoxide、fzf、Atuin、direnv 和 pay-respects 集成。</p><p>Starship 主配置为 <code>~/.config/starship.toml</code>，采用紧凑单行左侧 prompt + 右侧状态信息布局，显示目录/Git、命令耗时、RAM、shell 与时间。</p>]]></content>
-      
-      
-      <categories>
-          
-          <category> 技术 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Linux </tag>
-            
-            <tag> FFmpeg </tag>
-            
-            <tag> fzf </tag>
-            
-            <tag> Shell </tag>
-            
-            <tag> 媒体处理 </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>Arch Linux 私人仓库构建流水线与 CI 体系</title>
       <link href="/2026/09/20/build-pipeline/"/>
       <url>/2026/09/20/build-pipeline/</url>
@@ -291,6 +258,39 @@
             <tag> CI </tag>
             
             <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Linux 本地媒体工具箱：fzf + FFmpeg 脚本体系</title>
+      <link href="/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/"/>
+      <url>/2026/09/20/linux-ben-di-mei-ti-gong-ju-xiang/</url>
+      
+        <content type="html"><![CDATA[<h1 id="local-bin-媒体工具箱"><a href="#local-bin-媒体工具箱" class="headerlink" title="~/.local/bin 媒体工具箱"></a><code>~/.local/bin</code> 媒体工具箱</h1><p>一组基于 <strong>fzf + ffmpeg</strong> 的命令行媒体处理脚本，编码参数数据库移植自 FFmpegFreeUI (3FUI) v6。</p><h2 id="设计目标"><a href="#设计目标" class="headerlink" title="设计目标"></a>设计目标</h2><ul><li>所有媒体脚本使用 Bash，并优先采用 <code>set -euo pipefail</code>。</li><li>共享逻辑集中在 <code>fzf-fftools-lib</code>，避免重复实现选择器、编码器、日志和预览。</li><li>文件名统一按 Shell-safe 方式传递，支持空格与中文路径。</li><li>输出避免意外覆盖，任务与错误日志写入 XDG state 目录。</li><li>fzf 是交互入口；非交互参数优先提供给脚本自动化使用。</li></ul><h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><p>必备：<code>bash ffmpeg ffprobe fzf fd</code></p><p>按需：<code>whisper-cli</code>、<code>ollama</code>、<code>chafa</code>、<code>yt-dlp</code>、<code>libplacebo/zscale</code>。</p><p>运行 <code>fzf-fftools</code> 主菜单中的环境诊断可检查依赖和编码器。</p><h2 id="核心组件"><a href="#核心组件" class="headerlink" title="核心组件"></a>核心组件</h2><table><thead><tr><th>组件</th><th>作用</th></tr></thead><tbody><tr><td><code>fzf-fftools</code></td><td>总入口与环境诊断</td></tr><tr><td><code>fzf-fftools-lib</code></td><td>文件选择、编码器、滤镜、日志、队列、预览等共享库</td></tr><tr><td><code>fzf-preview-video</code></td><td>fzf 视频/图片/音频预览与缓存</td></tr><tr><td><code>fzf-ffmpeg-batch</code></td><td>批量编码与可恢复队列</td></tr><tr><td><code>fzf-ffmpeg-preset</code></td><td>内置与用户压制预设</td></tr></tbody></table><h2 id="工具分类"><a href="#工具分类" class="headerlink" title="工具分类"></a>工具分类</h2><h3 id="转码-编码"><a href="#转码-编码" class="headerlink" title="转码 / 编码"></a>转码 / 编码</h3><p><code>fzf-convert-media</code>、<code>fzf-ffmpeg-batch</code>、<code>fzf-ffmpeg-builder</code>、<code>fzf-ffmpeg-color</code>、<code>fzf-ffmpeg-preset</code>、<code>fzf-speed-video</code>、<code>fzf-target-size</code>、<code>fzf-trim-video</code></p><h3 id="字幕"><a href="#字幕" class="headerlink" title="字幕"></a>字幕</h3><p><code>fzf-generate-subs</code>、<code>fzf-translate-subs</code>、<code>fzf-burn-subs</code>、<code>fzf-shift-subs</code>、<code>fzf-convert-subs</code></p><h3 id="音频-图片"><a href="#音频-图片" class="headerlink" title="音频 / 图片"></a>音频 / 图片</h3><p><code>fzf-audio-tools</code>、<code>fzf-image-batch</code>、<code>fzf-add-watermark</code>、<code>fzf-mute-video</code>、<code>fzf-video-to-gif</code></p><h3 id="合并-混流-抽流"><a href="#合并-混流-抽流" class="headerlink" title="合并 / 混流 / 抽流"></a>合并 / 混流 / 抽流</h3><p><code>fzf-merge-av</code>、<code>fzf-concat-video</code>、<code>fzf-mux-media</code>、<code>fzf-extract-streams</code>、<code>fzf-swap-audio</code></p><h3 id="质量-分析"><a href="#质量-分析" class="headerlink" title="质量 / 分析"></a>质量 / 分析</h3><p><code>fzf-quality-eval</code>、<code>fzf-validate-media</code>、<code>fzf-media-report</code>、<code>fzf-screenshot-video</code></p><h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><p><code>fzf-download</code>、<code>fzf-pkg</code>、<code>battery-monitor</code>、<code>backlight</code>、<code>set-wallpapers</code>、<code>omarchy-show-done</code></p><h2 id="Fish-集成"><a href="#Fish-集成" class="headerlink" title="Fish 集成"></a>Fish 集成</h2><p>所有用户可直接调用的 <code>fzf-*</code> 工具都有对应的 Fish completion，文件位于 <code>~/.config/fish/completions/</code>。</p><p>已清理已经合并/删除的旧 completion：<code>fzf-compress-video</code>、<code>fzf-extract-audio</code>。</p><p><code>fzf-fftools-lib</code>、<code>fzf-preview</code>、<code>fzf-preview-video</code> 是内部库/预览回调，不提供普通命令补全。</p><h2 id="状态与日志"><a href="#状态与日志" class="headerlink" title="状态与日志"></a>状态与日志</h2><ul><li>运行日志：<code>~/.local/state/fzf-fftools/logs/</code></li><li>任务日志：<code>~/.local/state/fzf-fftools/tasks.log</code></li><li>编码队列：<code>~/.local/state/fzf-fftools/queue.tsv</code></li><li>预览缓存：<code>~/.cache/fzf-media-preview</code></li><li>字体缓存：<code>~/.cache/fzf-fftools/fonts.tsv</code></li></ul><h2 id="用户预设"><a href="#用户预设" class="headerlink" title="用户预设"></a>用户预设</h2><p>用户预设位于 <code>~/.config/fzf-fftools/presets/*.preset</code>，格式示例：</p><pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">desc</span><span class="token punctuation">=</span><span class="token value attr-value">我的压制方案</span><span class="token key attr-name">args</span><span class="token punctuation">=</span><span class="token value attr-value">-c:v libx265 -preset slow -crf 24 -pix_fmt yuv420p10le -c:a aac -b:a 192k</span><span class="token key attr-name">passes</span><span class="token punctuation">=</span><span class="token value attr-value">1</span><span class="token key attr-name">ext</span><span class="token punctuation">=</span><span class="token value attr-value">mp4</span><span class="token key attr-name">decode</span><span class="token punctuation">=</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><table><thead><tr><th>变量</th><th>说明</th></tr></thead><tbody><tr><td><code>FZF_SUBTITLE_FONT_SIZE</code> / <code>FZF_SUBTITLE_FONT_NAME</code> / <code>FZF_SUBTITLE_FONTS_DIR</code></td><td>字幕默认样式</td></tr><tr><td><code>FZF_TRANSLATE_MODEL</code> / <code>FZF_TRANSLATE_BATCH</code></td><td>Ollama 翻译模型与批量大小</td></tr><tr><td><code>FZF_VMAF_THREADS</code> / <code>FZF_VMAF_MODEL</code> / <code>FZF_VMAF_POOL</code></td><td>VMAF 线程、模型和 pooling</td></tr></tbody></table><h2 id="Shell-配置"><a href="#Shell-配置" class="headerlink" title="Shell 配置"></a>Shell 配置</h2><p>Fish 主配置为 <code>~/.config/fish/config.fish</code>，负责 CachyOS 默认层之上的用户覆盖、Starship、zoxide、fzf、Atuin、direnv 和 pay-respects 集成。</p><p>Starship 主配置为 <code>~/.config/starship.toml</code>，采用紧凑单行左侧 prompt + 右侧状态信息布局，显示目录/Git、命令耗时、RAM、shell 与时间。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Linux </tag>
+            
+            <tag> FFmpeg </tag>
+            
+            <tag> Shell </tag>
+            
+            <tag> fzf </tag>
+            
+            <tag> 媒体处理 </tag>
             
         </tags>
       
@@ -646,7 +646,7 @@
       <link href="/2026/08/29/add-aur/"/>
       <url>/2026/08/29/add-aur/</url>
       
-        <content type="html"><![CDATA[<h1 id="add-aur-package-sh-详细说明"><a href="#add-aur-package-sh-详细说明" class="headerlink" title="add-aur-package.sh 详细说明"></a>add-aur-package.sh 详细说明</h1><p><code>scripts/add-aur-package.sh</code> 用来把一个 AUR package base 导入 <code>main</code><br>分支。它只提交 PKGBUILD、<code>.SRCINFO</code>、补丁和 AUR 版本信息，不会把<br><code>*.pkg.tar.zst</code> 提交到 <code>main</code>。</p><h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-name./scripts/add-aur-package.sh --no-push package-name./scripts/add-aur-package.sh package-name https://example.com/package.git<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>默认地址为：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">https://aur.archlinux.org/package-name.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>对于 split package，应传入 AUR 页面中的 package base，也就是 Clone URL<br>最后的仓库名称。</p><h2 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h2><ol><li>启用 Bash 严格模式，任何命令、变量或管道错误都会停止脚本。</li><li>根据脚本自身位置计算仓库根目录，不依赖当前工作目录。</li><li>解析 <code>--no-push</code>、包名和可选的自定义 Git 地址。</li><li>限制包名只能包含 AUR 合法名称常用的字母、数字和 <code>@._+-</code>。</li><li>确认当前目录属于 Git checkout，并要求当前分支为 <code>main</code>。</li><li>使用 <code>git pull --ff-only origin main</code> 快进到最新源码版本。</li><li>拒绝覆盖已经存在的 <code>packages/package-name/</code>。</li><li>写入 <code>.aur-url</code>，再调用 <code>sync-aur-packages.sh</code> 导入 AUR 文件。</li><li>只暂存并提交新增的软件包目录，不会提交其他本地修改。</li><li>默认推送到 <code>origin/main</code>；<code>--no-push</code> 只保留本地提交。</li></ol><h2 id="导入和校验"><a href="#导入和校验" class="headerlink" title="导入和校验"></a>导入和校验</h2><p><code>sync-aur-packages.sh</code> 在临时目录浅克隆 AUR 仓库，记录当前 Git commit<br>到 <code>.aur-commit</code>，然后复制 PKGBUILD、<code>.SRCINFO</code>、补丁和其他顶层文件。</p><p><code>check-package.sh</code> 随后检查：</p><ul><li>包目录名称是否合法。</li><li><code>PKGBUILD</code> 和 <code>.SRCINFO</code> 是否存在。</li><li>PKGBUILD 是否通过 Bash 语法检查。</li><li><code>.SRCINFO</code> 中声明的本地源文件是否齐全。</li><li><code>pkgbase</code>、<code>pkgver</code> 和 <code>pkgrel</code> 是否可读取。</li></ul><h2 id="捆绑-runtime-的包的-namcap-例外"><a href="#捆绑-runtime-的包的-namcap-例外" class="headerlink" title="捆绑 runtime 的包的 namcap 例外"></a>捆绑 runtime 的包的 namcap 例外</h2><p><code>packages/&lt;name&gt;/.namcap-exclude</code> 每行一个 namcap <strong>规则名</strong>（<code>namcap -L</code><br>第一列），<code>scripts/run-namcap.sh</code> 把它反做成 <code>--rules</code> 白名单：取全部启用<br>规则，去掉列出的那些。</p><p>不用 <code>--exclude</code> 是因为 namcap 自己的循环 bug：它每轮都执行<br><code>active_modules.update(modules)</code>，逗号列表会把上一轮排除的规则加回来，多个<br>名字里只有最后一个真正生效。白名单的 <code>-r</code> 是逐个累加，没有这个问题。</p><p>它只用于上游把完整运行时打进载荷的包：namcap 只看系统包，会把载荷内自带的<br>Python 模块报成缺失依赖（<code>pydepends</code>），也会把上游构建机留下的 RPATH/RUNPATH<br>报成不安全路径（<code>rpath</code>、<code>runpath</code>）。不写这个文件就必须让 namcap 全量通过，<br>这是默认路径。</p><h2 id="推送后的自动流程"><a href="#推送后的自动流程" class="headerlink" title="推送后的自动流程"></a>推送后的自动流程</h2><p><code>packages/**</code> 的变化会先触发 <code>check.yml</code>，在 Arch Linux 容器中运行<br><code>makepkg --printsrcinfo</code>、ShellCheck 和 namcap。随后 <code>build.yml</code> 只选择发生<br>变化的软件包及其依赖者，在 Arch Linux 容器中安装二进制仓库或 AUR 依赖，<br>然后运行 makepkg。</p><p>成功生成的 <code>*.pkg.tar.zst</code> 会封装在 tar 中作为 Actions Artifact 保存，<br>从而兼容 <code>epoch</code> 带来的冒号文件名。发布任务解包后再合并到 <code>repo</code> 分支，<br>因此软件包原始名称不会改变。<code>repo</code> 分支使用 amend 和 force-with-lease<br>保持单提交快照。</p><p>每天的 <code>sync.yml</code> 会检查所有带 <code>.aur-url</code> 的包。AUR commit 变化时，它<br>会更新文件、提交到 <code>main</code>，并只重建变化的软件包。</p><h2 id="常见失败"><a href="#常见失败" class="headerlink" title="常见失败"></a>常见失败</h2><ul><li><code>current branch is not main</code>：切换到 <code>main</code> 后重试。</li><li><code>already managed</code>：该包已存在，使用 <code>sync-aur-packages.sh</code> 手动同步。</li><li><code>Missing PKGBUILD/.SRCINFO</code>：上游 Git 仓库不是有效的 Arch 包仓库。</li><li><code>git push</code> 失败：本地提交已经生成，修复认证后运行 <code>git push origin main</code>。</li><li>构建失败：查看 GitHub Actions 对应软件包 job 的日志。</li></ul>]]></content>
+        <content type="html"><![CDATA[<h1 id="add-aur-package-sh-详细说明"><a href="#add-aur-package-sh-详细说明" class="headerlink" title="add-aur-package.sh 详细说明"></a>add-aur-package.sh 详细说明</h1><p><code>scripts/add-aur-package.sh</code> 用来把一个 AUR package base 导入 <code>main</code><br>分支。它只提交 PKGBUILD、<code>.SRCINFO</code>、补丁和 AUR 版本信息，不会把<br><code>*.pkg.tar.zst</code> 提交到 <code>main</code>。</p><h2 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-name./scripts/add-aur-package.sh --no-push package-name./scripts/add-aur-package.sh package-name https://example.com/package.git<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>默认地址为：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">https://aur.archlinux.org/package-name.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>对于 split package，应传入 AUR 页面中的 package base，也就是 Clone URL<br>最后的仓库名称。</p><h2 id="执行流程"><a href="#执行流程" class="headerlink" title="执行流程"></a>执行流程</h2><ol><li>启用 Bash 严格模式，任何命令、变量或管道错误都会停止脚本。</li><li>根据脚本自身位置计算仓库根目录，不依赖当前工作目录。</li><li>解析 <code>--no-push</code>、包名和可选的自定义 Git 地址。</li><li>限制包名只能包含 AUR 合法名称常用的字母、数字和 <code>@._+-</code>。</li><li>确认当前目录属于 Git checkout，并要求当前分支为 <code>main</code>。</li><li>使用 <code>git pull --ff-only origin main</code> 快进到最新源码版本。</li><li>拒绝覆盖已经存在的 <code>packages/package-name/</code>。</li><li>写入 <code>.aur-url</code>，再调用 <code>sync-aur-packages.sh</code> 导入 AUR 文件。</li><li>只暂存并提交新增的软件包目录，不会提交其他本地修改。</li><li>默认推送到 <code>origin/main</code>；<code>--no-push</code> 只保留本地提交。</li></ol><h2 id="导入和校验"><a href="#导入和校验" class="headerlink" title="导入和校验"></a>导入和校验</h2><p><code>sync-aur-packages.sh</code> 在临时目录浅克隆 AUR 仓库，记录当前 Git commit<br>到 <code>.aur-commit</code>，然后复制 PKGBUILD、<code>.SRCINFO</code>、补丁和其他顶层文件。</p><p>同名文件冲突时的规则：仓库自己的隐藏元数据（<code>.nvchecker.toml</code>、<br><code>.gitignore</code>、<code>.namcap-ignore</code> 等）保留本地版本；AUR 包内容的普通文件<br>（补丁、LICENSE 等）以 AUR 为准，本地改动必须写进<br><code>scripts/overlays/&lt;包名&gt;.sh</code>，否则每次同步都会被覆盖。</p><p><code>check-package.sh</code> 随后检查：</p><ul><li>包目录名称是否合法。</li><li><code>PKGBUILD</code> 和 <code>.SRCINFO</code> 是否存在。</li><li>PKGBUILD 是否通过 Bash 语法检查。</li><li><code>.SRCINFO</code> 中声明的本地源文件是否齐全。</li><li><code>pkgbase</code>、<code>pkgver</code> 和 <code>pkgrel</code> 是否可读取。</li></ul><h2 id="捆绑-runtime-的包的-namcap-例外"><a href="#捆绑-runtime-的包的-namcap-例外" class="headerlink" title="捆绑 runtime 的包的 namcap 例外"></a>捆绑 runtime 的包的 namcap 例外</h2><p><code>packages/&lt;name&gt;/.namcap-exclude</code> 每行一个 namcap <strong>规则名</strong>（<code>namcap -L</code><br>第一列），<code>scripts/run-namcap.sh</code> 把它反做成 <code>--rules</code> 白名单：取全部启用<br>规则，去掉列出的那些。</p><p>不用 <code>--exclude</code> 是因为 namcap 自己的循环 bug：它每轮都执行<br><code>active_modules.update(modules)</code>，逗号列表会把上一轮排除的规则加回来，多个<br>名字里只有最后一个真正生效。白名单的 <code>-r</code> 是逐个累加，没有这个问题。</p><p>它只用于上游把完整运行时打进载荷的包：namcap 只看系统包，会把载荷内自带的<br>Python 模块报成缺失依赖（<code>pydepends</code>），也会把上游构建机留下的 RPATH/RUNPATH<br>报成不安全路径（<code>rpath</code>、<code>runpath</code>）。不写这个文件就必须让 namcap 全量通过，<br>这是默认路径。</p><h2 id="推送后的自动流程"><a href="#推送后的自动流程" class="headerlink" title="推送后的自动流程"></a>推送后的自动流程</h2><p><code>packages/**</code> 的变化会先触发 <code>check.yml</code>，在 Arch Linux 容器中运行<br><code>makepkg --printsrcinfo</code>、ShellCheck 和 namcap。随后 <code>build.yml</code> 只选择发生<br>变化的软件包及其依赖者，在 Arch Linux 容器中安装二进制仓库或 AUR 依赖，<br>然后运行 makepkg。</p><p>成功生成的 <code>*.pkg.tar.zst</code> 会封装在 tar 中作为 Actions Artifact 保存，<br>从而兼容 <code>epoch</code> 带来的冒号文件名。发布任务解包后再合并到 <code>repo</code> 分支，<br>因此软件包原始名称不会改变。<code>repo</code> 分支使用 amend 和 force-with-lease<br>保持单提交快照。</p><p>每天的 <code>sync.yml</code> 会检查所有带 <code>.aur-url</code> 的包。AUR commit 变化时，它<br>会更新文件、提交到 <code>main</code>，并只重建变化的软件包。</p><h2 id="常见失败"><a href="#常见失败" class="headerlink" title="常见失败"></a>常见失败</h2><ul><li><code>current branch is not main</code>：切换到 <code>main</code> 后重试。</li><li><code>already managed</code>：该包已存在，使用 <code>sync-aur-packages.sh</code> 手动同步。</li><li><code>Missing PKGBUILD/.SRCINFO</code>：上游 Git 仓库不是有效的 Arch 包仓库。</li><li><code>git push</code> 失败：本地提交已经生成，修复认证后运行 <code>git push origin main</code>。</li><li>构建失败：查看 GitHub Actions 对应软件包 job 的日志。</li></ul>]]></content>
       
       
       <categories>
