@@ -274,7 +274,7 @@
 .emo-home-project h3 { margin-top: 8px; }
 .emo-home-project p { margin-bottom: 12px; }
 .emo-home-project .emo-status { display: block; margin-top: auto; }
-.emo-reveal { opacity: 0; transform: translateY(10px); transition: opacity .35s ease var(--emo-reveal-delay, 0ms), transform .35s ease var(--emo-reveal-delay, 0ms); }
+html.js .emo-reveal { opacity: 0; transform: translateY(10px); transition: opacity .35s ease var(--emo-reveal-delay, 0ms), transform .35s ease var(--emo-reveal-delay, 0ms); }
 .emo-reveal.is-visible { opacity: 1; transform: translateY(0); }
 @media (max-width: 1024px) { .emo-home-projects { grid-template-columns: 1fr; } .emo-home-project { min-height: 0; } }
 @media (max-width: 768px) { .emo-home-section-head { align-items: flex-start; flex-direction: column; gap: 8px; } }
@@ -321,3 +321,11 @@
 .emo-bundle-toc ul { margin: 8px 0 0; padding-left: 1.4em; }
 .emo-bundle-toc li { margin: 2px 0; }
 .emo-bundle-source { font-size: .85rem; color: var(--emo-muted, #8a8f98); margin-top: 18px; padding-top: 10px; border-top: 1px dashed var(--emo-line, rgba(128, 128, 128, .25)); }
+
+/* Project status: badge colors by data-status, panel for detail pages. */
+.emo-status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; border: 1px solid var(--emo-line); font-size: .86em; color: var(--emo-muted); }
+.emo-status-badge[data-status='active'] { color: #16a34a; border-color: color-mix(in srgb, #16a34a 35%, transparent); }
+.emo-status-badge[data-status='maintained'] { color: var(--emo-accent); border-color: color-mix(in srgb, var(--emo-accent) 35%, transparent); }
+.emo-status-badge[data-status='experimental'] { color: #d97706; border-color: color-mix(in srgb, #d97706 35%, transparent); }
+.emo-status-panel { margin: 18px 0; }
+.emo-status-panel .emo-updated { margin: 10px 0 0; color: var(--emo-muted); font-size: .92em; }
