@@ -93,6 +93,7 @@
 
 .timeline-item { margin: 14px 0; padding: 16px 18px; border-left: 3px solid var(--emo-accent); border-top: 1px solid var(--emo-line); border-right: 1px solid var(--emo-line); border-bottom: 1px solid var(--emo-line); border-radius: 0 12px 12px 0; background: var(--emo-surface); box-shadow: var(--emo-shadow); line-height: 1.85; }
 .timeline-item strong { color: var(--emo-ink); }
+.timeline-item time { display: block; color: var(--emo-muted); font-size: .86em; }
 
 /* Home: turn the landing page into a small personal dashboard before the archive. */
 .emo-home-intro {

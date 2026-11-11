@@ -86,6 +86,10 @@
       
         <tags>
             
+            <tag> TypeScript </tag>
+            
+            <tag> 命令行 </tag>
+            
             <tag> QQ </tag>
             
             <tag> 数据备份 </tag>
@@ -95,6 +99,72 @@
             <tag> NapCat </tag>
             
             <tag> 自托管 </tag>
+            
+            <tag> 快速开始 </tag>
+            
+            <tag> 部署 </tag>
+            
+            <tag> 使用手册 </tag>
+            
+            <tag> Web界面 </tag>
+            
+            <tag> 运维 </tag>
+            
+            <tag> systemd </tag>
+            
+            <tag> 架构 </tag>
+            
+            <tag> 设计 </tag>
+            
+            <tag> 数据模型 </tag>
+            
+            <tag> 格式映射 </tag>
+            
+            <tag> 测试 </tag>
+            
+            <tag> 验收 </tag>
+            
+            <tag> 质量保证 </tag>
+            
+            <tag> 独立复核 </tag>
+            
+            <tag> 证据链 </tag>
+            
+            <tag> 项目报告 </tag>
+            
+            <tag> 实现 </tag>
+            
+            <tag> 交付 </tag>
+            
+            <tag> 总结 </tag>
+            
+            <tag> 调研 </tag>
+            
+            <tag> 开源项目 </tag>
+            
+            <tag> 导出工具 </tag>
+            
+            <tag> qq-chat-exporter </tag>
+            
+            <tag> 许可证 </tag>
+            
+            <tag> 独立实现 </tag>
+            
+            <tag> SnowLuma </tag>
+            
+            <tag> 许可证边界 </tag>
+            
+            <tag> 性能优化 </tag>
+            
+            <tag> Windows </tag>
+            
+            <tag> PowerShell </tag>
+            
+            <tag> 样例数据 </tag>
+            
+            <tag> 脱敏 </tag>
+            
+            <tag> 测试夹具 </tag>
             
         </tags>
       
@@ -121,9 +191,9 @@
             
             <tag> Rust </tag>
             
-            <tag> VoiceFox </tag>
-            
             <tag> ratatui </tag>
+            
+            <tag> voicefox </tag>
             
             <tag> libmpv </tag>
             
@@ -185,13 +255,13 @@
       
         <tags>
             
+            <tag> Arch Linux </tag>
+            
             <tag> Linux </tag>
             
             <tag> sing-box </tag>
             
             <tag> eBPF </tag>
-            
-            <tag> Arch Linux </tag>
             
         </tags>
       
@@ -216,13 +286,39 @@
       
         <tags>
             
+            <tag> Arch Linux </tag>
+            
             <tag> Linux </tag>
             
             <tag> sing-box </tag>
             
             <tag> eBPF </tag>
             
+            <tag> Shell </tag>
+            
+            <tag> 运维 </tag>
+            
+            <tag> 测试 </tag>
+            
+            <tag> 网络审计 </tag>
+            
             <tag> DNS </tag>
+            
+            <tag> Web Panel </tag>
+            
+            <tag> 网络测试 </tag>
+            
+            <tag> daed </tag>
+            
+            <tag> 迁移 </tag>
+            
+            <tag> 踩坑 </tag>
+            
+            <tag> 安全审计 </tag>
+            
+            <tag> 配置 </tag>
+            
+            <tag> 规则集 </tag>
             
             <tag> 透明代理 </tag>
             
@@ -282,15 +378,15 @@
       
         <tags>
             
-            <tag> Linux </tag>
+            <tag> Arch Linux </tag>
             
             <tag> CachyOS </tag>
-            
-            <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
             
             <tag> CI </tag>
+            
+            <tag> Linux </tag>
             
         </tags>
       
@@ -317,9 +413,9 @@
             
             <tag> Rust </tag>
             
-            <tag> TUI </tag>
-            
             <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
             
             <tag> 使用指南 </tag>
             
@@ -348,11 +444,11 @@
             
             <tag> Rust </tag>
             
+            <tag> voicefox </tag>
+            
             <tag> 快捷键 </tag>
             
             <tag> TUI </tag>
-            
-            <tag> voicefox </tag>
             
         </tags>
       
@@ -379,11 +475,11 @@
             
             <tag> Rust </tag>
             
+            <tag> voicefox </tag>
+            
             <tag> TUI </tag>
             
             <tag> 配置 </tag>
-            
-            <tag> voicefox </tag>
             
         </tags>
       
@@ -408,11 +504,11 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
             
             <tag> mpv </tag>
             
@@ -443,9 +539,9 @@
             
             <tag> Rust </tag>
             
-            <tag> TUI </tag>
-            
             <tag> voicefox </tag>
+            
+            <tag> TUI </tag>
             
             <tag> 音乐播放器 </tag>
             
@@ -512,6 +608,39 @@
     
     
     <entry>
+      <title>Arch Linux 私人软件仓库与构建体系</title>
+      <link href="/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/"/>
+      <url>/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/</url>
+      
+        <content type="html"><![CDATA[<h1 id="私人-Arch-Linux-软件仓库"><a href="#私人-Arch-Linux-软件仓库" class="headerlink" title="私人 Arch Linux 软件仓库"></a>私人 Arch Linux 软件仓库</h1><p>这个项目把 <code>packages/*/PKGBUILD</code> 自动构建成 Arch Linux <code>x86_64</code><br>软件包，并在私有 <code>repo</code> 分支维护标准 pacman 仓库数据库。</p><p>当前维护 <strong>13 个 package base</strong>。</p><h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul><li>使用真实 Arch Linux <code>base-devel</code> 容器运行 <code>makepkg</code>。</li><li>Pull Request 和 Push 自动执行 Bash 语法、<code>.SRCINFO</code>、ShellCheck 与 namcap 检查。</li><li>只构建发生变化的包；依赖通过 <code>.SRCINFO</code> 的 <code>pkgname</code> / <code>provides</code> 图递归传播。</li><li><code>scripts/overlays/&lt;package&gt;.sh</code> 变化只触发对应包；构建基础设施变化触发全量重建。</li><li>CI 使用可复用 Arch builder image，预装仓库配置、namcap 和 yay，减少重复 bootstrap。</li><li>Repository integration tests 在真实 Arch 容器中验证 <code>repo-add</code>、删除和 epoch 文件名处理。</li><li>成功产物通过 <code>repo-add</code> 更新 <code>repo</code> 分支中的 pacman 仓库。</li></ul><h2 id="Packages"><a href="#Packages" class="headerlink" title="Packages"></a>Packages</h2><table><thead><tr><th>Package</th><th>Arch</th><th>说明</th></tr></thead><tbody><tr><td><code>ffmpeg-full</code></td><td><code>x86_64</code></td><td>启用大量编解码器、CUDA 和 Whisper 支持的 FFmpeg</td></tr><tr><td><code>ggml-cuda-git</code></td><td><code>x86_64</code>, <code>aarch64</code></td><td>CUDA 优化的 GGML</td></tr><tr><td><code>linuxqq-clipsync-git</code></td><td><code>x86_64</code></td><td>Linux QQ Wayland 剪贴板同步</td></tr><tr><td><code>llama.cpp-cuda</code></td><td><code>x86_64</code></td><td>CUDA 优化的 llama.cpp stable 构建</td></tr><tr><td><code>llama.cpp-cuda-git</code></td><td><code>x86_64</code></td><td>CUDA 优化的 llama.cpp development 构建</td></tr><tr><td><code>scx-scheds-git</code></td><td><code>x86_64</code></td><td>sched_ext 调度器集合</td></tr><tr><td><code>vapoursynth-plugin-mlrt-ncnn-runtime</code></td><td><code>x86_64</code></td><td>VapourSynth MLRT NCNN runtime</td></tr><tr><td><code>mpeghdec</code></td><td><code>x86_64</code></td><td>Fraunhofer MPEG-H 解码器</td></tr><tr><td><code>quirc</code></td><td><code>i686</code>, <code>x86_64</code></td><td>QR 解码库</td></tr><tr><td><code>svt-jpeg-xs-git</code></td><td><code>x86_64</code></td><td>JPEG XS 编解码器</td></tr><tr><td><code>whisper-cpp-cuda-git</code></td><td><code>x86_64</code>, <code>aarch64</code></td><td>CUDA 优化的 Whisper</td></tr><tr><td><code>xclip-git</code></td><td><code>x86_64</code></td><td>X11 剪贴板命令行工具</td></tr></tbody></table><p>版本以各目录中的 <code>PKGBUILD</code> 和 <code>.SRCINFO</code> 为准。</p><h2 id="Build-and-CI"><a href="#Build-and-CI" class="headerlink" title="Build and CI"></a>Build and CI</h2><p><code>check.yml</code> 在 Arch 容器中运行 <code>makepkg --printsrcinfo</code>、ShellCheck 和<br>namcap，同时运行 build-graph 与 repository integration tests；<code>build.yml</code><br>独立负责只构建变更包及其递归依赖，并优先使用 GHCR 中的可复用 builder image。<br>Artifact 保存。构建成功后发布为滚动 GitHub Release（固定 tag <code>repo</code>），<br>pacman 直接从 Release 资产下载仓库数据库和软件包。AUR 同步只提交源<br>文件，提交本身会触发一次构建，不会重复 dispatch 同一个构建。<br>个别软件包构建失败不会阻塞其他成功构建的软件包发布。</p><p>构建环境按以下优先级使用依赖：</p><ol><li>CachyOS 仓库（<code>cachyos-v3</code>、<code>cachyos-extra-v3</code>、<code>cachyos-core-v3</code>、<br><code>cachyos</code>，使用官方 mirrorlist，容器同时接受 <code>x86_64_v3</code> 架构）</li><li>Arch Linux 官方仓库</li><li>archlinuxcn</li><li>coderkun-aur</li><li>Chaotic-AUR</li><li>仍未满足的依赖由 <code>yay</code> 从 AUR 构建并安装</li></ol><p>CachyOS 仓库排在 Arch 官方仓库之前，与目标系统的仓库优先级一致：构建<br>链接到的是本机 CachyOS 系统实际运行的库版本。若把 CachyOS 排在后面，<br>Arch 会在同名包冲突时胜出，当 CachyOS 先行替换了某个库（例如 openvino<br>的小版本更新带来的 soname 变化）时，构建出的包在本机就会出现共享库<br>找不到的问题。</p><p>构建容器保留 Arch 官方仓库的签名校验；未签名的第三方仓库仅在各自的<br>repository 段落中设置 <code>SigLevel = Never</code>。目标包本身仍由本项目保存的<br>PKGBUILD 重新构建，不会直接安装同名预编译包。</p><h2 id="自动更新"><a href="#自动更新" class="headerlink" title="自动更新"></a>自动更新</h2><p><strong>Sync AUR package sources</strong> 工作流每天 <code>03:17 UTC</code> 检查一次所有带<br><code>.aur-url</code> 的包目录。AUR 脚本发生变化时，它会更新对应的 PKGBUILD、<br><code>.SRCINFO</code>、补丁和其他源文件，提交变化到 <code>main</code>，并触发对应软件包构建。</p><p><strong>Maintenance</strong> 工作流每天 <code>16:17 UTC</code> 运行：清理过期 Artifact，并把已<br>发布软件包记录的 soname 依赖与当前各仓库比对，发现依赖过时就自动触发<br>对应软件包重建。</p><h2 id="添加-AUR-软件包"><a href="#添加-AUR-软件包" class="headerlink" title="添加 AUR 软件包"></a>添加 AUR 软件包</h2><p>在日常使用的目录克隆 <code>main</code> 源码分支：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone --single-branch <span class="token parameter variable">--branch</span> main <span class="token punctuation">\</span>  https://github.com/emoeem/pkgbuild.git <span class="token punctuation">\</span>  ~/pkgbuild-source<span class="token builtin class-name">cd</span> ~/pkgbuild-source<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>添加软件包只需要一条命令：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>脚本会自动同步 <code>main</code>、下载并校验 AUR 构建文件、提交新包并推送。<br>推送后 GitHub Actions 会自动构建并更新 <code>repo</code> 分支。默认 AUR 地址是：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">https://aur.archlinux.org/package-name.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>也可以传入其他 Git PKGBUILD 仓库：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-name https://example.com/package.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>只想生成本地提交而暂时不推送时：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh --no-push package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>完整执行流程见 <code>docs/add-aur-package.md</code>。</p><p>自维护脚本只需放入 <code>packages/package-name/</code>，并确保其中同时存在<br><code>PKGBUILD</code> 和最新的 <code>.SRCINFO</code>。没有 <code>.aur-url</code> 的目录不会被自动覆盖。</p><h2 id="删除软件包"><a href="#删除软件包" class="headerlink" title="删除软件包"></a>删除软件包</h2><p>从源码和二进制仓库删除一个 package base：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/remove-package.sh package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>脚本从 <code>.SRCINFO</code> 记录该 package base 产生的所有子包，删除源码目录并<br>推送。GitHub Actions 随后从 <code>repo</code> 分支删除相应软件包并重建 pacman<br>数据库。只创建本地提交时使用 <code>--no-push</code>。</p><p>仓库删除不会自动卸载电脑上已经安装的软件包。删除发布完成后，可以运行<br><code>emoeem-update</code> 立即同步本地仓库。</p><h2 id="fzf-管理界面"><a href="#fzf-管理界面" class="headerlink" title="fzf 管理界面"></a>fzf 管理界面</h2><p>安装 <code>fzf</code> 和 GitHub CLI 后，可以通过一个菜单完成添加、删除、同步、<br>构建、本地仓库更新和安装：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> fzf github-cli./manage.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>多选软件包时使用 <code>Tab</code>。完整说明见 <code>docs/package-management.md</code>。</p><p>构建依赖图、CI builder 和 repository integration tests 的设计见 <code>docs/build-pipeline.md</code>。</p><h2 id="构建产物"><a href="#构建产物" class="headerlink" title="构建产物"></a>构建产物</h2><p>每个包会生成独立的私有 Actions Artifact。Artifact 使用 tar 作为传输<br>容器，以便保留 Arch <code>epoch</code> 产生的冒号文件名；发布任务解包后，原始软件包<br>文件名和内容不会发生变化。所有成功产物随后被合并到 <code>repo</code> 分支的<br><code>x86_64/</code>：</p><ul><li><code>*.pkg.tar.zst</code></li><li><code>emoeem.db</code> 与 <code>emoeem.db.tar.zst</code></li><li><code>emoeem.files</code> 与 <code>emoeem.files.tar.zst</code></li><li><code>SHA256SUMS</code></li><li><code>emoeem.conf</code></li></ul><p>更新数据库时会删除同一个包的旧版本。<code>repo</code> 分支每次使用 amend 和<br>force-with-lease 更新，从而避免 Git 历史长期保存所有旧二进制包。</p><h2 id="作为-pacman-仓库使用"><a href="#作为-pacman-仓库使用" class="headerlink" title="作为 pacman 仓库使用"></a>作为 pacman 仓库使用</h2><p>GitHub 私有仓库不能直接作为匿名 HTTP pacman Server。创建普通用户可写<br>的目录，再使用已有的 HTTPS 凭据克隆私有 <code>repo</code> 分支：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">install</span> <span class="token parameter variable">-d</span> <span class="token parameter variable">-o</span> <span class="token string">"<span class="token environment constant">$USER</span>"</span> <span class="token parameter variable">-g</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">id</span> <span class="token parameter variable">-gn</span><span class="token variable">)</span></span>"</span> /var/lib/emoeem-repo<span class="token function">git</span> clone <span class="token parameter variable">--depth</span> <span class="token number">1</span> <span class="token parameter variable">--branch</span> repo <span class="token punctuation">\</span>  https://github.com/emoeem/pkgbuild.git <span class="token punctuation">\</span>  /var/lib/emoeem-repo<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>将下面内容加入 <code>/etc/pacman.conf</code>：</p><pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">emoeem</span><span class="token punctuation">]</span></span><span class="token key attr-name">SigLevel</span> <span class="token punctuation">=</span> <span class="token value attr-value">Never</span><span class="token key attr-name">Server</span> <span class="token punctuation">=</span> <span class="token value attr-value">file:///var/lib/emoeem-repo/x86_64</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h2 id="SONAME-漂移排查"><a href="#SONAME-漂移排查" class="headerlink" title="SONAME 漂移排查"></a>SONAME 漂移排查</h2><p>私有仓库的包由自己构建，不在 Arch 官方 rebuild 范围内。第三方依赖升级换掉<br>SONAME（<code>libfoo.so.2</code> → <code>libfoo.so.1</code>）或 ABI 后，已发布的包会立刻变成<br>「装得上、跑不起来」，典型症状：</p><pre class="line-numbers language-none"><code class="language-none">mpv: error while loading shared libraries: liboapv.so.2: cannot open shared object file<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>五步定位：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 缺哪个库</span>ldd <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">command</span> <span class="token parameter variable">-v</span> mpv<span class="token variable">)</span></span>"</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">'not found'</span><span class="token comment"># 2. 这个 SONAME 还有没有主人（报错 = 提供者已经换了 SONAME）</span>pacman <span class="token parameter variable">-Qo</span> /usr/lib/liboapv.so.2pacman <span class="token parameter variable">-Ql</span> openapv <span class="token operator">|</span> <span class="token function">grep</span> liboapv<span class="token comment"># 3. 刚才是谁升级换掉的</span><span class="token function">grep</span> <span class="token parameter variable">-iE</span> <span class="token string">'openapv|liboapv'</span> /var/log/pacman.log <span class="token operator">|</span> <span class="token function">tail</span><span class="token comment"># 4. 哪些已安装的包需要重建（AUR + 私人仓库）</span><span class="token assign-left variable"><span class="token environment constant">LC_ALL</span></span><span class="token operator">=</span>C checkrebuild <span class="token parameter variable">-i</span> emoeem<span class="token comment"># 5. 重建：推送到 main（只重建变化的包及其依赖者），或手动触发</span>gh workflow run build.yml <span class="token parameter variable">-f</span> <span class="token assign-left variable">packages</span><span class="token operator">=</span><span class="token operator">&lt;</span>pkg<span class="token operator">&gt;</span> <span class="token parameter variable">-f</span> <span class="token assign-left variable">make_jobs</span><span class="token operator">=</span><span class="token number">4</span> <span class="token punctuation">[</span>-f <span class="token assign-left variable">bump_pkgrel</span><span class="token operator">=</span>true<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>rebuild-detector</code> 自带的 hook 在本机是<strong>失效</strong>的，两个原因：</p><ul><li>它内部用 <code>LANG=C stat --printf "%F"</code> 识别可执行文件，但 <code>LC_MESSAGES</code><br>的优先级高于 <code>LANG</code>，中文环境下 <code>%F</code> 输出「一般文件」而不是<br><code>regular file</code>，于是它扫不到任何文件，永远报告「没有需要重建的包」。<br>实测：<code>checkrebuild -i emoeem</code> 无输出，写成 <code>LC_ALL=C checkrebuild -i emoeem</code><br>后立刻列出 <code>emoeem  ffmpeg-full</code>。手动调用必须带 <code>LC_ALL=C</code>。</li><li><code>checkrebuild</code> 默认只覆盖 AUR（foreign）包和 <code>file://</code> 仓库，私人仓库<br>需要显式 <code>-i emoeem</code>。</li></ul><p>安装仓库自带的 hook 覆盖版本，<code>pacman -Syu</code> 结束时会直接列出需要重建的包：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">install</span> <span class="token parameter variable">-Dm644</span> client/host/rebuild-detector.hook <span class="token punctuation">\</span>  /etc/pacman.d/hooks/rebuild-detector.hook<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p><code>/etc/pacman.d/hooks/</code> 中的同名 hook 会覆盖<br><code>/usr/share/libalpm/hooks/rebuild-detector.hook</code>；卸载 <code>rebuild-detector</code><br>后请同时删除该文件。该版本不使用 <code>NeedsTargets</code>，因此每次事务都会重扫全部<br>AUR + 私人仓库包（本机实测约 2 秒），也能发现由传递依赖引起的失效。</p><p>仓库侧的自动化：</p><ul><li>推送 <code>packages/**</code> 或 <code>scripts/overlays/**</code> 时，<code>build.yml</code> 只重建变化的<br>包及其依赖者。</li><li><code>dependency-drift.yml</code> 每 4 小时比对 <code>.BUILDINFO</code> 里记录的依赖版本与仓库<br>当前版本，自动 dispatch 重建。</li><li><code>maintenance.yml</code> 每天扫描已发布包的 ELF <code>NEEDED</code>，确认每个 SONAME 仍由<br>当前仓库提供；只有源码树里仍存在的包才会被 dispatch 重建，已下架却仍在<br>发布的包记为 <code>ORPHAN</code>，而来自 chaotic-aur / archlinuxcn / arch4edu / AUR<br>的库记在 <code>scripts/data/external-sonames.txt</code>（文件头部写明更新方法）。</li></ul><p>如果依赖提供者自己没声明 <code>provides=('libfoo.so=N-64')</code>（例如 chaotic-aur 的<br><code>openapv</code>），pacman 无法阻止不兼容升级，只能依赖上面的自动检测及时重建。</p><h2 id="自动更新客户端"><a href="#自动更新客户端" class="headerlink" title="自动更新客户端"></a>自动更新客户端</h2><p>从 <code>main</code> 源码目录执行一次：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./client/install.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安装器会创建 <code>emoeem-update</code> 命令和 systemd timer。定时器每六小时：</p><ol><li>以仓库所有者身份读取私人 GitHub 凭据。</li><li>强制同步最新的单提交 <code>repo</code> 快照。</li><li>清理 reflog 和旧 Git 对象，避免 <code>.git</code> 随构建次数累计。</li><li>校验软件包 SHA256。</li><li>只更新 pacman 的 <code>emoeem.db</code> 和 <code>emoeem.files</code> 缓存。</li></ol><p>也可以随时手动更新：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">emoeem-update<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>查看定时器：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">systemctl list-timers emoeem-repo-update.timer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>如果把 <code>repo/x86_64</code> 同步到自己的私有 HTTP 服务器，只需把 <code>Server</code><br>改成服务器地址，就可以像普通 Arch 仓库一样使用。</p><h2 id="仓库签名"><a href="#仓库签名" class="headerlink" title="仓库签名"></a>仓库签名</h2><p>默认生成未签名的私人仓库。需要包和数据库签名时，在 GitHub 仓库<br>Actions Secrets 中设置：</p><ul><li><code>REPOSITORY_PRIVATE_KEY</code>：ASCII armored GPG 私钥。</li><li><code>REPOSITORY_KEY_PASSPHRASE</code>：私钥密码；无密码时留空。</li></ul><p>工作流会签名每个软件包、数据库和 files 数据库，并将公钥导出为<br><code>x86_64/emoeem-key.asc</code>。客户端导入并本地信任该密钥后，可改用：</p><pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">SigLevel</span> <span class="token punctuation">=</span> <span class="token value attr-value">Required DatabaseRequired</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>建议为 CI 单独创建仅用于仓库签名的 GPG 子密钥。</p><h2 id="资源与许可"><a href="#资源与许可" class="headerlink" title="资源与许可"></a>资源与许可</h2><p><code>ffmpeg-full</code> 会下载 CUDA，完整构建仍可能消耗较多时间和磁盘。可以在<br>仓库的 Actions Variables 中设置 <code>BUILD_RUNNER=self-hosted</code>，改用带<br>Docker 的 Linux 自托管 runner。</p><p><code>ffmpeg-full</code> 的许可标识是<br><code>LicenseRef-nonfree-and-unredistributable</code>。仓库必须保持私有，产物仅供<br>最终用户本人构建和使用，不要公开发布或用于商业用途。</p><h2 id="维护工程化状态"><a href="#维护工程化状态" class="headerlink" title="维护工程化状态"></a>维护工程化状态</h2><p>当前仓库已完成一轮五阶段维护优化：</p><ol><li><strong>AUR / Overlay</strong>：AUR 同步改为事务式 staging，先验证上游、overlay、PKGBUILD 和 <code>.SRCINFO</code>，再替换工作区，避免失败同步破坏现有包。</li><li><strong>PKGBUILD 审计</strong>：<code>scripts/audit-packages.sh</code> 对 12 个有效 package base 做元数据、架构、AUR 元数据以及 provider / dependency 一致性审计。</li><li><strong>构建缓存</strong>：CI 复用 pacman、VCS source 和 Cargo 缓存，并让 builder / build 脚本变化自动失效对应缓存。</li><li><strong>Repository 完整性</strong>：发布前运行 <code>scripts/verify-repository.sh</code>，校验数据库引用、软件包资产、SHA256 和仓库配置。</li><li><strong>管理与文档</strong>：TUI 增加「审计全部软件包」，构建流水线文档同步记录实际维护流程。</li></ol><p>推荐的本地维护检查：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/audit-packages.sh<span class="token function">bash</span> tests/test-package-audit.sh<span class="token function">bash</span> tests/test-build-regressions.shpython3 tests/test_select_packages.py<span class="token function">bash</span> tests/test_repository.sh<span class="token function">bash</span> <span class="token parameter variable">-n</span> manage.sh scripts/*.sh client/*.sh tests/*.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Arch Linux </tag>
+            
+            <tag> CachyOS </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> CI </tag>
+            
+            <tag> Linux </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mpv-Emo Stable 与 Development 构建轨道</title>
       <link href="/2026/09/18/mpv-emo-tracks/"/>
       <url>/2026/09/18/mpv-emo-tracks/</url>
@@ -528,11 +657,11 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
             
             <tag> mpv </tag>
             
@@ -561,48 +690,15 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> Arch Linux </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
             
             <tag> fzf </tag>
             
-            <tag> PKGBUILD </tag>
-            
             <tag> TUI </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title>Arch Linux 私人软件仓库与构建体系</title>
-      <link href="/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/"/>
-      <url>/2026/09/18/arch-linux-si-ren-ruan-jian-cang-ku-yu-gou-jian-ti-xi/</url>
-      
-        <content type="html"><![CDATA[<h1 id="私人-Arch-Linux-软件仓库"><a href="#私人-Arch-Linux-软件仓库" class="headerlink" title="私人 Arch Linux 软件仓库"></a>私人 Arch Linux 软件仓库</h1><p>这个项目把 <code>packages/*/PKGBUILD</code> 自动构建成 Arch Linux <code>x86_64</code><br>软件包，并在私有 <code>repo</code> 分支维护标准 pacman 仓库数据库。</p><p>当前维护 <strong>13 个 package base</strong>。</p><h2 id="Features"><a href="#Features" class="headerlink" title="Features"></a>Features</h2><ul><li>使用真实 Arch Linux <code>base-devel</code> 容器运行 <code>makepkg</code>。</li><li>Pull Request 和 Push 自动执行 Bash 语法、<code>.SRCINFO</code>、ShellCheck 与 namcap 检查。</li><li>只构建发生变化的包；依赖通过 <code>.SRCINFO</code> 的 <code>pkgname</code> / <code>provides</code> 图递归传播。</li><li><code>scripts/overlays/&lt;package&gt;.sh</code> 变化只触发对应包；构建基础设施变化触发全量重建。</li><li>CI 使用可复用 Arch builder image，预装仓库配置、namcap 和 yay，减少重复 bootstrap。</li><li>Repository integration tests 在真实 Arch 容器中验证 <code>repo-add</code>、删除和 epoch 文件名处理。</li><li>成功产物通过 <code>repo-add</code> 更新 <code>repo</code> 分支中的 pacman 仓库。</li></ul><h2 id="Packages"><a href="#Packages" class="headerlink" title="Packages"></a>Packages</h2><table><thead><tr><th>Package</th><th>Arch</th><th>说明</th></tr></thead><tbody><tr><td><code>ffmpeg-full</code></td><td><code>x86_64</code></td><td>启用大量编解码器、CUDA 和 Whisper 支持的 FFmpeg</td></tr><tr><td><code>ggml-cuda-git</code></td><td><code>x86_64</code>, <code>aarch64</code></td><td>CUDA 优化的 GGML</td></tr><tr><td><code>linuxqq-clipsync-git</code></td><td><code>x86_64</code></td><td>Linux QQ Wayland 剪贴板同步</td></tr><tr><td><code>llama.cpp-cuda</code></td><td><code>x86_64</code></td><td>CUDA 优化的 llama.cpp stable 构建</td></tr><tr><td><code>llama.cpp-cuda-git</code></td><td><code>x86_64</code></td><td>CUDA 优化的 llama.cpp development 构建</td></tr><tr><td><code>scx-scheds-git</code></td><td><code>x86_64</code></td><td>sched_ext 调度器集合</td></tr><tr><td><code>vapoursynth-plugin-mlrt-ncnn-runtime</code></td><td><code>x86_64</code></td><td>VapourSynth MLRT NCNN runtime</td></tr><tr><td><code>mpeghdec</code></td><td><code>x86_64</code></td><td>Fraunhofer MPEG-H 解码器</td></tr><tr><td><code>quirc</code></td><td><code>i686</code>, <code>x86_64</code></td><td>QR 解码库</td></tr><tr><td><code>svt-jpeg-xs-git</code></td><td><code>x86_64</code></td><td>JPEG XS 编解码器</td></tr><tr><td><code>whisper-cpp-cuda-git</code></td><td><code>x86_64</code>, <code>aarch64</code></td><td>CUDA 优化的 Whisper</td></tr><tr><td><code>xclip-git</code></td><td><code>x86_64</code></td><td>X11 剪贴板命令行工具</td></tr></tbody></table><p>版本以各目录中的 <code>PKGBUILD</code> 和 <code>.SRCINFO</code> 为准。</p><h2 id="Build-and-CI"><a href="#Build-and-CI" class="headerlink" title="Build and CI"></a>Build and CI</h2><p><code>check.yml</code> 在 Arch 容器中运行 <code>makepkg --printsrcinfo</code>、ShellCheck 和<br>namcap，同时运行 build-graph 与 repository integration tests；<code>build.yml</code><br>独立负责只构建变更包及其递归依赖，并优先使用 GHCR 中的可复用 builder image。<br>Artifact 保存。构建成功后发布为滚动 GitHub Release（固定 tag <code>repo</code>），<br>pacman 直接从 Release 资产下载仓库数据库和软件包。AUR 同步只提交源<br>文件，提交本身会触发一次构建，不会重复 dispatch 同一个构建。<br>个别软件包构建失败不会阻塞其他成功构建的软件包发布。</p><p>构建环境按以下优先级使用依赖：</p><ol><li>CachyOS 仓库（<code>cachyos-v3</code>、<code>cachyos-extra-v3</code>、<code>cachyos-core-v3</code>、<br><code>cachyos</code>，使用官方 mirrorlist，容器同时接受 <code>x86_64_v3</code> 架构）</li><li>Arch Linux 官方仓库</li><li>archlinuxcn</li><li>coderkun-aur</li><li>Chaotic-AUR</li><li>仍未满足的依赖由 <code>yay</code> 从 AUR 构建并安装</li></ol><p>CachyOS 仓库排在 Arch 官方仓库之前，与目标系统的仓库优先级一致：构建<br>链接到的是本机 CachyOS 系统实际运行的库版本。若把 CachyOS 排在后面，<br>Arch 会在同名包冲突时胜出，当 CachyOS 先行替换了某个库（例如 openvino<br>的小版本更新带来的 soname 变化）时，构建出的包在本机就会出现共享库<br>找不到的问题。</p><p>构建容器保留 Arch 官方仓库的签名校验；未签名的第三方仓库仅在各自的<br>repository 段落中设置 <code>SigLevel = Never</code>。目标包本身仍由本项目保存的<br>PKGBUILD 重新构建，不会直接安装同名预编译包。</p><h2 id="自动更新"><a href="#自动更新" class="headerlink" title="自动更新"></a>自动更新</h2><p><strong>Sync AUR package sources</strong> 工作流每天 <code>03:17 UTC</code> 检查一次所有带<br><code>.aur-url</code> 的包目录。AUR 脚本发生变化时，它会更新对应的 PKGBUILD、<br><code>.SRCINFO</code>、补丁和其他源文件，提交变化到 <code>main</code>，并触发对应软件包构建。</p><p><strong>Maintenance</strong> 工作流每天 <code>16:17 UTC</code> 运行：清理过期 Artifact，并把已<br>发布软件包记录的 soname 依赖与当前各仓库比对，发现依赖过时就自动触发<br>对应软件包重建。</p><h2 id="添加-AUR-软件包"><a href="#添加-AUR-软件包" class="headerlink" title="添加 AUR 软件包"></a>添加 AUR 软件包</h2><p>在日常使用的目录克隆 <code>main</code> 源码分支：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> clone --single-branch <span class="token parameter variable">--branch</span> main <span class="token punctuation">\</span>  https://github.com/emoeem/pkgbuild.git <span class="token punctuation">\</span>  ~/pkgbuild-source<span class="token builtin class-name">cd</span> ~/pkgbuild-source<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>添加软件包只需要一条命令：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>脚本会自动同步 <code>main</code>、下载并校验 AUR 构建文件、提交新包并推送。<br>推送后 GitHub Actions 会自动构建并更新 <code>repo</code> 分支。默认 AUR 地址是：</p><pre class="line-numbers language-text" data-language="text"><code class="language-text">https://aur.archlinux.org/package-name.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>也可以传入其他 Git PKGBUILD 仓库：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh package-name https://example.com/package.git<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>只想生成本地提交而暂时不推送时：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/add-aur-package.sh --no-push package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>完整执行流程见 <code>docs/add-aur-package.md</code>。</p><p>自维护脚本只需放入 <code>packages/package-name/</code>，并确保其中同时存在<br><code>PKGBUILD</code> 和最新的 <code>.SRCINFO</code>。没有 <code>.aur-url</code> 的目录不会被自动覆盖。</p><h2 id="删除软件包"><a href="#删除软件包" class="headerlink" title="删除软件包"></a>删除软件包</h2><p>从源码和二进制仓库删除一个 package base：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/remove-package.sh package-name<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>脚本从 <code>.SRCINFO</code> 记录该 package base 产生的所有子包，删除源码目录并<br>推送。GitHub Actions 随后从 <code>repo</code> 分支删除相应软件包并重建 pacman<br>数据库。只创建本地提交时使用 <code>--no-push</code>。</p><p>仓库删除不会自动卸载电脑上已经安装的软件包。删除发布完成后，可以运行<br><code>emoeem-update</code> 立即同步本地仓库。</p><h2 id="fzf-管理界面"><a href="#fzf-管理界面" class="headerlink" title="fzf 管理界面"></a>fzf 管理界面</h2><p>安装 <code>fzf</code> 和 GitHub CLI 后，可以通过一个菜单完成添加、删除、同步、<br>构建、本地仓库更新和安装：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> pacman <span class="token parameter variable">-S</span> fzf github-cli./manage.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>多选软件包时使用 <code>Tab</code>。完整说明见 <code>docs/package-management.md</code>。</p><p>构建依赖图、CI builder 和 repository integration tests 的设计见 <code>docs/build-pipeline.md</code>。</p><h2 id="构建产物"><a href="#构建产物" class="headerlink" title="构建产物"></a>构建产物</h2><p>每个包会生成独立的私有 Actions Artifact。Artifact 使用 tar 作为传输<br>容器，以便保留 Arch <code>epoch</code> 产生的冒号文件名；发布任务解包后，原始软件包<br>文件名和内容不会发生变化。所有成功产物随后被合并到 <code>repo</code> 分支的<br><code>x86_64/</code>：</p><ul><li><code>*.pkg.tar.zst</code></li><li><code>emoeem.db</code> 与 <code>emoeem.db.tar.zst</code></li><li><code>emoeem.files</code> 与 <code>emoeem.files.tar.zst</code></li><li><code>SHA256SUMS</code></li><li><code>emoeem.conf</code></li></ul><p>更新数据库时会删除同一个包的旧版本。<code>repo</code> 分支每次使用 amend 和<br>force-with-lease 更新，从而避免 Git 历史长期保存所有旧二进制包。</p><h2 id="作为-pacman-仓库使用"><a href="#作为-pacman-仓库使用" class="headerlink" title="作为 pacman 仓库使用"></a>作为 pacman 仓库使用</h2><p>GitHub 私有仓库不能直接作为匿名 HTTP pacman Server。创建普通用户可写<br>的目录，再使用已有的 HTTPS 凭据克隆私有 <code>repo</code> 分支：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">install</span> <span class="token parameter variable">-d</span> <span class="token parameter variable">-o</span> <span class="token string">"<span class="token environment constant">$USER</span>"</span> <span class="token parameter variable">-g</span> <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token function">id</span> <span class="token parameter variable">-gn</span><span class="token variable">)</span></span>"</span> /var/lib/emoeem-repo<span class="token function">git</span> clone <span class="token parameter variable">--depth</span> <span class="token number">1</span> <span class="token parameter variable">--branch</span> repo <span class="token punctuation">\</span>  https://github.com/emoeem/pkgbuild.git <span class="token punctuation">\</span>  /var/lib/emoeem-repo<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>将下面内容加入 <code>/etc/pacman.conf</code>：</p><pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token section"><span class="token punctuation">[</span><span class="token section-name selector">emoeem</span><span class="token punctuation">]</span></span><span class="token key attr-name">SigLevel</span> <span class="token punctuation">=</span> <span class="token value attr-value">Never</span><span class="token key attr-name">Server</span> <span class="token punctuation">=</span> <span class="token value attr-value">file:///var/lib/emoeem-repo/x86_64</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><h2 id="SONAME-漂移排查"><a href="#SONAME-漂移排查" class="headerlink" title="SONAME 漂移排查"></a>SONAME 漂移排查</h2><p>私有仓库的包由自己构建，不在 Arch 官方 rebuild 范围内。第三方依赖升级换掉<br>SONAME（<code>libfoo.so.2</code> → <code>libfoo.so.1</code>）或 ABI 后，已发布的包会立刻变成<br>「装得上、跑不起来」，典型症状：</p><pre class="line-numbers language-none"><code class="language-none">mpv: error while loading shared libraries: liboapv.so.2: cannot open shared object file<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>五步定位：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token comment"># 1. 缺哪个库</span>ldd <span class="token string">"<span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">command</span> <span class="token parameter variable">-v</span> mpv<span class="token variable">)</span></span>"</span> <span class="token operator">|</span> <span class="token function">grep</span> <span class="token string">'not found'</span><span class="token comment"># 2. 这个 SONAME 还有没有主人（报错 = 提供者已经换了 SONAME）</span>pacman <span class="token parameter variable">-Qo</span> /usr/lib/liboapv.so.2pacman <span class="token parameter variable">-Ql</span> openapv <span class="token operator">|</span> <span class="token function">grep</span> liboapv<span class="token comment"># 3. 刚才是谁升级换掉的</span><span class="token function">grep</span> <span class="token parameter variable">-iE</span> <span class="token string">'openapv|liboapv'</span> /var/log/pacman.log <span class="token operator">|</span> <span class="token function">tail</span><span class="token comment"># 4. 哪些已安装的包需要重建（AUR + 私人仓库）</span><span class="token assign-left variable"><span class="token environment constant">LC_ALL</span></span><span class="token operator">=</span>C checkrebuild <span class="token parameter variable">-i</span> emoeem<span class="token comment"># 5. 重建：推送到 main（只重建变化的包及其依赖者），或手动触发</span>gh workflow run build.yml <span class="token parameter variable">-f</span> <span class="token assign-left variable">packages</span><span class="token operator">=</span><span class="token operator">&lt;</span>pkg<span class="token operator">&gt;</span> <span class="token parameter variable">-f</span> <span class="token assign-left variable">make_jobs</span><span class="token operator">=</span><span class="token number">4</span> <span class="token punctuation">[</span>-f <span class="token assign-left variable">bump_pkgrel</span><span class="token operator">=</span>true<span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>rebuild-detector</code> 自带的 hook 在本机是<strong>失效</strong>的，两个原因：</p><ul><li>它内部用 <code>LANG=C stat --printf "%F"</code> 识别可执行文件，但 <code>LC_MESSAGES</code><br>的优先级高于 <code>LANG</code>，中文环境下 <code>%F</code> 输出「一般文件」而不是<br><code>regular file</code>，于是它扫不到任何文件，永远报告「没有需要重建的包」。<br>实测：<code>checkrebuild -i emoeem</code> 无输出，写成 <code>LC_ALL=C checkrebuild -i emoeem</code><br>后立刻列出 <code>emoeem  ffmpeg-full</code>。手动调用必须带 <code>LC_ALL=C</code>。</li><li><code>checkrebuild</code> 默认只覆盖 AUR（foreign）包和 <code>file://</code> 仓库，私人仓库<br>需要显式 <code>-i emoeem</code>。</li></ul><p>安装仓库自带的 hook 覆盖版本，<code>pacman -Syu</code> 结束时会直接列出需要重建的包：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">sudo</span> <span class="token function">install</span> <span class="token parameter variable">-Dm644</span> client/host/rebuild-detector.hook <span class="token punctuation">\</span>  /etc/pacman.d/hooks/rebuild-detector.hook<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p><code>/etc/pacman.d/hooks/</code> 中的同名 hook 会覆盖<br><code>/usr/share/libalpm/hooks/rebuild-detector.hook</code>；卸载 <code>rebuild-detector</code><br>后请同时删除该文件。该版本不使用 <code>NeedsTargets</code>，因此每次事务都会重扫全部<br>AUR + 私人仓库包（本机实测约 2 秒），也能发现由传递依赖引起的失效。</p><p>仓库侧的自动化：</p><ul><li>推送 <code>packages/**</code> 或 <code>scripts/overlays/**</code> 时，<code>build.yml</code> 只重建变化的<br>包及其依赖者。</li><li><code>dependency-drift.yml</code> 每 4 小时比对 <code>.BUILDINFO</code> 里记录的依赖版本与仓库<br>当前版本，自动 dispatch 重建。</li><li><code>maintenance.yml</code> 每天扫描已发布包的 ELF <code>NEEDED</code>，确认每个 SONAME 仍由<br>当前仓库提供；只有源码树里仍存在的包才会被 dispatch 重建，已下架却仍在<br>发布的包记为 <code>ORPHAN</code>，而来自 chaotic-aur / archlinuxcn / arch4edu / AUR<br>的库记在 <code>scripts/data/external-sonames.txt</code>（文件头部写明更新方法）。</li></ul><p>如果依赖提供者自己没声明 <code>provides=('libfoo.so=N-64')</code>（例如 chaotic-aur 的<br><code>openapv</code>），pacman 无法阻止不兼容升级，只能依赖上面的自动检测及时重建。</p><h2 id="自动更新客户端"><a href="#自动更新客户端" class="headerlink" title="自动更新客户端"></a>自动更新客户端</h2><p>从 <code>main</code> 源码目录执行一次：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./client/install.sh<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安装器会创建 <code>emoeem-update</code> 命令和 systemd timer。定时器每六小时：</p><ol><li>以仓库所有者身份读取私人 GitHub 凭据。</li><li>强制同步最新的单提交 <code>repo</code> 快照。</li><li>清理 reflog 和旧 Git 对象，避免 <code>.git</code> 随构建次数累计。</li><li>校验软件包 SHA256。</li><li>只更新 pacman 的 <code>emoeem.db</code> 和 <code>emoeem.files</code> 缓存。</li></ol><p>也可以随时手动更新：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">emoeem-update<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>查看定时器：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">systemctl list-timers emoeem-repo-update.timer<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>如果把 <code>repo/x86_64</code> 同步到自己的私有 HTTP 服务器，只需把 <code>Server</code><br>改成服务器地址，就可以像普通 Arch 仓库一样使用。</p><h2 id="仓库签名"><a href="#仓库签名" class="headerlink" title="仓库签名"></a>仓库签名</h2><p>默认生成未签名的私人仓库。需要包和数据库签名时，在 GitHub 仓库<br>Actions Secrets 中设置：</p><ul><li><code>REPOSITORY_PRIVATE_KEY</code>：ASCII armored GPG 私钥。</li><li><code>REPOSITORY_KEY_PASSPHRASE</code>：私钥密码；无密码时留空。</li></ul><p>工作流会签名每个软件包、数据库和 files 数据库，并将公钥导出为<br><code>x86_64/emoeem-key.asc</code>。客户端导入并本地信任该密钥后，可改用：</p><pre class="line-numbers language-ini" data-language="ini"><code class="language-ini"><span class="token key attr-name">SigLevel</span> <span class="token punctuation">=</span> <span class="token value attr-value">Required DatabaseRequired</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>建议为 CI 单独创建仅用于仓库签名的 GPG 子密钥。</p><h2 id="资源与许可"><a href="#资源与许可" class="headerlink" title="资源与许可"></a>资源与许可</h2><p><code>ffmpeg-full</code> 会下载 CUDA，完整构建仍可能消耗较多时间和磁盘。可以在<br>仓库的 Actions Variables 中设置 <code>BUILD_RUNNER=self-hosted</code>，改用带<br>Docker 的 Linux 自托管 runner。</p><p><code>ffmpeg-full</code> 的许可标识是<br><code>LicenseRef-nonfree-and-unredistributable</code>。仓库必须保持私有，产物仅供<br>最终用户本人构建和使用，不要公开发布或用于商业用途。</p><h2 id="维护工程化状态"><a href="#维护工程化状态" class="headerlink" title="维护工程化状态"></a>维护工程化状态</h2><p>当前仓库已完成一轮五阶段维护优化：</p><ol><li><strong>AUR / Overlay</strong>：AUR 同步改为事务式 staging，先验证上游、overlay、PKGBUILD 和 <code>.SRCINFO</code>，再替换工作区，避免失败同步破坏现有包。</li><li><strong>PKGBUILD 审计</strong>：<code>scripts/audit-packages.sh</code> 对 12 个有效 package base 做元数据、架构、AUR 元数据以及 provider / dependency 一致性审计。</li><li><strong>构建缓存</strong>：CI 复用 pacman、VCS source 和 Cargo 缓存，并让 builder / build 脚本变化自动失效对应缓存。</li><li><strong>Repository 完整性</strong>：发布前运行 <code>scripts/verify-repository.sh</code>，校验数据库引用、软件包资产、SHA256 和仓库配置。</li><li><strong>管理与文档</strong>：TUI 增加「审计全部软件包」，构建流水线文档同步记录实际维护流程。</li></ol><p>推荐的本地维护检查：</p><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">./scripts/audit-packages.sh<span class="token function">bash</span> tests/test-package-audit.sh<span class="token function">bash</span> tests/test-build-regressions.shpython3 tests/test_select_packages.py<span class="token function">bash</span> tests/test_repository.sh<span class="token function">bash</span> <span class="token parameter variable">-n</span> manage.sh scripts/*.sh client/*.sh tests/*.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
-      
-      
-      <categories>
-          
-          <category> 技术 </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> Linux </tag>
-            
-            <tag> CachyOS </tag>
-            
-            <tag> Arch Linux </tag>
-            
-            <tag> PKGBUILD </tag>
-            
-            <tag> CI </tag>
             
         </tags>
       
@@ -658,15 +754,15 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
             
-            <tag> AUR </tag>
-            
             <tag> CI </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> AUR </tag>
             
         </tags>
       
@@ -1018,9 +1114,9 @@
       
         <tags>
             
-            <tag> Linux </tag>
-            
             <tag> CachyOS </tag>
+            
+            <tag> Linux </tag>
             
             <tag> Fish </tag>
             
