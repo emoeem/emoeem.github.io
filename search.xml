@@ -255,13 +255,13 @@
       
         <tags>
             
-            <tag> Arch Linux </tag>
-            
             <tag> Linux </tag>
             
             <tag> sing-box </tag>
             
             <tag> eBPF </tag>
+            
+            <tag> Arch Linux </tag>
             
         </tags>
       
@@ -286,13 +286,13 @@
       
         <tags>
             
-            <tag> Arch Linux </tag>
-            
             <tag> Linux </tag>
             
             <tag> sing-box </tag>
             
             <tag> eBPF </tag>
+            
+            <tag> Arch Linux </tag>
             
             <tag> Shell </tag>
             
@@ -378,15 +378,15 @@
       
         <tags>
             
-            <tag> Arch Linux </tag>
+            <tag> Linux </tag>
             
             <tag> CachyOS </tag>
+            
+            <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
             
             <tag> CI </tag>
-            
-            <tag> Linux </tag>
             
         </tags>
       
@@ -504,11 +504,11 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
-            
-            <tag> Linux </tag>
             
             <tag> mpv </tag>
             
@@ -624,15 +624,15 @@
       
         <tags>
             
-            <tag> Arch Linux </tag>
+            <tag> Linux </tag>
             
             <tag> CachyOS </tag>
+            
+            <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
             
             <tag> CI </tag>
-            
-            <tag> Linux </tag>
             
         </tags>
       
@@ -657,11 +657,11 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
-            
-            <tag> Linux </tag>
             
             <tag> mpv </tag>
             
@@ -690,13 +690,13 @@
       
         <tags>
             
-            <tag> Arch Linux </tag>
-            
-            <tag> PKGBUILD </tag>
-            
             <tag> Linux </tag>
             
+            <tag> Arch Linux </tag>
+            
             <tag> fzf </tag>
+            
+            <tag> PKGBUILD </tag>
             
             <tag> TUI </tag>
             
@@ -754,13 +754,13 @@
       
         <tags>
             
+            <tag> Linux </tag>
+            
             <tag> Arch Linux </tag>
             
             <tag> PKGBUILD </tag>
             
             <tag> CI </tag>
-            
-            <tag> Linux </tag>
             
             <tag> AUR </tag>
             
@@ -1114,9 +1114,9 @@
       
         <tags>
             
-            <tag> CachyOS </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> CachyOS </tag>
             
             <tag> Fish </tag>
             

@@ -573,14 +573,7 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/tags/Slice/</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/tags/Arch-Linux/</loc>
+    <loc>https://emoeem.github.io/tags/Linux/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -588,27 +581,6 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/CachyOS/</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/tags/PKGBUILD/</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/tags/CI/</loc>
-    <lastmod>2026-11-11</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://emoeem.github.io/tags/Linux/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -637,6 +609,13 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/eBPF/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/Arch-Linux/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -679,6 +658,20 @@
   
   <url>
     <loc>https://emoeem.github.io/tags/libalpm/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/PKGBUILD/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://emoeem.github.io/tags/CI/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -748,6 +741,13 @@
   </url>
   
   <url>
+    <loc>https://emoeem.github.io/tags/Slice/</loc>
+    <lastmod>2026-11-11</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://emoeem.github.io/tags/AI/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
@@ -790,14 +790,14 @@
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/tags/mpv-n-Arch-Linux-n-PKGBUILD-n-Omniphony-n-Linux/</loc>
+    <loc>https://emoeem.github.io/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
-    <loc>https://emoeem.github.io/tags/%E9%9F%B3%E8%A7%86%E9%A2%91/</loc>
+    <loc>https://emoeem.github.io/tags/mpv-n-Arch-Linux-n-PKGBUILD-n-Omniphony-n-Linux/</loc>
     <lastmod>2026-11-11</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>

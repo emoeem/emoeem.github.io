@@ -275,7 +275,7 @@
 .emo-home-project p { margin-bottom: 12px; }
 .emo-home-project .emo-status { display: block; margin-top: auto; }
 html.js .emo-reveal { opacity: 0; transform: translateY(10px); transition: opacity .35s ease var(--emo-reveal-delay, 0ms), transform .35s ease var(--emo-reveal-delay, 0ms); }
-.emo-reveal.is-visible { opacity: 1; transform: translateY(0); }
+html.js .emo-reveal.is-visible { opacity: 1; transform: translateY(0); }
 @media (max-width: 1024px) { .emo-home-projects { grid-template-columns: 1fr; } .emo-home-project { min-height: 0; } }
 @media (max-width: 768px) { .emo-home-section-head { align-items: flex-start; flex-direction: column; gap: 8px; } }
 @media (prefers-reduced-motion: reduce) { .emo-reveal { opacity: 1; transform: none; transition: none; } }
