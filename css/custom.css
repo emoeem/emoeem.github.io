@@ -174,7 +174,14 @@
 .emo-article-context__badge { display: inline-flex; padding: 4px 9px; border-radius: 999px; background: color-mix(in srgb, var(--emo-accent) 10%, transparent); color: var(--emo-accent-strong); font-size: .8rem; }
 .emo-article-context__env { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
 .emo-article-context__env span { padding: 4px 8px; border-radius: 7px; background: color-mix(in srgb, var(--emo-accent) 6%, transparent); font-size: .78rem; }
-@media (max-width: 768px) { .emo-command-palette { padding: 7vh .65rem; } #page-header.full_page { min-height: 470px; } .emo-article-context { padding: 12px 14px; } }
+@media (max-width: 768px) {
+  .emo-command-palette { padding: 7vh .65rem; }
+  #page-header.full_page { min-height: 330px; }
+  .emo-article-context { padding: 12px 14px; margin-bottom: 18px; }
+  #post-info .post-meta { font-size: .84rem; line-height: 1.75; letter-spacing: 0; }
+  #post-info .post-meta .post-meta-separator, #post-info .post-meta > * { margin-block: 1px; }
+  #article-container { font-size: 1.02rem; line-height: 1.85; }
+}
 @media (prefers-reduced-motion: reduce) { #reading-progress span { transition: none; } }
 
 .emo-code-copy { position: absolute; top: 8px; right: 8px; z-index: 2; padding: 4px 8px; border: 0; border-radius: 7px; background: rgba(0,0,0,.45); color: #fff; font-size: .72rem; cursor: pointer; opacity: 0; transition: opacity .15s ease; }
@@ -182,19 +189,26 @@
 #article-container pre:hover .emo-code-copy, #article-container pre:focus-within .emo-code-copy { opacity: 1; }
 @media (max-width: 768px) { .emo-code-copy { opacity: 1; } }
 
-/* Refined landing hero: keep the editorial banner visible in both themes. */
-#page-header.full_page {
-  min-height: 510px;
-  background-image: linear-gradient(180deg, rgba(247,245,240,.06), rgba(32,37,43,.16)), url('/img/site-banner.svg') !important;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #dfe8e5;
+/* Landing + page heroes: dark gradient matching the dashboard palette.
+   覆盖 default_top_img 的内联背景（!important 压过 inline style）；
+   文章页 .post-bg 保留封面大图。 */
+:root {
+  --emo-hero-bg:
+    radial-gradient(720px 300px at 82% 18%, rgba(56,189,248,.3), transparent 62%),
+    radial-gradient(640px 320px at 12% 88%, rgba(99,102,241,.34), transparent 64%),
+    linear-gradient(135deg, #0f172a 0%, #1e293b 55%, #312e81 100%);
 }
 
-[data-theme='dark'] #page-header.full_page {
-  background-image: linear-gradient(180deg, rgba(15,23,42,.18), rgba(15,23,42,.42)), url('/img/site-banner.svg') !important;
-  background-color: #c8d8d3;
+#page-header.full_page {
+  min-height: 400px;
+  background-image: var(--emo-hero-bg) !important;
+  background-color: #0f172a;
+}
+
+#page-header:not(.post-bg):not(.full_page) {
+  min-height: 280px;
+  background-image: var(--emo-hero-bg) !important;
+  background-color: #0f172a;
 }
 
 #site-info {

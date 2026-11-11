@@ -86,9 +86,9 @@
       
         <tags>
             
-            <tag> 命令行 </tag>
-            
             <tag> TypeScript </tag>
+            
+            <tag> 命令行 </tag>
             
             <tag> QQ </tag>
             
@@ -112,17 +112,9 @@
             
             <tag> systemd </tag>
             
-            <tag> 架构 </tag>
-            
-            <tag> 设计 </tag>
-            
             <tag> 数据模型 </tag>
             
             <tag> 格式映射 </tag>
-            
-            <tag> 独立复核 </tag>
-            
-            <tag> 证据链 </tag>
             
             <tag> 测试 </tag>
             
@@ -130,9 +122,17 @@
             
             <tag> 质量保证 </tag>
             
+            <tag> 独立复核 </tag>
+            
+            <tag> 证据链 </tag>
+            
             <tag> 项目报告 </tag>
             
             <tag> 实现 </tag>
+            
+            <tag> 架构 </tag>
+            
+            <tag> 设计 </tag>
             
             <tag> 交付 </tag>
             
@@ -150,12 +150,6 @@
             
             <tag> 独立实现 </tag>
             
-            <tag> SnowLuma </tag>
-            
-            <tag> 许可证边界 </tag>
-            
-            <tag> 性能优化 </tag>
-            
             <tag> Windows </tag>
             
             <tag> PowerShell </tag>
@@ -165,6 +159,12 @@
             <tag> 脱敏 </tag>
             
             <tag> 测试夹具 </tag>
+            
+            <tag> SnowLuma </tag>
+            
+            <tag> 许可证边界 </tag>
+            
+            <tag> 性能优化 </tag>
             
         </tags>
       
@@ -226,11 +226,11 @@
             
             <tag> Arch Linux </tag>
             
-            <tag> FFmpeg </tag>
-            
             <tag> ratatui </tag>
             
             <tag> libalpm </tag>
+            
+            <tag> FFmpeg </tag>
             
         </tags>
       
@@ -310,9 +310,9 @@
             
             <tag> daed </tag>
             
-            <tag> 迁移 </tag>
-            
             <tag> 踩坑 </tag>
+            
+            <tag> 迁移 </tag>
             
             <tag> 安全审计 </tag>
             
@@ -909,9 +909,9 @@
             
             <tag> Rust </tag>
             
-            <tag> rust学习 </tag>
-            
             <tag> 借用 </tag>
+            
+            <tag> rust学习 </tag>
             
         </tags>
       
@@ -938,9 +938,9 @@
             
             <tag> Rust </tag>
             
-            <tag> 所有权 </tag>
-            
             <tag> rust学习 </tag>
+            
+            <tag> 所有权 </tag>
             
         </tags>
       
