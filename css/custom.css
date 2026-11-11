@@ -343,3 +343,15 @@ html.js .emo-reveal.is-visible { opacity: 1; transform: translateY(0); }
 .emo-status-badge[data-status='experimental'] { color: #d97706; border-color: color-mix(in srgb, #d97706 35%, transparent); }
 .emo-status-panel { margin: 18px 0; }
 .emo-status-panel .emo-updated { margin: 10px 0 0; color: var(--emo-muted); font-size: .92em; }
+
+/* Project card cover: bleed to card edges (card padding is 22px). */
+.emo-project-card { display: flex; flex-direction: column; }
+.emo-card-cover { margin: -22px -22px 16px; border-radius: 14px 14px 0 0; overflow: hidden; border-bottom: 1px solid var(--emo-line); }
+.emo-card-cover img { display: block; width: 100%; aspect-ratio: 21 / 9; object-fit: cover; object-position: top; }
+.emo-project-card .emo-status, .emo-project-card .emo-project-links { margin-bottom: 0; }
+
+/* Footer: brand gradient + guaranteed text contrast (Lighthouse color-contrast). */
+#footer { background: var(--emo-hero-bg) !important; background-color: #0f172a; }
+#footer::before { background-color: transparent !important; }
+#footer > *, #footer a { color: rgba(226, 232, 240, .88); }
+#footer a:hover { color: #7dd3fc; }
