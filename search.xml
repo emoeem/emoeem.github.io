@@ -92,21 +92,11 @@
             
             <tag> QQ </tag>
             
-            <tag> 数据备份 </tag>
-            
-            <tag> SQLite </tag>
+            <tag> 快速开始 </tag>
             
             <tag> NapCat </tag>
             
-            <tag> 自托管 </tag>
-            
-            <tag> 快速开始 </tag>
-            
             <tag> 部署 </tag>
-            
-            <tag> 使用手册 </tag>
-            
-            <tag> Web界面 </tag>
             
             <tag> 运维 </tag>
             
@@ -120,6 +110,8 @@
             
             <tag> 格式映射 </tag>
             
+            <tag> SQLite </tag>
+            
             <tag> 测试 </tag>
             
             <tag> 验收 </tag>
@@ -130,13 +122,13 @@
             
             <tag> 证据链 </tag>
             
-            <tag> 交付 </tag>
-            
-            <tag> 总结 </tag>
-            
             <tag> 项目报告 </tag>
             
             <tag> 实现 </tag>
+            
+            <tag> 交付 </tag>
+            
+            <tag> 总结 </tag>
             
             <tag> 调研 </tag>
             
@@ -144,11 +136,9 @@
             
             <tag> 导出工具 </tag>
             
-            <tag> SnowLuma </tag>
+            <tag> 数据备份 </tag>
             
-            <tag> 许可证边界 </tag>
-            
-            <tag> 性能优化 </tag>
+            <tag> 自托管 </tag>
             
             <tag> qq-chat-exporter </tag>
             
@@ -156,15 +146,25 @@
             
             <tag> 独立实现 </tag>
             
+            <tag> SnowLuma </tag>
+            
+            <tag> 许可证边界 </tag>
+            
+            <tag> 性能优化 </tag>
+            
+            <tag> Windows </tag>
+            
+            <tag> PowerShell </tag>
+            
             <tag> 样例数据 </tag>
             
             <tag> 脱敏 </tag>
             
             <tag> 测试夹具 </tag>
             
-            <tag> Windows </tag>
+            <tag> 使用手册 </tag>
             
-            <tag> PowerShell </tag>
+            <tag> Web界面 </tag>
             
         </tags>
       
@@ -304,9 +304,9 @@
             
             <tag> DNS </tag>
             
-            <tag> 网络测试 </tag>
-            
             <tag> Web Panel </tag>
+            
+            <tag> 网络测试 </tag>
             
             <tag> daed </tag>
             

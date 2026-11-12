@@ -63,43 +63,43 @@
     <category term="TypeScript" scheme="https://emoeem.github.io/tags/TypeScript/"/>
     <category term="命令行" scheme="https://emoeem.github.io/tags/%E5%91%BD%E4%BB%A4%E8%A1%8C/"/>
     <category term="QQ" scheme="https://emoeem.github.io/tags/QQ/"/>
-    <category term="数据备份" scheme="https://emoeem.github.io/tags/%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/"/>
-    <category term="SQLite" scheme="https://emoeem.github.io/tags/SQLite/"/>
-    <category term="NapCat" scheme="https://emoeem.github.io/tags/NapCat/"/>
-    <category term="自托管" scheme="https://emoeem.github.io/tags/%E8%87%AA%E6%89%98%E7%AE%A1/"/>
     <category term="快速开始" scheme="https://emoeem.github.io/tags/%E5%BF%AB%E9%80%9F%E5%BC%80%E5%A7%8B/"/>
+    <category term="NapCat" scheme="https://emoeem.github.io/tags/NapCat/"/>
     <category term="部署" scheme="https://emoeem.github.io/tags/%E9%83%A8%E7%BD%B2/"/>
-    <category term="使用手册" scheme="https://emoeem.github.io/tags/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
-    <category term="Web界面" scheme="https://emoeem.github.io/tags/Web%E7%95%8C%E9%9D%A2/"/>
     <category term="运维" scheme="https://emoeem.github.io/tags/%E8%BF%90%E7%BB%B4/"/>
     <category term="systemd" scheme="https://emoeem.github.io/tags/systemd/"/>
     <category term="架构" scheme="https://emoeem.github.io/tags/%E6%9E%B6%E6%9E%84/"/>
     <category term="设计" scheme="https://emoeem.github.io/tags/%E8%AE%BE%E8%AE%A1/"/>
     <category term="数据模型" scheme="https://emoeem.github.io/tags/%E6%95%B0%E6%8D%AE%E6%A8%A1%E5%9E%8B/"/>
     <category term="格式映射" scheme="https://emoeem.github.io/tags/%E6%A0%BC%E5%BC%8F%E6%98%A0%E5%B0%84/"/>
+    <category term="SQLite" scheme="https://emoeem.github.io/tags/SQLite/"/>
     <category term="测试" scheme="https://emoeem.github.io/tags/%E6%B5%8B%E8%AF%95/"/>
     <category term="验收" scheme="https://emoeem.github.io/tags/%E9%AA%8C%E6%94%B6/"/>
     <category term="质量保证" scheme="https://emoeem.github.io/tags/%E8%B4%A8%E9%87%8F%E4%BF%9D%E8%AF%81/"/>
     <category term="独立复核" scheme="https://emoeem.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%A4%8D%E6%A0%B8/"/>
     <category term="证据链" scheme="https://emoeem.github.io/tags/%E8%AF%81%E6%8D%AE%E9%93%BE/"/>
-    <category term="交付" scheme="https://emoeem.github.io/tags/%E4%BA%A4%E4%BB%98/"/>
-    <category term="总结" scheme="https://emoeem.github.io/tags/%E6%80%BB%E7%BB%93/"/>
     <category term="项目报告" scheme="https://emoeem.github.io/tags/%E9%A1%B9%E7%9B%AE%E6%8A%A5%E5%91%8A/"/>
     <category term="实现" scheme="https://emoeem.github.io/tags/%E5%AE%9E%E7%8E%B0/"/>
+    <category term="交付" scheme="https://emoeem.github.io/tags/%E4%BA%A4%E4%BB%98/"/>
+    <category term="总结" scheme="https://emoeem.github.io/tags/%E6%80%BB%E7%BB%93/"/>
     <category term="调研" scheme="https://emoeem.github.io/tags/%E8%B0%83%E7%A0%94/"/>
     <category term="开源项目" scheme="https://emoeem.github.io/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/"/>
     <category term="导出工具" scheme="https://emoeem.github.io/tags/%E5%AF%BC%E5%87%BA%E5%B7%A5%E5%85%B7/"/>
-    <category term="SnowLuma" scheme="https://emoeem.github.io/tags/SnowLuma/"/>
-    <category term="许可证边界" scheme="https://emoeem.github.io/tags/%E8%AE%B8%E5%8F%AF%E8%AF%81%E8%BE%B9%E7%95%8C/"/>
-    <category term="性能优化" scheme="https://emoeem.github.io/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    <category term="数据备份" scheme="https://emoeem.github.io/tags/%E6%95%B0%E6%8D%AE%E5%A4%87%E4%BB%BD/"/>
+    <category term="自托管" scheme="https://emoeem.github.io/tags/%E8%87%AA%E6%89%98%E7%AE%A1/"/>
     <category term="qq-chat-exporter" scheme="https://emoeem.github.io/tags/qq-chat-exporter/"/>
     <category term="许可证" scheme="https://emoeem.github.io/tags/%E8%AE%B8%E5%8F%AF%E8%AF%81/"/>
     <category term="独立实现" scheme="https://emoeem.github.io/tags/%E7%8B%AC%E7%AB%8B%E5%AE%9E%E7%8E%B0/"/>
+    <category term="SnowLuma" scheme="https://emoeem.github.io/tags/SnowLuma/"/>
+    <category term="许可证边界" scheme="https://emoeem.github.io/tags/%E8%AE%B8%E5%8F%AF%E8%AF%81%E8%BE%B9%E7%95%8C/"/>
+    <category term="性能优化" scheme="https://emoeem.github.io/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/"/>
+    <category term="Windows" scheme="https://emoeem.github.io/tags/Windows/"/>
+    <category term="PowerShell" scheme="https://emoeem.github.io/tags/PowerShell/"/>
     <category term="样例数据" scheme="https://emoeem.github.io/tags/%E6%A0%B7%E4%BE%8B%E6%95%B0%E6%8D%AE/"/>
     <category term="脱敏" scheme="https://emoeem.github.io/tags/%E8%84%B1%E6%95%8F/"/>
     <category term="测试夹具" scheme="https://emoeem.github.io/tags/%E6%B5%8B%E8%AF%95%E5%A4%B9%E5%85%B7/"/>
-    <category term="Windows" scheme="https://emoeem.github.io/tags/Windows/"/>
-    <category term="PowerShell" scheme="https://emoeem.github.io/tags/PowerShell/"/>
+    <category term="使用手册" scheme="https://emoeem.github.io/tags/%E4%BD%BF%E7%94%A8%E6%89%8B%E5%86%8C/"/>
+    <category term="Web界面" scheme="https://emoeem.github.io/tags/Web%E7%95%8C%E9%9D%A2/"/>
     <content>
       <![CDATA[<p>一个<strong>独立于 QQ 客户端</strong>的聊天记录归档系统：把你能合法、稳定获取到的 QQ 消息与多媒体，落到自己的 SQLite 数据库与媒体目录里，用中文网页界面搜索、浏览、导出。</p><p>这份长文由 <code>emoeem/qq-archive</code> 仓库的 15 篇文档合并而成，每小时随上游更新自动重新生成；原来的单篇链接会自动跳转到对应章节。</p><!-- SERIES_BUNDLE -->]]>
     </content>
@@ -189,8 +189,8 @@
     <category term="测试" scheme="https://emoeem.github.io/tags/%E6%B5%8B%E8%AF%95/"/>
     <category term="网络审计" scheme="https://emoeem.github.io/tags/%E7%BD%91%E7%BB%9C%E5%AE%A1%E8%AE%A1/"/>
     <category term="DNS" scheme="https://emoeem.github.io/tags/DNS/"/>
-    <category term="网络测试" scheme="https://emoeem.github.io/tags/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95/"/>
     <category term="Web Panel" scheme="https://emoeem.github.io/tags/Web-Panel/"/>
+    <category term="网络测试" scheme="https://emoeem.github.io/tags/%E7%BD%91%E7%BB%9C%E6%B5%8B%E8%AF%95/"/>
     <category term="daed" scheme="https://emoeem.github.io/tags/daed/"/>
     <category term="迁移" scheme="https://emoeem.github.io/tags/%E8%BF%81%E7%A7%BB/"/>
     <category term="踩坑" scheme="https://emoeem.github.io/tags/%E8%B8%A9%E5%9D%91/"/>
