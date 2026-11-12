@@ -92,11 +92,21 @@
             
             <tag> QQ </tag>
             
-            <tag> 快速开始 </tag>
+            <tag> 数据备份 </tag>
+            
+            <tag> SQLite </tag>
             
             <tag> NapCat </tag>
             
+            <tag> 自托管 </tag>
+            
+            <tag> 快速开始 </tag>
+            
             <tag> 部署 </tag>
+            
+            <tag> 使用手册 </tag>
+            
+            <tag> Web界面 </tag>
             
             <tag> 运维 </tag>
             
@@ -106,17 +116,15 @@
             
             <tag> 设计 </tag>
             
-            <tag> 数据模型 </tag>
-            
-            <tag> 格式映射 </tag>
-            
-            <tag> SQLite </tag>
-            
             <tag> 测试 </tag>
             
             <tag> 验收 </tag>
             
             <tag> 质量保证 </tag>
+            
+            <tag> 数据模型 </tag>
+            
+            <tag> 格式映射 </tag>
             
             <tag> 独立复核 </tag>
             
@@ -136,21 +144,17 @@
             
             <tag> 导出工具 </tag>
             
-            <tag> 数据备份 </tag>
+            <tag> SnowLuma </tag>
             
-            <tag> 自托管 </tag>
+            <tag> 许可证边界 </tag>
+            
+            <tag> 性能优化 </tag>
             
             <tag> qq-chat-exporter </tag>
             
             <tag> 许可证 </tag>
             
             <tag> 独立实现 </tag>
-            
-            <tag> SnowLuma </tag>
-            
-            <tag> 许可证边界 </tag>
-            
-            <tag> 性能优化 </tag>
             
             <tag> Windows </tag>
             
@@ -161,10 +165,6 @@
             <tag> 脱敏 </tag>
             
             <tag> 测试夹具 </tag>
-            
-            <tag> 使用手册 </tag>
-            
-            <tag> Web界面 </tag>
             
         </tags>
       
@@ -477,9 +477,9 @@
             
             <tag> voicefox </tag>
             
-            <tag> TUI </tag>
-            
             <tag> 配置 </tag>
+            
+            <tag> TUI </tag>
             
         </tags>
       
@@ -568,7 +568,15 @@
       
         <tags>
             
-            <tag> mpv&#92;n- Arch Linux&#92;n- PKGBUILD&#92;n- Omniphony&#92;n- Linux </tag>
+            <tag> Arch Linux </tag>
+            
+            <tag> PKGBUILD </tag>
+            
+            <tag> Linux </tag>
+            
+            <tag> mpv </tag>
+            
+            <tag> Omniphony </tag>
             
         </tags>
       
@@ -818,11 +826,11 @@
             
             <tag> Linux </tag>
             
-            <tag> 配置优化 </tag>
-            
             <tag> Yazi </tag>
             
             <tag> 插件 </tag>
+            
+            <tag> 配置优化 </tag>
             
         </tags>
       
@@ -849,11 +857,11 @@
             
             <tag> Linux </tag>
             
-            <tag> Fish </tag>
+            <tag> Shell </tag>
             
             <tag> 配置优化 </tag>
             
-            <tag> Shell </tag>
+            <tag> Fish </tag>
             
         </tags>
       
@@ -1056,9 +1064,9 @@
             
             <tag> 日记 </tag>
             
-            <tag> 求职 </tag>
-            
             <tag> 生活 </tag>
+            
+            <tag> 求职 </tag>
             
         </tags>
       
@@ -1085,9 +1093,9 @@
             
             <tag> Linux </tag>
             
-            <tag> 配置优化 </tag>
-            
             <tag> Yazi </tag>
+            
+            <tag> 配置优化 </tag>
             
             <tag> 文件管理 </tag>
             
@@ -1118,9 +1126,9 @@
             
             <tag> Linux </tag>
             
-            <tag> Fish </tag>
-            
             <tag> 配置优化 </tag>
+            
+            <tag> Fish </tag>
             
         </tags>
       

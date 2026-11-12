@@ -355,3 +355,22 @@ html.js .emo-reveal.is-visible { opacity: 1; transform: translateY(0); }
 #footer::before { background-color: transparent !important; }
 #footer > *, #footer a { color: rgba(226, 232, 240, .88); }
 #footer a:hover { color: #7dd3fc; }
+
+/* Code block background harmonized with the slate palette (dark mode). */
+[data-theme='dark'] #article-container pre[class*='language-'],
+[data-theme='dark'] #article-container .highlight pre,
+[data-theme='dark'] .highlight pre[class*='language-'] { background-color: #0b1220; }
+[data-theme='dark'] #article-container .highlight-tools { background-color: rgba(11, 18, 32, .7); }
+
+/* Tag cloud: calm slate chips instead of random loud colors. */
+.tag-cloud-list a {
+  background: var(--emo-surface) !important;
+  color: var(--emo-muted) !important;
+  border: 1px solid var(--emo-line);
+  border-radius: 999px;
+  transition: color .2s ease, border-color .2s ease;
+}
+.tag-cloud-list a:hover {
+  color: var(--emo-accent-strong) !important;
+  border-color: var(--emo-accent);
+}
